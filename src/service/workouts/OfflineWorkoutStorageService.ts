@@ -1,5 +1,5 @@
 import {WorkoutDay} from '@data/models/WorkoutDay'
-import * as FileSystem from 'expo-file-system'
+import * as FileSystem from 'expo-file-system/legacy'
 
 import {compareIsoDateStrings} from '../../utility/DateUtility'
 

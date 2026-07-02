@@ -1,7 +1,9 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
 import {LogBox, StatusBar, TouchableOpacity} from 'react-native'
 import {GestureHandlerRootView} from 'react-native-gesture-handler'
+
+import * as SplashScreen from 'expo-splash-screen'
 
 import {Ionicons} from '@expo/vector-icons'
 import {NavigationContainer} from '@react-navigation/native'
@@ -22,6 +24,10 @@ LogBox.ignoreAllLogs(true)
 
 const App = () => {
   const {isAuthed} = useAuthStore()
+
+  useEffect(() => {
+    SplashScreen.hideAsync()
+  }, [])
 
   const backButton = (onPress: () => void) => {
     return (

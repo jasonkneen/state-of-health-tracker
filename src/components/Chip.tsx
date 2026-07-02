@@ -9,7 +9,7 @@ import Spacing from '@constants/Spacing'
 
 interface Props {
   label: string
-  icon?: JSX.Element
+  icon?: React.JSX.Element
   style?: StyleProp<ViewStyle>
 }
 

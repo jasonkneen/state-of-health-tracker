@@ -30,6 +30,7 @@ type ThemeType = typeof darkTheme
 
 export const darkTheme = {
   dark: true,
+  fonts: DefaultTheme.fonts,
   colors: {
     ...DefaultTheme.colors,
     background: primary,

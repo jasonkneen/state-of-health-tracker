@@ -6,11 +6,6 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#1B1D2C"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -33,18 +28,25 @@
         {
           "ios": {
             "useFrameworks": "static",
-            "deploymentTarget": "14.0",
-            "swiftVersion": "5.9"
+            "deploymentTarget": "16.4"
           }
         }
       ],
       "expo-font",
-      "expo-file-system"
+      "expo-file-system",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#1B1D2C"
+        }
+      ]
     ],
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "jsEngine": "jsc",
+    "newArchEnabled": true,
     "extra": {
       "eas": {
         "projectId": "db392b26-869f-459f-a0b4-f99798cb345f"

@@ -24,13 +24,13 @@ const HomeTabs = () => {
   )
 
   const debugIcon = (color: string) => (
-    <MaterialCommunityIcons name="desktop-mac" size={24} color={color} style={{marginBottom: -3}} />
+    <MaterialCommunityIcons name="monitor" size={24} color={color} style={{marginBottom: -3}} />
   )
 
   return (
     <Tab.Navigator
-      sceneContainerStyle={{backgroundColor: theme.colors.background}}
       screenOptions={({route}) => ({
+        sceneStyle: {backgroundColor: theme.colors.background},
         tabBarIcon: ({color}) => {
           if (route.name === 'WorkoutsStack') return barbellIcon(color)
           if (route.name === Screens.ACCOUNT) return accountIcon(color)

@@ -20,7 +20,7 @@ interface Props {
   onButtonPressed: () => void
   value?: string
   onChangeText: (text: string) => void
-  icon?: JSX.Element
+  icon?: React.JSX.Element
   title: string
   subtitle?: string
   buttonText: string

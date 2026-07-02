@@ -22,7 +22,7 @@ const WorkoutsStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerBackTitleVisible: false,
+        headerBackButtonDisplayMode: 'minimal',
         headerStyle: {backgroundColor: theme.colors.background},
         headerTintColor: theme.colors.white,
         headerShadowVisible: false

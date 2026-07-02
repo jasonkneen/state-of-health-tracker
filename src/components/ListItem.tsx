@@ -13,7 +13,7 @@ import SwipeDeleteListItem from './SwipeDeleteListItem'
 interface Props {
   readonly title: string
   readonly subtitle: string
-  readonly chip?: JSX.Element
+  readonly chip?: React.JSX.Element
   readonly swipeableRef?: (ref: Swipeable) => void
   readonly onSwipeActivated?: () => void
   readonly onDeletePressed?: () => void

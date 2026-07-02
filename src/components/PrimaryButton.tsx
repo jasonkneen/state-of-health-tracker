@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {ActivityIndicator, StyleProp, TouchableOpacity, View, ViewStyle} from 'react-native'
+import {ActivityIndicator, DimensionValue, StyleProp, TouchableOpacity, View, ViewStyle} from 'react-native'
 
 import {Text, useStyleTheme} from '@theme/Theme'
 
@@ -13,7 +13,7 @@ interface Props {
   isLoading?: boolean
   onPress: () => void
   style?: StyleProp<ViewStyle>
-  width?: string | number
+  width?: DimensionValue
 }
 
 const PrimaryButton = (props: Props) => {

@@ -11,10 +11,10 @@ import Spacing from '@constants/Spacing'
 interface Props<T> {
   readonly subItems: T[]
   readonly day: string
-  readonly headerChip: JSX.Element
+  readonly headerChip: React.JSX.Element
   readonly column1Label: string
   readonly column2Label: string
-  readonly getChipForItem: (item: T) => JSX.Element
+  readonly getChipForItem: (item: T) => React.JSX.Element
   readonly getTitleForItem: (item: T) => string
   readonly getSubtitleForItem: (item: T) => string
 }
@@ -102,7 +102,7 @@ const PreviousEntryListItem = <T extends object>(props: Props<T>) => {
 export default PreviousEntryListItem
 
 interface EmptyStateProps {
-  icon: JSX.Element
+  icon: React.JSX.Element
   title: string
   body: string
 }

@@ -15,7 +15,7 @@ import Spacing from '@constants/Spacing'
 interface Props {
   readonly clickable?: boolean
   readonly text: string
-  readonly icon: JSX.Element
+  readonly icon: React.JSX.Element
   readonly type: 'target-calories' | 'target-workouts' | 'weight' | 'auth' | 'info' | 'display-name'
   readonly onPressOverride?: () => void
 }

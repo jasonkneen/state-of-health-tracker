@@ -13,9 +13,6 @@ import {closeGlobalBottomSheet} from '@components/GlobalBottomSheet'
 import PrimaryButton from '@components/PrimaryButton'
 import {UPDATE_APP_VERSION_BUTTON, UPDATE_APP_VERSION_TEXT, UPDATE_APP_VERSION_TITLE} from '@constants/Strings'
 import {urls} from '@constants/urls'
-import {useThunkDispatch} from '@store/index'
-import {syncUserData} from '@store/user/UserActions'
-import useAuthStore from '@store/auth/useAuthStore'
 
 import {isVersionGreaterOrEqual} from '../../utility/compareVersions'
 import styles from './index.styled'
@@ -23,9 +20,6 @@ import styles from './index.styled'
 const MinimumVersionSheet = () => {
   const theme = useStyleTheme()
   const sheetRef = useRef<BottomSheet>(null)
-
-  const dispatch = useThunkDispatch()
-  const {userId, isAuthed} = useAuthStore()
 
   const [isOpen, setIsOpen] = useState(false)
 
@@ -49,10 +43,6 @@ const MinimumVersionSheet = () => {
 
     if (supported) {
       await Linking.openURL(urls.iosStore)
-
-      if (userId && isAuthed) {
-        dispatch(syncUserData(userId, true))
-      }
     }
   }
 

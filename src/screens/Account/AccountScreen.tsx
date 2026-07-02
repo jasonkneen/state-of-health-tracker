@@ -4,12 +4,10 @@ import {Linking, SafeAreaView, ScrollView} from 'react-native'
 
 import {FontAwesome5, Ionicons, MaterialCommunityIcons} from '@expo/vector-icons'
 import useAuthStore from '@store/auth/useAuthStore'
-import LocalStore from '@store/LocalStore'
 import {useSessionStore} from '@store/session/useSessionStore'
 import useUserData from '@store/userData/useUserData'
 import useWorkoutSummariesStore from '@store/workoutSummaries/useWorkoutSummariesStore'
 import {Text, useStyleTheme} from '@theme/Theme'
-import {useSelector} from 'react-redux'
 
 import HorizontalDivider from '@components/HorizontalDivider'
 
@@ -24,7 +22,6 @@ import {
   ACCOUNT_TARGET_CALORIES_LIST_ITEM,
   ACCOUNT_TARGET_WORKOUTS_LIST_ITEM,
   ACCOUNT_TARGETS_SECTION_TITLE,
-  ACCOUNT_TOTAL_DAYS_MACROS_LIST_ITEM,
   ACCOUNT_TOTAL_DAYS_WORKOUTS_LIST_ITEM,
   ACCOUNT_WELCOME_TEXT
 } from '@constants/Strings'
@@ -32,14 +29,9 @@ import {
 import AccountListItem from './components/AccountListItem'
 import AuthListItem from './components/AuthListItem'
 import DeleteAccountListItem from './components/DeleteAccountListItem'
-import {DailyMealEntry, getPreviousDailyMealEntriesSelector} from '../../selectors/MealsSelector'
 import {formatDayMonthDay} from '../../utility/DateUtility'
 
 const AccountScreen = () => {
-  const dailyMealEntries = useSelector<LocalStore, DailyMealEntry[]>((state: LocalStore) =>
-    getPreviousDailyMealEntriesSelector(state, 10_000)
-  )
-
   const {currentWeight, targetWorkouts, targetCalories} = useUserData()
   const {sessionStartDate} = useSessionStore()
 
@@ -96,13 +88,6 @@ const AccountScreen = () => {
         type="weight"
         text={`${ACCOUNT_CURRENT_WEIGHT_LIST_ITEM} ${currentWeight}`}
         icon={<FontAwesome5 name="weight" size={iconSize - 4} style={{marginTop: 2}} color={iconColor} />}
-      />
-
-      <AccountListItem
-        type="info"
-        clickable={false}
-        text={ACCOUNT_TOTAL_DAYS_MACROS_LIST_ITEM + dailyMealEntries.length}
-        icon={<MaterialCommunityIcons name="food-variant" size={iconSize} color={iconColor} />}
       />
 
       <AccountListItem

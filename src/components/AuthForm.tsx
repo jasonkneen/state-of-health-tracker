@@ -25,7 +25,6 @@ import PasswordTextInput from './PasswordTextInput'
 import PrimaryButton from './PrimaryButton'
 import TextInputWithHeader from './TextInputWithHeader'
 import {Navigation} from '../navigation/types'
-import {useThunkDispatch} from '../store'
 import {isValidEmail, isValidPassword} from '../utility/AccountUtility'
 
 interface Props {
@@ -45,8 +44,6 @@ const AuthForm = (props: Props) => {
   const [showConfirmPasswordError, setShowConfirmPasswordError] = useState(false)
 
   const {isAttemptingAuth, loginUser, registerUser} = useAuthStore()
-
-  const dispatch = useThunkDispatch()
 
   const validate = (): boolean => {
     let isValid = true
@@ -91,7 +88,7 @@ const AuthForm = (props: Props) => {
       if (authType === 'register') {
         registerUser(email, password)
       } else {
-        loginUser(email, password, dispatch)
+        loginUser(email, password)
       }
     }
   }

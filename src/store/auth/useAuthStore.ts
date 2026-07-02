@@ -2,11 +2,8 @@ import {authEventType} from '@data/types/authEvent'
 import {authStatus} from '@data/types/authStatus'
 import {decodeAuthError} from '@service/auth/AuthErrorEnum'
 import authService from '@service/auth/AuthService'
-import userService from '@service/user/UserService'
 import offlineWorkoutStorageService from '@service/workouts/OfflineWorkoutStorageService'
-import LocalStore from '@store/LocalStore'
 import {AuthError, AuthErrorPathEnum} from '@store/user/models/AuthError'
-import {LOG_IN_USER, LOG_OUT_USER} from '@store/user/UserActions'
 import {create} from 'zustand'
 import {immer} from 'zustand/middleware/immer'
 
@@ -18,17 +15,14 @@ export type AuthState = {
   isAuthed: boolean
   isAttemptingAuth: boolean
   initAuth: () => void
-  // passing in dispatch here is a temp workaround while I remove redux from the app
-  loginUser: (email: string, password: string, dispatch: Function) => void
+  loginUser: (email: string, password: string) => void
   registerUser: (email: string, password: string) => void
-
-  // passing in dispatch here is a temp workaround while I remove redux from the app
-  logoutUser: (dispatch: Function, state: LocalStore) => void
+  logoutUser: () => void
   deleteUser: () => void
 }
 
 const useAuthStore = create<AuthState>()(
-  immer((set, get) => ({
+  immer(set => ({
     userId: null,
     userEmail: null,
     isAuthed: false,
@@ -49,19 +43,10 @@ const useAuthStore = create<AuthState>()(
         status: isAuthed ? authStatus.Authed : authStatus.Unauthed
       })
     },
-    loginUser: async (email, password, dispatch) => {
+    loginUser: async (email, password) => {
       set({isAttemptingAuth: true})
       try {
         const user = await authService.logInUser(email, password)
-
-        // this god awful implementation will be removed once redux is gone
-        // and everything is fully migrated to postgres
-        const data = await userService.fetchUserData(user.id)
-
-        dispatch({
-          payload: data,
-          type: LOG_IN_USER
-        })
 
         set({
           userEmail: user.email,
@@ -124,15 +109,7 @@ const useAuthStore = create<AuthState>()(
         set({isAttemptingAuth: false})
       }
     },
-    logoutUser: async (dispatch: Function, state: LocalStore) => {
-      // this is a temp workaround while I remove redux from the app
-      const {userId} = get()
-
-      if (userId) await userService.saveUserData(userId, state)
-      dispatch({
-        type: LOG_OUT_USER
-      })
-
+    logoutUser: async () => {
       await authService.logOutUser()
       await offlineWorkoutStorageService.clear()
       //TODO: reset other zustand stores (exercises, workouts, etc.)

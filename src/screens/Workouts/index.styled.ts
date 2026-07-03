@@ -17,10 +17,12 @@ export default StyleSheet.create({
   pagerPageContent: {
     flex: 1
   },
+  // Matches the Macros screen title row so the shared history icon sits at the
+  // same y-position when swapping tabs
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     marginRight: Spacing.GUTTER
   },
   dateOverline: {
@@ -74,17 +76,21 @@ export default StyleSheet.create({
     borderRadius: BorderRadius.ITEM,
     paddingVertical: Spacing.SMALL,
     marginHorizontal: Spacing.GUTTER,
-    marginTop: Spacing.XX_SMALL
+    marginTop: Spacing.XX_SMALL,
+    marginBottom: Spacing.LARGE
   },
   addExerciseText: {
     fontSize: FontSize.PARAGRAPH,
     fontWeight: '600',
     color: Theme.colors.textSecondary
   },
-  footerButton: {
-    marginTop: Spacing.MEDIUM,
-    marginBottom: Spacing.LARGE,
-    marginHorizontal: Spacing.GUTTER
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: Spacing.X_SMALL
+  },
+  historyButton: {
+    padding: Spacing.X_SMALL
   },
   sectionList: {
     width: '100%',

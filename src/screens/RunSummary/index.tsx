@@ -28,7 +28,6 @@ import {
   RUN_NOT_FOUND,
   RUN_SAVE_ERROR_TOAST,
   RUN_SAVED_PR_TOAST,
-  RUN_SAVED_TOAST,
   RUN_STAT_MI_UNIT,
   SAVE_RUN_BUTTON_TEXT
 } from '@constants/strings'
@@ -69,7 +68,11 @@ const RunSummaryScreen = () => {
     try {
       const result = await completeRunMutation.mutateAsync(record)
 
-      showToast('success', result.newRecords.length > 0 ? RUN_SAVED_PR_TOAST : RUN_SAVED_TOAST)
+      // New personal records aren't visible anywhere on the Runs list, so
+      // the toast is the only feedback that a PR happened
+      if (result.newRecords.length > 0) {
+        showToast('success', RUN_SAVED_PR_TOAST)
+      }
       navigation.navigate(Screens.RUNS)
     } catch {
       showToast('error', RUN_SAVE_ERROR_TOAST)

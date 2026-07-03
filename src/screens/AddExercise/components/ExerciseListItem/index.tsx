@@ -18,7 +18,7 @@ import Text from '@components/Text'
 import {showToast} from '@components/toast/util/ShowToast'
 
 import Screens from '@constants/screens'
-import {TOAST_EXERCISE_ADDED, TOAST_EXERCISE_ALREADY_ADDED} from '@constants/strings'
+import {TOAST_EXERCISE_ALREADY_ADDED} from '@constants/strings'
 
 import styles from './index.styled'
 
@@ -38,7 +38,6 @@ const ExerciseListItem = ({exercise}: Props) => {
   const onAddToWorkoutPressed = () => {
     closeGlobalBottomSheet()
     if (addDailyExercise(exercise)) {
-      showToast('success', TOAST_EXERCISE_ADDED, exercise.name)
       navigation.goBack()
     } else {
       showToast('error', TOAST_EXERCISE_ALREADY_ADDED, exercise.name)

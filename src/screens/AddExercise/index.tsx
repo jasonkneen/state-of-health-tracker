@@ -39,9 +39,7 @@ import {
   SEARCH_ADD_EXERCISE_ERROR,
   SEARCH_EXERCISES_PLACEHOLDER,
   TEMPLATES_HEADER,
-  TOAST_EXERCISE_ADDED,
   TOAST_EXERCISE_ALREADY_ADDED,
-  TOAST_EXERCISE_SAVED,
   YOUR_EXERCISES_HEADER
 } from '@constants/strings'
 
@@ -101,7 +99,6 @@ const AddExerciseScreen = () => {
 
   const addToWorkout = (exercise: Exercise) => {
     if (addDailyExercise(exercise)) {
-      showToast('success', TOAST_EXERCISE_ADDED, exercise.name)
       goBack()
     } else {
       showToast('error', TOAST_EXERCISE_ALREADY_ADDED, exercise.name)
@@ -132,9 +129,7 @@ const AddExerciseScreen = () => {
   // exercise simply moves from the catalog section into "Your Exercises"
   const onSaveCatalogExercisePressed = async (payload: CreateExercisePayload) => {
     try {
-      const created = await createExercise(payload)
-
-      showToast('success', TOAST_EXERCISE_SAVED, created.name)
+      await createExercise(payload)
     } catch {
       showToast('error', SAVE_EXERCISE_ERROR)
     }

@@ -18,7 +18,18 @@ const Endpoints = {
   // Function rather than a fixed string (like WeeklyWorkoutSummary) since the
   // Runs history screen may want to tune the window later; callers that just
   // want the current convenience default can call `Endpoints.WeeklyRunSummary()`.
-  WeeklyRunSummary: (numOfWeeks: number = 7) => `${baseApiUrl}/runs/weekly-summary/${numOfWeeks}`
+  WeeklyRunSummary: (numOfWeeks: number = 7) => `${baseApiUrl}/runs/weekly-summary/${numOfWeeks}`,
+  DailyMacros: (date: string) => `${baseApiUrl}/macros/${date}`,
+  MacrosHistory: `${baseApiUrl}/macros/history`,
+  MacroMealEntries: (mealId: string) => `${baseApiUrl}/macros/meal/${mealId}/entries`,
+  MacroEntry: (entryId: string) => `${baseApiUrl}/macros/entry/${entryId}`,
+  MacroEstimate: `${baseApiUrl}/macros/estimate`,
+  MacroLabelScan: `${baseApiUrl}/macros/label-scan`,
+  MacroTargets: `${baseApiUrl}/user/targets`,
+  Foods: `${baseApiUrl}/foods`,
+  Food: (foodId: string) => `${baseApiUrl}/foods/${foodId}`,
+  BrandedFoodSearch: (query: string) => `${baseApiUrl}/macros/search-branded-foods?q=${encodeURIComponent(query)}`,
+  BrandedFood: (foodId: string) => `${baseApiUrl}/macros/branded-food/${foodId}`
 }
 
 export default Endpoints

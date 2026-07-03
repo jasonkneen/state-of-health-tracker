@@ -9,11 +9,9 @@ import {
   TARGET_WORKOUTS_MODAL_BODY,
   TARGET_WORKOUTS_MODAL_BUTTON,
   TARGET_WORKOUTS_MODAL_ERROR,
-  TARGET_WORKOUTS_MODAL_TITLE,
-  TOAST_TARGET_WORKOUTS_SET
+  TARGET_WORKOUTS_MODAL_TITLE
 } from '@constants/strings'
 
-import {showToast} from '../../toast/util/ShowToast'
 import BaseInputModalProps from '../BaseInputModalProps'
 import InputModal from '../InputModal'
 import styles from './index.styled'
@@ -44,7 +42,6 @@ const TargetWorkoutsModal = (props: BaseInputModalProps) => {
     setShowError(false)
 
     setTargetWorkouts(intVal)
-    showToast('success', TOAST_TARGET_WORKOUTS_SET, value)
   }
 
   return (

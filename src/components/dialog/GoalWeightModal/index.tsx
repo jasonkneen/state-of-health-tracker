@@ -4,14 +4,11 @@ import {MaterialCommunityIcons} from '@expo/vector-icons'
 import useUserData from '@store/userData/useUserData'
 import {Theme} from '@styles/theme'
 
-import {showToast} from '@components/toast/util/ShowToast'
-
 import {
   GOAL_WEIGHT_MODAL_BODY,
   GOAL_WEIGHT_MODAL_BUTTON,
   GOAL_WEIGHT_MODAL_ERROR,
-  GOAL_WEIGHT_MODAL_TITLE,
-  TOAST_GOAL_WEIGHT_SET
+  GOAL_WEIGHT_MODAL_TITLE
 } from '@constants/strings'
 
 import BaseInputModalProps from '../BaseInputModalProps'
@@ -48,7 +45,6 @@ const GoalWeightModal = (props: BaseInputModalProps) => {
     const rounded = Math.round(parsed * 10) / 10
 
     setGoalWeight(rounded)
-    showToast('success', TOAST_GOAL_WEIGHT_SET, rounded.toString())
   }
 
   return (

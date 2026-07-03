@@ -26,6 +26,13 @@
       }
     },
     "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "State of Health uses your camera to snap meals and nutrition labels so AI can estimate calories and macros.",
+          "photosPermission": "State of Health accesses your photo library so you can pick a meal or nutrition-label photo for AI estimation."
+        }
+      ],
       "@react-native-firebase/app",
       "@react-native-firebase/auth",
       "@react-native-firebase/crashlytics",
@@ -59,9 +66,10 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/splash.png",
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#1B1D2C"
+          "backgroundColor": "#0C1310"
         }
       ]
     ],

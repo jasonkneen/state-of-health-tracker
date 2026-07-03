@@ -5,7 +5,9 @@ import {QueryClient} from '@tanstack/react-query'
 // Only whitelisted queries are persisted to AsyncStorage — everything else is
 // memory-only and refetches on app launch. Exercises are kept on device so the
 // workout flow keeps working offline (replaces the old offline exercises store).
-export const PERSISTED_QUERY_KEYS: string[] = ['exercises']
+// dailyMacros/foods persist so the Macros screen renders offline (display only —
+// there is no offline write queue for macros in v1).
+export const PERSISTED_QUERY_KEYS: string[] = ['exercises', 'dailyMacros', 'foods']
 
 export const queryClient = new QueryClient({
   defaultOptions: {

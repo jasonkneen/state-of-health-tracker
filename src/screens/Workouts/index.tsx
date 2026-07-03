@@ -36,8 +36,8 @@ import {SafeAreaView} from 'react-native-safe-area-context'
 import FloatingActionButton from '@components/FloatingActionButton'
 import BarbellIcon from '@components/icons/BarbellIcon'
 import CheckIcon from '@components/icons/CheckIcon'
+import HistoryIcon from '@components/icons/HistoryIcon'
 import {EmptyState} from '@components/PreviousEntryListItem'
-import PrimaryButton from '@components/PrimaryButton'
 import {SectionListFooter} from '@components/SectionListHeader'
 import Text from '@components/Text'
 import {showToast} from '@components/toast/util/ShowToast'
@@ -51,8 +51,6 @@ import {
   EMPTY_PAST_WORKOUT_BODY,
   EMPTY_PAST_WORKOUT_TITLE,
   REORGANIZE_HINT_TEXT,
-  TOAST_WORKOUT_COMPLETED,
-  VIEW_PREVIOUS_WORKOUTS_BUTTON_TEXT,
   WORKOUT_COMPLETED_LABEL,
   WORKOUT_SCREEN_TITLE
 } from '@constants/strings'
@@ -75,6 +73,7 @@ const listSwipeItemManager = new ListSwipeItemManager()
 
 const CROSS_DISSOLVE_DURATION_MS = 250
 const REORG_TRANSITION_DURATION_MS = 200
+const HISTORY_ICON_SIZE = 22
 
 const WorkoutsScreen = () => {
   const navigation = useNavigation<Navigation>()
@@ -112,29 +111,20 @@ const WorkoutsScreen = () => {
     try {
       await completeWorkout()
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
-      showToast('success', TOAST_WORKOUT_COMPLETED)
     } catch {
       showToast('error', COMPLETE_WORKOUT_ERROR)
     }
   }
 
   const renderFooter = () => (
-    <>
-      <TouchableOpacity
-        style={styles.addExerciseRow}
-        activeOpacity={0.6}
-        onPress={() => navigation.push(Screens.ADD_EXERCISE)}>
-        <AntDesign name="plus" size={16} color={Theme.colors.textSecondary} />
+    <TouchableOpacity
+      style={styles.addExerciseRow}
+      activeOpacity={0.6}
+      onPress={() => navigation.push(Screens.ADD_EXERCISE)}>
+      <AntDesign name="plus" size={16} color={Theme.colors.textSecondary} />
 
-        <Text style={styles.addExerciseText}>{ADD_EXERCISE_BUTTON_TEXT}</Text>
-      </TouchableOpacity>
-
-      <PrimaryButton
-        style={styles.footerButton}
-        label={VIEW_PREVIOUS_WORKOUTS_BUTTON_TEXT}
-        onPress={() => navigation.push(Screens.PREVIOUS_DAILY_EXERCISE_ENTRIES)}
-      />
-    </>
+      <Text style={styles.addExerciseText}>{ADD_EXERCISE_BUTTON_TEXT}</Text>
+    </TouchableOpacity>
   )
 
   const startReorganizing = () => {
@@ -198,36 +188,43 @@ const WorkoutsScreen = () => {
 
     const renderHeader = () => (
       <>
+        <Text style={styles.dateOverline}>{formatIsoDayMonthDay(dateIso)}</Text>
+
         <View style={styles.headerRow}>
-          <View>
-            <Text style={styles.dateOverline}>{formatIsoDayMonthDay(dateIso)}</Text>
+          <View style={styles.titleRow}>
+            <Text style={styles.workoutTitle}>{WORKOUT_SCREEN_TITLE}</Text>
 
-            <View style={styles.titleRow}>
-              <Text style={styles.workoutTitle}>{WORKOUT_SCREEN_TITLE}</Text>
+            {isWorkoutCompleted && (
+              <View style={styles.completedChip}>
+                <CheckIcon color={Theme.colors.greenOnTint} size={10} strokeWidth={3.4} />
 
-              {isWorkoutCompleted && (
-                <View style={styles.completedChip}>
-                  <CheckIcon color={Theme.colors.greenOnTint} size={10} strokeWidth={3.4} />
-
-                  <Text style={styles.completedChipText}>{WORKOUT_COMPLETED_LABEL}</Text>
-                </View>
-              )}
-            </View>
+                <Text style={styles.completedChipText}>{WORKOUT_COMPLETED_LABEL}</Text>
+              </View>
+            )}
           </View>
 
-          {!isPastDay && !!workoutDay.startedAt && !workoutDay.completedAt && (
-            <CompleteWorkoutPanel
-              startedAt={workoutDay.startedAt}
-              isCompleting={isCompletingWorkout}
-              onCompletePressed={onCompleteWorkoutPressed}
-            />
-          )}
+          <View style={styles.headerActions}>
+            {!isPastDay && !!workoutDay.startedAt && !workoutDay.completedAt && (
+              <CompleteWorkoutPanel
+                startedAt={workoutDay.startedAt}
+                isCompleting={isCompletingWorkout}
+                onCompletePressed={onCompleteWorkoutPressed}
+              />
+            )}
 
-          {isPastDay && (
-            <TouchableOpacity style={styles.backToTodayChevron} activeOpacity={0.6} onPress={goToToday}>
-              <Ionicons name="chevron-forward" size={24} color={Theme.colors.textSecondary} />
+            <TouchableOpacity
+              style={styles.historyButton}
+              activeOpacity={0.6}
+              onPress={() => navigation.push(Screens.PREVIOUS_DAILY_EXERCISE_ENTRIES)}>
+              <HistoryIcon color={Theme.colors.accentGreen} size={HISTORY_ICON_SIZE} />
             </TouchableOpacity>
-          )}
+
+            {isPastDay && (
+              <TouchableOpacity style={styles.backToTodayChevron} activeOpacity={0.6} onPress={goToToday}>
+                <Ionicons name="chevron-forward" size={24} color={Theme.colors.textSecondary} />
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
 
         <WeekStripCard />

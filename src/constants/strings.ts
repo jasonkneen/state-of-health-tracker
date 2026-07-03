@@ -1,7 +1,3 @@
-export const YOUR_MEALS_HEADER = 'Your Meals'
-
-export const ADD_MEAL_BUTTON_TEXT = 'Add Meal'
-
 export const CAL_LABEL = 'cal'
 
 export const CAL_LABEL_PLURAL = 'cals'
@@ -44,21 +40,8 @@ export const CREATE_FOOD_FAT_ERROR_TEXT = 'Please enter the total grams of fat p
 
 export const CREATE_FOOD_CALORIES_ERROR_TEXT = 'Please enter the calories per serving'
 
-export const TOAST_FOOD_ITEM_CREATED = 'Food item created!'
-
 export const QUICK_ADD_FOOD_SCREEN_TITLE = 'Add Food'
 
-export const TOAST_MEAL_UPDATED = 'updated!'
-
-export const TOAST_ADDED = 'added!'
-
-export const DIALOG_MEAL_NAME_TITLE = 'Meal Name'
-
-export const DIALOG_MEAL_NAME_SUBTITLE = 'What would you like to call this meal?'
-
-export const DIALOG_MEAL_UPDATE_BUTTON_TEXT = 'Update Meal Name'
-
-export const DIALOG_MEAL_NAME_ERROR = 'Please enter a name for this meal'
 
 export const PREVIOUS_ENTRIES_TITLE = 'Previous Entries'
 
@@ -70,7 +53,7 @@ export const DAILY_CALORIE_INTAKE_TITLE = 'Daily Macros'
 
 export const REMAINING_TEXT = 'Remaining'
 
-export const OVER_TARGET_TEXT = 'Over Target'
+export const OVER_TEXT = 'Over'
 
 export const G_PROTEIN_LABEL = '(g) protein'
 
@@ -87,8 +70,6 @@ export const TARGET_CALORIE_MODAL_BODY = 'How many calories are you aiming to co
 export const TARGET_CALORIE_MODAL_ERROR = 'Please enter a value greater than 0'
 
 export const TARGET_CALORIE_MODAL_BUTTON = 'Set Target'
-
-export const TOAST_TARGET_CALORIES_SET = 'Target calories set'
 
 export const DAILY_GOAL_TEXT = 'Daily Goal:'
 
@@ -147,8 +128,6 @@ export const COMPLETE_WORKOUT_MODAL_BODY =
 
 export const WORKOUT_COMPLETED_LABEL = 'Completed'
 
-export const TOAST_WORKOUT_COMPLETED = 'Workout Complete!'
-
 export const COMPLETE_WORKOUT_ERROR = 'Unable to complete your workout. Please check your connection and try again.'
 
 export const EXERCISES_HEADER = 'Exercises'
@@ -205,12 +184,6 @@ export const CREATE_EXERCISE_NAME_ERROR = 'Please Enter an exercise name'
 
 export const TOAST_ALREADY_EXISTS = 'already exists'
 
-export const TOAST_EXERCISE_CREATED = 'Exercise created!'
-
-export const TOAST_EXERCISE_ADDED = 'Exercise added!'
-
-export const TOAST_EXERCISE_SAVED = 'Exercise saved!'
-
 export const TOAST_EXERCISE_ALREADY_ADDED = 'Exercise already added'
 
 export const DELETE_EXERCISE_MODAL_BODY = 'This will remove %0 and all of your previous set data.'
@@ -226,10 +199,6 @@ export const EXERCISE_LABEL = 'Exercise'
 export const BEST_SET_LABEL = 'Best Set'
 
 export const SETS_LABEL = 'Sets'
-
-export const VIEW_PREVIOUS_WORKOUTS_BUTTON_TEXT = 'View Previous Workouts'
-
-export const PREVIOUS_WORKOUTS_TITLE = 'Previous Workouts'
 
 export const PREVIOUS_WORKOUTS_ENTRIES_EMPTY_TITLE = "You haven't logged any workouts!"
 
@@ -260,8 +229,6 @@ export const TARGET_WORKOUTS_MODAL_BODY = 'How many workouts are you aiming to c
 export const TARGET_WORKOUTS_MODAL_ERROR = 'Please enter a value between 1 through 7'
 
 export const TARGET_WORKOUTS_MODAL_BUTTON = 'Set Target'
-
-export const TOAST_TARGET_WORKOUTS_SET = 'Target workouts set'
 
 export const NOT_SET_TEXT = 'Not set'
 
@@ -338,8 +305,6 @@ export const DELETE_ACCOUNT_ERROR =
 
 export const LOGOUT_ACCOUNT_ERROR = 'Unable to log out at this time. Please check your connection and try again.'
 
-export const TOAST_TEMPLATE_CREATED = 'Template created!'
-
 export const TOAST_TEMPLATE_CREATION_ERROR = 'Error creating template. Please check your connection and try again.'
 
 export const NO_EXERCISES_ADDED_TEXT =
@@ -363,17 +328,9 @@ export const TEMPLATE_START = 'Start Workout'
 
 export const TEMPLATE_EXERCISES_LABEL = 'Exercises'
 
-export const TOAST_TEMPLATE_EXERCISES_ADDED = 'Exercises Added!'
-
-export const TOAST_TEMPLATE_EXERCISES_ADDED_BODY = 'From Template: %0'
-
 export const CREATE_EXERCISE_ERROR = 'Error creating exercise. Please check your connection and try again.'
 
-export const DELETE_EXERCISE_SUCCESS = 'Exercise deleted'
-
 export const DELETE_EXERCISE_ERROR = 'Error deleting exercise. Please check your connection and try again.'
-
-export const DELETE_TEMPLATE_SUCCESS = 'Template deleted!'
 
 export const DELETE_TEMPLATE_ERROR = 'Error deleting template. Please check your connection and try again.'
 
@@ -527,8 +484,6 @@ export const DISCARD_BUTTON_TEXT = 'Discard'
 
 export const SAVE_RUN_BUTTON_TEXT = 'Save Run'
 
-export const RUN_SAVED_TOAST = 'Run saved'
-
 export const RUN_SAVED_PR_TOAST = 'Run saved — new personal record!'
 
 export const DISCARD_RUN_MODAL_TITLE = 'Discard Run?'
@@ -618,8 +573,6 @@ export const STEP_GOAL_MODAL_ERROR = 'Please enter a value greater than 0'
 
 export const STEP_GOAL_MODAL_BUTTON = 'Set Goal'
 
-export const TOAST_STEP_GOAL_SET = 'Step goal set'
-
 export const PROGRESS_TOP_SET_LABEL = 'TOP SET'
 
 export const PROGRESS_WEIGHT_UNIT = 'lbs'
@@ -694,8 +647,6 @@ export const LOG_WEIGHT_TODAY_LABEL = 'Today'
 
 export const LOG_WEIGHT_YESTERDAY_LABEL = 'Yesterday'
 
-export const TOAST_WEIGHT_LOGGED = 'Weight logged'
-
 export const TOAST_WEIGHT_LOG_FAILED = "Couldn't save weigh-in"
 
 export const GOAL_WEIGHT_MODAL_TITLE = 'Goal Weight'
@@ -705,8 +656,6 @@ export const GOAL_WEIGHT_MODAL_BODY = 'What weight are you aiming for? (lbs)'
 export const GOAL_WEIGHT_MODAL_BUTTON = 'Set Goal'
 
 export const GOAL_WEIGHT_MODAL_ERROR = 'Please enter a value greater than 0'
-
-export const TOAST_GOAL_WEIGHT_SET = 'Goal weight set'
 
 export const PROGRESS_BODY_WEIGH_IN_META = '%0 · %1'
 
@@ -749,3 +698,93 @@ export function stringWithParameters(str: string = '', ...parameters: string[]):
 
   return updatedStr
 }
+
+// --- Macros (nutrition) feature ---
+
+export const EMPTY_MEAL_CTA = 'Add food or log with AI'
+
+export const LOG_WITH_AI_TITLE = 'Log with AI'
+
+export const LOG_WITH_AI_CARD_SUBTITLE = 'Type or snap what you ate — we estimate it'
+
+export const LOG_WITH_AI_PLACEHOLDER = 'Just type what you ate… "2 eggs, toast with peanut butter, iced latte"'
+
+export const ESTIMATE_IT_BUTTON_TEXT = 'Estimate it'
+
+export const ESTIMATES_NOT_AUDITS_CAPTION = 'Estimates, not audits — close enough beats logging nothing.'
+
+export const AI_ESTIMATE_HEADER = 'AI ESTIMATE'
+
+export const ESTIMATE_ADJUST_TIP = 'Tap a calorie value to adjust it. Estimates, not audits.'
+
+export const RE_ESTIMATE_BUTTON_TEXT = 'Re-estimate'
+
+export const ESTIMATING_TEXT = 'Estimating…'
+
+export const ESTIMATE_ERROR_TEXT = "Couldn't estimate that. Try again."
+
+export const TAKE_PHOTO_TEXT = 'Take photo'
+
+export const PHOTO_LIBRARY_TEXT = 'Photo library'
+
+export const ADD_FOOD_TITLE = 'Add Food'
+
+export const ADDING_TO_EYEBROW = 'ADDING TO'
+
+export const SEARCH_YOUR_FOODS_PLACEHOLDER = 'Search your foods'
+
+export const AI_ESCAPE_HATCH_PREFIX = "Can't find it? "
+
+export const AI_ESCAPE_HATCH_BOLD = 'Describe it and let AI estimate'
+
+export const YOUR_FOODS_HEADER = 'Your foods'
+
+export const NEW_FOOD_BUTTON_TEXT = 'New Food'
+
+export const NEW_FOOD_TITLE = 'New Food'
+
+export const FOOD_NAME_HEADER = 'Name'
+
+export const SERVING_HEADER = 'Serving'
+
+export const UNIT_HEADER = 'Unit'
+
+export const MACROS_PER_SERVING_HEADER = 'Macros per serving'
+
+export const CALORIES_AUTO_LABEL = 'Calories · auto from macros'
+
+export const LABEL_SCAN_HINT = 'Only know the label? Snap the nutrition facts and AI fills this in.'
+
+export const CREATE_FOOD_BUTTON_TEXT = 'Create Food'
+
+export const SERVINGS_HEADER = 'Servings'
+
+export const THIS_ADDS_LABEL = 'This adds'
+
+export const CAL_PER_SERVING_SUFFIX = 'cal per serving'
+
+export const HISTORY_TITLE = 'History'
+
+export const LAST_7_DAYS_HEADER = 'LAST 7 DAYS'
+
+export const AVG_CAL_LABEL = 'avg cal'
+
+export const PREVIOUS_ENTRIES_HEADER = 'Previous entries'
+
+export const ON_GOAL_LABEL = 'on goal'
+
+export const GOAL_LABEL_PREFIX = 'goal'
+
+export const MACROS_EMPTY_HISTORY_TITLE = "You haven't logged any meals!"
+
+export const MACROS_EMPTY_HISTORY_SUBTITLE = 'Come back tomorrow to see your history.'
+
+export const TOAST_GENERIC_ERROR = 'Something went wrong. Try again.'
+
+export const OF_TARGET_CAL_LABEL = 'of'
+
+export const TOAST_SAVE_AI_FOODS_TITLE = 'Save to your foods?'
+
+export const TOAST_SAVE_AI_FOODS_ADD = 'Add'
+
+export const TOAST_SAVED_TO_FOODS = 'Saved to your foods!'

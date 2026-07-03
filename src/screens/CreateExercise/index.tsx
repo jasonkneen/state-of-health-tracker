@@ -26,8 +26,7 @@ import {
   CREATE_EXERCISE_NAME_ERROR,
   CREATE_EXERCISE_NAME_HEADER,
   CREATE_EXERCISE_NAME_PLACEHOLDER_TEXT,
-  TOAST_ALREADY_EXISTS,
-  TOAST_EXERCISE_CREATED
+  TOAST_ALREADY_EXISTS
 } from '@constants/strings'
 
 import styles, {createExerciseMaxPickerWidth} from './index.styled'
@@ -74,7 +73,6 @@ const CreateExerciseScreen = () => {
         loggingType: deriveLoggingTypeFromExerciseType(exerciseType)
       })
 
-      showToast('success', TOAST_EXERCISE_CREATED, exerciseNameText)
       goBack()
     } catch (error) {
       showToast('error', CREATE_EXERCISE_ERROR)

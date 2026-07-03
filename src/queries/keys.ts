@@ -14,7 +14,11 @@ export const queryKeys = {
   dailySteps: (days: number) => ['activitySteps', 'daily', days] as const,
   hourlySteps: (days: number) => ['activitySteps', 'hourly', days] as const,
   runWindowSteps: (runsKey: string) => ['activitySteps', 'runWindows', runsKey] as const,
-  healthAuthStatus: ['healthAuthStatus'] as const
+  healthAuthStatus: ['healthAuthStatus'] as const,
+  dailyMacros: (date: string) => ['dailyMacros', date] as const,
+  macrosHistory: ['macrosHistory'] as const,
+  foods: (query: string) => ['foods', query] as const,
+  brandedFoodSearch: (query: string) => ['brandedFoodSearch', query] as const
 }
 
 export const mutationKeys = {
@@ -28,5 +32,13 @@ export const mutationKeys = {
   syncOfflineRuns: ['syncOfflineRuns'] as const,
   logWeighIn: ['logWeighIn'] as const,
   deleteWeighIn: ['deleteWeighIn'] as const,
-  requestHealthPermissions: ['requestHealthPermissions'] as const
+  requestHealthPermissions: ['requestHealthPermissions'] as const,
+  logMealEntry: ['logMealEntry'] as const,
+  updateMealEntry: ['updateMealEntry'] as const,
+  deleteMealEntry: ['deleteMealEntry'] as const,
+  estimateMacros: ['estimateMacros'] as const,
+  scanNutritionLabel: ['scanNutritionLabel'] as const,
+  updateMacroTargets: ['updateMacroTargets'] as const,
+  createFood: ['createFood'] as const,
+  deleteFood: ['deleteFood'] as const
 }

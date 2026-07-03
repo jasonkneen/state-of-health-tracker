@@ -15,10 +15,12 @@ import Chip from '@components/Chip'
 import LoadingOverlay from '@components/LoadingOverlay'
 import PreviousEntryListItem, {EmptyState} from '@components/PreviousEntryListItem'
 import Screen from '@components/Screen'
+import Text from '@components/Text'
 
 import {
   BEST_SET_LABEL,
   EXERCISE_LABEL,
+  HISTORY_TITLE,
   LBS_LABEL,
   PREVIOUS_WORKOUTS_ENTRIES_EMPTY_BODY,
   PREVIOUS_WORKOUTS_ENTRIES_EMPTY_TITLE,
@@ -36,13 +38,22 @@ const PreviousWorkoutEntries = () => {
 
   if (!isLoading && summaries.length === 0) {
     return (
-      <EmptyState
-        icon={
-          <MaterialCommunityIcons style={styles.icon} name="weight-lifter" size={230} color={Theme.colors.secondary} />
-        }
-        title={PREVIOUS_WORKOUTS_ENTRIES_EMPTY_TITLE}
-        body={PREVIOUS_WORKOUTS_ENTRIES_EMPTY_BODY}
-      />
+      <Screen edges={[]}>
+        <Text style={styles.title}>{HISTORY_TITLE}</Text>
+
+        <EmptyState
+          icon={
+            <MaterialCommunityIcons
+              style={styles.icon}
+              name="weight-lifter"
+              size={230}
+              color={Theme.colors.secondary}
+            />
+          }
+          title={PREVIOUS_WORKOUTS_ENTRIES_EMPTY_TITLE}
+          body={PREVIOUS_WORKOUTS_ENTRIES_EMPTY_BODY}
+        />
+      </Screen>
     )
   }
 
@@ -117,6 +128,8 @@ const PreviousWorkoutEntries = () => {
       {isLoading && <LoadingOverlay />}
 
       <Screen edges={[]}>
+        <Text style={styles.title}>{HISTORY_TITLE}</Text>
+
         <FlatList
           style={styles.list}
           showsVerticalScrollIndicator={false}

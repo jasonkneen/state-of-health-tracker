@@ -5,14 +5,11 @@ import useUserData from '@store/userData/useUserData'
 import {Theme} from '@styles/theme'
 import {isNumber} from '@utility/TextUtility'
 
-import {showToast} from '@components/toast/util/ShowToast'
-
 import {
   STEP_GOAL_MODAL_BODY,
   STEP_GOAL_MODAL_BUTTON,
   STEP_GOAL_MODAL_ERROR,
-  STEP_GOAL_MODAL_TITLE,
-  TOAST_STEP_GOAL_SET
+  STEP_GOAL_MODAL_TITLE
 } from '@constants/strings'
 
 import BaseInputModalProps from '../BaseInputModalProps'
@@ -45,7 +42,6 @@ const StepGoalModal = (props: BaseInputModalProps) => {
     setShowError(false)
 
     setStepGoal(parseInt(value, 10))
-    showToast('success', TOAST_STEP_GOAL_SET, value)
   }
 
   return (

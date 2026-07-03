@@ -16,7 +16,6 @@ import {
   DELETE_EXERCISE_ERROR,
   DELETE_EXERCISE_MODAL_BODY,
   DELETE_EXERCISE_MODAL_TITLE,
-  DELETE_EXERCISE_SUCCESS,
   SAVE_EXERCISE_BUTTON_TEXT,
   VIEW_PROGRESSION_BUTTON_TEXT,
   stringWithParameters
@@ -61,7 +60,6 @@ const ExerciseOptionsBottomSheet = ({
     closeSheet()
     try {
       await deleteExercise(exerciseToDelete.id)
-      showToast('success', DELETE_EXERCISE_SUCCESS)
     } catch {
       showToast('error', DELETE_EXERCISE_ERROR)
     }

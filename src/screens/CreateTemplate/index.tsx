@@ -35,7 +35,6 @@ import {
   NO_SEARCH_RESULTS_TEXT,
   SEARCH_EXERCISES_PLACEHOLDER,
   SELECT_EXERCISES_FOR_TEMPLATE_TITLE,
-  TOAST_TEMPLATE_CREATED,
   TOAST_TEMPLATE_CREATION_ERROR,
   YOUR_EXERCISES_HEADER
 } from '@constants/strings'
@@ -184,14 +183,13 @@ const CreateTemplateScreen = () => {
         selectedExercises.map(item => (isExerciseObject(item) ? item.id : createExercise(item).then(e => e.id)))
       )
 
-      const created = await createTemplate({
+      await createTemplate({
         name,
         tagline,
         exerciseIds
       })
 
       goBack()
-      showToast('success', TOAST_TEMPLATE_CREATED, created.name)
     } catch (error) {
       showToast('error', TOAST_TEMPLATE_CREATION_ERROR)
     }

@@ -27,8 +27,7 @@ import {
   TIME_OF_DAY_AFTERNOON_OPTION,
   TIME_OF_DAY_EVENING_OPTION,
   TIME_OF_DAY_MORNING_OPTION,
-  TOAST_WEIGHT_LOG_FAILED,
-  TOAST_WEIGHT_LOGGED
+  TOAST_WEIGHT_LOG_FAILED
 } from '@constants/strings'
 
 import styles from './index.styled'
@@ -70,7 +69,6 @@ const LogWeightScreen = () => {
 
     try {
       await logWeighInAsync({weight, loggedAt: buildLoggedAtISO(date, timeOfDay)})
-      showToast('success', TOAST_WEIGHT_LOGGED, `${weight} ${LBS_LABEL}`)
       goBack()
     } catch {
       showToast('error', TOAST_WEIGHT_LOG_FAILED)

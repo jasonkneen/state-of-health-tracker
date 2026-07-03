@@ -19,7 +19,6 @@ import {
   DELETE_TEMPLATE_ERROR,
   DELETE_TEMPLATE_MODAL_BODY,
   DELETE_TEMPLATE_MODAL_TITLE,
-  DELETE_TEMPLATE_SUCCESS,
   stringWithParameters,
   TEMPLATE_EXERCISES_LABEL,
   TEMPLATE_START
@@ -49,7 +48,6 @@ const TemplateOptionsBottomSheet = ({template, exercises, onStartPressed}: Props
     closeSheet()
     try {
       await deleteTemplate(template.id)
-      showToast('success', DELETE_TEMPLATE_SUCCESS, template.name)
     } catch {
       showToast('error', DELETE_TEMPLATE_ERROR)
     }

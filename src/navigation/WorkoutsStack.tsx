@@ -10,7 +10,6 @@ import PreviousWorkoutEntries from '@screens/PreviousWorkoutEntries'
 import WorkoutsScreen from '@screens/Workouts'
 
 import Screens from '@constants/screens'
-import {PREVIOUS_WORKOUTS_TITLE} from '@constants/strings'
 
 const Stack = createNativeStackNavigator()
 
@@ -49,7 +48,7 @@ const WorkoutsStack = () => {
 
       <Stack.Screen
         name={Screens.PREVIOUS_DAILY_EXERCISE_ENTRIES}
-        options={{title: PREVIOUS_WORKOUTS_TITLE}}
+        options={{title: ''}}
         component={PreviousWorkoutEntries}
       />
     </Stack.Navigator>

@@ -5,14 +5,11 @@ import useUserData from '@store/userData/useUserData'
 import {Theme} from '@styles/theme'
 import {isNumber} from '@utility/TextUtility'
 
-import {showToast} from '@components/toast/util/ShowToast'
-
 import {
   TARGET_CALORIE_MODAL_BODY,
   TARGET_CALORIE_MODAL_BUTTON,
   TARGET_CALORIE_MODAL_ERROR,
-  TARGET_CALORIE_MODAL_TITLE,
-  TOAST_TARGET_CALORIES_SET
+  TARGET_CALORIE_MODAL_TITLE
 } from '@constants/strings'
 
 import BaseInputModalProps from '../BaseInputModalProps'
@@ -43,7 +40,6 @@ const TargetCaloriesModal = (props: BaseInputModalProps) => {
     setShowError(false)
 
     setTargetCalories(parseInt(value, 10))
-    showToast('success', TOAST_TARGET_CALORIES_SET, value)
   }
 
   return (

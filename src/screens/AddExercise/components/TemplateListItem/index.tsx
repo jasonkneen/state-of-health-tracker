@@ -13,13 +13,6 @@ import TemplateOptionsBottomSheet from '@screens/AddExercise/components/Template
 
 import {closeGlobalBottomSheet, openGlobalBottomSheet} from '@components/GlobalBottomSheet'
 import Text from '@components/Text'
-import {showToast} from '@components/toast/util/ShowToast'
-
-import {
-  stringWithParameters,
-  TOAST_TEMPLATE_EXERCISES_ADDED,
-  TOAST_TEMPLATE_EXERCISES_ADDED_BODY
-} from '@constants/strings'
 
 import styles from './index.styled'
 
@@ -40,11 +33,6 @@ const TemplateListItem = ({template}: Props) => {
   const onStartWorkoutPressed = () => {
     closeGlobalBottomSheet()
     templateExercises.forEach(exercise => addDailyExercise(exercise))
-    showToast(
-      'success',
-      TOAST_TEMPLATE_EXERCISES_ADDED,
-      stringWithParameters(TOAST_TEMPLATE_EXERCISES_ADDED_BODY, template.name)
-    )
     goBack()
   }
 

@@ -73,9 +73,17 @@ const useDailyWorkoutEntryStore = create<DailyWorkoutState>()(
       },
 
       loadWorkoutDay: async (dateIso, userId) => {
-        const workoutDay = await findWorkoutDay(dateIso, userId ?? '')
+        try {
+          const workoutDay = await findWorkoutDay(dateIso, userId ?? '')
 
-        set({currentWorkoutDay: workoutDay})
+          // Pin the requested date: the pager matches pages against this
+          // field, and a server-formatted date that doesn't match would leave
+          // the page stuck on its skeleton with nothing interactive
+          set({currentWorkoutDay: {...workoutDay, date: dateIso}})
+        } catch (error) {
+          CrashUtility.recordError(error)
+          set({currentWorkoutDay: createWorkoutDay(userId ?? '', dateIso)})
+        }
       },
 
       addDailyExercise: exercise => {

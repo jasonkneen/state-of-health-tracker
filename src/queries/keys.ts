@@ -6,8 +6,10 @@ export const queryKeys = {
   records: ['records'] as const,
   exerciseHistory: (exerciseId: string) => ['exerciseHistory', exerciseId] as const,
   runs: ['runs'] as const,
+  runsTotal: ['runsTotal'] as const,
   run: (runId: string) => ['run', runId] as const,
-  weeklyRunSummary: ['weeklyRunSummary'] as const
+  weeklyRunSummary: ['weeklyRunSummary'] as const,
+  weighIns: ['weighIns'] as const
 }
 
 export const mutationKeys = {
@@ -18,5 +20,7 @@ export const mutationKeys = {
   deleteTemplate: ['deleteTemplate'] as const,
   completeRun: ['completeRun'] as const,
   discardRun: ['discardRun'] as const,
-  syncOfflineRuns: ['syncOfflineRuns'] as const
+  syncOfflineRuns: ['syncOfflineRuns'] as const,
+  logWeighIn: ['logWeighIn'] as const,
+  deleteWeighIn: ['deleteWeighIn'] as const
 }

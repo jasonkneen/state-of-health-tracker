@@ -13,6 +13,8 @@ const Endpoints = {
   ExerciseHistory: (exerciseId: string) => `${baseApiUrl}/exercises/${exerciseId}/history`,
   Run: `${baseApiUrl}/run/`,
   Runs: `${baseApiUrl}/runs`,
+  WeighIn: `${baseApiUrl}/weigh-in/`,
+  WeighIns: `${baseApiUrl}/weigh-ins`,
   // Function rather than a fixed string (like WeeklyWorkoutSummary) since the
   // Runs history screen may want to tune the window later; callers that just
   // want the current convenience default can call `Endpoints.WeeklyRunSummary()`.

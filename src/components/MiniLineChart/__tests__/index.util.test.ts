@@ -4,6 +4,7 @@ import {
   CHART_PADDING,
   clampScrubIndex,
   computeChartCoords,
+  computeReferenceY,
   computeStepX
 } from '../index.util'
 
@@ -70,6 +71,41 @@ describe('computeChartCoords', () => {
 
   it('returns an empty array for no points', () => {
     expect(computeChartCoords([], 100, 50, 0)).toEqual([])
+  })
+
+  it('widens the y-range to include a reference value below the series', () => {
+    const points = [
+      {date: '2026-01-01', value: 10},
+      {date: '2026-01-02', value: 20}
+    ]
+
+    const coords = computeChartCoords(points, 100, 50, 0, 0)
+
+    // With the reference at 0 the min of the range is 0, so the value-10 point
+    // sits mid-range rather than at the bottom
+    expect(coords[0].y).toBeLessThan(50 - CHART_PADDING)
+    expect(coords[1].y).toBe(CHART_PADDING)
+  })
+})
+
+describe('computeReferenceY', () => {
+  it('maps the reference value with the same scale as the points', () => {
+    const points = [
+      {date: '2026-01-01', value: 0},
+      {date: '2026-01-02', value: 10}
+    ]
+
+    expect(computeReferenceY(0, points, 50, 0)).toBe(50 - CHART_PADDING)
+    expect(computeReferenceY(10, points, 50, 0)).toBe(CHART_PADDING)
+  })
+
+  it('places a reference below the series at the bottom of the chart', () => {
+    const points = [
+      {date: '2026-01-01', value: 180},
+      {date: '2026-01-02', value: 178}
+    ]
+
+    expect(computeReferenceY(175, points, 50, 0)).toBe(50 - CHART_PADDING)
   })
 })
 

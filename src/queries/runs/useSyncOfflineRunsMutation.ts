@@ -12,6 +12,7 @@ export const useSyncOfflineRunsMutation = () => {
     mutationFn: syncOfflineRuns,
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: queryKeys.runs})
+      queryClient.invalidateQueries({queryKey: queryKeys.runsTotal})
     }
   })
 }

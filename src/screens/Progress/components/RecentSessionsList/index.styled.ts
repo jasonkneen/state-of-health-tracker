@@ -10,7 +10,7 @@ export default StyleSheet.create({
     marginTop: Spacing.MEDIUM
   },
   header: {
-    fontSize: FontSize.PARAGRAPH,
+    fontSize: FontSize.H3,
     fontWeight: '700',
     marginBottom: Spacing.XX_SMALL
   },

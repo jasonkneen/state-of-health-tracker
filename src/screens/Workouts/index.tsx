@@ -283,7 +283,10 @@ const WorkoutsScreen = () => {
         )}
 
         {!workoutDayForPage && (
-          <Animated.View style={StyleSheet.absoluteFill} exiting={FadeOut.duration(CROSS_DISSOLVE_DURATION_MS)}>
+          <Animated.View
+            style={StyleSheet.absoluteFill}
+            pointerEvents="none"
+            exiting={FadeOut.duration(CROSS_DISSOLVE_DURATION_MS)}>
             <WorkoutsSkeleton dateLabel={formatIsoDayMonthDay(dateIso)} />
           </Animated.View>
         )}
@@ -345,7 +348,10 @@ const WorkoutsScreen = () => {
       )}
 
       {isLoading && (
-        <Animated.View style={StyleSheet.absoluteFill} exiting={FadeOut.duration(CROSS_DISSOLVE_DURATION_MS)}>
+        <Animated.View
+          style={StyleSheet.absoluteFill}
+          pointerEvents="none"
+          exiting={FadeOut.duration(CROSS_DISSOLVE_DURATION_MS)}>
           <WorkoutsSkeleton />
         </Animated.View>
       )}

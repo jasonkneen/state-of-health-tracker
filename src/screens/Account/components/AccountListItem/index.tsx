@@ -6,7 +6,6 @@ import {Theme} from '@styles/theme'
 
 import TargetCaloriesModal from '@components/dialog/TargetCaloriesModal'
 import TargetWorkoutsModal from '@components/dialog/TargetWorkoutsModal'
-import WeightEntryModal from '@components/dialog/WeightEntryModal'
 import ChevronRightIcon from '@components/icons/ChevronRightIcon'
 import IconTile, {IconTileVariant} from '@components/IconTile'
 import Text from '@components/Text'
@@ -18,7 +17,7 @@ interface Props {
   readonly value?: string
   readonly icon: React.JSX.Element
   readonly tileVariant?: IconTileVariant
-  readonly type: 'target-calories' | 'target-workouts' | 'weight' | 'auth' | 'info' | 'display-name'
+  readonly type: 'target-calories' | 'target-workouts' | 'auth' | 'info' | 'display-name'
   readonly clickable?: boolean
   readonly danger?: boolean
   readonly isLastInGroup?: boolean
@@ -51,8 +50,6 @@ const AccountListItem = (props: Props) => {
         return <TargetCaloriesModal {...dialogProps} />
       case 'target-workouts':
         return <TargetWorkoutsModal {...dialogProps} />
-      case 'weight':
-        return <WeightEntryModal {...dialogProps} />
       default:
         break
     }

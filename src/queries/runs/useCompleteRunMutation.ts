@@ -43,6 +43,7 @@ export const useCompleteRunMutation = () => {
     onSuccess: (_, run) => {
       queryClient.invalidateQueries({queryKey: queryKeys.run(run.localId)})
       queryClient.invalidateQueries({queryKey: queryKeys.runs})
+      queryClient.invalidateQueries({queryKey: queryKeys.runsTotal})
       queryClient.invalidateQueries({queryKey: queryKeys.weeklyRunSummary})
     }
   })

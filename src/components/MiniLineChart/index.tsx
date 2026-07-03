@@ -6,7 +6,7 @@ import {Theme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import {Gesture, GestureDetector} from 'react-native-gesture-handler'
 import Animated, {Easing, runOnJS, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated'
-import Svg, {Circle, Path} from 'react-native-svg'
+import Svg, {Circle, Line, Path} from 'react-native-svg'
 
 import Text from '@components/Text'
 
@@ -16,6 +16,7 @@ import {
   buildLinePath,
   clampScrubIndex,
   computeChartCoords,
+  computeReferenceY,
   computeStepX,
   LineChartPoint
 } from './index.util'
@@ -30,6 +31,9 @@ interface Props {
   // renders a small tag above the active dot (e.g. "1RM 270"); reserves
   // headroom at the top of the chart so the tag never clips
   pointLabel?: (value: number) => string
+  // draws a dashed horizontal marker at this value (e.g. a goal weight) and
+  // widens the y-range so the marker is always visible
+  referenceValue?: number
 }
 
 const END_DOT_RADIUS = 4
@@ -40,7 +44,14 @@ const SCRUB_ACTIVATE_DISTANCE = 6
 const SCRUB_FAIL_DISTANCE = 12
 const LABEL_HEADROOM = 26
 
-const MiniLineChart = ({points, height = 120, color = Theme.colors.accentGreen, onScrub, pointLabel}: Props) => {
+const MiniLineChart = ({
+  points,
+  height = 120,
+  color = Theme.colors.accentGreen,
+  onScrub,
+  pointLabel,
+  referenceValue
+}: Props) => {
   const [width, setWidth] = useState(0)
   const [labelIndex, setLabelIndex] = useState<number | null>(null)
 
@@ -52,7 +63,7 @@ const MiniLineChart = ({points, height = 120, color = Theme.colors.accentGreen, 
   const stepX = computeStepX(points.length, width)
   const pointCount = points.length
   const topInset = pointLabel ? LABEL_HEADROOM : 0
-  const coords = computeChartCoords(points, width, height, topInset)
+  const coords = computeChartCoords(points, width, height, topInset, referenceValue)
 
   const xs = coords.map(coord => coord.x)
   const ys = coords.map(coord => coord.y)
@@ -163,6 +174,7 @@ const MiniLineChart = ({points, height = 120, color = Theme.colors.accentGreen, 
   const linePath = buildLinePath(coords)
   const last = coords[coords.length - 1]
   const areaPath = buildAreaPath(coords, height)
+  const referenceY = referenceValue !== undefined ? computeReferenceY(referenceValue, points, height, topInset) : null
   const labeledPoint =
     labelIndex !== null && labelIndex < points.length ? points[labelIndex] : points[points.length - 1]
 
@@ -171,6 +183,19 @@ const MiniLineChart = ({points, height = 120, color = Theme.colors.accentGreen, 
       {width > 0 && (
         <>
           <Svg width={width} height={height}>
+            {referenceY !== null && (
+              <Line
+                x1={0}
+                x2={width}
+                y1={referenceY}
+                y2={referenceY}
+                stroke={color}
+                strokeOpacity={0.45}
+                strokeWidth={1.5}
+                strokeDasharray="6 6"
+              />
+            )}
+
             <Path d={areaPath} fill={color} fillOpacity={0.14} />
 
             <Path

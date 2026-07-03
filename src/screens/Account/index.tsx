@@ -2,6 +2,8 @@ import React from 'react'
 
 import {Linking, ScrollView, View} from 'react-native'
 
+import {useRunsTotalQuery} from '@queries/runs/useRunsTotalQuery'
+import {useWeighInsQuery} from '@queries/weighIns/useWeighInsQuery'
 import {useWorkoutSummariesInfiniteQuery} from '@queries/workouts/useWorkoutSummariesInfiniteQuery'
 import useAuthStore from '@store/auth/useAuthStore'
 import useUserData from '@store/userData/useUserData'
@@ -13,22 +15,23 @@ import BarbellIcon from '@components/icons/BarbellIcon'
 import DocumentIcon from '@components/icons/DocumentIcon'
 import DumbbellIcon from '@components/icons/DumbbellIcon'
 import FlameIcon from '@components/icons/FlameIcon'
+import RunIcon from '@components/icons/RunIcon'
 import ScaleIcon from '@components/icons/ScaleIcon'
 import Text from '@components/Text'
 
 import {
   ACCOUNT_AUTH_SECTION_TITLE,
-  ACCOUNT_CURRENT_WEIGHT_LABEL,
   ACCOUNT_DAILY_CALORIES_LABEL,
   ACCOUNT_LOGGED_IN_AS_GUEST,
   GUEST_AVATAR_INITIAL,
   ACCOUNT_PRIVACY_POLICY,
   ACCOUNT_STATS_SECTION_TITLE,
   ACCOUNT_TARGETS_SECTION_TITLE,
+  ACCOUNT_TOTAL_RUNS_LABEL,
+  ACCOUNT_TOTAL_WEIGH_INS_LABEL,
   ACCOUNT_TOTAL_WORKOUT_DAYS_LABEL,
   ACCOUNT_WELCOME_TEXT,
-  ACCOUNT_WORKOUTS_PER_WEEK_LABEL,
-  LBS_SUFFIX
+  ACCOUNT_WORKOUTS_PER_WEEK_LABEL
 } from '@constants/strings'
 
 import AccountListItem from './components/AccountListItem'
@@ -39,10 +42,12 @@ import styles from './index.styled'
 const TILE_ICON_SIZE = 17
 
 const AccountScreen = () => {
-  const {currentWeight, targetWorkouts, targetCalories} = useUserData()
+  const {targetWorkouts, targetCalories} = useUserData()
 
   const {userEmail, isAuthed} = useAuthStore()
   const {data: summariesData} = useWorkoutSummariesInfiniteQuery()
+  const {data: weighIns = []} = useWeighInsQuery()
+  const {data: totalRuns = 0} = useRunsTotalQuery()
 
   const totalSummaries = summariesData?.pages[0]?.pagination.total ?? 0
 
@@ -106,11 +111,19 @@ const AccountScreen = () => {
 
       <View style={styles.groupCard}>
         <AccountListItem
-          type="weight"
-          label={ACCOUNT_CURRENT_WEIGHT_LABEL}
-          value={currentWeight + LBS_SUFFIX}
-          tileVariant="teal"
-          icon={<ScaleIcon color={Theme.colors.teal} size={TILE_ICON_SIZE} />}
+          type="info"
+          clickable={false}
+          label={ACCOUNT_TOTAL_WEIGH_INS_LABEL}
+          value={weighIns.length.toString()}
+          icon={<ScaleIcon color={Theme.colors.textSecondary} size={TILE_ICON_SIZE} />}
+        />
+
+        <AccountListItem
+          type="info"
+          clickable={false}
+          label={ACCOUNT_TOTAL_RUNS_LABEL}
+          value={totalRuns.toString()}
+          icon={<RunIcon color={Theme.colors.textSecondary} size={TILE_ICON_SIZE} />}
         />
 
         <AccountListItem

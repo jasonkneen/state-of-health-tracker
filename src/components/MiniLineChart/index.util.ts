@@ -13,22 +13,45 @@ export const CHART_PADDING = 6
 export const computeStepX = (pointCount: number, width: number): number =>
   pointCount > 1 ? (width - CHART_PADDING * 2) / (pointCount - 1) : 0
 
+const computeValueRange = (points: LineChartPoint[], referenceValue?: number) => {
+  const values = points.map(point => point.value)
+
+  if (referenceValue !== undefined) values.push(referenceValue)
+
+  const min = Math.min(...values)
+  const max = Math.max(...values)
+
+  return {min, range: max - min || 1}
+}
+
+const computeY = (value: number, min: number, range: number, height: number, topInset: number): number =>
+  CHART_PADDING + topInset + (1 - (value - min) / range) * (height - CHART_PADDING * 2 - topInset)
+
 export const computeChartCoords = (
   points: LineChartPoint[],
   width: number,
   height: number,
-  topInset: number
+  topInset: number,
+  referenceValue?: number
 ): ChartCoord[] => {
-  const values = points.map(point => point.value)
-  const min = Math.min(...values)
-  const max = Math.max(...values)
-  const range = max - min || 1
+  const {min, range} = computeValueRange(points, referenceValue)
   const stepX = computeStepX(points.length, width)
 
   return points.map((point, index) => ({
     x: CHART_PADDING + index * stepX,
-    y: CHART_PADDING + topInset + (1 - (point.value - min) / range) * (height - CHART_PADDING * 2 - topInset)
+    y: computeY(point.value, min, range, height, topInset)
   }))
+}
+
+export const computeReferenceY = (
+  referenceValue: number,
+  points: LineChartPoint[],
+  height: number,
+  topInset: number
+): number => {
+  const {min, range} = computeValueRange(points, referenceValue)
+
+  return computeY(referenceValue, min, range, height, topInset)
 }
 
 export const buildLinePath = (coords: ChartCoord[]): string =>

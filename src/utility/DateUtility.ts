@@ -51,6 +51,8 @@ export const formatIsoDayMonthDay = (isoDate: string): string => {
 
 export const formatDateToMonthDay = (date: string | number): string => format(new Date(date), 'M/d')
 
+export const formatDateToMonthDayYear = (date: string | number): string => format(new Date(date), 'M/d/yyyy')
+
 export const formatDateToMonthDayName = (date: string | number): string => format(new Date(date), 'MMM d')
 
 export const ONE_DAY_MS = 1000 * 60 * 60 * 24

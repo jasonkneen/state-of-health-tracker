@@ -1,14 +1,14 @@
-import React, {useState} from 'react'
+import React from 'react'
 
 import {ScrollView, View} from 'react-native'
 
+import useProgressStore from '@store/progress/useProgressStore'
 import {SafeAreaView} from 'react-native-safe-area-context'
 
 import SegmentedControl from '@components/SegmentedControl'
 import Text from '@components/Text'
 
 import {
-  PROGRESS_BODY_COMING_SOON_SUBTITLE,
   PROGRESS_TAB_BODY,
   PROGRESS_TAB_EXERCISES,
   PROGRESS_TAB_VOLUME,
@@ -16,11 +16,10 @@ import {
   PROGRESS_VOLUME_COMING_SOON_SUBTITLE
 } from '@constants/strings'
 
+import BodyTab from './components/BodyTab'
 import ComingSoonPanel from './components/ComingSoonPanel'
 import ExercisesTab from './components/ExercisesTab'
 import styles from './index.styled'
-
-type ProgressSubTab = 'exercises' | 'volume' | 'body'
 
 const SUB_TAB_OPTIONS = [
   {key: 'exercises' as const, label: PROGRESS_TAB_EXERCISES},
@@ -29,7 +28,7 @@ const SUB_TAB_OPTIONS = [
 ]
 
 const ProgressScreen = () => {
-  const [subTab, setSubTab] = useState<ProgressSubTab>('exercises')
+  const {selectedSubTab: subTab, setSelectedSubTab: setSubTab} = useProgressStore()
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
@@ -43,7 +42,7 @@ const ProgressScreen = () => {
 
           {subTab === 'volume' && <ComingSoonPanel subtitle={PROGRESS_VOLUME_COMING_SOON_SUBTITLE} />}
 
-          {subTab === 'body' && <ComingSoonPanel subtitle={PROGRESS_BODY_COMING_SOON_SUBTITLE} />}
+          {subTab === 'body' && <BodyTab />}
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -32,7 +32,7 @@ const ExerciseListItem = ({exercise}: Props) => {
   const subtitle = formatExerciseSubtitle(exercise.exerciseType, exercise.exerciseBodyPart)
 
   const {addDailyExercise} = useDailyWorkoutEntryStore()
-  const {setSelectedExerciseId} = useProgressStore()
+  const {setSelectedExerciseId, setSelectedSubTab} = useProgressStore()
 
   const onAddToWorkoutPressed = () => {
     closeGlobalBottomSheet()
@@ -46,6 +46,7 @@ const ExerciseListItem = ({exercise}: Props) => {
 
   const onViewProgressionPressed = () => {
     closeGlobalBottomSheet()
+    setSelectedSubTab('exercises')
     setSelectedExerciseId(exercise.id)
     navigation.navigate('ProgressStack', {screen: Screens.PROGRESS})
   }

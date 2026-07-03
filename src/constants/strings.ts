@@ -259,16 +259,6 @@ export const TARGET_WORKOUTS_MODAL_BUTTON = 'Set Target'
 
 export const TOAST_TARGET_WORKOUTS_SET = 'Target workouts set'
 
-export const CURRENT_WEIGHT_MODAL_TITLE = 'Current Weight'
-
-export const CURRENT_WEIGHT_MODAL_BODY = 'How much do you weight today? (lbs)'
-
-export const CURRENT_WEIGHT_MODAL_ERROR = 'Please enter a value greater than 0'
-
-export const CURRENT_WEIGHT_MODAL_BUTTON = 'Set Weight'
-
-export const TOAST_WEIGHT_UPDATED = 'Weight updated'
-
 export const NOT_SET_TEXT = 'Not set'
 
 export const ACCOUNT_WELCOME_TEXT = 'Hello!'
@@ -286,8 +276,6 @@ export const ACCOUNT_AUTH_SECTION_TITLE = 'Account'
 export const ACCOUNT_TARGET_CALORIES_LIST_ITEM = 'Target Daily Calories: '
 
 export const ACCOUNT_TARGET_WORKOUTS_LIST_ITEM = 'Target Workouts Per Week: '
-
-export const ACCOUNT_CURRENT_WEIGHT_LIST_ITEM = 'Current Weight:'
 
 export const ACCOUNT_TOTAL_DAYS_MACROS_LIST_ITEM = 'Total Days Logged - Macros: '
 
@@ -589,11 +577,89 @@ export const PROGRESS_SELECTED_EXERCISE_LABEL = 'Selected exercise'
 
 export const PROGRESS_SELECT_EXERCISE_TITLE = 'Select an exercise'
 
+export const PROGRESS_BODY_WEIGHT_LABEL = 'BODY WEIGHT'
+
+export const PROGRESS_BODY_DELTA_TEXT = '%0 lbs · %1 wks'
+
+export const PROGRESS_BODY_CHANGE_LABEL = 'CHANGE'
+
+export const PROGRESS_BODY_GOAL_LABEL = 'GOAL'
+
+export const PROGRESS_BODY_TO_GO_LABEL = 'TO GO'
+
+export const PROGRESS_BODY_CHANGE_INFO_TITLE = 'Change'
+
+export const PROGRESS_BODY_CHANGE_INFO_BODY = 'Your change in weight since you started tracking on %0.'
+
+export const PROGRESS_BODY_GOAL_AXIS_TEXT = 'goal %0'
+
+export const PROGRESS_BODY_SET_GOAL_LABEL = 'Set goal'
+
+export const PROGRESS_BODY_LOG_WEIGHT_BUTTON = '+ Log weight'
+
+export const PROGRESS_BODY_WEIGH_INS_HEADER = 'Weigh-ins'
+
+export const PROGRESS_BODY_EMPTY_TITLE = 'No weigh-ins yet'
+
+export const PROGRESS_BODY_EMPTY_SUBTITLE = 'Log a weigh-in to start tracking your body weight over time.'
+
+export const LOG_WEIGHT_TITLE = 'Log weight'
+
+export const LOG_WEIGHT_DATE_LABEL = 'Date'
+
+export const LOG_WEIGHT_TIME_LABEL = 'Time'
+
+export const LOG_WEIGHT_WEIGHT_LABEL = 'Weight (lbs)'
+
+export const LOG_WEIGHT_PLACEHOLDER = '0.0'
+
+export const LOG_WEIGHT_SAVE_BUTTON = 'Save weigh-in'
+
+export const LOG_WEIGHT_ERROR = 'Enter a weight greater than 0'
+
+export const LOG_WEIGHT_TODAY_LABEL = 'Today'
+
+export const LOG_WEIGHT_YESTERDAY_LABEL = 'Yesterday'
+
+export const TOAST_WEIGHT_LOGGED = 'Weight logged'
+
+export const TOAST_WEIGHT_LOG_FAILED = "Couldn't save weigh-in"
+
+export const GOAL_WEIGHT_MODAL_TITLE = 'Goal Weight'
+
+export const GOAL_WEIGHT_MODAL_BODY = 'What weight are you aiming for? (lbs)'
+
+export const GOAL_WEIGHT_MODAL_BUTTON = 'Set Goal'
+
+export const GOAL_WEIGHT_MODAL_ERROR = 'Please enter a value greater than 0'
+
+export const TOAST_GOAL_WEIGHT_SET = 'Goal weight set'
+
+export const PROGRESS_BODY_WEIGH_IN_META = '%0 · %1'
+
+export const PROGRESS_BODY_EMPTY_STAT = '—'
+
+export const TOAST_WEIGH_IN_DELETE_FAILED = "Couldn't delete weigh-in"
+
+export const TIME_OF_DAY_MORNING = 'morning'
+
+export const TIME_OF_DAY_AFTERNOON = 'afternoon'
+
+export const TIME_OF_DAY_EVENING = 'evening'
+
+export const TIME_OF_DAY_MORNING_OPTION = 'Morning'
+
+export const TIME_OF_DAY_AFTERNOON_OPTION = 'Afternoon'
+
+export const TIME_OF_DAY_EVENING_OPTION = 'Evening'
+
 export const ACCOUNT_DAILY_CALORIES_LABEL = 'Daily calories'
 
 export const ACCOUNT_WORKOUTS_PER_WEEK_LABEL = 'Workouts per week'
 
-export const ACCOUNT_CURRENT_WEIGHT_LABEL = 'Current weight'
+export const ACCOUNT_TOTAL_WEIGH_INS_LABEL = 'Total weigh-ins'
+
+export const ACCOUNT_TOTAL_RUNS_LABEL = 'Total runs'
 
 export const ACCOUNT_TOTAL_WORKOUT_DAYS_LABEL = 'Total workout days'
 

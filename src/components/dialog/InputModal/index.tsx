@@ -25,7 +25,7 @@ interface Props {
   buttonText: string
   showError?: boolean
   errorMessage?: string
-  keyboardType?: 'default' | 'numeric' | 'number-pad'
+  keyboardType?: 'default' | 'numeric' | 'number-pad' | 'decimal-pad'
   maxInputLength?: number
   placeholder?: string
 }
@@ -79,7 +79,9 @@ const InputModal = (props: Props) => {
 
         <TextInput
           placeholder={placeholder}
-          returnKeyType="done"
+          // Only keyboards with a return key get a returnKeyType — on pad
+          // keyboards RN renders it as a floating "Done" accessory instead
+          returnKeyType={keyboardType === 'default' ? 'done' : undefined}
           value={value}
           onChangeText={onChangeText}
           keyboardType={keyboardType}

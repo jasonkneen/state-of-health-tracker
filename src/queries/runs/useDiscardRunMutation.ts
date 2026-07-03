@@ -13,6 +13,7 @@ export const useDiscardRunMutation = () => {
     onSuccess: (_, localId) => {
       queryClient.removeQueries({queryKey: queryKeys.run(localId)})
       queryClient.invalidateQueries({queryKey: queryKeys.runs})
+      queryClient.invalidateQueries({queryKey: queryKeys.runsTotal})
     }
   })
 }

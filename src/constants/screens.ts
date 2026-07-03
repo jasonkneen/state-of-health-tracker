@@ -15,6 +15,7 @@ export default {
   RUN_SUMMARY: 'Run Summary',
   PROGRESS: 'Progress',
   SELECT_EXERCISE: 'Select Exercise',
+  LOG_WEIGHT: 'Log Weight',
   REGISTER: 'Register',
   LOG_IN: 'Log In',
   DEBUG: 'Debug',

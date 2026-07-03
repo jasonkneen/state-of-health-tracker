@@ -3,16 +3,19 @@ import React, {useEffect, useState} from 'react'
 import {Keyboard, TouchableOpacity, View} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
+
 import TextInput from '@components/TextInput'
+
 import {Theme} from '@styles/theme'
-import Spacing from '@styles/spacing'
+
+import styles from './index.styled'
+
+export {SEARCH_BAR_HEIGHT} from './index.styled'
 
 interface Props {
   placeholder?: string
   onSearchTextChanged: (text: string) => void
 }
-
-export const SEARCH_BAR_HEIGHT = 64
 
 const SearchBar = (props: Props) => {
   const {onSearchTextChanged, placeholder} = props
@@ -31,51 +34,20 @@ const SearchBar = (props: Props) => {
   }
 
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'center',
-        width: '100%',
-        height: SEARCH_BAR_HEIGHT,
-        backgroundColor: Theme.colors.secondary
-      }}>
-      <View
-        style={{
-          backgroundColor: Theme.colors.background,
-          alignSelf: 'center',
-          borderRadius: 50,
-          flexDirection: 'row',
-          width: '90%'
-        }}>
-        <Ionicons
-          style={{
-            alignSelf: 'center',
-            marginLeft: Spacing.MEDIUM
-          }}
-          name="search"
-          size={20}
-          color={Theme.colors.secondary}
-        />
+    <View style={styles.container}>
+      <View style={styles.inputContainer}>
+        <Ionicons style={styles.searchIcon} name="search" size={20} color={Theme.colors.secondary} />
 
         <TextInput
           maxLength={100}
-          style={{
-            borderRadius: 50,
-            borderWidth: 0,
-            flex: 1
-          }}
+          style={styles.input}
           value={searchText}
           onChangeText={setSearchText}
           placeholder={placeholder}
         />
 
         {searchText !== '' && (
-          <TouchableOpacity
-            style={{
-              alignSelf: 'center',
-              marginRight: Spacing.MEDIUM
-            }}
-            onPress={onCancel}>
+          <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
             <Ionicons name="close" size={20} color={Theme.colors.white} />
           </TouchableOpacity>
         )}

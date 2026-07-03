@@ -50,7 +50,7 @@ export const getSetFieldsForLoggingType = (loggingType: LoggingTypeEnum): SetFie
   }
 }
 
-const formatSecondsAsDuration = (totalSeconds: number): string => {
+export const formatSecondsAsDuration = (totalSeconds: number): string => {
   const minutes = Math.floor(totalSeconds / 60)
   const seconds = totalSeconds % 60
 

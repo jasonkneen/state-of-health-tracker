@@ -7,13 +7,18 @@ import Endpoints from '@constants/endpoints'
 
 import CrashUtility from '../../utility/CrashUtility'
 
+const nullableNumber = io.union([io.number, io.null, io.undefined])
+
 const BestSetResponse = io.type({
-  weight: io.number,
-  reps: io.number
+  weight: nullableNumber,
+  addedWeight: nullableNumber,
+  reps: nullableNumber,
+  durationSeconds: nullableNumber
 })
 
 const ExerciseSummaryResponse = io.type({
   setsCompleted: io.number,
+  loggingType: io.union([io.string, io.undefined]),
   bestSet: io.union([BestSetResponse, io.undefined]),
   exercise: io.type({
     name: io.string
@@ -24,6 +29,8 @@ const WorkoutSummaryResponse = io.type({
   workoutDayId: io.string,
   day: io.string,
   totalWeight: io.number,
+  totalDurationSeconds: io.union([io.number, io.undefined]),
+  totalBodyweightReps: io.union([io.number, io.undefined]),
   exercises: io.array(ExerciseSummaryResponse)
 })
 
@@ -49,7 +56,17 @@ export async function fetchWorkoutSummaries(page: number = 1): Promise<{
     if (!data?.summaries) throw new Error('No workout summaries returned')
 
     return {
-      summaries: data.summaries,
+      // Older backend responses predate the duration/reps totals and the
+      // per-exercise loggingType — default them so the UI can rely on them
+      summaries: data.summaries.map(summary => ({
+        ...summary,
+        totalDurationSeconds: summary.totalDurationSeconds ?? 0,
+        totalBodyweightReps: summary.totalBodyweightReps ?? 0,
+        exercises: summary.exercises.map(exercise => ({
+          ...exercise,
+          loggingType: exercise.loggingType ?? 'WEIGHT_REPS'
+        }))
+      })),
       pagination: data.pagination
     }
   } catch (error) {

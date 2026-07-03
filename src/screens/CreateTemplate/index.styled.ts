@@ -71,6 +71,11 @@ export default StyleSheet.create({
     backgroundColor: Theme.colors.accentGreen,
     borderColor: Theme.colors.accentGreen
   },
+  selectCircleNumber: {
+    fontSize: FontSize.LABEL,
+    fontWeight: '700',
+    color: Theme.colors.onInverse
+  },
   fabContainer: {
     position: 'absolute',
     right: Spacing.GUTTER,

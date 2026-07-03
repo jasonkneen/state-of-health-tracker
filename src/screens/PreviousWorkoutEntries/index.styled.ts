@@ -17,7 +17,8 @@ export default StyleSheet.create({
   chipContainer: {
     paddingRight: Spacing.SMALL,
     paddingLeft: Spacing.SMALL,
-    alignSelf: 'flex-start'
+    alignSelf: 'flex-start',
+    marginRight: Spacing.X_SMALL
   },
   footerSpinner: {
     marginVertical: Spacing.MEDIUM

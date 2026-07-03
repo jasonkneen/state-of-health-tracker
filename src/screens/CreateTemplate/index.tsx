@@ -46,7 +46,7 @@ const CreateTemplateScreen = () => {
 
   const exercises = filterExercises(allExercises, searchFilter)
 
-  const isSelected = (exercise: Exercise) => selectedExercises.some(e => e.id === exercise.id)
+  const selectionIndex = (exercise: Exercise) => selectedExercises.findIndex(e => e.id === exercise.id)
 
   const toggleExercise = (exercise: Exercise) => {
     Haptics.selectionAsync()
@@ -55,14 +55,15 @@ const CreateTemplateScreen = () => {
     )
   }
 
-  const renderSelectionCircle = (selected: boolean) => (
-    <View style={[styles.selectCircle, selected && styles.selectCircleSelected]}>
-      {selected && <Ionicons name="checkmark" size={14} color={Theme.colors.onInverse} />}
+  const renderSelectionCircle = (index: number) => (
+    <View style={[styles.selectCircle, index >= 0 && styles.selectCircleSelected]}>
+      {index >= 0 && <Text style={styles.selectCircleNumber}>{index + 1}</Text>}
     </View>
   )
 
   const renderItem = ({item}: ListRenderItemInfo<Exercise>) => {
-    const selected = isSelected(item)
+    const index = selectionIndex(item)
+    const selected = index >= 0
 
     return (
       <ListItem
@@ -71,7 +72,7 @@ const CreateTemplateScreen = () => {
         title={item.name}
         backgroundColor={selected ? Theme.colors.tertiary : Theme.colors.background}
         subtitle={item.exerciseBodyPart}
-        leading={renderSelectionCircle(selected)}
+        leading={renderSelectionCircle(index)}
         chip={<ExerciseTypeChip exerciseType={item.exerciseType} />}
         onPress={() => toggleExercise(item)}
       />

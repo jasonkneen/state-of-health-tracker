@@ -2,6 +2,7 @@ import React from 'react'
 
 import {TouchableOpacity, View} from 'react-native'
 
+import {Exercise} from '@data/models/Exercise'
 import {ExerciseTemplate} from '@data/models/ExerciseTemplate'
 import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useNavigation} from '@react-navigation/native'
@@ -32,7 +33,9 @@ const TemplateListItem = ({template}: Props) => {
   const {data: allExercises = []} = useExercisesQuery()
   const {addDailyExercise} = useDailyWorkoutEntryStore()
 
-  const templateExercises = allExercises.filter(exercise => template.exerciseIds.includes(exercise.id))
+  const templateExercises = template.exerciseIds
+    .map(id => allExercises.find(exercise => exercise.id === id))
+    .filter((exercise): exercise is Exercise => exercise !== undefined)
 
   const onStartWorkoutPressed = () => {
     closeGlobalBottomSheet()

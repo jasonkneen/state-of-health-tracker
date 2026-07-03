@@ -2,8 +2,9 @@ import React from 'react'
 
 import {ActivityIndicator, FlatList, ListRenderItemInfo} from 'react-native'
 
+import {mapLoggingType} from '@data/converters/ExerciseConverter'
 import {WorkoutSummary} from '@data/models/WorkoutSummary'
-import {FontAwesome5, MaterialCommunityIcons} from '@expo/vector-icons'
+import {Entypo, FontAwesome5, MaterialCommunityIcons} from '@expo/vector-icons'
 import {useWorkoutSummariesInfiniteQuery} from '@queries/workouts/useWorkoutSummariesInfiniteQuery'
 import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
@@ -19,12 +20,14 @@ import {
   LBS_LABEL,
   PREVIOUS_WORKOUTS_ENTRIES_EMPTY_BODY,
   PREVIOUS_WORKOUTS_ENTRIES_EMPTY_TITLE,
+  REPS_LABEL,
   SETS_LABEL
 } from '@constants/strings'
 
 import BestSetChip from './components/BestSetChip'
 import styles from './index.styled'
 import {formatDateUTC} from '../../utility/DateUtility'
+import {formatSecondsAsDuration} from '../../utility/exerciseSetFields'
 
 const PreviousWorkoutEntries = () => {
   const {data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage} = useWorkoutSummariesInfiniteQuery()
@@ -50,22 +53,60 @@ const PreviousWorkoutEntries = () => {
       subItems={item.exercises}
       day={formatDateUTC(item.day)}
       headerChip={
-        <Chip
-          style={styles.chipContainer}
-          label={`${item.totalWeight} ${LBS_LABEL}`}
-          icon={
-            <FontAwesome5
-              name="weight-hanging"
-              size={14}
-              color={Theme.colors.secondaryLighter}
-              style={{
-                marginRight: Spacing.XX_SMALL
-              }}
+        <>
+          {item.totalWeight > 0 && (
+            <Chip
+              style={styles.chipContainer}
+              label={`${item.totalWeight} ${LBS_LABEL}`}
+              icon={
+                <FontAwesome5
+                  name="weight-hanging"
+                  size={14}
+                  color={Theme.colors.secondaryLighter}
+                  style={{
+                    marginRight: Spacing.XX_SMALL
+                  }}
+                />
+              }
             />
-          }
-        />
+          )}
+
+          {item.totalBodyweightReps > 0 && (
+            <Chip
+              style={styles.chipContainer}
+              label={`${item.totalBodyweightReps} ${REPS_LABEL}`}
+              icon={
+                <MaterialCommunityIcons
+                  name="weight-lifter"
+                  size={14}
+                  color={Theme.colors.secondaryLighter}
+                  style={{
+                    marginRight: Spacing.XX_SMALL
+                  }}
+                />
+              }
+            />
+          )}
+
+          {item.totalDurationSeconds > 0 && (
+            <Chip
+              style={styles.chipContainer}
+              label={formatSecondsAsDuration(item.totalDurationSeconds)}
+              icon={
+                <Entypo
+                  name="stopwatch"
+                  size={14}
+                  color={Theme.colors.secondaryLighter}
+                  style={{
+                    marginRight: Spacing.XX_SMALL
+                  }}
+                />
+              }
+            />
+          )}
+        </>
       }
-      getChipForItem={entry => <BestSetChip weight={entry?.bestSet?.weight} reps={entry?.bestSet?.reps} />}
+      getChipForItem={entry => <BestSetChip loggingType={mapLoggingType(entry.loggingType)} bestSet={entry.bestSet} />}
       getTitleForItem={entry => entry.exercise.name}
       getSubtitleForItem={entry => `${entry.setsCompleted.toString()} ${SETS_LABEL}`}
     />

@@ -1,7 +1,5 @@
 import React, {useState} from 'react'
 
-import {Exercise} from '@data/models/Exercise'
-
 import BaseInputModalProps from '@components/dialog/BaseInputModalProps'
 import InputModal from '@components/dialog/InputModal'
 
@@ -13,7 +11,8 @@ import {
 } from '@constants/strings'
 
 interface Props extends BaseInputModalProps {
-  exercises: Exercise[]
+  // Only names are needed for the tagline, so catalog payloads qualify too
+  exercises: Array<{name: string}>
   handleCreate: (name: string, tagline: string) => void
 }
 

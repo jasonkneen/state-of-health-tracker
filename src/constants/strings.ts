@@ -384,7 +384,7 @@ export const SAVE_EXERCISE_ERROR = 'Error saving exercise. Please check your con
 export const NO_SEARCH_RESULTS_TEXT = 'No exercises found. Try a different search or create your own below.'
 
 export const CREATE_TEMPLATE_NO_EXERCISES =
-  "To create a template, you must first add exercises to your list. Tap '+ Create Exercise' on the previous screen to get started."
+  "You don't have any saved exercises yet. Search above to add exercises from the catalog, or create your own below."
 
 export const UPDATE_APP_VERSION_TITLE = 'Update Required'
 

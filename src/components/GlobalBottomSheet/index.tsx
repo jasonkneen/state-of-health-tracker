@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react'
 import {ReactNode} from 'react'
 
-import {View, TouchableWithoutFeedback} from 'react-native'
+import {Keyboard, View, TouchableWithoutFeedback} from 'react-native'
 
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet'
 import {Theme} from '@styles/theme'
@@ -18,6 +18,8 @@ interface BottomSheetEvent {
 export const BottomSheetSubject$ = new Subject<BottomSheetEvent>()
 
 export const openGlobalBottomSheet = (content: ReactNode) => {
+  // An open keyboard (e.g. from a search bar) would overlap the sheet
+  Keyboard.dismiss()
   BottomSheetSubject$.next({
     action: 'open',
     content

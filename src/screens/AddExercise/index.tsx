@@ -5,6 +5,7 @@ import {SectionList, SectionListRenderItem, View} from 'react-native'
 import {mapExerciseType} from '@data/converters/ExerciseConverter'
 import {CreateExercisePayload, Exercise, isExerciseObject} from '@data/models/Exercise'
 import {ExerciseTemplate} from '@data/models/ExerciseTemplate'
+import {useExerciseCatalogSearch} from '@hooks/useExerciseCatalogSearch'
 import {Navigation} from '@navigation/types'
 import {useCreateExerciseMutation} from '@queries/exercises/useCreateExerciseMutation'
 import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
@@ -47,7 +48,6 @@ import {
 import ExerciseListItem from './components/ExerciseListItem'
 import ExerciseOptionsBottomSheet from './components/ExerciseOptionsBottomSheet'
 import TemplateListItem from './components/TemplateListItem'
-import {useExerciseCatalogSearch} from './hooks/useExerciseCatalogSearch'
 import styles from './index.styled'
 
 type SectionItem = Exercise | ExerciseTemplate | CreateExercisePayload

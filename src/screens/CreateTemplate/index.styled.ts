@@ -23,10 +23,36 @@ export default StyleSheet.create({
     alignSelf: 'center'
   },
   headerText: {
-    marginLeft: Spacing.LARGE,
-    fontSize: FontSize.H2,
+    fontSize: FontSize.OVERLINE,
+    fontWeight: '600',
+    color: Theme.colors.accentGreen,
+    textTransform: 'uppercase',
+    letterSpacing: 0.6,
     marginVertical: Spacing.MEDIUM,
+    marginLeft: Spacing.GUTTER
+  },
+  searchSectionHeaderContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: Spacing.MEDIUM,
+    marginRight: Spacing.MEDIUM,
+    marginVertical: Spacing.MEDIUM
+  },
+  sectionHeaderText: {
+    marginLeft: Spacing.X_SMALL,
+    fontSize: FontSize.H1,
     fontWeight: 'bold'
+  },
+  noResultsText: {
+    fontWeight: '200',
+    paddingHorizontal: Spacing.MEDIUM,
+    textAlign: 'center',
+    alignSelf: 'center'
+  },
+  createFooterButton: {
+    alignSelf: 'center',
+    marginTop: Spacing.MEDIUM,
+    marginBottom: Spacing.LARGE
   },
   listContent: {
     // Keep the last rows reachable above the floating check button

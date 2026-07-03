@@ -132,9 +132,11 @@ export const YOUR_EXERCISES_HEADER = 'Your Exercises'
 
 export const FROM_CATALOG_HEADER = 'From Catalog'
 
-export const ADD_TO_DAILY_WORKOUT_BUTTON_TEXT = 'Add to Daily Workout'
+export const ADD_TO_DAILY_WORKOUT_BUTTON_TEXT = 'Add to daily workout'
 
-export const VIEW_PROGRESSION_BUTTON_TEXT = 'View Progression'
+export const SAVE_EXERCISE_BUTTON_TEXT = 'Save exercise'
+
+export const VIEW_PROGRESSION_BUTTON_TEXT = 'View progression'
 
 export const COMPLETE_BUTTON_TEXT = 'Complete'
 
@@ -206,6 +208,8 @@ export const TOAST_ALREADY_EXISTS = 'already exists'
 export const TOAST_EXERCISE_CREATED = 'Exercise created!'
 
 export const TOAST_EXERCISE_ADDED = 'Exercise added!'
+
+export const TOAST_EXERCISE_SAVED = 'Exercise saved!'
 
 export const TOAST_EXERCISE_ALREADY_ADDED = 'Exercise already added'
 
@@ -374,6 +378,8 @@ export const DELETE_TEMPLATE_SUCCESS = 'Template deleted!'
 export const DELETE_TEMPLATE_ERROR = 'Error deleting template. Please check your connection and try again.'
 
 export const SEARCH_ADD_EXERCISE_ERROR = 'Error adding exercise. Please check your connection and try again.'
+
+export const SAVE_EXERCISE_ERROR = 'Error saving exercise. Please check your connection and try again.'
 
 export const NO_SEARCH_RESULTS_TEXT = 'No exercises found. Try a different search or create your own below.'
 

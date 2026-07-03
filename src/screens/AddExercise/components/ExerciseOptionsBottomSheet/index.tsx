@@ -17,6 +17,7 @@ import {
   DELETE_EXERCISE_MODAL_BODY,
   DELETE_EXERCISE_MODAL_TITLE,
   DELETE_EXERCISE_SUCCESS,
+  SAVE_EXERCISE_BUTTON_TEXT,
   VIEW_PROGRESSION_BUTTON_TEXT,
   stringWithParameters
 } from '@constants/strings'
@@ -25,6 +26,9 @@ interface Props {
   readonly title: string
   readonly subtitle?: string
   readonly onAddPressed: () => void
+  // Saving only applies to catalog entries not yet on the user's account,
+  // so saved exercises pass nothing
+  readonly onSavePressed?: () => void
   // Progression only exists for saved exercises, so catalog entries pass nothing
   readonly onViewProgressionPressed?: () => void
   // When set, the sheet offers Delete for this saved exercise; catalog
@@ -36,6 +40,7 @@ const ExerciseOptionsBottomSheet = ({
   title,
   subtitle,
   onAddPressed,
+  onSavePressed,
   onViewProgressionPressed,
   exerciseToDelete
 }: Props) => {
@@ -70,6 +75,15 @@ const ExerciseOptionsBottomSheet = ({
       onPress: onAddPressed
     }
   ]
+
+  if (onSavePressed) {
+    options.push({
+      key: 'save',
+      icon: <Ionicons name="bookmark-outline" size={22} color={Theme.colors.teal} />,
+      label: SAVE_EXERCISE_BUTTON_TEXT,
+      onPress: onSavePressed
+    })
+  }
 
   if (onViewProgressionPressed) {
     options.push({

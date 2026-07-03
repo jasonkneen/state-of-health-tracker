@@ -34,11 +34,13 @@ import {
   NO_EXERCISES_ADDED_TEXT,
   NO_SEARCH_RESULTS_TEXT,
   NO_TEMPLATES_ADDED_TEXT,
+  SAVE_EXERCISE_ERROR,
   SEARCH_ADD_EXERCISE_ERROR,
   SEARCH_EXERCISES_PLACEHOLDER,
   TEMPLATES_HEADER,
   TOAST_EXERCISE_ADDED,
   TOAST_EXERCISE_ALREADY_ADDED,
+  TOAST_EXERCISE_SAVED,
   YOUR_EXERCISES_HEADER
 } from '@constants/strings'
 
@@ -126,6 +128,18 @@ const AddExerciseScreen = () => {
     }
   }
 
+  // Saving keeps the user on this screen so they can keep browsing; the new
+  // exercise simply moves from the catalog section into "Your Exercises"
+  const onSaveCatalogExercisePressed = async (payload: CreateExercisePayload) => {
+    try {
+      const created = await createExercise(payload)
+
+      showToast('success', TOAST_EXERCISE_SAVED, created.name)
+    } catch {
+      showToast('error', SAVE_EXERCISE_ERROR)
+    }
+  }
+
   const renderBrowseHeader = (section: Section) => {
     const isEmpty = section.data.length === 0
 
@@ -199,6 +213,10 @@ const AddExerciseScreen = () => {
                 onAddPressed={() => {
                   closeGlobalBottomSheet()
                   onCatalogExercisePressed(payload)
+                }}
+                onSavePressed={() => {
+                  closeGlobalBottomSheet()
+                  onSaveCatalogExercisePressed(payload)
                 }}
               />
             )

@@ -1,4 +1,4 @@
-import {mapExerciseBodyPart, mapExerciseType} from '@data/converters/ExerciseConverter'
+import {mapExerciseBodyPart, mapExerciseType, mapLoggingType} from '@data/converters/ExerciseConverter'
 import {WorkoutDayResponse} from '@data/decoders/WorkoutDayDecoder'
 import {WorkoutDay} from '@data/models/WorkoutDay'
 import * as io from 'io-ts'
@@ -18,6 +18,7 @@ export function mapWorkoutDay(data: io.TypeOf<typeof WorkoutDayResponse>): Worko
         name: entry.exercise.name,
         exerciseType: mapExerciseType(entry.exercise.exerciseType),
         exerciseBodyPart: mapExerciseBodyPart(entry.exercise.exerciseBodyPart),
+        loggingType: mapLoggingType(entry.exercise.loggingType ?? 'WEIGHT_REPS'),
         latestCompletedSets: []
       },
       sets: entry.sets

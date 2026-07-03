@@ -1,4 +1,4 @@
-import {mapExerciseBodyPart, mapExerciseType} from '@data/converters/ExerciseConverter'
+import {mapExerciseBodyPart, mapExerciseType, mapLoggingType} from '@data/converters/ExerciseConverter'
 import {Exercise} from '@data/models/Exercise'
 import {httpGet} from '@service/http/httpUtil'
 import * as io from 'io-ts'
@@ -7,13 +7,19 @@ import Endpoints from '@constants/endpoints'
 
 import CrashUtility from '../../utility/CrashUtility'
 
+const optionalNumber = io.union([io.number, io.undefined, io.null])
+
 const LatestCompletedSet = io.type({
   id: io.string,
   reps: io.number,
   weight: io.number,
   setNumber: io.union([io.number, io.undefined, io.null]),
   completed: io.union([io.boolean, io.undefined, io.null]),
-  completedAt: io.union([io.string, io.undefined, io.null])
+  completedAt: io.union([io.string, io.undefined, io.null]),
+  addedWeight: optionalNumber,
+  durationSeconds: optionalNumber,
+  distanceMeters: optionalNumber,
+  rpe: optionalNumber
 })
 
 const ExerciseResponse = io.type({
@@ -21,6 +27,7 @@ const ExerciseResponse = io.type({
   name: io.string,
   exerciseType: io.string,
   exerciseBodyPart: io.string,
+  loggingType: io.union([io.string, io.undefined]),
   latestCompletedSets: io.array(LatestCompletedSet)
 })
 
@@ -40,13 +47,18 @@ export async function fetchExercises(): Promise<Exercise[]> {
         name: ex.name,
         exerciseType: mapExerciseType(ex.exerciseType),
         exerciseBodyPart: mapExerciseBodyPart(ex.exerciseBodyPart),
+        loggingType: mapLoggingType(ex.loggingType ?? 'WEIGHT_REPS'),
         latestCompletedSets: ex.latestCompletedSets.map(set => ({
           id: set.id,
           reps: set.reps,
           weight: set.weight,
           setNumber: set.setNumber ?? 0,
           completed: set.completed ?? false,
-          completedAt: set.completedAt
+          completedAt: set.completedAt,
+          addedWeight: set.addedWeight,
+          durationSeconds: set.durationSeconds,
+          distanceMeters: set.distanceMeters,
+          rpe: set.rpe
         }))
       })
     )

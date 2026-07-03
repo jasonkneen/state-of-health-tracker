@@ -16,6 +16,7 @@ import {showToast} from '@components/toast/util/ShowToast'
 
 import {TOAST_EXERCISE_ADDED, TOAST_EXERCISE_ALREADY_ADDED} from '@constants/strings'
 
+import {formatExerciseSubtitle} from '../../../../utility/formatExerciseSubtitle'
 import styles from './index.styled'
 
 interface Props {
@@ -24,6 +25,8 @@ interface Props {
 
 const ExerciseListItem = ({exercise}: Props) => {
   const {goBack} = useNavigation()
+
+  const subtitle = formatExerciseSubtitle(exercise.exerciseType, exercise.exerciseBodyPart)
 
   const {addDailyExercise} = useDailyWorkoutEntryStore()
 
@@ -63,9 +66,11 @@ const ExerciseListItem = ({exercise}: Props) => {
             {exercise.name}
           </Text>
 
-          <Text style={styles.subtitle} numberOfLines={1}>
-            {exercise.exerciseBodyPart}
-          </Text>
+          {subtitle && (
+            <Text style={styles.subtitle} numberOfLines={1}>
+              {subtitle}
+            </Text>
+          )}
         </View>
 
         {<View style={styles.chipContainer}>{<ExerciseTypeChip exerciseType={exercise.exerciseType} />}</View>}

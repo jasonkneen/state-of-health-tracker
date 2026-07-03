@@ -31,6 +31,8 @@ const ExerciseTypeChip = (props: Props) => {
         return <MaterialCommunityIcons name="kettlebell" size={28} color={Theme.colors.white} />
       case ExerciseTypeEnum.TIMED:
         return <Entypo name="stopwatch" size={24} color={Theme.colors.white} />
+      case ExerciseTypeEnum.WEIGHTED_TIME:
+        return <MaterialCommunityIcons name="timer-sand" size={24} color={Theme.colors.white} />
       case ExerciseTypeEnum.BARBELL:
       default:
         return <Ionicons style={styles.barbellIcon} name="barbell" size={24} color={Theme.colors.white} />

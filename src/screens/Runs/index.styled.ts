@@ -34,7 +34,28 @@ export default StyleSheet.create({
     marginTop: Spacing.MEDIUM,
     marginBottom: Spacing.XX_SMALL
   },
+  sectionHeader: {
+    fontSize: FontSize.LABEL,
+    fontWeight: '600',
+    color: Theme.colors.textMuted,
+    marginTop: Spacing.MEDIUM,
+    marginBottom: Spacing.XX_SMALL
+  },
   startRunButton: {
     marginTop: Spacing.MEDIUM
+  },
+  emptyContainer: {
+    alignItems: 'center',
+    paddingVertical: Spacing.X_LARGE * 2,
+    rowGap: Spacing.X_SMALL
+  },
+  emptyTitle: {
+    fontSize: FontSize.H2,
+    fontWeight: '700'
+  },
+  emptyText: {
+    fontSize: FontSize.PARAGRAPH,
+    color: Theme.colors.textSecondary,
+    textAlign: 'center'
   }
 })

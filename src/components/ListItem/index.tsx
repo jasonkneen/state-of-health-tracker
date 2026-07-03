@@ -12,7 +12,7 @@ import styles, {itemBackground} from './index.styled'
 
 interface Props {
   readonly title: string
-  readonly subtitle: string
+  readonly subtitle?: string
   readonly chip?: React.JSX.Element
   readonly leading?: React.JSX.Element
   readonly swipeableRef?: (ref: Swipeable) => void
@@ -71,9 +71,11 @@ const ListItem = (props: Props) => {
                 {title}
               </Text>
 
-              <Text style={styles.subtitle} numberOfLines={1}>
-                {subtitle}
-              </Text>
+              {subtitle && (
+                <Text style={styles.subtitle} numberOfLines={1}>
+                  {subtitle}
+                </Text>
+              )}
             </View>
 
             <View style={styles.chipContainer}>{chip && chip}</View>

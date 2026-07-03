@@ -26,6 +26,12 @@ export default StyleSheet.create({
     fontSize: FontSize.CARD_TITLE,
     marginRight: Spacing.SMALL
   },
+  subtitle: {
+    fontSize: FontSize.CAPTION,
+    color: Theme.colors.textSecondary,
+    marginTop: 2,
+    marginRight: Spacing.SMALL
+  },
   button: {
     alignSelf: 'flex-end'
   },

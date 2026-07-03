@@ -1,6 +1,6 @@
 import {createDailyExercise, DailyExercise} from '@data/models/DailyExercise'
 import {Exercise} from '@data/models/Exercise'
-import {createSet} from '@data/models/ExerciseSet'
+import {createSet, ExerciseSet} from '@data/models/ExerciseSet'
 import {createWorkoutDay, WorkoutDay} from '@data/models/WorkoutDay'
 import offlineWorkoutStorageService from '@service/workouts/OfflineWorkoutStorageService'
 import syncOfflineWorkouts from '@service/workouts/syncOfflineWorkouts'
@@ -19,7 +19,12 @@ export type DailyWorkoutState = {
   deleteDailyExercise: (dailyExerciseId: string) => void
   updateDailyExercises: (dailyExercises: DailyExercise[]) => void
   addSet: (exercise: Exercise) => void
-  completeSet: (exercise: Exercise, setId: string, isCompleted: boolean, weight?: number, reps?: number) => void
+  completeSet: (
+    exercise: Exercise,
+    setId: string,
+    isCompleted: boolean,
+    fields: Pick<ExerciseSet, 'weight' | 'reps' | 'addedWeight' | 'durationSeconds' | 'distanceMeters'>
+  ) => void
   deleteSet: (exercise: Exercise, setId: string) => void
   markWorkoutCompleted: () => void
   setWorkoutDayId: (id: string) => void
@@ -144,7 +149,7 @@ const useDailyWorkoutEntryStore = create<DailyWorkoutState>()(
         persist()
       },
 
-      completeSet: (exercise, setId, isCompleted, weight, reps) => {
+      completeSet: (exercise, setId, isCompleted, fields) => {
         set(state => {
           const workout = state.currentWorkoutDay
 
@@ -156,8 +161,11 @@ const useDailyWorkoutEntryStore = create<DailyWorkoutState>()(
           if (!setItem) return
 
           setItem.completed = isCompleted
-          if (weight !== undefined) setItem.weight = weight
-          if (reps !== undefined) setItem.reps = reps
+          if (fields.weight !== undefined) setItem.weight = fields.weight
+          if (fields.reps !== undefined) setItem.reps = fields.reps
+          if (fields.addedWeight !== undefined) setItem.addedWeight = fields.addedWeight
+          if (fields.durationSeconds !== undefined) setItem.durationSeconds = fields.durationSeconds
+          if (fields.distanceMeters !== undefined) setItem.distanceMeters = fields.distanceMeters
           setItem.setNumber = isCompleted ? (entry?.sets.length || 0) + 1 : null
           setItem.completedAt = isCompleted ? new Date().toISOString() : null
         })

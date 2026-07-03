@@ -138,7 +138,8 @@ export const COMPLETE_BUTTON_TEXT = 'Complete'
 
 export const COMPLETE_WORKOUT_MODAL_TITLE = 'Complete Workout?'
 
-export const COMPLETE_WORKOUT_MODAL_BODY = 'Do you want to complete your workout for today? You can still make edits after.'
+export const COMPLETE_WORKOUT_MODAL_BODY =
+  'Do you want to complete your workout for today? You can still make edits after.'
 
 export const WORKOUT_COMPLETED_LABEL = 'Completed'
 
@@ -163,6 +164,12 @@ export const REORGANIZE_HINT_TEXT = 'Drag exercises to reorder, then tap the che
 export const LBS_LABEL = 'lbs'
 
 export const REPS_LABEL = 'reps'
+
+export const ADDED_LBS_LABEL = '+lbs'
+
+export const DURATION_SEC_LABEL = 'mm:ss'
+
+export const DISTANCE_MI_LABEL = 'mi'
 
 export const DELETE_BUTTON_TEXT = 'Delete'
 
@@ -433,6 +440,48 @@ export const RUNS_BADGE_BEST_PACE = 'best pace'
 export const RUNS_BADGE_LONGEST = 'longest'
 
 export const RUNS_PACE_CAPTION = '%0 pace'
+
+export const PROGRESS_TITLE = 'Progress'
+
+export const PROGRESS_TAB_EXERCISES = 'Exercises'
+
+export const PROGRESS_TAB_VOLUME = 'Volume'
+
+export const PROGRESS_TAB_BODY = 'Body'
+
+export const PROGRESS_COMING_SOON_TITLE = 'Coming soon'
+
+export const PROGRESS_VOLUME_COMING_SOON_SUBTITLE = "Weekly volume and muscle group breakdowns aren't tracked yet."
+
+export const PROGRESS_BODY_COMING_SOON_SUBTITLE = "Body weight tracking isn't set up yet."
+
+export const PROGRESS_EST_1RM_LABEL = 'EST. 1-REP MAX'
+
+export const PROGRESS_1RM_UNIT = 'lbs'
+
+export const PROGRESS_1RM_DELTA_TEXT = '%0 lbs · %1 wks'
+
+export const PROGRESS_NEW_PR_LABEL = 'NEW PR'
+
+export const PROGRESS_BEST_LABEL = 'BEST'
+
+export const PROGRESS_LAST_SESSION_LABEL = 'LAST SESSION'
+
+export const PROGRESS_RECENT_SESSIONS_HEADER = 'Recent sessions'
+
+export const PROGRESS_SETS_SUFFIX = ' sets'
+
+export const PROGRESS_1RM_BADGE = '1RM %0'
+
+export const PROGRESS_EMPTY_HISTORY_TITLE = 'No sessions yet'
+
+export const PROGRESS_EMPTY_HISTORY_SUBTITLE = "Log a set for this exercise and it'll show up here."
+
+export const PROGRESS_NO_EXERCISES_TITLE = 'No exercises yet'
+
+export const PROGRESS_NO_EXERCISES_SUBTITLE = 'Add an exercise from a workout to start tracking progress.'
+
+export const PROGRESS_NO_WEIGHT_DATA_SUBTITLE = "This exercise doesn't track weight, so there's no 1-rep max to chart."
 
 export const ACCOUNT_DAILY_CALORIES_LABEL = 'Daily calories'
 

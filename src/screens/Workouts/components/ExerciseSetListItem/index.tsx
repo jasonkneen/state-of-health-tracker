@@ -16,9 +16,17 @@ import SwipeDeleteListItem from '@components/SwipeDeleteListItem'
 import Text from '@components/Text'
 import TextInput from '@components/TextInput'
 
-import {ADD_SET_BUTTON_TEXT, LBS_LABEL, REPS_LABEL} from '@constants/strings'
+import {ADD_SET_BUTTON_TEXT} from '@constants/strings'
 
 import styles from './index.styled'
+import {
+  emptyFieldTexts,
+  formatSetFieldInputText,
+  getSetFieldsForLoggingType,
+  parseSetFieldText,
+  SetFieldKey,
+  setFieldToDisplayText
+} from '../../../../utility/exerciseSetFields'
 
 interface Props {
   readonly exercise: Exercise
@@ -40,43 +48,49 @@ const ExerciseSetListItem = (props: Props) => {
     transform: [{scale: checkScale.value}]
   }))
 
-  const [weightText, setWeightText] = useState(set.weight?.toString() ?? '')
-  const [repsText, setRepsText] = useState(set.reps?.toString() ?? '')
-  const [weightInputError, setWeightInputError] = useState(false)
-  const [repsInputError, setRepsInputError] = useState(false)
+  const fields = getSetFieldsForLoggingType(exercise.loggingType)
+
+  const [fieldTexts, setFieldTexts] = useState<Record<SetFieldKey, string>>(() => emptyFieldTexts(set))
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<SetFieldKey, boolean>>>({})
 
   // History may have fewer sets than today's workout, so sets past the end
   // fall back to the last set of the previous session
   const previousSets = exercise.latestCompletedSets
   const previousSet = previousSets.length > 0 ? previousSets[Math.min(index, previousSets.length - 1)] : undefined
 
+  const onFieldTextChanged = (key: SetFieldKey, text: string) => {
+    setFieldErrors(previous => ({...previous, [key]: false}))
+    setFieldTexts(previous => ({...previous, [key]: formatSetFieldInputText(key, text)}))
+  }
+
   const completeSetChecked = (isChecked: boolean) => {
-    let weight
+    const values: Partial<Record<SetFieldKey, number>> = {}
+    const errors: Partial<Record<SetFieldKey, boolean>> = {}
+    let hasError = false
 
-    if (weightText !== '') {
-      weight = parseInt(weightText, 10)
-    } else {
-      weight = previousSet?.weight
-      if (weight) {
-        setWeightText(weight.toString())
+    fields.forEach(field => {
+      let value = parseSetFieldText(field.key, fieldTexts[field.key])
+
+      if (value === undefined) {
+        const previousValue = previousSet?.[field.key]
+
+        if (previousValue !== undefined && previousValue !== null) {
+          value = previousValue
+          setFieldTexts(current => ({...current, [field.key]: setFieldToDisplayText(field.key, previousValue) ?? ''}))
+        }
       }
-    }
 
-    let reps
-
-    if (repsText !== '') {
-      reps = parseInt(repsText, 10)
-    } else {
-      reps = previousSet?.reps
-      if (reps) {
-        setRepsText(reps.toString())
+      if (field.required && value === undefined) {
+        errors[field.key] = true
+        hasError = true
+      } else if (value !== undefined) {
+        values[field.key] = value
       }
-    }
+    })
 
-    setWeightInputError(weight === undefined)
-    setRepsInputError(reps === undefined)
+    setFieldErrors(errors)
 
-    if (weight === undefined || reps === undefined) {
+    if (hasError) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
 
       return
@@ -84,17 +98,7 @@ const ExerciseSetListItem = (props: Props) => {
 
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
     checkScale.value = withSequence(withTiming(0.7, {duration: 30}), withSpring(1, {damping: 38, stiffness: 900}))
-    completeSet(exercise, set.id, isChecked, weight, reps)
-  }
-
-  const onWeightTextChanged = (text: string) => {
-    setWeightInputError(false)
-    setWeightText(text)
-  }
-
-  const onRepsTextChanged = (text: string) => {
-    setRepsInputError(false)
-    setRepsText(text)
+    completeSet(exercise, set.id, isChecked, values)
   }
 
   return (
@@ -103,9 +107,11 @@ const ExerciseSetListItem = (props: Props) => {
         <View style={styles.headerRow}>
           <Text style={[styles.headerLabel, styles.headerLabelSet]}>{ADD_SET_BUTTON_TEXT}</Text>
 
-          <Text style={[styles.headerLabel, styles.headerLabelCell]}>{LBS_LABEL}</Text>
-
-          <Text style={[styles.headerLabel, styles.headerLabelCell]}>{REPS_LABEL}</Text>
+          {fields.map(field => (
+            <Text key={field.key} style={[styles.headerLabel, styles.headerLabelCell]}>
+              {field.label}
+            </Text>
+          ))}
 
           <View style={styles.headerLabelSpacer} />
         </View>
@@ -119,39 +125,28 @@ const ExerciseSetListItem = (props: Props) => {
         <View style={styles.row}>
           <Text style={styles.setNumber}>{index + 1}</Text>
 
-          <TextInput
-            selectTextOnFocus={true}
-            value={weightText}
-            onChangeText={onWeightTextChanged}
-            editable={!set.completed}
-            placeholder={previousSet?.weight?.toString()}
-            contextMenuHidden={true}
-            textAlign="center"
-            maxLength={4}
-            style={[
-              styles.cellInput,
-              set.completed && styles.cellInputCompleted,
-              weightInputError && styles.cellInputError
-            ]}
-            keyboardType="number-pad"
-          />
-
-          <TextInput
-            selectTextOnFocus={true}
-            value={repsText}
-            onChangeText={onRepsTextChanged}
-            editable={!set.completed}
-            placeholder={previousSet?.reps?.toString()}
-            contextMenuHidden={true}
-            textAlign="center"
-            maxLength={4}
-            style={[
-              styles.cellInput,
-              set.completed && styles.cellInputCompleted,
-              repsInputError && styles.cellInputError
-            ]}
-            keyboardType="number-pad"
-          />
+          {fields.map(field => (
+            <TextInput
+              key={field.key}
+              selectTextOnFocus={true}
+              value={fieldTexts[field.key]}
+              onChangeText={text => onFieldTextChanged(field.key, text)}
+              editable={!set.completed}
+              placeholder={
+                (previousSet ? setFieldToDisplayText(field.key, previousSet[field.key]) : undefined) ??
+                (field.key === 'durationSeconds' ? '0:00' : undefined)
+              }
+              contextMenuHidden={true}
+              textAlign="center"
+              maxLength={field.key === 'distanceMeters' ? 6 : field.key === 'durationSeconds' ? 5 : 4}
+              style={[
+                styles.cellInput,
+                set.completed && styles.cellInputCompleted,
+                fieldErrors[field.key] && styles.cellInputError
+              ]}
+              keyboardType={field.key === 'distanceMeters' ? 'decimal-pad' : 'number-pad'}
+            />
+          ))}
 
           <View style={styles.checkColumn}>
             <Animated.View style={checkAnimatedStyle}>

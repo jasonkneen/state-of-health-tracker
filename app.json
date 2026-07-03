@@ -14,9 +14,15 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.stateofhealh.tracker",
       "icon": "./assets/icon.png",
-      "buildNumber": "17",
+      "buildNumber": "18",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSLocationWhenInUseUsageDescription": "State of Health uses your location while you're running to track your route, distance, and pace.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "State of Health uses your location to track your run route, distance, and pace even when the app is in the background or your screen is locked, so tracking doesn't stop mid-run.",
+        "NSLocationAlwaysUsageDescription": "State of Health uses your location to track your run route, distance, and pace even when the app is in the background or your screen is locked, so tracking doesn't stop mid-run.",
+        "UIBackgroundModes": [
+          "location"
+        ]
       }
     },
     "plugins": [
@@ -34,6 +40,14 @@
       ],
       "expo-font",
       "expo-file-system",
+      [
+        "expo-location",
+        {
+          "isIosBackgroundLocationEnabled": true,
+          "isAndroidBackgroundLocationEnabled": true,
+          "isAndroidForegroundServiceEnabled": true
+        }
+      ],
       [
         "expo-splash-screen",
         {

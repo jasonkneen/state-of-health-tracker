@@ -9,13 +9,14 @@ import styles from './index.styled'
 
 interface Props {
   readonly title: string
+  readonly subtitle?: string
   readonly buttonText?: string
   readonly onTitlePressed?: (topMargin?: number) => void
   readonly onButtonPressed?: () => void
 }
 
 const SectionListHeader = (props: Props) => {
-  const {title, onTitlePressed, buttonText, onButtonPressed} = props
+  const {title, subtitle, onTitlePressed, buttonText, onButtonPressed} = props
 
   return (
     <View style={styles.header}>
@@ -28,6 +29,12 @@ const SectionListHeader = (props: Props) => {
         <Text numberOfLines={2} style={styles.title}>
           {title}
         </Text>
+
+        {subtitle && (
+          <Text numberOfLines={1} style={styles.subtitle}>
+            {subtitle}
+          </Text>
+        )}
       </TouchableOpacity>
 
       <SecondaryButton

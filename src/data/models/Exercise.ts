@@ -9,6 +9,7 @@ export enum ExerciseTypeEnum {
   WEIGHTED = 'Weighted',
   KETTLEBELL = 'Kettlebell',
   TIMED = 'Timed',
+  WEIGHTED_TIME = 'Weighted Timed',
   OTHER = 'Other'
 }
 
@@ -27,10 +28,23 @@ export enum ExerciseBodyPartEnum {
   OTHER = 'Other'
 }
 
+// How a set for this exercise gets logged/entered — distinct from
+// ExerciseTypeEnum (equipment) and ExerciseBodyPartEnum (muscle group).
+export enum LoggingTypeEnum {
+  WEIGHT_REPS = 'WEIGHT_REPS',
+  BODYWEIGHT_REPS = 'BODYWEIGHT_REPS',
+  WEIGHTED_BODYWEIGHT = 'WEIGHTED_BODYWEIGHT',
+  TIME_ONLY = 'TIME_ONLY',
+  TIME_REPS = 'TIME_REPS',
+  WEIGHT_TIME = 'WEIGHT_TIME',
+  DISTANCE_TIME = 'DISTANCE_TIME'
+}
+
 export interface CreateExercisePayload {
   name: string
   exerciseType: string
   exerciseBodyPart: string
+  loggingType?: string
 }
 
 export interface Exercise {
@@ -38,6 +52,7 @@ export interface Exercise {
   name: string
   exerciseType: ExerciseTypeEnum
   exerciseBodyPart: ExerciseBodyPartEnum
+  loggingType: LoggingTypeEnum
   latestCompletedSets: ExerciseSet[]
 }
 

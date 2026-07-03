@@ -36,6 +36,10 @@ export const exerciseTypeValues: PickerItem[] = [
     value: ExerciseTypeEnum.TIMED
   },
   {
+    label: ExerciseTypeEnum.WEIGHTED_TIME,
+    value: ExerciseTypeEnum.WEIGHTED_TIME
+  },
+  {
     label: ExerciseTypeEnum.OTHER,
     value: ExerciseTypeEnum.OTHER
   }

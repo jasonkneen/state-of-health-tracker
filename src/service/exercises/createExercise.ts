@@ -1,4 +1,4 @@
-import {mapExerciseBodyPart, mapExerciseType} from '@data/converters/ExerciseConverter'
+import {mapExerciseBodyPart, mapExerciseType, mapLoggingType} from '@data/converters/ExerciseConverter'
 import {CreateExercisePayload, Exercise} from '@data/models/Exercise'
 import {httpPost} from '@service/http/httpUtil'
 import * as io from 'io-ts'
@@ -11,7 +11,8 @@ const ExerciseResponse = io.type({
   id: io.string,
   name: io.string,
   exerciseType: io.string,
-  exerciseBodyPart: io.string
+  exerciseBodyPart: io.string,
+  loggingType: io.union([io.string, io.undefined])
 })
 
 export async function createExercise(payload: CreateExercisePayload): Promise<Exercise> {
@@ -27,6 +28,7 @@ export async function createExercise(payload: CreateExercisePayload): Promise<Ex
       name: response.data.name,
       exerciseType: mapExerciseType(response.data.exerciseType),
       exerciseBodyPart: mapExerciseBodyPart(response.data.exerciseBodyPart),
+      loggingType: mapLoggingType(response.data.loggingType ?? payload.loggingType ?? 'WEIGHT_REPS'),
       latestCompletedSets: []
     }
   } catch (error) {

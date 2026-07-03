@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 
 import {DailyExercise} from '@data/models/DailyExercise'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
+import {formatExerciseSubtitle} from '../../../utility/formatExerciseSubtitle'
 
 import SectionListHeader from '@components/SectionListHeader'
 
@@ -42,6 +43,7 @@ const ExerciseSectionListHeader = (props: Props) => {
       <SectionListHeader
         key={dailyExercise.id}
         title={dailyExercise.exercise.name}
+        subtitle={formatExerciseSubtitle(dailyExercise.exercise.exerciseType, dailyExercise.exercise.exerciseBodyPart)}
         onTitlePressed={(topMargin?: number) => {
           if (topMargin) {
             setDropdownTopMargin(topMargin)

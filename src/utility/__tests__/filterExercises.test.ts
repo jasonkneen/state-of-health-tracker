@@ -1,4 +1,4 @@
-import {Exercise, ExerciseBodyPartEnum, ExerciseTypeEnum} from '@data/models/Exercise'
+import {Exercise, ExerciseBodyPartEnum, ExerciseTypeEnum, LoggingTypeEnum} from '@data/models/Exercise'
 
 import {filterExercises} from '../filterExercises'
 
@@ -11,6 +11,7 @@ const buildExercise = (
   name,
   exerciseType,
   exerciseBodyPart,
+  loggingType: LoggingTypeEnum.WEIGHT_REPS,
   latestCompletedSets: []
 })
 

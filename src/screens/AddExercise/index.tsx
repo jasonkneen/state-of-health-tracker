@@ -42,6 +42,7 @@ import {
   YOUR_EXERCISES_HEADER
 } from '@constants/strings'
 
+import {formatExerciseSubtitle} from '../../utility/formatExerciseSubtitle'
 import ExerciseListItem from './components/ExerciseListItem'
 import ExerciseOptionsBottomSheet from './components/ExerciseOptionsBottomSheet'
 import TemplateListItem from './components/TemplateListItem'
@@ -219,7 +220,7 @@ const AddExerciseScreen = () => {
           leftRightMargin={Spacing.SMALL}
           title={payload.name}
           backgroundColor={Theme.colors.background}
-          subtitle={payload.exerciseBodyPart}
+          subtitle={formatExerciseSubtitle(payload.exerciseType, payload.exerciseBodyPart)}
           chip={<ExerciseTypeChip exerciseType={mapExerciseType(payload.exerciseType)} />}
           onPress={() => {
             openGlobalBottomSheet(

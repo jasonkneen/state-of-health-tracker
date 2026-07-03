@@ -1,4 +1,4 @@
-import {mapExerciseBodyPart, mapExerciseType} from '@data/converters/ExerciseConverter'
+import {deriveLoggingTypeFromExerciseType, mapExerciseBodyPart, mapExerciseType} from '@data/converters/ExerciseConverter'
 import {CreateExercisePayload} from '@data/models/Exercise'
 
 import exercises from '../../assets/exercises'
@@ -6,10 +6,13 @@ import {capitalizeFirstLetterOfEveryWord} from '../../utility/TextUtility'
 
 class ExerciseSearchService {
   private formatExercise(exercise: (typeof exercises)[number]): CreateExercisePayload {
+    const exerciseType = mapExerciseType(exercise.type)
+
     return {
       name: capitalizeFirstLetterOfEveryWord(exercise.name),
-      exerciseType: mapExerciseType(exercise.type),
-      exerciseBodyPart: mapExerciseBodyPart(exercise.muscleGroup)
+      exerciseType,
+      exerciseBodyPart: mapExerciseBodyPart(exercise.muscleGroup),
+      loggingType: deriveLoggingTypeFromExerciseType(exerciseType)
     }
   }
 

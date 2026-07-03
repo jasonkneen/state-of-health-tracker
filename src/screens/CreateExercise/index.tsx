@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 
 import {View} from 'react-native'
 
+import {deriveLoggingTypeFromExerciseType} from '@data/converters/ExerciseConverter'
 import {ExerciseBodyPartEnum, ExerciseTypeEnum} from '@data/models/Exercise'
 import {useCreateExerciseMutation} from '@queries/exercises/useCreateExerciseMutation'
 import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
@@ -69,7 +70,8 @@ const CreateExerciseScreen = () => {
       await createExercise({
         name: exerciseNameText,
         exerciseType,
-        exerciseBodyPart: bodyPart
+        exerciseBodyPart: bodyPart,
+        loggingType: deriveLoggingTypeFromExerciseType(exerciseType)
       })
 
       showToast('success', TOAST_EXERCISE_CREATED, exerciseNameText)

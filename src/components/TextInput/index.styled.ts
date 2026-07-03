@@ -12,6 +12,7 @@ export default StyleSheet.create({
     padding: Spacing.SMALL,
     borderRadius: BorderRadius.TEXT_INPUT,
     borderWidth: 1,
-    borderColor: Theme.colors.border
+    borderColor: Theme.colors.inputBorder,
+    backgroundColor: Theme.colors.inset
   }
 })

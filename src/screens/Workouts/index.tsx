@@ -1,11 +1,19 @@
 import React, {useEffect} from 'react'
 
-import {KeyboardAvoidingView, SafeAreaView, SectionList, SectionListRenderItem, View} from 'react-native'
+import {
+  KeyboardAvoidingView,
+  SafeAreaView,
+  SectionList,
+  SectionListRenderItem,
+  StyleSheet,
+  TouchableOpacity,
+  View
+} from 'react-native'
 
 import {DailyExercise} from '@data/models/DailyExercise'
 import {ExerciseSet} from '@data/models/ExerciseSet'
 import Unique from '@data/models/Unique'
-import {Ionicons} from '@expo/vector-icons'
+import {AntDesign, Ionicons} from '@expo/vector-icons'
 import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useTemplatesQuery} from '@queries/templates/useTemplatesQuery'
 import {useWeeklyWorkoutSummariesQuery} from '@queries/workouts/useWeeklyWorkoutSummariesQuery'
@@ -13,27 +21,27 @@ import {useNavigation} from '@react-navigation/native'
 import useAuthStore from '@store/auth/useAuthStore'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
 import {useSessionStore} from '@store/session/useSessionStore'
-import Text from '@components/Text'
 import {Theme} from '@styles/theme'
+import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
+
 import LoadingOverlay from '@components/LoadingOverlay'
 import {EmptyState} from '@components/PreviousEntryListItem'
 import PrimaryButton from '@components/PrimaryButton'
-import SecondaryButton from '@components/SecondaryButton'
 import {SectionListFooter} from '@components/SectionListHeader'
+import Text from '@components/Text'
 
 import Screens from '@constants/screens'
 import {
   ADD_EXERCISE_BUTTON_TEXT,
-  DAILY_WORKOUT_TITLE,
   EMPTY_DAILY_WORKOUT_BODY,
   EMPTY_DAILY_WORKOUT_TITLE,
   VIEW_PREVIOUS_WORKOUTS_BUTTON_TEXT,
-  YOUR_EXERCISES_HEADER
+  WORKOUT_SCREEN_TITLE
 } from '@constants/strings'
 
 import ExerciseSectionListHeader from './components/ExerciseSectionListHeader'
 import ExerciseSetListItem from './components/ExerciseSetListItem'
-import WeeklyWorkoutsGraphModule from './components/WeeklyWorkoutsGraphModule'
+import WeekStripCard from './components/WeekStripCard'
 import WorkoutsSkeleton from './components/WorkoutsSkeleton'
 import styles from './index.styled'
 import {Navigation} from '../../navigation/types'
@@ -46,6 +54,8 @@ interface Section extends Unique {
 }
 
 const listSwipeItemManager = new ListSwipeItemManager()
+
+const CROSS_DISSOLVE_DURATION_MS = 400
 
 const WorkoutsScreen = () => {
   const navigation = useNavigation<Navigation>()
@@ -65,7 +75,7 @@ const WorkoutsScreen = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally run only on mount
   }, [])
 
-  if (isInitializing || isLoadingSummaries) return <WorkoutsSkeleton />
+  const isLoading = isInitializing || isLoadingSummaries
 
   const dailyExercises = currentWorkoutDay?.dailyExercises ?? []
   const sections: Section[] = dailyExercises.map(dailyExercise => ({
@@ -78,46 +88,41 @@ const WorkoutsScreen = () => {
 
   const renderHeader = () => (
     <>
-      <Text style={styles.dateText}>{formatDayMonthDay(sessionStartDate)}</Text>
+      <Text style={styles.dateOverline}>{formatDayMonthDay(sessionStartDate)}</Text>
 
-      <Text style={styles.workoutTitle}>{DAILY_WORKOUT_TITLE}</Text>
+      <Text style={styles.workoutTitle}>{WORKOUT_SCREEN_TITLE}</Text>
 
-      <WeeklyWorkoutsGraphModule />
+      <WeekStripCard />
 
-      {isInitializing ? (
-        <LoadingOverlay style={styles.loadingIndicator} />
-      ) : (
-        <>
-          <View style={styles.exerciseHeaderContainer}>
-            <Text style={styles.exerciseHeaderText}>{YOUR_EXERCISES_HEADER}</Text>
+      {isInitializing && <LoadingOverlay style={styles.loadingIndicator} />}
 
-            <SecondaryButton
-              style={styles.addButton}
-              label={ADD_EXERCISE_BUTTON_TEXT}
-              onPress={() => navigation.push(Screens.ADD_EXERCISE)}
-            />
-          </View>
-
-          {dailyExercises.length === 0 && (
-            <EmptyState
-              icon={
-                <Ionicons style={styles.emptyIcon} name="barbell" size={200} color={Theme.colors.secondary} />
-              }
-              title={EMPTY_DAILY_WORKOUT_TITLE}
-              body={EMPTY_DAILY_WORKOUT_BODY}
-            />
-          )}
-        </>
+      {!isInitializing && dailyExercises.length === 0 && (
+        <EmptyState
+          icon={<Ionicons style={styles.emptyIcon} name="barbell" size={200} color={Theme.colors.track} />}
+          title={EMPTY_DAILY_WORKOUT_TITLE}
+          body={EMPTY_DAILY_WORKOUT_BODY}
+        />
       )}
     </>
   )
 
   const renderFooter = () => (
-    <PrimaryButton
-      style={styles.footerButton}
-      label={VIEW_PREVIOUS_WORKOUTS_BUTTON_TEXT}
-      onPress={() => navigation.push(Screens.PREVIOUS_DAILY_EXERCISE_ENTRIES)}
-    />
+    <>
+      <TouchableOpacity
+        style={styles.addExerciseRow}
+        activeOpacity={0.6}
+        onPress={() => navigation.push(Screens.ADD_EXERCISE)}>
+        <AntDesign name="plus" size={16} color={Theme.colors.textSecondary} />
+
+        <Text style={styles.addExerciseText}>{ADD_EXERCISE_BUTTON_TEXT}</Text>
+      </TouchableOpacity>
+
+      <PrimaryButton
+        style={styles.footerButton}
+        label={VIEW_PREVIOUS_WORKOUTS_BUTTON_TEXT}
+        onPress={() => navigation.push(Screens.PREVIOUS_DAILY_EXERCISE_ENTRIES)}
+      />
+    </>
   )
 
   const renderSectionItemHeader = (dailyExercise: DailyExercise) => (
@@ -136,24 +141,36 @@ const WorkoutsScreen = () => {
   )
 
   return (
-    <SafeAreaView>
-      <KeyboardAvoidingView behavior="padding">
-        <SectionList
-          windowSize={3}
-          keyExtractor={item => item.id}
-          keyboardShouldPersistTaps="always"
-          keyboardDismissMode="interactive"
-          style={styles.sectionList}
-          stickySectionHeadersEnabled={false}
-          sections={sections}
-          ListHeaderComponent={renderHeader()}
-          ListFooterComponent={renderFooter()}
-          renderItem={renderItem}
-          renderSectionHeader={({section}) => renderSectionItemHeader(section.dailyExercise)}
-          renderSectionFooter={() => <SectionListFooter />}
-        />
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+    <View style={styles.root}>
+      {!isLoading && (
+        <Animated.View style={styles.root} entering={FadeIn.duration(CROSS_DISSOLVE_DURATION_MS)}>
+          <SafeAreaView>
+            <KeyboardAvoidingView behavior="padding">
+              <SectionList
+                windowSize={3}
+                keyExtractor={item => item.id}
+                keyboardShouldPersistTaps="always"
+                keyboardDismissMode="interactive"
+                style={styles.sectionList}
+                stickySectionHeadersEnabled={false}
+                sections={sections}
+                ListHeaderComponent={renderHeader()}
+                ListFooterComponent={renderFooter()}
+                renderItem={renderItem}
+                renderSectionHeader={({section}) => renderSectionItemHeader(section.dailyExercise)}
+                renderSectionFooter={() => <SectionListFooter />}
+              />
+            </KeyboardAvoidingView>
+          </SafeAreaView>
+        </Animated.View>
+      )}
+
+      {isLoading && (
+        <Animated.View style={StyleSheet.absoluteFill} exiting={FadeOut.duration(CROSS_DISSOLVE_DURATION_MS)}>
+          <WorkoutsSkeleton />
+        </Animated.View>
+      )}
+    </View>
   )
 }
 

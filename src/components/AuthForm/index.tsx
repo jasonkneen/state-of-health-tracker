@@ -5,6 +5,7 @@ import {Alert, TouchableOpacity, View} from 'react-native'
 import {isAuthError} from '@data/models/AuthError'
 import {useNavigation} from '@react-navigation/native'
 import useAuthStore from '@store/auth/useAuthStore'
+import Spacing from '@styles/spacing'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 
 import PasswordTextInput from '@components/PasswordTextInput'
@@ -27,11 +28,10 @@ import {
   AUTH_REGISTER_BUTTON_TEXT,
   OKAY_BUTTON_TEXT
 } from '@constants/strings'
-import Spacing from '@styles/spacing'
 
+import styles from './index.styled'
 import {Navigation} from '../../navigation/types'
 import {isValidEmail, isValidPassword} from '../../utility/AccountUtility'
-import styles from './index.styled'
 
 interface Props {
   readonly authType: 'register' | 'log-in'

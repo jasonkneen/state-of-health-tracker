@@ -1,9 +1,10 @@
 import React, {useState} from 'react'
 
-import {MaterialCommunityIcons} from '@expo/vector-icons'
 import useAuthStore from '@store/auth/useAuthStore'
 import {Theme} from '@styles/theme'
+
 import ConfirmModal from '@components/dialog/ConfirmModal'
+import LogOutIcon from '@components/icons/LogOutIcon'
 import {showToast} from '@components/toast/util/ShowToast'
 
 import {
@@ -41,8 +42,8 @@ const AuthListItem = () => {
 
       <AccountListItem
         type="auth"
-        text={isAuthed ? ACCOUNT_LOG_OUT_LIST_ITEM : ACCOUNT_LOG_IN_LIST_ITEM}
-        icon={<MaterialCommunityIcons name="account" size={24} color={Theme.colors.white} />}
+        label={isAuthed ? ACCOUNT_LOG_OUT_LIST_ITEM : ACCOUNT_LOG_IN_LIST_ITEM}
+        icon={<LogOutIcon color={Theme.colors.textSecondary} />}
         onPressOverride={() => {
           if (isAuthed) {
             setIsConfirmModalVisible(true)

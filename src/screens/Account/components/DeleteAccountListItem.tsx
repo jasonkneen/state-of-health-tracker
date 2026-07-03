@@ -1,9 +1,10 @@
 import React, {useState} from 'react'
 
-import {Ionicons} from '@expo/vector-icons'
 import useAuthStore from '@store/auth/useAuthStore'
 import {Theme} from '@styles/theme'
+
 import ConfirmModal from '@components/dialog/ConfirmModal'
+import TrashIcon from '@components/icons/TrashIcon'
 import {showToast} from '@components/toast/util/ShowToast'
 
 import {
@@ -39,8 +40,11 @@ const DeleteAccountListItem = () => {
 
       <AccountListItem
         type="auth"
-        text={DELETE_ACCOUNT_LIST_ITEM}
-        icon={<Ionicons name="trash-bin-outline" size={24} color={Theme.colors.white} />}
+        label={DELETE_ACCOUNT_LIST_ITEM}
+        danger={true}
+        isLastInGroup={true}
+        tileVariant="danger"
+        icon={<TrashIcon color={Theme.colors.danger} />}
         onPressOverride={() => {
           setIsConfirmModalVisible(true)
         }}

@@ -9,6 +9,7 @@ import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useNavigation} from '@react-navigation/native'
 import exerciseSearchService from '@service/exercises/ExerciseSearchService'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
+import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
 import {debounce} from 'lodash'
 
@@ -18,7 +19,6 @@ import LoadingOverlay from '@components/LoadingOverlay'
 import SearchBar from '@components/SearchBar'
 import {showToast} from '@components/toast/util/ShowToast'
 
-import Spacing from '@styles/spacing'
 import {SEARCH_ADD_EXERCISE_ERROR, SEARCH_ADD_EXERCISE_SUCCESS, SEARCH_EXERCISES_PLACEHOLDER} from '@constants/strings'
 
 import styles from './index.styled'

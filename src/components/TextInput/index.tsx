@@ -15,8 +15,8 @@ const TextInput = (props: TextInputProps) => {
       editable={editable}
       numberOfLines={numberOfLines}
       maxLength={maxLength}
-      selectionColor={Theme.colors.white}
-      placeholderTextColor={Theme.colors.tertiary}
+      selectionColor={Theme.colors.accentGreen}
+      placeholderTextColor={Theme.colors.textFaint}
       style={[styles.textInput, style]}
       {...otherProps}
     />

@@ -3,14 +3,13 @@ import React, {useEffect} from 'react'
 import {TouchableOpacity, View} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
+import {Theme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import Modal from 'react-native-modal'
 
 import PrimaryButton from '@components/PrimaryButton'
 import Text from '@components/Text'
 import TextInput from '@components/TextInput'
-
-import {Theme} from '@styles/theme'
 
 import styles from './index.styled'
 

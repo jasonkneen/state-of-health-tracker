@@ -7,11 +7,12 @@ import {Ionicons} from '@expo/vector-icons'
 import {useCreateExerciseMutation} from '@queries/exercises/useCreateExerciseMutation'
 import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useNavigation} from '@react-navigation/native'
-import Text from '@components/Text'
 import {Theme} from '@styles/theme'
+
 import LoadingOverlay from '@components/LoadingOverlay'
 import Picker from '@components/Picker'
 import PrimaryButton from '@components/PrimaryButton'
+import Text from '@components/Text'
 import TextInputWithHeader from '@components/TextInputWithHeader'
 import {showToast} from '@components/toast/util/ShowToast'
 

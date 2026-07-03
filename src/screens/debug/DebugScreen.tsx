@@ -4,8 +4,9 @@ import {ScrollView} from 'react-native'
 
 import {WorkoutDay} from '@data/models/WorkoutDay'
 import offlineWorkoutStorageService from '@service/workouts/OfflineWorkoutStorageService'
-import Text from '@components/Text'
+
 import PrimaryButton from '@components/PrimaryButton'
+import Text from '@components/Text'
 
 const DebugScreen = () => {
   const [offlineWorkouts, setOfflineWorkouts] = useState<WorkoutDay[]>([])

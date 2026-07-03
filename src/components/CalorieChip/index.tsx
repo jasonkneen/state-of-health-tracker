@@ -3,11 +3,11 @@ import React from 'react'
 import {StyleProp, ViewStyle} from 'react-native'
 
 import {MaterialCommunityIcons} from '@expo/vector-icons'
+import {Theme} from '@styles/theme'
 
 import Chip from '@components/Chip'
 
 import {CAL_LABEL} from '@constants/strings'
-import {Theme} from '@styles/theme'
 
 import styles from './index.styled'
 

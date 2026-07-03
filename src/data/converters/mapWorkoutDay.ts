@@ -1,8 +1,7 @@
-import * as io from 'io-ts'
-
 import {mapExerciseBodyPart, mapExerciseType} from '@data/converters/ExerciseConverter'
-import {WorkoutDay} from '@data/models/WorkoutDay'
 import {WorkoutDayResponse} from '@data/decoders/WorkoutDayDecoder'
+import {WorkoutDay} from '@data/models/WorkoutDay'
+import * as io from 'io-ts'
 
 export function mapWorkoutDay(data: io.TypeOf<typeof WorkoutDayResponse>): WorkoutDay {
   return {

@@ -3,10 +3,9 @@ import React, {useEffect, useState} from 'react'
 import {Keyboard, TouchableOpacity, View} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
+import {Theme} from '@styles/theme'
 
 import TextInput from '@components/TextInput'
-
-import {Theme} from '@styles/theme'
 
 import styles from './index.styled'
 

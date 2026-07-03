@@ -4,11 +4,12 @@ import {TouchableOpacity, View} from 'react-native'
 
 import {ExerciseTemplate} from '@data/models/ExerciseTemplate'
 import {useNavigation} from '@react-navigation/native'
-import Text from '@components/Text'
 import {Theme} from '@styles/theme'
+
 import DeleteTemplateBottomSheet from '@screens/AddExercise/components/DeleteTemplateBottomSheet'
 
 import {openGlobalBottomSheet} from '@components/GlobalBottomSheet'
+import Text from '@components/Text'
 
 import Screens from '@constants/screens'
 

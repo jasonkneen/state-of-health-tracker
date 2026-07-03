@@ -1,7 +1,6 @@
 import {StyleSheet} from 'react-native'
 
 import FontSize from '@styles/fontSize'
-import Spacing from '@styles/spacing'
 
 export default StyleSheet.create({
   backdrop: {

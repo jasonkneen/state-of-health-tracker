@@ -2,11 +2,10 @@ import React from 'react'
 
 import {TouchableOpacity, View} from 'react-native'
 
+import {Theme} from '@styles/theme'
 import {Swipeable} from 'react-native-gesture-handler'
 
 import Text from '@components/Text'
-
-import {Theme} from '@styles/theme'
 
 import SwipeDeleteListItem from '../SwipeDeleteListItem'
 import styles, {itemBackground} from './index.styled'

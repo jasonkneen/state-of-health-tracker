@@ -5,15 +5,15 @@ import {TouchableOpacity, View} from 'react-native'
 import {DailyExercise} from '@data/models/DailyExercise'
 import {Ionicons, MaterialCommunityIcons} from '@expo/vector-icons'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
-import Text from '@components/Text'
+import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import Modal from 'react-native-modal'
 
 import ConfirmModal from '@components/dialog/ConfirmModal'
 import ReorganizeModal from '@components/dialog/ReorganizeModal'
+import Text from '@components/Text'
 
-import Spacing from '@styles/spacing'
 import {
   DELETE_DAILY_EXERCISE_MODAL_BODY,
   DELETE_EXERCISE_MODAL_TITLE,

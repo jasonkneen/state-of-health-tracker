@@ -6,11 +6,12 @@ import {Exercise} from '@data/models/Exercise'
 import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useNavigation, useRoute} from '@react-navigation/native'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
-import Text from '@components/Text'
 import {Theme} from '@styles/theme'
+
 import ExerciseTypeChip from '@components/ExerciseTypeChip'
 import ListItem from '@components/ListItem'
 import PrimaryButton from '@components/PrimaryButton'
+import Text from '@components/Text'
 import {showToast} from '@components/toast/util/ShowToast'
 
 import {

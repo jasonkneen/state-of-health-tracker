@@ -3,6 +3,7 @@ import React, {useState} from 'react'
 import {FontAwesome5} from '@expo/vector-icons'
 import useUserData from '@store/userData/useUserData'
 import {Theme} from '@styles/theme'
+
 import {showToast} from '@components/toast/util/ShowToast'
 
 import {
@@ -13,9 +14,9 @@ import {
   TOAST_WEIGHT_UPDATED
 } from '@constants/strings'
 
+import {isNumber} from '../../../utility/TextUtility'
 import BaseModalProps from '../BaseInputModalProps'
 import InputModal from '../InputModal'
-import {isNumber} from '../../../utility/TextUtility'
 import styles from './index.styled'
 
 const WeightEntryModal = (props: BaseModalProps) => {
@@ -46,9 +47,7 @@ const WeightEntryModal = (props: BaseModalProps) => {
     <InputModal
       title={CURRENT_WEIGHT_MODAL_TITLE}
       subtitle={CURRENT_WEIGHT_MODAL_BODY}
-      icon={
-        <FontAwesome5 name="weight" size={96} style={styles.icon} color={Theme.colors.secondaryLighter} />
-      }
+      icon={<FontAwesome5 name="weight" size={96} style={styles.icon} color={Theme.colors.secondaryLighter} />}
       value={value}
       isVisible={isVisible}
       onCancel={onDismissed}

@@ -1,30 +1,42 @@
 import React, {useState} from 'react'
 
-import {TouchableOpacity, View} from 'react-native'
+import {TouchableOpacity} from 'react-native'
 
-import {Ionicons} from '@expo/vector-icons'
-import Text from '@components/Text'
 import {Theme} from '@styles/theme'
+
 import TargetCaloriesModal from '@components/dialog/TargetCaloriesModal'
 import TargetWorkoutsModal from '@components/dialog/TargetWorkoutsModal'
 import WeightEntryModal from '@components/dialog/WeightEntryModal'
-import HorizontalDivider from '@components/HorizontalDivider'
+import ChevronRightIcon from '@components/icons/ChevronRightIcon'
+import IconTile, {IconTileVariant} from '@components/IconTile'
+import Text from '@components/Text'
 
-import Spacing from '@styles/spacing'
+import styles from './index.styled'
 
 interface Props {
-  readonly clickable?: boolean
-  readonly text: string
+  readonly label: string
+  readonly value?: string
   readonly icon: React.JSX.Element
+  readonly tileVariant?: IconTileVariant
   readonly type: 'target-calories' | 'target-workouts' | 'weight' | 'auth' | 'info' | 'display-name'
+  readonly clickable?: boolean
+  readonly danger?: boolean
+  readonly isLastInGroup?: boolean
   readonly onPressOverride?: () => void
 }
 
 const AccountListItem = (props: Props) => {
-  const {clickable = true, text, icon, type, onPressOverride} = props
-
-  const iconSize = 24
-  const iconColor = Theme.colors.white
+  const {
+    label,
+    value,
+    icon,
+    tileVariant = 'neutral',
+    type,
+    clickable = true,
+    danger = false,
+    isLastInGroup = false,
+    onPressOverride
+  } = props
 
   const [isInputModalVisible, setIsInputModalVisible] = useState(false)
 
@@ -51,36 +63,19 @@ const AccountListItem = (props: Props) => {
       {getModalForType()}
 
       <TouchableOpacity
-        activeOpacity={clickable ? 0.25 : 1}
+        activeOpacity={clickable ? 0.5 : 1}
         onPress={() => {
           onPressOverride ? onPressOverride() : clickable && setIsInputModalVisible(true)
         }}
-        style={{
-          marginTop: Spacing.MEDIUM,
-          marginBottom: Spacing.MEDIUM,
-          marginLeft: Spacing.LARGE,
-          marginRight: Spacing.LARGE,
-          flexDirection: 'row',
-          justifyContent: 'space-between'
-        }}>
-        <View style={{flexDirection: 'row'}}>
-          {icon}
+        style={[styles.row, !isLastInGroup && styles.rowDivider]}>
+        <IconTile variant={tileVariant}>{icon}</IconTile>
 
-          <Text
-            style={{
-              alignSelf: 'center',
-              marginLeft: Spacing.X_SMALL
-            }}>
-            {text}
-          </Text>
-        </View>
+        <Text style={[styles.label, danger && styles.labelDanger]}>{label}</Text>
 
-        {clickable && (
-          <Ionicons name="chevron-forward" size={iconSize} color={iconColor} style={{alignSelf: 'flex-start'}} />
-        )}
+        {value !== undefined && <Text style={styles.value}>{value}</Text>}
+
+        {clickable && <ChevronRightIcon color={Theme.colors.textDisabled} />}
       </TouchableOpacity>
-
-      <HorizontalDivider />
     </>
   )
 }

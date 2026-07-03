@@ -368,6 +368,66 @@ export const UPDATE_APP_VERSION_TEXT =
 
 export const UPDATE_APP_VERSION_BUTTON = 'Update App Version'
 
+export const WORKOUT_SCREEN_TITLE = 'Workout'
+
+export const THIS_WEEK_LABEL = 'This week'
+
+export const WEEK_PROGRESS_TEXT = '%0 of %1'
+
+export const WEEKLY_TARGET_CAPTION = 'target %0/wk'
+
+export const APP_NAME = 'State of Health'
+
+export const LOGIN_TAGLINE = 'Lift. Run. Eat. All in one place.'
+
+export const LOGIN_EMAIL_PLACEHOLDER = 'Email'
+
+export const LOGIN_PASSWORD_PLACEHOLDER = 'Password'
+
+export const LOGIN_NEW_HERE_TEXT = 'New here? '
+
+export const LOGIN_CREATE_ACCOUNT_LINK = 'Create an account'
+
+export const RUNS_TITLE = 'Runs'
+
+export const RUNS_THIS_MONTH_TEXT = '%0 mi this month'
+
+export const RUNS_HISTORY_HEADER = 'History'
+
+export const RUNS_LATEST_BADGE = 'LATEST'
+
+export const RUNS_MAP_PLACEHOLDER = 'route map'
+
+export const START_NEW_RUN_BUTTON_TEXT = 'Start New Run'
+
+export const RUN_TRACKING_COMING_SOON = 'Run tracking is coming soon!'
+
+export const RUN_STAT_MILES_LABEL = 'miles'
+
+export const RUN_STAT_TIME_LABEL = 'time'
+
+export const RUN_STAT_PACE_LABEL = 'pace'
+
+export const RUN_STAT_CAL_LABEL = 'cal'
+
+export const RUNS_BADGE_BEST_PACE = 'best pace'
+
+export const RUNS_BADGE_LONGEST = 'longest'
+
+export const RUNS_PACE_CAPTION = '%0 pace'
+
+export const ACCOUNT_DAILY_CALORIES_LABEL = 'Daily calories'
+
+export const ACCOUNT_WORKOUTS_PER_WEEK_LABEL = 'Workouts per week'
+
+export const ACCOUNT_CURRENT_WEIGHT_LABEL = 'Current weight'
+
+export const ACCOUNT_TOTAL_WORKOUT_DAYS_LABEL = 'Total workout days'
+
+export const LBS_SUFFIX = ' lbs'
+
+export const GUEST_AVATAR_INITIAL = 'G'
+
 export function stringWithParameters(str: string = '', ...parameters: string[]): string {
   let updatedStr = str
 

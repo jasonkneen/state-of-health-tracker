@@ -3,10 +3,9 @@ import React, {useState} from 'react'
 import {TouchableOpacity} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
+import {Theme} from '@styles/theme'
 
 import TextInputWithHeader, {TextInputProps} from '@components/TextInputWithHeader'
-
-import {Theme} from '@styles/theme'
 
 import styles from './index.styled'
 

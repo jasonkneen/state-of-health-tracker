@@ -1,8 +1,10 @@
 import {StyleSheet} from 'react-native'
 
+import {Theme} from '@styles/theme'
+
 export default StyleSheet.create({
   container: {
-    backgroundColor: '#e0e0e0',
+    backgroundColor: Theme.colors.track,
     overflow: 'hidden',
     position: 'relative'
   },

@@ -2,6 +2,7 @@ import React, {useEffect} from 'react'
 
 import {View} from 'react-native'
 
+import {Theme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import Modal from 'react-native-modal'
 
@@ -9,7 +10,6 @@ import PrimaryButton from '@components/PrimaryButton'
 import Text from '@components/Text'
 
 import {CANCEL_BUTTON_TEXT, DELETE_BUTTON_TEXT} from '@constants/strings'
-import {Theme} from '@styles/theme'
 
 import styles, {confirmButtonBackground} from './index.styled'
 

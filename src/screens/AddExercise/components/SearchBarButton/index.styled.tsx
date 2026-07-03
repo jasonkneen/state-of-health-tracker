@@ -1,8 +1,8 @@
 import {Dimensions, StyleSheet} from 'react-native'
 
-import {SEARCH_BAR_HEIGHT} from '@components/SearchBar'
-
 import Spacing from '@styles/spacing'
+
+import {SEARCH_BAR_HEIGHT} from '@components/SearchBar'
 
 const windowHeight = Dimensions.get('window').height
 

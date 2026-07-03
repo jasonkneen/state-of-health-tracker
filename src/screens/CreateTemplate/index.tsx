@@ -7,16 +7,17 @@ import {MaterialCommunityIcons} from '@expo/vector-icons'
 import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useCreateTemplateMutation} from '@queries/templates/useCreateTemplateMutation'
 import {useNavigation} from '@react-navigation/native'
-import Text from '@components/Text'
+import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
+
 import ExerciseTypeChip from '@components/ExerciseTypeChip'
 import ListItem from '@components/ListItem'
 import LoadingOverlay from '@components/LoadingOverlay'
 import PrimaryButton from '@components/PrimaryButton'
 import SearchBar from '@components/SearchBar'
+import Text from '@components/Text'
 import {showToast} from '@components/toast/util/ShowToast'
 
-import Spacing from '@styles/spacing'
 import {
   CREATE_TEMPLATE_NO_EXERCISES,
   NEXT_BUTTON_TEXT,
@@ -96,12 +97,7 @@ const CreateTemplateScreen = () => {
 
       {exercises.length === 0 ? (
         <>
-          <MaterialCommunityIcons
-            style={styles.emptyIcon}
-            name="kettlebell"
-            size={100}
-            color={Theme.colors.white}
-          />
+          <MaterialCommunityIcons style={styles.emptyIcon} name="kettlebell" size={100} color={Theme.colors.white} />
 
           <Text style={styles.emptyText}>{CREATE_TEMPLATE_NO_EXERCISES}</Text>
         </>

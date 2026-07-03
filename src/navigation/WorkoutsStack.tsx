@@ -2,6 +2,7 @@ import React from 'react'
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import {Theme} from '@styles/theme'
+
 import AddExerciseScreen from '@screens/AddExercise'
 import CreateExerciseScreen from '@screens/CreateExercise'
 import CreateTemplateScreen from '@screens/CreateTemplate'

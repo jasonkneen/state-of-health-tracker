@@ -38,7 +38,7 @@ const Skeleton = ({height = 20, width = 50, borderRadius = 8, style = {}}: Props
       ]}>
       <Animated.View style={[StyleSheet.absoluteFill, shimmerStyle]}>
         <LinearGradient
-          colors={['transparent', 'rgba(255,255,255,0.4)', 'transparent']}
+          colors={['transparent', 'rgba(237,243,239,0.08)', 'transparent']}
           start={{
             x: 0,
             y: 0.5

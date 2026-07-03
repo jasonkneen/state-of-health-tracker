@@ -4,8 +4,10 @@ import {TouchableOpacity, View} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
 import {useNavigation} from '@react-navigation/native'
-import Text from '@components/Text'
 import {Theme} from '@styles/theme'
+
+import Text from '@components/Text'
+
 import Screens from '@constants/screens'
 import {SEARCH_EXERCISES_PLACEHOLDER} from '@constants/strings'
 

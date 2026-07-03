@@ -5,13 +5,14 @@ import {FlatList, ListRenderItemInfo} from 'react-native'
 import {WorkoutSummary} from '@data/models/WorkoutSummary'
 import {FontAwesome5, MaterialCommunityIcons} from '@expo/vector-icons'
 import {useWorkoutSummariesInfiniteQuery} from '@queries/workouts/useWorkoutSummariesInfiniteQuery'
-import Screen from '@components/Screen'
+import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
+
 import Chip from '@components/Chip'
 import LoadingOverlay from '@components/LoadingOverlay'
 import PreviousEntryListItem, {EmptyState} from '@components/PreviousEntryListItem'
+import Screen from '@components/Screen'
 
-import Spacing from '@styles/spacing'
 import {
   BEST_SET_LABEL,
   EXERCISE_LABEL,
@@ -34,12 +35,7 @@ const PreviousWorkoutEntries = () => {
     return (
       <EmptyState
         icon={
-          <MaterialCommunityIcons
-            style={styles.icon}
-            name="weight-lifter"
-            size={230}
-            color={Theme.colors.secondary}
-          />
+          <MaterialCommunityIcons style={styles.icon} name="weight-lifter" size={230} color={Theme.colors.secondary} />
         }
         title={PREVIOUS_WORKOUTS_ENTRIES_EMPTY_TITLE}
         body={PREVIOUS_WORKOUTS_ENTRIES_EMPTY_BODY}

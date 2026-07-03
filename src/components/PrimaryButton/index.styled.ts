@@ -2,6 +2,7 @@ import {DimensionValue, StyleSheet, ViewStyle} from 'react-native'
 
 import BorderRadius from '@styles/borderRadius'
 import FontSize from '@styles/fontSize'
+import Shadow from '@styles/shadow'
 import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
 
@@ -12,15 +13,17 @@ export const buttonTouchable = (width: DimensionValue): ViewStyle => ({
 
 export default StyleSheet.create({
   inner: {
-    backgroundColor: Theme.colors.secondary,
-    borderRadius: BorderRadius.BUTTON,
-    borderColor: Theme.colors.secondaryLighter,
-    padding: Spacing.SMALL,
+    ...Shadow.CTA_GLOW,
+    backgroundColor: Theme.colors.accentGreen,
+    borderRadius: BorderRadius.INPUT,
+    paddingVertical: Spacing.MEDIUM,
+    paddingHorizontal: Spacing.SMALL,
     alignItems: 'center'
   },
   label: {
-    fontWeight: '500',
-    fontSize: FontSize.H2,
+    fontWeight: '600',
+    fontSize: FontSize.H3,
+    color: Theme.colors.white,
     marginLeft: Spacing.XX_SMALL,
     marginRight: Spacing.XX_SMALL
   }

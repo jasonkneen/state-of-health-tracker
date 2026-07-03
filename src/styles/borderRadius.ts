@@ -1,8 +1,17 @@
 export default {
-  BUTTON: 100,
+  BUTTON: 14,
   CHIP: 100,
-  SECTION: 5,
+  SECTION: 12,
   LIST_ITEM: 100,
-  TEXT_INPUT: 5,
-  MODAL: 15
+  TEXT_INPUT: 10,
+  MODAL: 15,
+
+  PILL: 999,
+  CARD_LG: 20,
+  CARD: 18,
+  ITEM: 16,
+  INPUT: 14,
+  TIP: 12,
+  TILE: 10,
+  CELL: 10
 }

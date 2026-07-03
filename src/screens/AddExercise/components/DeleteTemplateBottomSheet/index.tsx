@@ -5,10 +5,11 @@ import {TouchableOpacity, View} from 'react-native'
 import {ExerciseTemplate} from '@data/models/ExerciseTemplate'
 import {Ionicons} from '@expo/vector-icons'
 import {useDeleteTemplateMutation} from '@queries/templates/useDeleteTemplateMutation'
-import Text from '@components/Text'
 import {Theme} from '@styles/theme'
+
 import ConfirmModal from '@components/dialog/ConfirmModal'
 import {closeGlobalBottomSheet} from '@components/GlobalBottomSheet'
+import Text from '@components/Text'
 import {showToast} from '@components/toast/util/ShowToast'
 
 import {

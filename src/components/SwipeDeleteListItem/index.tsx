@@ -3,10 +3,9 @@ import React from 'react'
 import {Animated, TouchableOpacity, ViewProps} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
+import {Theme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler'
-
-import {Theme} from '@styles/theme'
 
 import {deleteActionAnimated, deleteActionTouchable} from './index.styled'
 

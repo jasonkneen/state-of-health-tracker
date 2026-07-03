@@ -10,6 +10,7 @@ export default {
   CREATE_EXERCISE: 'Create Exercise',
   PREVIOUS_DAILY_EXERCISE_ENTRIES: 'Previous Daily Exercise Entries',
   ACCOUNT: 'Account',
+  RUNS: 'Runs',
   REGISTER: 'Register',
   LOG_IN: 'Log In',
   WORKOUT_TEMPLATE_DETAIL: 'Workout Template',

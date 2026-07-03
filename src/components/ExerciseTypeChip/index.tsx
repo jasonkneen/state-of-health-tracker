@@ -4,7 +4,6 @@ import {View} from 'react-native'
 
 import {ExerciseTypeEnum} from '@data/models/Exercise'
 import {Entypo, FontAwesome5, Ionicons, MaterialCommunityIcons} from '@expo/vector-icons'
-
 import {Theme} from '@styles/theme'
 
 import styles from './index.styled'
@@ -25,9 +24,7 @@ const ExerciseTypeChip = (props: Props) => {
       case ExerciseTypeEnum.CABLE:
         return <MaterialCommunityIcons name="jump-rope" size={24} color={Theme.colors.white} />
       case ExerciseTypeEnum.WEIGHTED:
-        return (
-          <FontAwesome5 style={styles.weightedIcon} name="weight-hanging" size={20} color={Theme.colors.white} />
-        )
+        return <FontAwesome5 style={styles.weightedIcon} name="weight-hanging" size={20} color={Theme.colors.white} />
       case ExerciseTypeEnum.MACHINE:
         return <MaterialCommunityIcons name="stairs-up" size={24} color={Theme.colors.white} />
       case ExerciseTypeEnum.KETTLEBELL:

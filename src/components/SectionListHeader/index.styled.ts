@@ -7,42 +7,34 @@ import {Theme} from '@styles/theme'
 
 export default StyleSheet.create({
   header: {
-    borderRadius: BorderRadius.SECTION,
-    borderWidth: 1,
-    borderBottomWidth: 0,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
-    backgroundColor: Theme.colors.background,
-    borderColor: Theme.colors.border,
-    padding: Spacing.SMALL,
-    marginTop: Spacing.X_SMALL,
-    marginLeft: Spacing.MEDIUM,
-    marginRight: Spacing.MEDIUM,
+    backgroundColor: Theme.colors.card,
+    borderTopLeftRadius: BorderRadius.CARD_LG,
+    borderTopRightRadius: BorderRadius.CARD_LG,
+    padding: Spacing.MEDIUM,
+    paddingBottom: Spacing.SMALL,
+    marginTop: Spacing.SMALL,
+    marginHorizontal: Spacing.GUTTER,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   titleButton: {
     flex: 1
   },
   title: {
-    fontWeight: 'bold',
-    fontSize: FontSize.H3,
-    marginRight: Spacing.SMALL,
-    backgroundColor: Theme.colors.background
+    fontWeight: '700',
+    fontSize: FontSize.CARD_TITLE,
+    marginRight: Spacing.SMALL
   },
   button: {
     alignSelf: 'flex-end'
   },
   footer: {
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: Theme.colors.border,
-    borderTopWidth: 0,
-    borderBottomLeftRadius: BorderRadius.SECTION,
-    borderBottomRightRadius: BorderRadius.SECTION,
-    marginLeft: Spacing.MEDIUM,
-    marginRight: Spacing.MEDIUM,
-    paddingBottom: Spacing.LARGE,
-    marginBottom: Spacing.X_SMALL
+    backgroundColor: Theme.colors.card,
+    borderBottomLeftRadius: BorderRadius.CARD_LG,
+    borderBottomRightRadius: BorderRadius.CARD_LG,
+    marginHorizontal: Spacing.GUTTER,
+    paddingBottom: Spacing.MEDIUM,
+    marginBottom: Spacing.SMALL
   }
 })

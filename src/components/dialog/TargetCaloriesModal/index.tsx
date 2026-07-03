@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react'
 import {MaterialCommunityIcons} from '@expo/vector-icons'
 import useUserData from '@store/userData/useUserData'
 import {Theme} from '@styles/theme'
+
 import {showToast} from '@components/toast/util/ShowToast'
 
 import {
@@ -13,9 +14,9 @@ import {
   TOAST_TARGET_CALORIES_SET
 } from '@constants/strings'
 
+import {isNumber} from '../../../utility/TextUtility'
 import BaseInputModalProps from '../BaseInputModalProps'
 import InputModal from '../InputModal'
-import {isNumber} from '../../../utility/TextUtility'
 import styles from './index.styled'
 
 const TargetCaloriesModal = (props: BaseInputModalProps) => {
@@ -48,9 +49,7 @@ const TargetCaloriesModal = (props: BaseInputModalProps) => {
     <InputModal
       title={TARGET_CALORIE_MODAL_TITLE}
       subtitle={TARGET_CALORIE_MODAL_BODY}
-      icon={
-        <MaterialCommunityIcons style={styles.icon} name="fire" size={96} color={Theme.colors.fireOrange} />
-      }
+      icon={<MaterialCommunityIcons style={styles.icon} name="fire" size={96} color={Theme.colors.fireOrange} />}
       value={value ?? targetCalories.toString()}
       isVisible={isVisible}
       onCancel={onDismissed}

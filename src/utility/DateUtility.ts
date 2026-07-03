@@ -32,6 +32,9 @@ export const compareIsoDateStrings = (a: string, b: string): boolean => {
 
 export const formatDateToMonthDay = (date: string | number): string => format(new Date(date), 'M/d')
 
+// Ex: Sep 18
+export const formatDateToMonthDayName = (date: string | number): string => format(new Date(date), 'MMM d')
+
 export const ONE_DAY_MS = 1000 * 60 * 60 * 24 // 1000 ms * 60s * 60m * 24h
 
 export const getLast7Mondays = () => {

@@ -6,6 +6,7 @@ import {Ionicons} from '@expo/vector-icons'
 import {useNavigation} from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import {Theme} from '@styles/theme'
+
 import RootAuthScreen from '@screens/Auth'
 import LogInScreen from '@screens/Login'
 import RegisterScreen from '@screens/Register'
@@ -43,7 +44,7 @@ const AuthStack = () => {
       })}>
       <Stack.Screen name={Screens.RootAuth} component={RootAuthScreen} options={{headerShown: false}} />
 
-      <Stack.Screen name={Screens.LOG_IN} component={LogInScreen} />
+      <Stack.Screen name={Screens.LOG_IN} component={LogInScreen} options={{headerShown: false}} />
 
       <Stack.Screen name={Screens.REGISTER} component={RegisterScreen} />
     </Stack.Navigator>

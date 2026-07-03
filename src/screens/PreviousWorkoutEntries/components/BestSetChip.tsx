@@ -1,8 +1,9 @@
 import React from 'react'
 
+import Spacing from '@styles/spacing'
+
 import Chip from '@components/Chip'
 
-import Spacing from '@styles/spacing'
 import {LBS_LABEL} from '@constants/strings'
 
 interface Props {

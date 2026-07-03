@@ -1,6 +1,5 @@
 import {StyleSheet} from 'react-native'
 
-import FontSize from '@styles/fontSize'
 import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
 

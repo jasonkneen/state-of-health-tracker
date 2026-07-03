@@ -4,14 +4,7 @@ import {Keyboard} from 'react-native'
 
 import DropDownPicker from 'react-native-dropdown-picker'
 
-import {
-  arrowIcon,
-  dropDownContainer,
-  pickerControl,
-  pickerPlaceholder,
-  pickerText,
-  tickIcon
-} from './index.styled'
+import {arrowIcon, dropDownContainer, pickerControl, pickerPlaceholder, pickerText, tickIcon} from './index.styled'
 
 export interface PickerItem {
   label: string

@@ -2,9 +2,9 @@ import React from 'react'
 
 import {ActivityIndicator, DimensionValue, StyleProp, TouchableOpacity, View, ViewStyle} from 'react-native'
 
-import Text from '@components/Text'
-
 import {Theme} from '@styles/theme'
+
+import Text from '@components/Text'
 
 import styles, {buttonTouchable} from './index.styled'
 
@@ -28,7 +28,7 @@ const PrimaryButton = (props: Props) => {
     <TouchableOpacity style={buttonTouchable(width)} onPress={handlePress} activeOpacity={0.5}>
       <View style={[styles.inner, style]}>
         {isLoading ? (
-          <ActivityIndicator size="small" color={Theme.colors.secondaryLighter} />
+          <ActivityIndicator size="small" color={Theme.colors.white} />
         ) : (
           <Text style={styles.label}>{label}</Text>
         )}

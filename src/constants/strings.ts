@@ -233,6 +233,10 @@ export const EMPTY_DAILY_WORKOUT_TITLE = 'Start your daily workout!'
 
 export const EMPTY_DAILY_WORKOUT_BODY = "Tap '+ Add Exercise' to get started"
 
+export const EMPTY_PAST_WORKOUT_TITLE = 'No workout logged this day'
+
+export const EMPTY_PAST_WORKOUT_BODY = "Tap '+ Add Exercise' to log it now"
+
 export const NO_EXERCISES_FOUND_EMPTY_TEXT = 'No Exercises Found'
 
 export const NO_FOOD_FOUND_EMPTY_TEXT = 'No Food Items Found'

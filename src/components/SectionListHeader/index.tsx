@@ -23,6 +23,7 @@ const SectionListHeader = (props: Props) => {
       <TouchableOpacity
         style={styles.titleButton}
         activeOpacity={0.5}
+        disabled={!onTitlePressed}
         onPress={event => {
           onTitlePressed?.(event.nativeEvent.pageY - event.nativeEvent.locationY)
         }}>
@@ -37,13 +38,15 @@ const SectionListHeader = (props: Props) => {
         )}
       </TouchableOpacity>
 
-      <SecondaryButton
-        label={buttonText}
-        style={styles.button}
-        onPress={() => {
-          onButtonPressed?.()
-        }}
-      />
+      {buttonText && (
+        <SecondaryButton
+          label={buttonText}
+          style={styles.button}
+          onPress={() => {
+            onButtonPressed?.()
+          }}
+        />
+      )}
     </View>
   )
 }

@@ -2,11 +2,13 @@ import {createDailyExercise, DailyExercise} from '@data/models/DailyExercise'
 import {Exercise} from '@data/models/Exercise'
 import {createSet, ExerciseSet} from '@data/models/ExerciseSet'
 import {createWorkoutDay, WorkoutDay} from '@data/models/WorkoutDay'
+import {findWorkoutDay} from '@service/workouts/findWorkoutDay'
 import offlineWorkoutStorageService from '@service/workouts/OfflineWorkoutStorageService'
 import syncOfflineWorkouts from '@service/workouts/syncOfflineWorkouts'
 import {syncWorkoutDay} from '@service/workouts/syncWorkoutDay'
 import {useSessionStore} from '@store/session/useSessionStore'
 import CrashUtility from '@utility/CrashUtility'
+import {compareIsoDateStrings, endOfDayIsoUTC} from '@utility/DateUtility'
 import {create} from 'zustand'
 import {immer} from 'zustand/middleware/immer'
 
@@ -14,6 +16,7 @@ export type DailyWorkoutState = {
   currentWorkoutDay: WorkoutDay | null
   isInitializing: boolean
   initCurrentWorkoutDay: (userId: string | null) => Promise<void>
+  loadWorkoutDay: (dateIso: string, userId: string | null) => Promise<void>
   addDailyExercise: (exercise: Exercise) => boolean
   deleteDailyExercise: (dailyExerciseId: string) => void
   updateDailyExercises: (dailyExercises: DailyExercise[]) => void
@@ -69,6 +72,12 @@ const useDailyWorkoutEntryStore = create<DailyWorkoutState>()(
         }
       },
 
+      loadWorkoutDay: async (dateIso, userId) => {
+        const workoutDay = await findWorkoutDay(dateIso, userId ?? '')
+
+        set({currentWorkoutDay: workoutDay})
+      },
+
       addDailyExercise: exercise => {
         let wasAdded = true
 
@@ -83,7 +92,11 @@ const useDailyWorkoutEntryStore = create<DailyWorkoutState>()(
             return
           }
 
-          if (workout.dailyExercises.length === 0 && !workout.startedAt) {
+          // The workout timer only exists for a live session — editing a past
+          // day must never start it
+          const isToday = compareIsoDateStrings(workout.date, useSessionStore.getState().sessionStartDateIso)
+
+          if (isToday && workout.dailyExercises.length === 0 && !workout.startedAt) {
             workout.startedAt = Date.now()
           }
 
@@ -166,7 +179,14 @@ const useDailyWorkoutEntryStore = create<DailyWorkoutState>()(
           if (fields.durationSeconds !== undefined) setItem.durationSeconds = fields.durationSeconds
           if (fields.distanceMeters !== undefined) setItem.distanceMeters = fields.distanceMeters
           setItem.setNumber = isCompleted ? (entry?.sets.length || 0) + 1 : null
-          setItem.completedAt = isCompleted ? new Date().toISOString() : null
+
+          // Sets backfilled onto a past day are stamped with the end of that
+          // day, not now — the timestamp must never attribute the set to the
+          // wrong calendar day (history, records, "latest sets" all live
+          // server-side)
+          const isToday = compareIsoDateStrings(workout.date, useSessionStore.getState().sessionStartDateIso)
+
+          setItem.completedAt = isCompleted ? (isToday ? new Date().toISOString() : endOfDayIsoUTC(workout.date)) : null
         })
 
         persist()

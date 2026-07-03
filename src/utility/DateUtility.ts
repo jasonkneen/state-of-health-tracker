@@ -31,6 +31,24 @@ export const compareIsoDateStrings = (a: string, b: string): boolean => {
   }
 }
 
+export const getPreviousDayISO = (isoDate: string): string => {
+  const [year, month, day] = isoDate.split('T')[0].split('-').map(Number)
+
+  return format(new Date(year, month - 1, day - 1), 'yyyy-MM-dd')
+}
+
+// UTC so that date-slicing the timestamp (server-side or client-side) always
+// yields the same calendar day it was built from
+export const endOfDayIsoUTC = (isoDate: string): string => `${isoDate.split('T')[0]}T23:59:59.000Z`
+
+// Builds the date from its parts so 'yyyy-MM-dd' isn't parsed as UTC midnight,
+// which would display the previous calendar day in UTC+ timezones
+export const formatIsoDayMonthDay = (isoDate: string): string => {
+  const [year, month, day] = isoDate.split('T')[0].split('-').map(Number)
+
+  return format(new Date(year, month - 1, day), 'EEEE, LLLL do')
+}
+
 export const formatDateToMonthDay = (date: string | number): string => format(new Date(date), 'M/d')
 
 export const formatDateToMonthDayName = (date: string | number): string => format(new Date(date), 'MMM d')

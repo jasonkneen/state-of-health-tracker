@@ -1,7 +1,7 @@
 import {WorkoutDay} from '@data/models/WorkoutDay'
 import {saveWorkoutDay} from '@queries/api/workouts/saveWorkoutDay'
 import {updateWorkoutDay} from '@queries/api/workouts/updateWorkoutDay'
-import {compareIsoDateStrings} from '@utility/DateUtility'
+import {compareIsoDateStrings, getPreviousDayISO} from '@utility/DateUtility'
 import {isServerFailureError} from '@utility/isServerFailureError'
 
 import offlineWorkoutStorageService from './OfflineWorkoutStorageService'
@@ -10,6 +10,8 @@ import offlineWorkoutStorageService from './OfflineWorkoutStorageService'
  * Attempts to sync all unsynced workouts that are not from today.
  * - If a workout syncs successfully, marks it as synced.
  * - If a workout fails 3 times, deletes it.
+ * Synced workouts from yesterday onward are kept locally so the workout
+ * day pager can load them without a network round-trip.
  * @param todayISO - ISO date string (e.g., '2025-10-20')
  */
 export default async function syncOfflineWorkouts(todayISO: string) {
@@ -54,5 +56,5 @@ export default async function syncOfflineWorkouts(todayISO: string) {
     }
   }
 
-  await offlineWorkoutStorageService.deleteAllSynced()
+  await offlineWorkoutStorageService.deleteAllSynced(getPreviousDayISO(todayISO))
 }

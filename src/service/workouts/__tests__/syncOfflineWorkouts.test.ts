@@ -159,11 +159,11 @@ describe('syncOfflineWorkouts', () => {
     )
   })
 
-  test('calls deleteAllSynced at the end', async () => {
+  test('calls deleteAllSynced at the end, keeping days from yesterday onward', async () => {
     mockReadAll.mockResolvedValue([])
 
     await syncOfflineWorkouts(TODAY_ISO)
 
-    expect(mockDeleteAllSynced).toHaveBeenCalled()
+    expect(mockDeleteAllSynced).toHaveBeenCalledWith('2025-10-19')
   })
 })

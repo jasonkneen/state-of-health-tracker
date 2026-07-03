@@ -62,12 +62,14 @@ class OfflineWorkoutStorageService {
     })
   }
 
-  async deleteAllSynced(): Promise<void> {
+  async deleteAllSynced(keepOnOrAfterDate?: string): Promise<void> {
     await this.withLock(async () => {
       const allWorkouts = await this.readAll()
-      const unsyncedOnly = allWorkouts.filter(w => !w.synced)
+      const remaining = allWorkouts.filter(
+        w => !w.synced || (!!keepOnOrAfterDate && w.date.split('T')[0] >= keepOnOrAfterDate)
+      )
 
-      const json = JSON.stringify(unsyncedOnly)
+      const json = JSON.stringify(remaining)
 
       await FileSystem.writeAsStringAsync(TEMP_FILE_PATH, json)
       await FileSystem.moveAsync({
@@ -75,7 +77,7 @@ class OfflineWorkoutStorageService {
         to: OFFLINE_FILE_PATH
       })
 
-      console.log(`Deleted ${allWorkouts.length - unsyncedOnly.length} synced workout(s).`)
+      console.log(`Deleted ${allWorkouts.length - remaining.length} synced workout(s).`)
     })
   }
 

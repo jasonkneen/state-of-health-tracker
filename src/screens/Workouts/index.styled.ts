@@ -1,9 +1,19 @@
-import {StyleSheet} from 'react-native'
+import {StyleSheet, ViewStyle} from 'react-native'
 
 import BorderRadius from '@styles/borderRadius'
 import FontSize from '@styles/fontSize'
 import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
+
+export const pagerPage = (width: number): ViewStyle => ({
+  width,
+  flex: 1
+})
+
+export const pagerPageContent = (isInteractive: boolean): ViewStyle => ({
+  flex: 1,
+  pointerEvents: isInteractive ? 'auto' : 'none'
+})
 
 export default StyleSheet.create({
   root: {
@@ -94,9 +104,8 @@ export default StyleSheet.create({
     right: Spacing.GUTTER,
     bottom: Spacing.LARGE
   },
-  loadingIndicator: {
-    height: 250,
-    position: 'relative',
-    backgroundColor: 'transparent'
+  backToTodayChevron: {
+    paddingVertical: Spacing.X_SMALL,
+    paddingLeft: Spacing.SMALL
   }
 })

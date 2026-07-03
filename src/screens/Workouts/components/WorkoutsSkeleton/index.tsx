@@ -31,7 +31,11 @@ const setCellWidth =
     Spacing.X_SMALL * 3) /
   2
 
-const WorkoutsSkeleton = () => {
+interface Props {
+  readonly dateLabel?: string
+}
+
+const WorkoutsSkeleton = ({dateLabel}: Props) => {
   const columnLabelRow = () => (
     <View style={styles.labelRow}>
       <View style={styles.setNumberColumn}>
@@ -82,7 +86,9 @@ const WorkoutsSkeleton = () => {
 
   return (
     <SafeAreaView>
-      <Text style={styles.dateOverline}>{formatDayMonthDay(useSessionStore.getState().sessionStartDate)}</Text>
+      <Text style={styles.dateOverline}>
+        {dateLabel ?? formatDayMonthDay(useSessionStore.getState().sessionStartDate)}
+      </Text>
 
       <Text style={styles.workoutTitle}>{WORKOUT_SCREEN_TITLE}</Text>
 

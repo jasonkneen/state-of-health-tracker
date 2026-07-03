@@ -2,14 +2,17 @@ import {isMonday} from 'date-fns'
 
 import {
   compareIsoDateStrings,
+  endOfDayIsoUTC,
   formatDate,
   formatDateToMonthDay,
   formatDateToMonthDayName,
   formatDateUTC,
   formatDayMonthDay,
+  formatIsoDayMonthDay,
   getCurrentDate,
   getCurrentDateISO,
   getLast7Mondays,
+  getPreviousDayISO,
   ONE_DAY_MS
 } from '../DateUtility'
 
@@ -185,5 +188,51 @@ describe('formatDayMonthDay', () => {
 
   it('returns an empty string for an empty string', () => {
     expect(formatDayMonthDay('')).toBe('')
+  })
+})
+
+describe('getPreviousDayISO', () => {
+  it('returns the previous day within a month', () => {
+    expect(getPreviousDayISO('2026-07-03')).toBe('2026-07-02')
+  })
+
+  it('rolls back across a month boundary', () => {
+    expect(getPreviousDayISO('2026-07-01')).toBe('2026-06-30')
+  })
+
+  it('rolls back across a year boundary', () => {
+    expect(getPreviousDayISO('2026-01-01')).toBe('2025-12-31')
+  })
+
+  it('handles leap years', () => {
+    expect(getPreviousDayISO('2024-03-01')).toBe('2024-02-29')
+  })
+
+  it('ignores a time component', () => {
+    expect(getPreviousDayISO('2026-07-03T15:30:00')).toBe('2026-07-02')
+  })
+})
+
+describe('endOfDayIsoUTC', () => {
+  it('returns the UTC end of day for a plain ISO date', () => {
+    expect(endOfDayIsoUTC('2026-07-02')).toBe('2026-07-02T23:59:59.000Z')
+  })
+
+  it('ignores an existing time component', () => {
+    expect(endOfDayIsoUTC('2026-07-02T08:15:00.000Z')).toBe('2026-07-02T23:59:59.000Z')
+  })
+
+  it('date-slices back to the same calendar day', () => {
+    expect(endOfDayIsoUTC('2026-07-02').slice(0, 10)).toBe('2026-07-02')
+  })
+})
+
+describe('formatIsoDayMonthDay', () => {
+  it('formats an ISO date with weekday, month and ordinal day', () => {
+    expect(formatIsoDayMonthDay('2026-07-03')).toBe('Friday, July 3rd')
+  })
+
+  it('formats without a UTC day-shift regardless of time component', () => {
+    expect(formatIsoDayMonthDay('2026-07-03T23:59:00')).toBe('Friday, July 3rd')
   })
 })

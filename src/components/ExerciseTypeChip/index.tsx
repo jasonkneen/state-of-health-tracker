@@ -3,9 +3,11 @@ import React from 'react'
 import {View} from 'react-native'
 
 import {ExerciseTypeEnum} from '@data/models/Exercise'
-import {Ionicons, MaterialCommunityIcons, FontAwesome5, Entypo} from '@expo/vector-icons'
+import {Entypo, FontAwesome5, Ionicons, MaterialCommunityIcons} from '@expo/vector-icons'
+
 import {Theme} from '@styles/theme'
-import BorderRadius from '@styles/borderRadius'
+
+import styles from './index.styled'
 
 interface Props {
   exerciseType: ExerciseTypeEnum
@@ -24,7 +26,7 @@ const ExerciseTypeChip = (props: Props) => {
         return <MaterialCommunityIcons name="jump-rope" size={24} color={Theme.colors.white} />
       case ExerciseTypeEnum.WEIGHTED:
         return (
-          <FontAwesome5 style={{marginTop: -3}} name="weight-hanging" size={20} color={Theme.colors.white} />
+          <FontAwesome5 style={styles.weightedIcon} name="weight-hanging" size={20} color={Theme.colors.white} />
         )
       case ExerciseTypeEnum.MACHINE:
         return <MaterialCommunityIcons name="stairs-up" size={24} color={Theme.colors.white} />
@@ -34,23 +36,11 @@ const ExerciseTypeChip = (props: Props) => {
         return <Entypo name="stopwatch" size={24} color={Theme.colors.white} />
       case ExerciseTypeEnum.BARBELL:
       default:
-        return <Ionicons style={{marginRight: -2}} name="barbell" size={24} color={Theme.colors.white} />
+        return <Ionicons style={styles.barbellIcon} name="barbell" size={24} color={Theme.colors.white} />
     }
   }
 
-  return (
-    <View
-      style={{
-        width: 40,
-        height: 40,
-        backgroundColor: Theme.colors.secondary,
-        borderRadius: BorderRadius.CHIP,
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-      {getIcon()}
-    </View>
-  )
+  return <View style={styles.container}>{getIcon()}</View>
 }
 
 export default ExerciseTypeChip

@@ -8,7 +8,6 @@ import SecondaryButton from '../SecondaryButton'
 import styles from './index.styled'
 
 interface Props {
-  readonly key: string
   readonly title: string
   readonly buttonText?: string
   readonly onTitlePressed?: (topMargin?: number) => void
@@ -16,10 +15,10 @@ interface Props {
 }
 
 const SectionListHeader = (props: Props) => {
-  const {key, title, onTitlePressed, buttonText, onButtonPressed} = props
+  const {title, onTitlePressed, buttonText, onButtonPressed} = props
 
   return (
-    <View style={styles.header} key={key}>
+    <View style={styles.header}>
       <TouchableOpacity
         style={styles.titleButton}
         activeOpacity={0.5}

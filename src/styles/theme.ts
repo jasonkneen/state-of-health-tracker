@@ -31,6 +31,7 @@ export const Theme = {
     fireOrange: '#FF9502',
     error: '#da2839',
     errorLight: '#fc7784',
-    success: '#34b471'
+    success: '#34b471',
+    overlayBackdrop: '#000'
   }
 }

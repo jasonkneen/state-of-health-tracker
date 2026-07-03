@@ -56,8 +56,11 @@ const BarGraph = (props: Props) => {
     </View>
   )
 
-  const xAxisBarBlock = (height: number, label: string) => (
-    <View style={[styles.barBlockBase, barBlock(height), getBarStyleForLabel?.(label)]} />
+  const xAxisBarBlock = (height: number, label: string, barKey?: string) => (
+    <View
+      key={barKey}
+      style={[styles.barBlockBase, barBlock(height), getBarStyleForLabel?.(label)]}
+    />
   )
 
   const xAxisBar = (label: string) => {
@@ -67,7 +70,7 @@ const BarGraph = (props: Props) => {
       const incrementItemHeight = graphHeight / yAxisMaxValue - 3
 
       for (let i = 0; i < getNumberOfItemsForLabel(label); i++) {
-        bars.push(xAxisBarBlock(incrementItemHeight, label))
+        bars.push(xAxisBarBlock(incrementItemHeight, label, `${label}-${i}`))
       }
     }
 

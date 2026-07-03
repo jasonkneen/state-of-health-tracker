@@ -2,8 +2,16 @@ import React, {useState} from 'react'
 
 import {Keyboard} from 'react-native'
 
-import {Theme} from '@styles/theme'
 import DropDownPicker from 'react-native-dropdown-picker'
+
+import {
+  arrowIcon,
+  dropDownContainer,
+  pickerControl,
+  pickerPlaceholder,
+  pickerText,
+  tickIcon
+} from './index.styled'
 
 export interface PickerItem {
   label: string
@@ -33,25 +41,14 @@ const Picker = (props: Props) => {
   return (
     <DropDownPicker
       onPress={() => Keyboard.dismiss()}
-      dropDownContainerStyle={{
-        width,
-        backgroundColor: Theme.colors.secondary,
-        borderWidth: 0,
-        height: 300
-      }}
+      dropDownContainerStyle={dropDownContainer(width)}
       // @ts-ignore
-      arrowIconStyle={{tintColor: Theme.colors.secondaryLighter}}
+      arrowIconStyle={arrowIcon}
       // @ts-ignore
-      tickIconStyle={{tintColor: Theme.colors.secondaryLighter}}
-      textStyle={{color: Theme.colors.white}}
-      placeholderStyle={{color: Theme.colors.white}}
-      style={{
-        width,
-        opacity: disabled ? 0.25 : 1,
-        elevation: 100,
-        backgroundColor: Theme.colors.secondary,
-        borderWidth: 0
-      }}
+      tickIconStyle={tickIcon}
+      textStyle={pickerText}
+      placeholderStyle={pickerPlaceholder}
+      style={pickerControl(width, disabled)}
       placeholder={placeholder}
       disabled={disabled}
       open={open}

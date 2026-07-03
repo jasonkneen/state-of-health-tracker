@@ -4,9 +4,8 @@ import {KeyboardTypeOptions} from 'react-native'
 
 import Text from '@components/Text'
 import TextInput from '@components/TextInput'
-import {Theme} from '@styles/theme'
-import FontSize from '@styles/fontSize'
-import Spacing from '@styles/spacing'
+
+import styles from './index.styled'
 
 export interface TextInputProps {
   header: string
@@ -35,24 +34,11 @@ const TextInputWithHeader = (props: TextInputProps) => {
 
   return (
     <>
-      <Text
-        style={{
-          zIndex: -1,
-          alignSelf: 'flex-start',
-          fontSize: FontSize.PARAGRAPH,
-          fontWeight: 'bold',
-          marginTop: Spacing.SMALL,
-          marginBottom: Spacing.SMALL
-        }}>
-        {header}
-      </Text>
+      <Text style={styles.header}>{header}</Text>
 
       <TextInput
         returnKeyType="done"
-        style={{
-          width: '100%',
-          zIndex: -1
-        }}
+        style={styles.input}
         maxLength={maxLength}
         keyboardType={keyboardType}
         onChangeText={onChangeText}
@@ -61,18 +47,7 @@ const TextInputWithHeader = (props: TextInputProps) => {
         secureTextEntry={secureTextEntry}
       />
 
-      {showError && (
-        <Text
-          style={{
-            color: Theme.colors.error,
-            alignSelf: 'flex-start',
-            fontSize: FontSize.PARAGRAPH,
-            fontWeight: '300',
-            marginTop: Spacing.XX_SMALL
-          }}>
-          {errorMessage}
-        </Text>
-      )}
+      {showError && <Text style={styles.error}>{errorMessage}</Text>}
     </>
   )
 }

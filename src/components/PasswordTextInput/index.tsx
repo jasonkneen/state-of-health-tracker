@@ -3,8 +3,12 @@ import React, {useState} from 'react'
 import {TouchableOpacity} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
+
+import TextInputWithHeader, {TextInputProps} from '@components/TextInputWithHeader'
+
 import {Theme} from '@styles/theme'
-import TextInputWithHeader, {TextInputProps} from './TextInputWithHeader'
+
+import styles from './index.styled'
 
 const PasswordTextInput = (props: TextInputProps) => {
   const {secureTextEntry} = props
@@ -13,18 +17,12 @@ const PasswordTextInput = (props: TextInputProps) => {
   return (
     <>
       <TouchableOpacity
-        style={{zIndex: 100}}
+        style={styles.toggleButton}
         onPress={() => {
           setSecureEntry(!secureEntry)
         }}>
         <Ionicons
-          style={{
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            marginTop: 50,
-            marginRight: 12
-          }}
+          style={styles.toggleIcon}
           name={secureEntry ? 'eye' : 'eye-off'}
           size={24}
           color={Theme.colors.white}

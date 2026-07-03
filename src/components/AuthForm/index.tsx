@@ -5,12 +5,14 @@ import {Alert, TouchableOpacity, View} from 'react-native'
 import {isAuthError} from '@data/models/AuthError'
 import {useNavigation} from '@react-navigation/native'
 import useAuthStore from '@store/auth/useAuthStore'
-import Text from '@components/Text'
-import {Theme} from '@styles/theme'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 
+import PasswordTextInput from '@components/PasswordTextInput'
+import PrimaryButton from '@components/PrimaryButton'
+import Text from '@components/Text'
+import TextInputWithHeader from '@components/TextInputWithHeader'
+
 import Screens from '@constants/screens'
-import Spacing from '@styles/spacing'
 import {
   AUTH_FORM_CONFIRM_PASSWORD_HEADER,
   AUTH_FORM_EMAIL_ERROR,
@@ -25,12 +27,11 @@ import {
   AUTH_REGISTER_BUTTON_TEXT,
   OKAY_BUTTON_TEXT
 } from '@constants/strings'
+import Spacing from '@styles/spacing'
 
-import PasswordTextInput from './PasswordTextInput'
-import PrimaryButton from './PrimaryButton'
-import TextInputWithHeader from './TextInputWithHeader'
-import {Navigation} from '../navigation/types'
-import {isValidEmail, isValidPassword} from '../utility/AccountUtility'
+import {Navigation} from '../../navigation/types'
+import {isValidEmail, isValidPassword} from '../../utility/AccountUtility'
+import styles from './index.styled'
 
 interface Props {
   readonly authType: 'register' | 'log-in'
@@ -108,74 +109,60 @@ const AuthForm = (props: Props) => {
   }
 
   return (
-    <>
-      <KeyboardAwareScrollView
-        keyboardShouldPersistTaps="always"
-        extraHeight={Spacing.X_LARGE}
-        keyboardDismissMode="interactive">
-        <View
-          style={{
-            marginTop: Spacing.MEDIUM,
-            marginHorizontal: Spacing.MEDIUM
-          }}>
-          <TextInputWithHeader
-            maxLength={64}
-            header={AUTH_FORM_EMAIL_HEADER}
-            value={email}
-            onChangeText={onEmailTextChanged}
-            errorMessage={AUTH_FORM_EMAIL_ERROR}
-            showError={showEmailError}
-          />
+    <KeyboardAwareScrollView
+      keyboardShouldPersistTaps="always"
+      extraHeight={Spacing.X_LARGE}
+      keyboardDismissMode="interactive">
+      <View style={styles.formContainer}>
+        <TextInputWithHeader
+          maxLength={64}
+          header={AUTH_FORM_EMAIL_HEADER}
+          value={email}
+          onChangeText={onEmailTextChanged}
+          errorMessage={AUTH_FORM_EMAIL_ERROR}
+          showError={showEmailError}
+        />
 
+        <PasswordTextInput
+          header={AUTH_FORM_PASSWORD_HEADER}
+          value={password}
+          onChangeText={onPasswordTextChanged}
+          errorMessage={AUTH_FORM_PASSWORD_ERROR}
+          showError={showPasswordError}
+          secureTextEntry={true}
+        />
+
+        {authType === 'register' && (
           <PasswordTextInput
-            header={AUTH_FORM_PASSWORD_HEADER}
-            value={password}
-            onChangeText={onPasswordTextChanged}
-            errorMessage={AUTH_FORM_PASSWORD_ERROR}
-            showError={showPasswordError}
+            header={AUTH_FORM_CONFIRM_PASSWORD_HEADER}
+            value={confirmPassword}
+            onChangeText={onPasswordConfirmTextChanged}
+            errorMessage={AUTH_FORM_PASSWORD_CONFIRM_ERROR}
+            showError={showConfirmPasswordError}
             secureTextEntry={true}
           />
+        )}
 
-          {authType === 'register' && (
-            <PasswordTextInput
-              header={AUTH_FORM_CONFIRM_PASSWORD_HEADER}
-              value={confirmPassword}
-              onChangeText={onPasswordConfirmTextChanged}
-              errorMessage={AUTH_FORM_PASSWORD_CONFIRM_ERROR}
-              showError={showConfirmPasswordError}
-              secureTextEntry={true}
-            />
-          )}
+        <PrimaryButton
+          style={styles.submitButton}
+          isLoading={isAttemptingAuth}
+          label={authType === 'register' ? AUTH_REGISTER_BUTTON_TEXT : AUTH_LOG_IN_BUTTON_TEXT}
+          onPress={handleAuth}
+        />
 
-          <PrimaryButton
-            style={{marginTop: Spacing.LARGE}}
-            isLoading={isAttemptingAuth}
-            label={authType === 'register' ? AUTH_REGISTER_BUTTON_TEXT : AUTH_LOG_IN_BUTTON_TEXT}
-            onPress={handleAuth}
-          />
-
-          {authType === 'log-in' && (
-            <TouchableOpacity
-              onPress={() => {
-                goBack()
-                setTimeout(() => {
-                  push('Auth', {screen: Screens.REGISTER})
-                }, 300)
-              }}>
-              <Text
-                style={{
-                  marginTop: Spacing.LARGE,
-                  alignSelf: 'center',
-                  fontWeight: 'bold',
-                  color: Theme.colors.secondaryLighter
-                }}>
-                {AUTH_NO_ACCOUNT_BUTTON_TEXT}
-              </Text>
-            </TouchableOpacity>
-          )}
-        </View>
-      </KeyboardAwareScrollView>
-    </>
+        {authType === 'log-in' && (
+          <TouchableOpacity
+            onPress={() => {
+              goBack()
+              setTimeout(() => {
+                push('Auth', {screen: Screens.REGISTER})
+              }, 300)
+            }}>
+            <Text style={styles.registerLink}>{AUTH_NO_ACCOUNT_BUTTON_TEXT}</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    </KeyboardAwareScrollView>
   )
 }
 

@@ -3,9 +3,12 @@ import React from 'react'
 import {Animated, TouchableOpacity, ViewProps} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
-import {Theme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler'
+
+import {Theme} from '@styles/theme'
+
+import {deleteActionAnimated, deleteActionTouchable} from './index.styled'
 
 interface Props extends ViewProps {
   readonly deleteIconRightMargin?: number
@@ -37,7 +40,7 @@ const SwipeDeleteListItem = (props: Props) => {
         onActivated={() => {
           onSwipeActivated?.()
         }}
-        renderRightActions={(progressAnimatedValue, dragAnimatedValue) => {
+        renderRightActions={(_progressAnimatedValue, dragAnimatedValue) => {
           const translation = dragAnimatedValue.interpolate({
             inputRange: [0, 75, 75, 100],
             outputRange: [-20, 0, 0, 1]
@@ -45,21 +48,12 @@ const SwipeDeleteListItem = (props: Props) => {
 
           return (
             <TouchableOpacity
-              style={{
-                width: '25%',
-                marginRight: deleteIconRightMargin
-              }}
+              style={deleteActionTouchable(deleteIconRightMargin)}
               onPress={() => {
                 onDeletePressed?.()
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
               }}>
-              <Animated.View
-                style={{
-                  height: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'flex-end',
-                  transform: [{translateX: translation}]
-                }}>
+              <Animated.View style={deleteActionAnimated(translation)}>
                 <Ionicons name="trash-bin-outline" size={24} color={Theme.colors.error} />
               </Animated.View>
             </TouchableOpacity>

@@ -49,6 +49,14 @@
         }
       ],
       [
+        "@kingstinct/react-native-healthkit",
+        {
+          "NSHealthShareUsageDescription": "State of Health reads your step count to show your daily activity and estimate calories burned.",
+          "NSHealthUpdateUsageDescription": false,
+          "background": false
+        }
+      ],
+      [
         "expo-splash-screen",
         {
           "image": "./assets/splash.png",

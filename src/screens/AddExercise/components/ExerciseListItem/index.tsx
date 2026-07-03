@@ -31,8 +31,9 @@ const ExerciseListItem = ({exercise}: Props) => {
 
   const subtitle = formatExerciseSubtitle(exercise.exerciseType, exercise.exerciseBodyPart)
 
-  const {addDailyExercise} = useDailyWorkoutEntryStore()
-  const {setSelectedExerciseId, setSelectedSubTab} = useProgressStore()
+  const addDailyExercise = useDailyWorkoutEntryStore(state => state.addDailyExercise)
+  const setSelectedExerciseId = useProgressStore(state => state.setSelectedExerciseId)
+  const setSelectedSubTab = useProgressStore(state => state.setSelectedSubTab)
 
   const onAddToWorkoutPressed = () => {
     closeGlobalBottomSheet()

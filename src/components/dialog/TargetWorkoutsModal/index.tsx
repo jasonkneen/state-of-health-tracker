@@ -21,7 +21,8 @@ import styles from './index.styled'
 const TargetWorkoutsModal = (props: BaseInputModalProps) => {
   const {isVisible, onDismissed} = props
 
-  const {setTargetWorkouts, targetWorkouts} = useUserData()
+  const targetWorkouts = useUserData(state => state.targetWorkouts)
+  const setTargetWorkouts = useUserData(state => state.setTargetWorkouts)
 
   const [value, setValue] = useState(targetWorkouts.toString())
   const [showError, setShowError] = useState(false)

@@ -31,7 +31,7 @@ const TemplateListItem = ({template}: Props) => {
   const {goBack} = useNavigation()
 
   const {data: allExercises = []} = useExercisesQuery()
-  const {addDailyExercise} = useDailyWorkoutEntryStore()
+  const addDailyExercise = useDailyWorkoutEntryStore(state => state.addDailyExercise)
 
   const templateExercises = template.exerciseIds
     .map(id => allExercises.find(exercise => exercise.id === id))

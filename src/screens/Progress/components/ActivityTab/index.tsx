@@ -60,7 +60,8 @@ const SEGMENT_LABELS: Record<CalorieSegmentKey, string> = {
 }
 
 const ActivityTab = () => {
-  const {stepGoal, targetCalories} = useUserData()
+  const stepGoal = useUserData(state => state.stepGoal)
+  const targetCalories = useUserData(state => state.targetCalories)
   const summary = useActivitySummary()
   const {mutateAsync: requestPermissionsAsync, isPending: isRequestingPermissions} =
     useRequestHealthPermissionsMutation()

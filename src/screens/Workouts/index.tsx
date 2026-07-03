@@ -80,9 +80,12 @@ const WorkoutsScreen = () => {
   const navigation = useNavigation<Navigation>()
   const {width} = useWindowDimensions()
 
-  const {userId} = useAuthStore()
-  const {initCurrentWorkoutDay, isInitializing, currentWorkoutDay, deleteSet, updateDailyExercises} =
-    useDailyWorkoutEntryStore()
+  const userId = useAuthStore(state => state.userId)
+  const initCurrentWorkoutDay = useDailyWorkoutEntryStore(state => state.initCurrentWorkoutDay)
+  const isInitializing = useDailyWorkoutEntryStore(state => state.isInitializing)
+  const currentWorkoutDay = useDailyWorkoutEntryStore(state => state.currentWorkoutDay)
+  const deleteSet = useDailyWorkoutEntryStore(state => state.deleteSet)
+  const updateDailyExercises = useDailyWorkoutEntryStore(state => state.updateDailyExercises)
   const {mutateAsync: completeWorkout, isPending: isCompletingWorkout} = useCompleteWorkoutMutation()
   const {todayIso, yesterdayIso, selectedDateIso, isLoadingDay, previewByDate, selectDay} = useWorkoutDayPager()
 

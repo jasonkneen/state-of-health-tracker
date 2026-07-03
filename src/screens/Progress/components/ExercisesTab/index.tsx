@@ -33,7 +33,8 @@ const ExercisesTab = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ProgressStackParamList>>()
   const {data: exercises = []} = useExercisesQuery()
   const {data: records = [], isLoading: isRecordsLoading} = useRecordsQuery()
-  const {selectedExerciseId, setSelectedExerciseId} = useProgressStore()
+  const selectedExerciseId = useProgressStore(state => state.selectedExerciseId)
+  const setSelectedExerciseId = useProgressStore(state => state.setSelectedExerciseId)
 
   const isSelectionValid = exercises.some(exercise => exercise.id === selectedExerciseId)
 

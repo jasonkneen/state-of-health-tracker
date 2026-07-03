@@ -22,7 +22,8 @@ const SUB_TAB_OPTIONS = [
 ]
 
 const ProgressScreen = () => {
-  const {selectedSubTab: subTab, setSelectedSubTab: setSubTab} = useProgressStore()
+  const subTab = useProgressStore(state => state.selectedSubTab)
+  const setSubTab = useProgressStore(state => state.setSelectedSubTab)
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>

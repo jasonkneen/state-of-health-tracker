@@ -23,7 +23,8 @@ const MAX_GOAL_INPUT_LENGTH = 5
 const GoalWeightModal = (props: BaseInputModalProps) => {
   const {isVisible, onDismissed} = props
 
-  const {goalWeight, setGoalWeight} = useUserData()
+  const goalWeight = useUserData(state => state.goalWeight)
+  const setGoalWeight = useUserData(state => state.setGoalWeight)
 
   const [value, setValue] = useState(goalWeight?.toString() ?? '')
   const [showError, setShowError] = useState(false)

@@ -35,6 +35,7 @@ const HomeTabs = () => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
+        freezeOnBlur: true,
         sceneStyle: {backgroundColor: Theme.colors.background},
         tabBarIcon: ({color}) => {
           if (route.name === 'WorkoutsStack') return <BarbellIcon color={color} size={TAB_ICON_SIZE} />

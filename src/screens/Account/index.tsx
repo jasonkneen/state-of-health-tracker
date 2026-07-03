@@ -42,9 +42,11 @@ import styles from './index.styled'
 const TILE_ICON_SIZE = 17
 
 const AccountScreen = () => {
-  const {targetWorkouts, targetCalories} = useUserData()
+  const targetWorkouts = useUserData(state => state.targetWorkouts)
+  const targetCalories = useUserData(state => state.targetCalories)
 
-  const {userEmail, isAuthed} = useAuthStore()
+  const userEmail = useAuthStore(state => state.userEmail)
+  const isAuthed = useAuthStore(state => state.isAuthed)
   const {data: summariesData} = useWorkoutSummariesInfiniteQuery()
   const {data: weighIns = []} = useWeighInsQuery()
   const {data: totalRuns = 0} = useRunsTotalQuery()

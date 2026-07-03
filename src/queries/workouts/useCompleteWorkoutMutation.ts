@@ -15,7 +15,8 @@ const pushWorkoutDay = (workout: WorkoutDay) => (workout.id ? updateWorkoutDay(w
 export const useCompleteWorkoutMutation = () => {
   const queryClient = useQueryClient()
 
-  const {markWorkoutCompleted, setWorkoutDayId} = useDailyWorkoutEntryStore()
+  const markWorkoutCompleted = useDailyWorkoutEntryStore(state => state.markWorkoutCompleted)
+  const setWorkoutDayId = useDailyWorkoutEntryStore(state => state.setWorkoutDayId)
 
   return useMutation({
     mutationKey: mutationKeys.completeWorkout,

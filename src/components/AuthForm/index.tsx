@@ -49,7 +49,9 @@ const AuthForm = (props: Props) => {
   const [showPasswordError, setShowPasswordError] = useState(false)
   const [showConfirmPasswordError, setShowConfirmPasswordError] = useState(false)
 
-  const {isAttemptingAuth, loginUser, registerUser} = useAuthStore()
+  const isAttemptingAuth = useAuthStore(state => state.isAttemptingAuth)
+  const loginUser = useAuthStore(state => state.loginUser)
+  const registerUser = useAuthStore(state => state.registerUser)
 
   const validate = (): boolean => {
     let isValid = true

@@ -20,7 +20,8 @@ import styles from './index.styled'
 const SelectExerciseScreen = () => {
   const {goBack} = useNavigation()
   const {data: allExercises = []} = useExercisesQuery()
-  const {selectedExerciseId, setSelectedExerciseId} = useProgressStore()
+  const selectedExerciseId = useProgressStore(state => state.selectedExerciseId)
+  const setSelectedExerciseId = useProgressStore(state => state.setSelectedExerciseId)
   const [searchText, setSearchText] = useState('')
 
   const exercises = filterExercises(allExercises, searchText)

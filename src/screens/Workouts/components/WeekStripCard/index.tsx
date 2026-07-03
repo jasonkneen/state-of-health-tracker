@@ -28,7 +28,7 @@ const WeekStripCard = () => {
   const revealProgress = useSharedValue(0)
   const graphContentHeight = useSharedValue(0)
 
-  const {targetWorkouts} = useUserData()
+  const targetWorkouts = useUserData(state => state.targetWorkouts)
   const {data: weeklySummaries = []} = useWeeklyWorkoutSummariesQuery()
 
   const targetWorkoutsPerWeek = Math.max(targetWorkouts, 1)

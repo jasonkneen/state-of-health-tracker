@@ -63,7 +63,7 @@ const AddExerciseScreen = () => {
   const {data: templates = []} = useTemplatesQuery()
   const {data: exercises = []} = useExercisesQuery()
   const {mutateAsync: createExercise, isPending: isCreatingExercise} = useCreateExerciseMutation()
-  const {addDailyExercise} = useDailyWorkoutEntryStore()
+  const addDailyExercise = useDailyWorkoutEntryStore(state => state.addDailyExercise)
 
   // Deletes are triggered from the global bottom sheet, so this screen reflects
   // their in-flight state through the mutation cache rather than local state

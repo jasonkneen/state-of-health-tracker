@@ -8,9 +8,9 @@ import {useSessionStore} from '@store/session/useSessionStore'
 import {getPreviousDayISO} from '@utility/DateUtility'
 
 export const useWorkoutDayPager = () => {
-  const {userId} = useAuthStore()
-  const {sessionStartDateIso: todayIso} = useSessionStore()
-  const {loadWorkoutDay} = useDailyWorkoutEntryStore()
+  const userId = useAuthStore(state => state.userId)
+  const todayIso = useSessionStore(state => state.sessionStartDateIso)
+  const loadWorkoutDay = useDailyWorkoutEntryStore(state => state.loadWorkoutDay)
 
   const yesterdayIso = getPreviousDayISO(todayIso)
 

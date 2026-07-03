@@ -20,7 +20,8 @@ import AccountListItem from './AccountListItem'
 const AuthListItem = () => {
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false)
 
-  const {isAuthed, logoutUser} = useAuthStore()
+  const isAuthed = useAuthStore(state => state.isAuthed)
+  const logoutUser = useAuthStore(state => state.logoutUser)
 
   return (
     <>

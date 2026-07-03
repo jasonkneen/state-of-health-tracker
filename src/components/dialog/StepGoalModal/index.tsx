@@ -8,29 +8,31 @@ import {isNumber} from '@utility/TextUtility'
 import {showToast} from '@components/toast/util/ShowToast'
 
 import {
-  TARGET_CALORIE_MODAL_BODY,
-  TARGET_CALORIE_MODAL_BUTTON,
-  TARGET_CALORIE_MODAL_ERROR,
-  TARGET_CALORIE_MODAL_TITLE,
-  TOAST_TARGET_CALORIES_SET
+  STEP_GOAL_MODAL_BODY,
+  STEP_GOAL_MODAL_BUTTON,
+  STEP_GOAL_MODAL_ERROR,
+  STEP_GOAL_MODAL_TITLE,
+  TOAST_STEP_GOAL_SET
 } from '@constants/strings'
 
 import BaseInputModalProps from '../BaseInputModalProps'
 import InputModal from '../InputModal'
 import styles from './index.styled'
 
-const TargetCaloriesModal = (props: BaseInputModalProps) => {
+const MAX_STEP_GOAL_DIGITS = 5
+
+const StepGoalModal = (props: BaseInputModalProps) => {
   const {isVisible, onDismissed} = props
 
-  const targetCalories = useUserData(state => state.targetCalories)
-  const setTargetCalories = useUserData(state => state.setTargetCalories)
+  const stepGoal = useUserData(state => state.stepGoal)
+  const setStepGoal = useUserData(state => state.setStepGoal)
 
-  const [value, setValue] = useState(targetCalories.toString())
+  const [value, setValue] = useState(stepGoal.toString())
   const [showError, setShowError] = useState(false)
 
   useEffect(() => {
-    setValue(targetCalories.toString())
-  }, [targetCalories])
+    setValue(stepGoal.toString())
+  }, [stepGoal])
 
   const onPrimaryButtonPressed = () => {
     if (!isNumber(value) || parseInt(value, 10) <= 0) {
@@ -42,27 +44,27 @@ const TargetCaloriesModal = (props: BaseInputModalProps) => {
     onDismissed()
     setShowError(false)
 
-    setTargetCalories(parseInt(value, 10))
-    showToast('success', TOAST_TARGET_CALORIES_SET, value)
+    setStepGoal(parseInt(value, 10))
+    showToast('success', TOAST_STEP_GOAL_SET, value)
   }
 
   return (
     <InputModal
-      title={TARGET_CALORIE_MODAL_TITLE}
-      subtitle={TARGET_CALORIE_MODAL_BODY}
-      icon={<MaterialCommunityIcons style={styles.icon} name="fire" size={96} color={Theme.colors.fireOrange} />}
-      value={value ?? targetCalories.toString()}
+      title={STEP_GOAL_MODAL_TITLE}
+      subtitle={STEP_GOAL_MODAL_BODY}
+      icon={<MaterialCommunityIcons style={styles.icon} name="walk" size={96} color={Theme.colors.accentGreen} />}
+      value={value ?? stepGoal.toString()}
       isVisible={isVisible}
       onCancel={onDismissed}
-      buttonText={TARGET_CALORIE_MODAL_BUTTON}
+      buttonText={STEP_GOAL_MODAL_BUTTON}
       onChangeText={setValue}
       showError={showError}
-      errorMessage={TARGET_CALORIE_MODAL_ERROR}
+      errorMessage={STEP_GOAL_MODAL_ERROR}
       keyboardType="number-pad"
-      maxInputLength={4}
+      maxInputLength={MAX_STEP_GOAL_DIGITS}
       onButtonPressed={onPrimaryButtonPressed}
     />
   )
 }
 
-export default TargetCaloriesModal
+export default StepGoalModal

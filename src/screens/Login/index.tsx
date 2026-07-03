@@ -43,7 +43,8 @@ const LogInScreen = () => {
   const [showEmailError, setShowEmailError] = useState(false)
   const [showPasswordError, setShowPasswordError] = useState(false)
 
-  const {isAttemptingAuth, loginUser} = useAuthStore()
+  const isAttemptingAuth = useAuthStore(state => state.isAttemptingAuth)
+  const loginUser = useAuthStore(state => state.loginUser)
 
   const validate = (): boolean => {
     const emailIsValid = isValidEmail(email)

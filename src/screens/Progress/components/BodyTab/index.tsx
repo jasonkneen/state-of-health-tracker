@@ -78,7 +78,7 @@ const listSwipeItemManager = new ListSwipeItemManager()
 const BodyTab = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ProgressStackParamList>>()
   const {data: weighIns = []} = useWeighInsQuery()
-  const {goalWeight} = useUserData()
+  const goalWeight = useUserData(state => state.goalWeight)
   const {mutateAsync: deleteWeighInAsync} = useDeleteWeighInMutation()
 
   const [isGoalModalVisible, setIsGoalModalVisible] = useState(false)

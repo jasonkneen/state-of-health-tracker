@@ -55,7 +55,7 @@ interface Props {
 }
 
 const WeeklyBarGraph = ({isRevealed, onTargetPressed}: Props) => {
-  const {targetWorkouts} = useUserData()
+  const targetWorkouts = useUserData(state => state.targetWorkouts)
   const {data: weeklySummaries = []} = useWeeklyWorkoutSummariesQuery()
 
   const targetWorkoutsPerWeek = Math.max(targetWorkouts, 1)

@@ -33,7 +33,7 @@ interface Props {
 const ExerciseListItemDropdown = (props: Props) => {
   const {isVisible, dropdownTopMargin, onDropdownCancel, dailyExerciseToDelete, onReorganize} = props
 
-  const {deleteDailyExercise} = useDailyWorkoutEntryStore()
+  const deleteDailyExercise = useDailyWorkoutEntryStore(state => state.deleteDailyExercise)
 
   const [isDeleteConfirmationModalVisible, setIsDeleteConfirmationModalVisible] = useState(false)
   const [doDelete, setDoDelete] = useState(false)

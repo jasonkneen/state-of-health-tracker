@@ -22,7 +22,7 @@ const ExerciseSectionListHeader = (props: Props) => {
   const [dropdownTopMargin, setDropdownTopMargin] = useState(0)
   const [dropdownDailyExercise, setDropdownDailyExercise] = useState<DailyExercise>()
 
-  const {addSet} = useDailyWorkoutEntryStore()
+  const addSet = useDailyWorkoutEntryStore(state => state.addSet)
 
   const dropdown = () => (
     <ExerciseListItemDropdown

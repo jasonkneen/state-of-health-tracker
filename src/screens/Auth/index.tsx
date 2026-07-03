@@ -15,7 +15,7 @@ const RootAuthScreen = () => {
   const {push} = useNavigation<Navigation>()
   const [isRendered, setIsRendered] = useState(false)
 
-  const {initAuth} = useAuthStore()
+  const initAuth = useAuthStore(state => state.initAuth)
 
   useEffect(() => {
     // When a user is already signed in, initAuth flips isAuthed and the root

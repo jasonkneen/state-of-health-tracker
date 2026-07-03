@@ -40,7 +40,7 @@ interface Props {
 const ExerciseSetListItem = (props: Props) => {
   const {exercise, set, index, swipeableRef, onSwipeActivated, onDeletePressed} = props
 
-  const {completeSet} = useDailyWorkoutEntryStore()
+  const completeSet = useDailyWorkoutEntryStore(state => state.completeSet)
 
   const checkScale = useSharedValue(1)
 

@@ -20,7 +20,7 @@ import AccountListItem from './AccountListItem'
 const DeleteAccountListItem = () => {
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false)
 
-  const {deleteUser} = useAuthStore()
+  const deleteUser = useAuthStore(state => state.deleteUser)
 
   return (
     <>

@@ -11,10 +11,11 @@ import {
   TOAST_TARGET_WORKOUTS_SET
 } from '@constants/strings'
 
-import BaseInputModalProps from './BaseInputModalProps'
-import InputModal from './InputModal'
-import {isNumber} from '../../utility/TextUtility'
-import {showToast} from '../toast/util/ShowToast'
+import BaseInputModalProps from '../BaseInputModalProps'
+import InputModal from '../InputModal'
+import {isNumber} from '../../../utility/TextUtility'
+import {showToast} from '../../toast/util/ShowToast'
+import styles from './index.styled'
 
 const TargetWorkoutsModal = (props: BaseInputModalProps) => {
   const {isVisible, onDismissed} = props
@@ -50,7 +51,7 @@ const TargetWorkoutsModal = (props: BaseInputModalProps) => {
       subtitle={TARGET_WORKOUTS_MODAL_BODY}
       icon={
         <MaterialCommunityIcons
-          style={{alignSelf: 'center'}}
+          style={styles.icon}
           name="weight-lifter"
           size={96}
           color={Theme.colors.secondaryLighter}

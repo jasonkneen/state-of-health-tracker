@@ -5,7 +5,6 @@ import useUserData from '@store/userData/useUserData'
 import {Theme} from '@styles/theme'
 import {showToast} from '@components/toast/util/ShowToast'
 
-import Spacing from '@styles/spacing'
 import {
   CURRENT_WEIGHT_MODAL_BODY,
   CURRENT_WEIGHT_MODAL_BUTTON,
@@ -14,9 +13,10 @@ import {
   TOAST_WEIGHT_UPDATED
 } from '@constants/strings'
 
-import BaseModalProps from './BaseInputModalProps'
-import InputModal from './InputModal'
-import {isNumber} from '../../utility/TextUtility'
+import BaseModalProps from '../BaseInputModalProps'
+import InputModal from '../InputModal'
+import {isNumber} from '../../../utility/TextUtility'
+import styles from './index.styled'
 
 const WeightEntryModal = (props: BaseModalProps) => {
   const {isVisible, onDismissed} = props
@@ -47,15 +47,7 @@ const WeightEntryModal = (props: BaseModalProps) => {
       title={CURRENT_WEIGHT_MODAL_TITLE}
       subtitle={CURRENT_WEIGHT_MODAL_BODY}
       icon={
-        <FontAwesome5
-          name="weight"
-          size={96}
-          style={{
-            alignSelf: 'center',
-            marginBottom: Spacing.X_SMALL
-          }}
-          color={Theme.colors.secondaryLighter}
-        />
+        <FontAwesome5 name="weight" size={96} style={styles.icon} color={Theme.colors.secondaryLighter} />
       }
       value={value}
       isVisible={isVisible}

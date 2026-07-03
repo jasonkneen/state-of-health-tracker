@@ -3,18 +3,16 @@ import React, {useEffect} from 'react'
 import {TouchableOpacity, View} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
-import Shadow from '@styles/shadow'
-import Text from '@components/Text'
-import TextInput from '@components/TextInput'
-import {Theme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import Modal from 'react-native-modal'
 
 import PrimaryButton from '@components/PrimaryButton'
+import Text from '@components/Text'
+import TextInput from '@components/TextInput'
 
-import BorderRadius from '@styles/borderRadius'
-import FontSize from '@styles/fontSize'
-import Spacing from '@styles/spacing'
+import {Theme} from '@styles/theme'
+
+import styles from './index.styled'
 
 interface Props {
   isVisible: boolean
@@ -69,44 +67,16 @@ const InputModal = (props: Props) => {
       animationOutTiming={50}
       backdropTransitionInTiming={100}
       onBackdropPress={onCancel}>
-      <View
-        style={{
-          ...Shadow.MODAL,
-          padding: Spacing.MEDIUM,
-          borderRadius: BorderRadius.MODAL,
-          width: '90%',
-          paddingBottom: Spacing.LARGE,
-          backgroundColor: Theme.colors.primary,
-          alignSelf: 'center'
-        }}>
+      <View style={styles.modalCard}>
         <TouchableOpacity onPress={onCancel}>
-          <Ionicons name="close" size={24} color={Theme.colors.white} style={{alignSelf: 'flex-end'}} />
+          <Ionicons name="close" size={24} color={Theme.colors.white} style={styles.closeIcon} />
         </TouchableOpacity>
 
-        <Text
-          style={{
-            alignSelf: 'center',
-            fontSize: FontSize.H2,
-            paddingBottom: Spacing.SMALL,
-            fontWeight: 'bold'
-          }}>
-          {title}
-        </Text>
+        <Text style={styles.title}>{title}</Text>
 
         {icon && icon}
 
-        {subtitle && (
-          <Text
-            style={{
-              alignSelf: 'center',
-              fontSize: FontSize.PARAGRAPH,
-              paddingTop: Spacing.X_SMALL,
-              paddingBottom: Spacing.MEDIUM,
-              fontWeight: '300'
-            }}>
-            {subtitle}
-          </Text>
-        )}
+        {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
 
         <TextInput
           placeholder={placeholder}
@@ -117,20 +87,9 @@ const InputModal = (props: Props) => {
           maxLength={maxInputLength}
         />
 
-        {showError && (
-          <Text
-            style={{
-              color: Theme.colors.error,
-              alignSelf: 'flex-start',
-              fontSize: FontSize.PARAGRAPH,
-              fontWeight: '300',
-              marginTop: Spacing.XX_SMALL
-            }}>
-            {errorMessage}
-          </Text>
-        )}
+        {showError && <Text style={styles.errorMessage}>{errorMessage}</Text>}
 
-        <PrimaryButton style={{marginTop: Spacing.MEDIUM}} label={buttonText} onPress={onButtonPressed} />
+        <PrimaryButton style={styles.button} label={buttonText} onPress={onButtonPressed} />
       </View>
     </Modal>
   )

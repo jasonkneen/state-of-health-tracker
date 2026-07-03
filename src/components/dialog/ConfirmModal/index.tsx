@@ -2,18 +2,16 @@ import React, {useEffect} from 'react'
 
 import {View} from 'react-native'
 
-import Shadow from '@styles/shadow'
-import Text from '@components/Text'
-import {Theme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import Modal from 'react-native-modal'
 
 import PrimaryButton from '@components/PrimaryButton'
+import Text from '@components/Text'
 
-import BorderRadius from '@styles/borderRadius'
-import FontSize from '@styles/fontSize'
-import Spacing from '@styles/spacing'
 import {CANCEL_BUTTON_TEXT, DELETE_BUTTON_TEXT} from '@constants/strings'
+import {Theme} from '@styles/theme'
+
+import styles, {confirmButtonBackground} from './index.styled'
 
 interface Props {
   confirmationTitle: string
@@ -54,49 +52,16 @@ const ConfirmModal = (props: Props) => {
       onBackdropPress={() => {
         onCancel()
       }}>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center'
-        }}
-        pointerEvents="box-none">
-        <View
-          style={{
-            ...Shadow.MODAL,
-            borderRadius: BorderRadius.MODAL,
-            backgroundColor: Theme.colors.primary,
-            alignSelf: 'center',
-            width: '90%',
-            padding: Spacing.LARGE
-          }}>
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: FontSize.H2,
-              fontWeight: 'bold'
-            }}>
-            {confirmationTitle}
-          </Text>
+      <View style={styles.container} pointerEvents="box-none">
+        <View style={styles.modalCard}>
+          <Text style={styles.title}>{confirmationTitle}</Text>
 
-          <Text
-            style={{
-              marginTop: Spacing.MEDIUM,
-              textAlign: 'center'
-            }}>
-            {confirmationBody}
-          </Text>
+          <Text style={styles.body}>{confirmationBody}</Text>
 
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: Spacing.LARGE
-            }}>
+          <View style={styles.buttonRow}>
             <PrimaryButton
               width="48%"
-              style={{
-                padding: Spacing.X_SMALL
-              }}
+              style={styles.button}
               label={CANCEL_BUTTON_TEXT}
               onPress={() => {
                 onCancel()
@@ -105,10 +70,7 @@ const ConfirmModal = (props: Props) => {
 
             <PrimaryButton
               width="48%"
-              style={{
-                backgroundColor: confirmButtonColor,
-                padding: Spacing.X_SMALL
-              }}
+              style={[styles.button, confirmButtonBackground(confirmButtonColor)]}
               label={confirmButtonText}
               onPress={() => {
                 onConfirmPressed()

@@ -2,19 +2,16 @@ import React, {useEffect, useState} from 'react'
 
 import {TouchableOpacity, View} from 'react-native'
 
-import Shadow from '@styles/shadow'
-import Text from '@components/Text'
-import {Theme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import DraggableFlatList, {RenderItemParams, ScaleDecorator} from 'react-native-draggable-flatlist'
 import Modal from 'react-native-modal'
 
 import PrimaryButton from '@components/PrimaryButton'
+import Text from '@components/Text'
 
-import BorderRadius from '@styles/borderRadius'
-import FontSize from '@styles/fontSize'
-import Spacing from '@styles/spacing'
 import {CANCEL_BUTTON_TEXT, CONFIRM_BUTTON_TEXT, REORG_MODAL_BODY} from '@constants/strings'
+
+import styles from './index.styled'
 
 interface Props<T> {
   readonly isVisible: boolean
@@ -42,19 +39,7 @@ const ReorganizeModal = <T extends object>(props: Props<T>) => {
   const renderItem = ({item, drag, isActive}: RenderItemParams<T>) => (
     <ScaleDecorator>
       <TouchableOpacity activeOpacity={0.75} delayLongPress={50} onLongPress={drag} disabled={isActive}>
-        <Text
-          style={{
-            textAlign: 'center',
-            marginLeft: Spacing.MEDIUM,
-            marginRight: Spacing.MEDIUM,
-            marginTop: 2,
-            marginBottom: 2,
-            fontSize: FontSize.H2,
-            fontWeight: 'bold',
-            color: Theme.colors.white
-          }}>
-          {getTitleForItem(item)}
-        </Text>
+        <Text style={styles.itemTitle}>{getTitleForItem(item)}</Text>
       </TouchableOpacity>
     </ScaleDecorator>
   )
@@ -71,32 +56,9 @@ const ReorganizeModal = <T extends object>(props: Props<T>) => {
       onBackdropPress={() => {
         onCancel?.()
       }}>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center'
-        }}
-        pointerEvents="box-none">
-        <View
-          style={{
-            ...Shadow.MODAL,
-            borderRadius: BorderRadius.MODAL,
-            backgroundColor: Theme.colors.primary,
-            alignSelf: 'center',
-            width: '90%',
-            padding: Spacing.MEDIUM
-          }}>
-          <Text
-            style={{
-              textAlign: 'center',
-              marginLeft: Spacing.MEDIUM,
-              marginRight: Spacing.MEDIUM,
-              marginBottom: Spacing.MEDIUM,
-              fontSize: FontSize.H3,
-              fontWeight: '300'
-            }}>
-            {REORG_MODAL_BODY}
-          </Text>
+      <View style={styles.container} pointerEvents="box-none">
+        <View style={styles.modalCard}>
+          <Text style={styles.body}>{REORG_MODAL_BODY}</Text>
 
           <DraggableFlatList
             data={listData}
@@ -105,17 +67,10 @@ const ReorganizeModal = <T extends object>(props: Props<T>) => {
             renderItem={renderItem}
           />
 
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: Spacing.LARGE
-            }}>
+          <View style={styles.buttonRow}>
             <PrimaryButton
               width="48%"
-              style={{
-                padding: Spacing.X_SMALL
-              }}
+              style={styles.button}
               label={CANCEL_BUTTON_TEXT}
               onPress={() => {
                 onCancel?.()
@@ -124,10 +79,7 @@ const ReorganizeModal = <T extends object>(props: Props<T>) => {
 
             <PrimaryButton
               width="48%"
-              style={{
-                backgroundColor: Theme.colors.secondaryLighter,
-                padding: Spacing.X_SMALL
-              }}
+              style={styles.confirmButton}
               label={CONFIRM_BUTTON_TEXT}
               onPress={() => {
                 onConfirm?.(listData)

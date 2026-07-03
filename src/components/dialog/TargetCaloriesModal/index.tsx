@@ -13,9 +13,10 @@ import {
   TOAST_TARGET_CALORIES_SET
 } from '@constants/strings'
 
-import BaseInputModalProps from './BaseInputModalProps'
-import InputModal from './InputModal'
-import {isNumber} from '../../utility/TextUtility'
+import BaseInputModalProps from '../BaseInputModalProps'
+import InputModal from '../InputModal'
+import {isNumber} from '../../../utility/TextUtility'
+import styles from './index.styled'
 
 const TargetCaloriesModal = (props: BaseInputModalProps) => {
   const {isVisible, onDismissed} = props
@@ -48,12 +49,7 @@ const TargetCaloriesModal = (props: BaseInputModalProps) => {
       title={TARGET_CALORIE_MODAL_TITLE}
       subtitle={TARGET_CALORIE_MODAL_BODY}
       icon={
-        <MaterialCommunityIcons
-          style={{alignSelf: 'center'}}
-          name="fire"
-          size={96}
-          color={Theme.colors.fireOrange}
-        />
+        <MaterialCommunityIcons style={styles.icon} name="fire" size={96} color={Theme.colors.fireOrange} />
       }
       value={value ?? targetCalories.toString()}
       isVisible={isVisible}

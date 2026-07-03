@@ -1,6 +1,6 @@
 import {create} from 'zustand'
 
-export type ProgressSubTab = 'exercises' | 'volume' | 'body'
+export type ProgressSubTab = 'exercises' | 'body' | 'activity'
 
 // Which sub-tab and exercise the Progress tab is charting — shared between
 // the Progress screen and entry points on other screens (Select Exercise

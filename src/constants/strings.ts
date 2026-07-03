@@ -537,15 +537,78 @@ export const PROGRESS_TITLE = 'Progress'
 
 export const PROGRESS_TAB_EXERCISES = 'Exercises'
 
-export const PROGRESS_TAB_VOLUME = 'Volume'
-
 export const PROGRESS_TAB_BODY = 'Body'
 
-export const PROGRESS_COMING_SOON_TITLE = 'Coming soon'
+export const PROGRESS_TAB_ACTIVITY = 'Activity'
 
-export const PROGRESS_VOLUME_COMING_SOON_SUBTITLE = "Weekly volume and muscle group breakdowns aren't tracked yet."
+export const ACTIVITY_STEPS_TODAY_LABEL = 'STEPS TODAY'
 
-export const PROGRESS_BODY_COMING_SOON_SUBTITLE = "Body weight tracking isn't set up yet."
+export const ACTIVITY_STEP_GOAL_TEXT = '/ %0'
+
+export const ACTIVITY_VS_AVG_TEXT = '%0% vs avg'
+
+export const ACTIVITY_CALORIE_BURN_LABEL = 'EST. CALORIE BURN · TODAY'
+
+export const ACTIVITY_KCAL_UNIT = 'kcal'
+
+export const ACTIVITY_LEGEND_LIFTS = 'Lifts'
+
+export const ACTIVITY_LEGEND_STEPS = 'Steps'
+
+export const ACTIVITY_LEGEND_RUNS = 'Runs'
+
+export const ACTIVITY_TARGETS_LABEL = 'TARGETS'
+
+export const ACTIVITY_TARGET_STEPS_LABEL = 'Steps'
+
+export const ACTIVITY_TARGET_INTAKE_LABEL = 'Intake'
+
+export const ACTIVITY_THIS_WEEK_HEADER = 'This week'
+
+export const ACTIVITY_WORKOUT_DAY_LABEL = 'Workout'
+
+export const ACTIVITY_REST_DAY_LABEL = 'Rest day'
+
+export const ACTIVITY_RUN_DAY_LABEL = 'Run day'
+
+export const ACTIVITY_ROW_META = '%0 steps · %1'
+
+export const ACTIVITY_ROW_KCAL = '%0 kcal'
+
+export const ACTIVITY_ROW_BREAKDOWN_LIFTS = '%0 lifts'
+
+export const ACTIVITY_ROW_BREAKDOWN_STEPS = '%0 steps'
+
+export const ACTIVITY_ROW_BREAKDOWN_RUNS = '%0 runs'
+
+export const ACTIVITY_ROW_STEPS_ONLY = 'steps only'
+
+export const ACTIVITY_EMPTY_WEEK_TEXT = 'Complete a workout or take a walk and your activity will show up here.'
+
+export const ACTIVITY_CONNECT_HEALTH_TITLE = 'Connect Apple Health'
+
+export const ACTIVITY_CONNECT_HEALTH_BODY = 'Allow step access so your daily movement counts toward your activity.'
+
+export const ACTIVITY_CONNECT_HEALTH_BUTTON = 'Connect'
+
+export const ACTIVITY_HEALTH_DENIED_TITLE = 'Step access is off'
+
+export const ACTIVITY_HEALTH_DENIED_BODY =
+  'Turn on step access in Settings → Health → Data Access & Devices to see your steps here.'
+
+export const ACTIVITY_HEALTH_DENIED_BUTTON = 'Open Settings'
+
+export const TOAST_HEALTH_CONNECT_FAILED = "Couldn't connect to Apple Health"
+
+export const STEP_GOAL_MODAL_TITLE = 'Daily Step Goal'
+
+export const STEP_GOAL_MODAL_BODY = 'How many steps are you aiming for each day?'
+
+export const STEP_GOAL_MODAL_ERROR = 'Please enter a value greater than 0'
+
+export const STEP_GOAL_MODAL_BUTTON = 'Set Goal'
+
+export const TOAST_STEP_GOAL_SET = 'Step goal set'
 
 export const PROGRESS_TOP_SET_LABEL = 'TOP SET'
 

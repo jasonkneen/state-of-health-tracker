@@ -9,7 +9,12 @@ export const queryKeys = {
   runsTotal: ['runsTotal'] as const,
   run: (runId: string) => ['run', runId] as const,
   weeklyRunSummary: ['weeklyRunSummary'] as const,
-  weighIns: ['weighIns'] as const
+  weighIns: ['weighIns'] as const,
+  activitySteps: ['activitySteps'] as const,
+  dailySteps: (days: number) => ['activitySteps', 'daily', days] as const,
+  hourlySteps: (days: number) => ['activitySteps', 'hourly', days] as const,
+  runWindowSteps: (runsKey: string) => ['activitySteps', 'runWindows', runsKey] as const,
+  healthAuthStatus: ['healthAuthStatus'] as const
 }
 
 export const mutationKeys = {
@@ -22,5 +27,6 @@ export const mutationKeys = {
   discardRun: ['discardRun'] as const,
   syncOfflineRuns: ['syncOfflineRuns'] as const,
   logWeighIn: ['logWeighIn'] as const,
-  deleteWeighIn: ['deleteWeighIn'] as const
+  deleteWeighIn: ['deleteWeighIn'] as const,
+  requestHealthPermissions: ['requestHealthPermissions'] as const
 }

@@ -6,9 +6,11 @@ type UserDataStore = {
   goalWeight: number | null
   targetWorkouts: number
   targetCalories: number
+  stepGoal: number
   setGoalWeight: (weight: number) => void
   setTargetWorkouts: (value: number) => void
   setTargetCalories: (value: number) => void
+  setStepGoal: (value: number) => void
 }
 
 const useUserDataStore = create<UserDataStore>()(
@@ -17,9 +19,11 @@ const useUserDataStore = create<UserDataStore>()(
       goalWeight: null,
       targetWorkouts: 5,
       targetCalories: 1800,
+      stepGoal: 10000,
       setGoalWeight: weight => set({goalWeight: weight}),
       setTargetWorkouts: value => set({targetWorkouts: value}),
-      setTargetCalories: value => set({targetCalories: value})
+      setTargetCalories: value => set({targetCalories: value}),
+      setStepGoal: value => set({stepGoal: value})
     }),
     {
       name: 'user-data-store',

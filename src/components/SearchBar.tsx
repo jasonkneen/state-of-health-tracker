@@ -3,9 +3,9 @@ import React, {useEffect, useState} from 'react'
 import {Keyboard, TouchableOpacity, View} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
-import {TextInput, useStyleTheme} from '@theme/Theme'
+import {TextInput, useStyleTheme} from '@styles/theme'
 
-import Spacing from '@constants/Spacing'
+import Spacing from '@styles/spacing'
 
 interface Props {
   placeholder?: string

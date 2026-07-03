@@ -1,4 +1,4 @@
-import Endpoints from '@constants/Endpoints'
+import Endpoints from '@constants/endpoints'
 import {WorkoutDay} from '@data/models/WorkoutDay'
 import {mapWorkoutDay} from '@data/converters/mapWorkoutDay'
 import {WorkoutDayResponse} from '@data/decoders/WorkoutDayDecoder'

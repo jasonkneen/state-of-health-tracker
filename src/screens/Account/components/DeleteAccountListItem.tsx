@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 
 import {Ionicons} from '@expo/vector-icons'
 import useAuthStore from '@store/auth/useAuthStore'
-import {useStyleTheme} from '@theme/Theme'
+import {useStyleTheme} from '@styles/theme'
 
 import ConfirmModal from '@components/dialog/ConfirmModal'
 import {showToast} from '@components/toast/util/ShowToast'
@@ -13,7 +13,7 @@ import {
   DELETE_ACCOUNT_ERROR,
   DELETE_ACCOUNT_LIST_ITEM,
   DELETE_BUTTON_TEXT
-} from '@constants/Strings'
+} from '@constants/strings'
 
 import AccountListItem from './AccountListItem'
 

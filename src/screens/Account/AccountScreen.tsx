@@ -7,12 +7,12 @@ import {useWorkoutSummariesInfiniteQuery} from '@queries/workouts/useWorkoutSumm
 import useAuthStore from '@store/auth/useAuthStore'
 import {useSessionStore} from '@store/session/useSessionStore'
 import useUserData from '@store/userData/useUserData'
-import {Text, useStyleTheme} from '@theme/Theme'
+import {Text, useStyleTheme} from '@styles/theme'
 
 import HorizontalDivider from '@components/HorizontalDivider'
 
-import FontSize from '@constants/FontSize'
-import Spacing from '@constants/Spacing'
+import FontSize from '@styles/fontSize'
+import Spacing from '@styles/spacing'
 import {
   ACCOUNT_AUTH_SECTION_TITLE,
   ACCOUNT_CURRENT_WEIGHT_LIST_ITEM,
@@ -24,7 +24,7 @@ import {
   ACCOUNT_TARGETS_SECTION_TITLE,
   ACCOUNT_TOTAL_DAYS_WORKOUTS_LIST_ITEM,
   ACCOUNT_WELCOME_TEXT
-} from '@constants/Strings'
+} from '@constants/strings'
 
 import AccountListItem from './components/AccountListItem'
 import AuthListItem from './components/AuthListItem'

@@ -5,13 +5,13 @@ import {TouchableOpacity} from 'react-native'
 import {Ionicons} from '@expo/vector-icons'
 import {useNavigation} from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
-import {useStyleTheme} from '@theme/Theme'
+import {useStyleTheme} from '@styles/theme'
 
 import RootAuthScreen from '@screens/Auth'
 import LogInScreen from '@screens/Login'
 import RegisterScreen from '@screens/Register'
 
-import Screens from '@constants/Screens'
+import Screens from '@constants/screens'
 
 import {Navigation} from './types'
 

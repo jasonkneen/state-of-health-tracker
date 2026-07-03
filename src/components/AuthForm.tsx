@@ -5,11 +5,11 @@ import {Alert, TouchableOpacity, View} from 'react-native'
 import {isAuthError} from '@data/models/AuthError'
 import {useNavigation} from '@react-navigation/native'
 import useAuthStore from '@store/auth/useAuthStore'
-import {Text, useStyleTheme} from '@theme/Theme'
+import {Text, useStyleTheme} from '@styles/theme'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 
-import Screens from '@constants/Screens'
-import Spacing from '@constants/Spacing'
+import Screens from '@constants/screens'
+import Spacing from '@styles/spacing'
 import {
   AUTH_FORM_CONFIRM_PASSWORD_HEADER,
   AUTH_FORM_EMAIL_ERROR,
@@ -23,7 +23,7 @@ import {
   AUTH_NO_ACCOUNT_BUTTON_TEXT,
   AUTH_REGISTER_BUTTON_TEXT,
   OKAY_BUTTON_TEXT
-} from '@constants/Strings'
+} from '@constants/strings'
 
 import PasswordTextInput from './PasswordTextInput'
 import PrimaryButton from './PrimaryButton'

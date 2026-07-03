@@ -3,9 +3,9 @@ import React from 'react'
 import {StyleProp, ViewStyle} from 'react-native'
 
 import {MaterialCommunityIcons} from '@expo/vector-icons'
-import {useStyleTheme} from '@theme/Theme'
+import {useStyleTheme} from '@styles/theme'
 
-import {CAL_LABEL} from '@constants/Strings'
+import {CAL_LABEL} from '@constants/strings'
 
 import Chip from './Chip'
 

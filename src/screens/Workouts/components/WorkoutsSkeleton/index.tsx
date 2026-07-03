@@ -3,13 +3,13 @@ import React from 'react'
 import {Dimensions, SafeAreaView, View} from 'react-native'
 
 import {useSessionStore} from '@store/session/useSessionStore'
-import {Text, useStyleTheme} from '@theme/Theme'
+import {Text, useStyleTheme} from '@styles/theme'
 
 import Skeleton from '@components/Skeleton'
 
-import BorderRadius from '@constants/BorderRadius'
-import Spacing from '@constants/Spacing'
-import {DAILY_WORKOUT_TITLE} from '@constants/Strings'
+import BorderRadius from '@styles/borderRadius'
+import Spacing from '@styles/spacing'
+import {DAILY_WORKOUT_TITLE} from '@constants/strings'
 
 import styles from './index.styled'
 import {formatDayMonthDay} from '../../../../utility/DateUtility'

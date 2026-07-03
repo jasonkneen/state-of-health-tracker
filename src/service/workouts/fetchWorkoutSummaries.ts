@@ -3,7 +3,7 @@ import {WorkoutSummary} from '@data/models/WorkoutSummary'
 import {httpGet} from '@service/http/httpUtil'
 import * as io from 'io-ts'
 
-import Endpoints from '@constants/Endpoints'
+import Endpoints from '@constants/endpoints'
 
 import CrashUtility from '../../utility/CrashUtility'
 

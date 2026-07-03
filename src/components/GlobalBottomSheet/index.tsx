@@ -4,7 +4,7 @@ import {ReactNode} from 'react'
 import {View, TouchableWithoutFeedback} from 'react-native'
 
 import BottomSheet from '@gorhom/bottom-sheet'
-import {useStyleTheme} from '@theme/Theme'
+import {useStyleTheme} from '@styles/theme'
 import {Subject} from 'rxjs'
 
 import styles from './index.styled'

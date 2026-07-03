@@ -13,7 +13,7 @@ import {useNavigation} from '@react-navigation/native'
 import useAuthStore from '@store/auth/useAuthStore'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
 import {useSessionStore} from '@store/session/useSessionStore'
-import {Text, useStyleTheme} from '@theme/Theme'
+import {Text, useStyleTheme} from '@styles/theme'
 
 import LoadingOverlay from '@components/LoadingOverlay'
 import {EmptyState} from '@components/PreviousEntryListItem'
@@ -21,7 +21,7 @@ import PrimaryButton from '@components/PrimaryButton'
 import SecondaryButton from '@components/SecondaryButton'
 import {SectionListFooter} from '@components/SectionListHeader'
 
-import Screens from '@constants/Screens'
+import Screens from '@constants/screens'
 import {
   ADD_EXERCISE_BUTTON_TEXT,
   DAILY_WORKOUT_TITLE,
@@ -29,7 +29,7 @@ import {
   EMPTY_DAILY_WORKOUT_TITLE,
   VIEW_PREVIOUS_WORKOUTS_BUTTON_TEXT,
   YOUR_EXERCISES_HEADER
-} from '@constants/Strings'
+} from '@constants/strings'
 
 import ExerciseSectionListHeader from './components/ExerciseSectionListHeader'
 import ExerciseSetListItem from './components/ExerciseSetListItem'

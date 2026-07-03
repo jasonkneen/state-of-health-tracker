@@ -5,7 +5,7 @@ import {TouchableOpacity, View} from 'react-native'
 import {Exercise} from '@data/models/Exercise'
 import {useNavigation} from '@react-navigation/native'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
-import {Text, useStyleTheme} from '@theme/Theme'
+import {Text, useStyleTheme} from '@styles/theme'
 
 import DeleteExerciseBottomSheet from '@screens/AddExercise/components/DeleteExerciseBottomSheet'
 
@@ -13,7 +13,7 @@ import ExerciseTypeChip from '@components/ExerciseTypeChip'
 import {openGlobalBottomSheet} from '@components/GlobalBottomSheet'
 import {showToast} from '@components/toast/util/ShowToast'
 
-import {TOAST_EXERCISE_ADDED, TOAST_EXERCISE_ALREADY_ADDED} from '@constants/Strings'
+import {TOAST_EXERCISE_ADDED, TOAST_EXERCISE_ALREADY_ADDED} from '@constants/strings'
 
 import styles from './index.styled'
 

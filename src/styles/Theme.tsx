@@ -12,9 +12,9 @@ import {
 import {DefaultTheme} from '@react-navigation/native'
 import {ColorSchemeName} from 'react-native/Libraries/Utilities/Appearance'
 
-import BorderRadius from '@constants/BorderRadius'
-import FontSize from '@constants/FontSize'
-import Spacing from '@constants/Spacing'
+import BorderRadius from '@styles/borderRadius'
+import FontSize from '@styles/fontSize'
+import Spacing from '@styles/spacing'
 
 const primary = '#1B1D2C'
 const primarySelected = '#27293d'

@@ -4,7 +4,7 @@ import {TextStyle, View, ViewStyle} from 'react-native'
 
 import {useWeeklyWorkoutSummariesQuery} from '@queries/workouts/useWeeklyWorkoutSummariesQuery'
 import useUserData from '@store/userData/useUserData'
-import {useStyleTheme} from '@theme/Theme'
+import {useStyleTheme} from '@styles/theme'
 
 import BarGraph from '@components/BarGraph'
 import TargetWorkoutsModal from '@components/dialog/TargetWorkoutsModal'
@@ -13,7 +13,7 @@ import {
   WEEKLY_WORKOUTS_GRAPH_LABEL1,
   WEEKLY_WORKOUTS_GRAPH_LABEL2,
   WEEKLY_WORKOUTS_GRAPH_TITLE
-} from '@constants/Strings'
+} from '@constants/strings'
 
 import {formatDateToMonthDay, getLast7Mondays} from '../../../utility/DateUtility'
 

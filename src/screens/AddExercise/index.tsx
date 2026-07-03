@@ -9,12 +9,12 @@ import {mutationKeys} from '@queries/keys'
 import {useTemplatesQuery} from '@queries/templates/useTemplatesQuery'
 import {useNavigation} from '@react-navigation/native'
 import {useIsMutating} from '@tanstack/react-query'
-import {Text} from '@theme/Theme'
+import {Text} from '@styles/theme'
 
 import LoadingOverlay from '@components/LoadingOverlay'
 import SecondaryButton from '@components/SecondaryButton'
 
-import Screens from '@constants/Screens'
+import Screens from '@constants/screens'
 import {
   CREATE_EXERCISE_BUTTON_TEXT,
   CREATE_TEMPLATE_BUTTON_TEXT,
@@ -22,7 +22,7 @@ import {
   NO_TEMPLATES_ADDED_TEXT,
   TEMPLATES_HEADER,
   YOUR_EXERCISES_HEADER
-} from '@constants/Strings'
+} from '@constants/strings'
 
 import ExerciseListItem from './components/ExerciseListItem'
 import ExerciseSearchBarButton from './components/SearchBarButton'

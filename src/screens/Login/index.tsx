@@ -2,12 +2,12 @@ import React from 'react'
 
 import {SafeAreaView, View} from 'react-native'
 
-import {Text} from '@theme/Theme'
+import {Text} from '@styles/theme'
 
 import AuthForm from '@components/AuthForm'
 import HorizontalDivider from '@components/HorizontalDivider'
 
-import {AUTH_TO_CONTINUE_DESC} from '@constants/Strings'
+import {AUTH_TO_CONTINUE_DESC} from '@constants/strings'
 
 import styles from './index.styled'
 

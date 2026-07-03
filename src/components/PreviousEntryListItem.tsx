@@ -2,11 +2,11 @@ import React from 'react'
 
 import {View} from 'react-native'
 
-import {Text, useStyleTheme} from '@theme/Theme'
+import {Text, useStyleTheme} from '@styles/theme'
 
-import BorderRadius from '@constants/BorderRadius'
-import FontSize from '@constants/FontSize'
-import Spacing from '@constants/Spacing'
+import BorderRadius from '@styles/borderRadius'
+import FontSize from '@styles/fontSize'
+import Spacing from '@styles/spacing'
 
 interface Props<T> {
   readonly subItems: T[]

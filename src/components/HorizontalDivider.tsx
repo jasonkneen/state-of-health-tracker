@@ -2,7 +2,7 @@ import React from 'react'
 
 import {View} from 'react-native'
 
-import {useStyleTheme} from '@theme/Theme'
+import {useStyleTheme} from '@styles/theme'
 
 const HorizontalDivider = () => (
   <View

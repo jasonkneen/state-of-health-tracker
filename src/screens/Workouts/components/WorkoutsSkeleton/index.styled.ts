@@ -1,12 +1,12 @@
 import {StyleSheet} from 'react-native'
 
-import Shadow from '@theme/Shadow'
+import Shadow from '@styles/shadow'
 
 import {BAR_GRAPH_MAX_HEIGHT} from '@components/BarGraph'
 
-import borderRadius from '@constants/BorderRadius'
-import FontSize from '@constants/FontSize'
-import Spacing from '@constants/Spacing'
+import borderRadius from '@styles/borderRadius'
+import FontSize from '@styles/fontSize'
+import Spacing from '@styles/spacing'
 
 export default StyleSheet.create({
   dateText: {

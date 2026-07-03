@@ -2,17 +2,17 @@ import React, {useEffect} from 'react'
 
 import {View} from 'react-native'
 
-import Shadow from '@theme/Shadow'
-import {Text, useStyleTheme} from '@theme/Theme'
+import Shadow from '@styles/shadow'
+import {Text, useStyleTheme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import Modal from 'react-native-modal'
 
 import PrimaryButton from '@components/PrimaryButton'
 
-import BorderRadius from '@constants/BorderRadius'
-import FontSize from '@constants/FontSize'
-import Spacing from '@constants/Spacing'
-import {CANCEL_BUTTON_TEXT, DELETE_BUTTON_TEXT} from '@constants/Strings'
+import BorderRadius from '@styles/borderRadius'
+import FontSize from '@styles/fontSize'
+import Spacing from '@styles/spacing'
+import {CANCEL_BUTTON_TEXT, DELETE_BUTTON_TEXT} from '@constants/strings'
 
 interface Props {
   confirmationTitle: string

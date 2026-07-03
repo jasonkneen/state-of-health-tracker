@@ -5,7 +5,7 @@ import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutE
 
 import SectionListHeader from '@components/SectionListHeader'
 
-import {ADD_SET_BUTTON_TEXT} from '@constants/Strings'
+import {ADD_SET_BUTTON_TEXT} from '@constants/strings'
 
 import ExerciseListItemDropdown from './ExerciseListItemDropdown'
 

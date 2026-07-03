@@ -5,13 +5,13 @@ import Constants from 'expo-constants'
 import {noop} from 'lodash'
 
 import BottomSheet from '@gorhom/bottom-sheet'
-import {Text, useStyleTheme} from '@theme/Theme'
+import {Text, useStyleTheme} from '@styles/theme'
 
 import {getMinimumAppVersion, initRemoteConfig} from '@service/remoteConfig/initRemoteConfig'
 import {closeGlobalBottomSheet} from '@components/GlobalBottomSheet'
 
 import PrimaryButton from '@components/PrimaryButton'
-import {UPDATE_APP_VERSION_BUTTON, UPDATE_APP_VERSION_TEXT, UPDATE_APP_VERSION_TITLE} from '@constants/Strings'
+import {UPDATE_APP_VERSION_BUTTON, UPDATE_APP_VERSION_TEXT, UPDATE_APP_VERSION_TITLE} from '@constants/strings'
 import {urls} from '@constants/urls'
 
 import {isVersionGreaterOrEqual} from '../../utility/compareVersions'

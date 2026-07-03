@@ -2,13 +2,13 @@ import React from 'react'
 
 import {Ionicons, MaterialCommunityIcons} from '@expo/vector-icons'
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
-import {useStyleTheme} from '@theme/Theme'
+import {useStyleTheme} from '@styles/theme'
 
 import AccountScreen from '@screens/Account/AccountScreen'
 // import DebugScreen from '@screens/debug/DebugScreen'
 
-import Screens from '@constants/Screens'
-import {WORKOUTS_TITLE} from '@constants/Strings'
+import Screens from '@constants/screens'
+import {WORKOUTS_TITLE} from '@constants/strings'
 
 import WorkoutsStack from './WorkoutsStack'
 

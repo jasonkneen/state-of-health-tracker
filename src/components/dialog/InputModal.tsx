@@ -3,16 +3,16 @@ import React, {useEffect} from 'react'
 import {TouchableOpacity, View} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
-import Shadow from '@theme/Shadow'
-import {Text, TextInput, useStyleTheme} from '@theme/Theme'
+import Shadow from '@styles/shadow'
+import {Text, TextInput, useStyleTheme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import Modal from 'react-native-modal'
 
 import PrimaryButton from '@components/PrimaryButton'
 
-import BorderRadius from '@constants//BorderRadius'
-import FontSize from '@constants/FontSize'
-import Spacing from '@constants/Spacing'
+import BorderRadius from '@styles/borderRadius'
+import FontSize from '@styles/fontSize'
+import Spacing from '@styles/spacing'
 
 interface Props {
   isVisible: boolean

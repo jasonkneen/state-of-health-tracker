@@ -5,16 +5,16 @@ import {TouchableOpacity, View} from 'react-native'
 import {Exercise} from '@data/models/Exercise'
 import {ExerciseSet} from '@data/models/ExerciseSet'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
-import {Text, TextInput, useStyleTheme} from '@theme/Theme'
+import {Text, TextInput, useStyleTheme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import {Swipeable} from 'react-native-gesture-handler'
 
 import SwipeDeleteListItem from '@components/SwipeDeleteListItem'
 
-import BorderRadius from '@constants/BorderRadius'
-import Spacing from '@constants/Spacing'
-import {LBS_LABEL, REPS_LABEL} from '@constants/Strings'
+import BorderRadius from '@styles/borderRadius'
+import Spacing from '@styles/spacing'
+import {LBS_LABEL, REPS_LABEL} from '@constants/strings'
 
 interface Props {
   readonly exercise: Exercise

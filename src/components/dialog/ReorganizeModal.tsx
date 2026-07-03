@@ -2,18 +2,18 @@ import React, {useEffect, useState} from 'react'
 
 import {TouchableOpacity, View} from 'react-native'
 
-import Shadow from '@theme/Shadow'
-import {Text, useStyleTheme} from '@theme/Theme'
+import Shadow from '@styles/shadow'
+import {Text, useStyleTheme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import DraggableFlatList, {RenderItemParams, ScaleDecorator} from 'react-native-draggable-flatlist'
 import Modal from 'react-native-modal'
 
 import PrimaryButton from '@components/PrimaryButton'
 
-import BorderRadius from '@constants/BorderRadius'
-import FontSize from '@constants/FontSize'
-import Spacing from '@constants/Spacing'
-import {CANCEL_BUTTON_TEXT, CONFIRM_BUTTON_TEXT, REORG_MODAL_BODY} from '@constants/Strings'
+import BorderRadius from '@styles/borderRadius'
+import FontSize from '@styles/fontSize'
+import Spacing from '@styles/spacing'
+import {CANCEL_BUTTON_TEXT, CONFIRM_BUTTON_TEXT, REORG_MODAL_BODY} from '@constants/strings'
 
 interface Props<T> {
   readonly isVisible: boolean

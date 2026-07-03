@@ -3,7 +3,7 @@ import React from 'react'
 import {Animated, TouchableOpacity, ViewProps} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
-import {useStyleTheme} from '@theme/Theme'
+import {useStyleTheme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler'
 

@@ -5,21 +5,21 @@ import {TouchableOpacity, View} from 'react-native'
 import {DailyExercise} from '@data/models/DailyExercise'
 import {Ionicons, MaterialCommunityIcons} from '@expo/vector-icons'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
-import {Text, useStyleTheme} from '@theme/Theme'
+import {Text, useStyleTheme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import Modal from 'react-native-modal'
 
 import ConfirmModal from '@components/dialog/ConfirmModal'
 import ReorganizeModal from '@components/dialog/ReorganizeModal'
 
-import Spacing from '@constants/Spacing'
+import Spacing from '@styles/spacing'
 import {
   DELETE_DAILY_EXERCISE_MODAL_BODY,
   DELETE_EXERCISE_MODAL_TITLE,
   DELETE_EXERCISE_BUTTON_TEXT,
   stringWithParameters,
   ORGANIZE_EXERCISES_BUTTON_TEXT
-} from '@constants/Strings'
+} from '@constants/strings'
 
 interface Props {
   readonly isVisible: boolean

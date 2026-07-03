@@ -2,18 +2,18 @@ import React, {useState} from 'react'
 
 import {FontAwesome5} from '@expo/vector-icons'
 import useUserData from '@store/userData/useUserData'
-import {useStyleTheme} from '@theme/Theme'
+import {useStyleTheme} from '@styles/theme'
 
 import {showToast} from '@components/toast/util/ShowToast'
 
-import Spacing from '@constants/Spacing'
+import Spacing from '@styles/spacing'
 import {
   CURRENT_WEIGHT_MODAL_BODY,
   CURRENT_WEIGHT_MODAL_BUTTON,
   CURRENT_WEIGHT_MODAL_ERROR,
   CURRENT_WEIGHT_MODAL_TITLE,
   TOAST_WEIGHT_UPDATED
-} from '@constants/Strings'
+} from '@constants/strings'
 
 import BaseModalProps from './BaseInputModalProps'
 import InputModal from './InputModal'

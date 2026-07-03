@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 
 import {MaterialCommunityIcons} from '@expo/vector-icons'
 import useUserData from '@store/userData/useUserData'
-import {useStyleTheme} from '@theme/Theme'
+import {useStyleTheme} from '@styles/theme'
 
 import {showToast} from '@components/toast/util/ShowToast'
 
@@ -12,7 +12,7 @@ import {
   TARGET_CALORIE_MODAL_ERROR,
   TARGET_CALORIE_MODAL_TITLE,
   TOAST_TARGET_CALORIES_SET
-} from '@constants/Strings'
+} from '@constants/strings'
 
 import BaseInputModalProps from './BaseInputModalProps'
 import InputModal from './InputModal'

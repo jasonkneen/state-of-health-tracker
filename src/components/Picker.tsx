@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 
 import {Keyboard} from 'react-native'
 
-import {useStyleTheme} from '@theme/Theme'
+import {useStyleTheme} from '@styles/theme'
 import DropDownPicker from 'react-native-dropdown-picker'
 
 export interface PickerItem {

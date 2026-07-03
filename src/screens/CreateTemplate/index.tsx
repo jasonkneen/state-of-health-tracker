@@ -7,7 +7,7 @@ import {MaterialCommunityIcons} from '@expo/vector-icons'
 import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useCreateTemplateMutation} from '@queries/templates/useCreateTemplateMutation'
 import {useNavigation} from '@react-navigation/native'
-import {Text, useStyleTheme} from '@theme/Theme'
+import {Text, useStyleTheme} from '@styles/theme'
 
 import ExerciseTypeChip from '@components/ExerciseTypeChip'
 import ListItem from '@components/ListItem'
@@ -16,7 +16,7 @@ import PrimaryButton from '@components/PrimaryButton'
 import SearchBar from '@components/SearchBar'
 import {showToast} from '@components/toast/util/ShowToast'
 
-import Spacing from '@constants/Spacing'
+import Spacing from '@styles/spacing'
 import {
   CREATE_TEMPLATE_NO_EXERCISES,
   NEXT_BUTTON_TEXT,
@@ -24,7 +24,7 @@ import {
   SELECT_EXERCISES_FOR_TEMPLATE_TITLE,
   TOAST_TEMPLATE_CREATED,
   TOAST_TEMPLATE_CREATION_ERROR
-} from '@constants/Strings'
+} from '@constants/strings'
 
 import CreateTemplateModal from './components/CreateTemplateModal'
 import styles from './index.styled'

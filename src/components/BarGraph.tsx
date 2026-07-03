@@ -2,11 +2,11 @@ import React from 'react'
 
 import {Dimensions, TextStyle, TouchableOpacity, View, ViewStyle} from 'react-native'
 
-import Shadow from '@theme/Shadow'
-import {Text, useStyleTheme} from '@theme/Theme'
+import Shadow from '@styles/shadow'
+import {Text, useStyleTheme} from '@styles/theme'
 
-import borderRadius from '@constants/BorderRadius'
-import Spacing from '@constants/Spacing'
+import borderRadius from '@styles/borderRadius'
+import Spacing from '@styles/spacing'
 
 interface Props {
   readonly barType?: 'solid' | 'increment'

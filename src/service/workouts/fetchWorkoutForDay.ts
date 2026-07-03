@@ -1,7 +1,7 @@
 import * as io from 'io-ts'
 
 import {httpGet} from '@service/http/httpUtil'
-import Endpoints from '@constants/Endpoints'
+import Endpoints from '@constants/endpoints'
 
 import {WorkoutDay} from '@data/models/WorkoutDay'
 import {mapWorkoutDay} from '@data/converters/mapWorkoutDay'

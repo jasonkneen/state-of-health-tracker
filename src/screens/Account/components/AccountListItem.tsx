@@ -3,14 +3,14 @@ import React, {useState} from 'react'
 import {TouchableOpacity, View} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
-import {Text, useStyleTheme} from '@theme/Theme'
+import {Text, useStyleTheme} from '@styles/theme'
 
 import TargetCaloriesModal from '@components/dialog/TargetCaloriesModal'
 import TargetWorkoutsModal from '@components/dialog/TargetWorkoutsModal'
 import WeightEntryModal from '@components/dialog/WeightEntryModal'
 import HorizontalDivider from '@components/HorizontalDivider'
 
-import Spacing from '@constants/Spacing'
+import Spacing from '@styles/spacing'
 
 interface Props {
   readonly clickable?: boolean

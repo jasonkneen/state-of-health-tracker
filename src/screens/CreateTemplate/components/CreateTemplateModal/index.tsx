@@ -10,7 +10,7 @@ import {
   TEMPLATE_MODAL_ERROR_TEXT,
   TEMPLATE_MODAL_PLACEHOLDER,
   TEMPLATE_MODAL_TITLE
-} from '@constants/Strings'
+} from '@constants/strings'
 
 interface Props extends BaseInputModalProps {
   exercises: Exercise[]

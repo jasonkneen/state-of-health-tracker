@@ -4,9 +4,9 @@ import {Image, View} from 'react-native'
 
 import {useNavigation} from '@react-navigation/native'
 import useAuthStore from '@store/auth/useAuthStore'
-import {useStyleTheme} from '@theme/Theme'
+import {useStyleTheme} from '@styles/theme'
 
-import Screens from '@constants/Screens'
+import Screens from '@constants/screens'
 
 import styles from './index.styled'
 import {Navigation} from '../../navigation/types'

@@ -2,7 +2,7 @@ import React from 'react'
 
 import {ActivityIndicator, View, ViewStyle} from 'react-native'
 
-import {useStyleTheme} from '@theme/Theme'
+import {useStyleTheme} from '@styles/theme'
 
 interface Props {
   style?: ViewStyle

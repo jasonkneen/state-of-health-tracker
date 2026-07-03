@@ -2,11 +2,11 @@ import React from 'react'
 
 import {TouchableOpacity, View} from 'react-native'
 
-import {Text, useStyleTheme} from '@theme/Theme'
+import {Text, useStyleTheme} from '@styles/theme'
 import {Swipeable} from 'react-native-gesture-handler'
 
-import BorderRadius from '@constants/BorderRadius'
-import Spacing from '@constants/Spacing'
+import BorderRadius from '@styles/borderRadius'
+import Spacing from '@styles/spacing'
 
 import SwipeDeleteListItem from './SwipeDeleteListItem'
 

@@ -6,7 +6,7 @@ import {Exercise} from '@data/models/Exercise'
 import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useNavigation, useRoute} from '@react-navigation/native'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
-import {Text, useStyleTheme} from '@theme/Theme'
+import {Text, useStyleTheme} from '@styles/theme'
 
 import ExerciseTypeChip from '@components/ExerciseTypeChip'
 import ListItem from '@components/ListItem'
@@ -18,7 +18,7 @@ import {
   TEMPLATE_START,
   TOAST_TEMPLATE_EXERCISES_ADDED,
   TOAST_TEMPLATE_EXERCISES_ADDED_BODY
-} from '@constants/Strings'
+} from '@constants/strings'
 
 import styles from './index.styled'
 import {Navigation, WorkoutTemplateRoute} from '../../navigation/types'

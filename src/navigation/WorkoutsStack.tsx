@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
-import {useStyleTheme} from '@theme/Theme'
+import {useStyleTheme} from '@styles/theme'
 
 import AddExerciseScreen from '@screens/AddExercise'
 import CreateExerciseScreen from '@screens/CreateExercise'
@@ -11,8 +11,8 @@ import SearchExercisesScreen from '@screens/SearchExercises'
 import WorkoutTemplateDetailScreen from '@screens/TemplateDetail'
 import WorkoutsScreen from '@screens/Workouts'
 
-import Screens from '@constants/Screens'
-import {PREVIOUS_WORKOUTS_TITLE} from '@constants/Strings'
+import Screens from '@constants/screens'
+import {PREVIOUS_WORKOUTS_TITLE} from '@constants/strings'
 
 const Stack = createNativeStackNavigator()
 

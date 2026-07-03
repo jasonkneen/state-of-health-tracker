@@ -5,7 +5,7 @@ import {TouchableOpacity, View} from 'react-native'
 import {ExerciseTemplate} from '@data/models/ExerciseTemplate'
 import {Ionicons} from '@expo/vector-icons'
 import {useDeleteTemplateMutation} from '@queries/templates/useDeleteTemplateMutation'
-import {Text, useStyleTheme} from '@theme/Theme'
+import {Text, useStyleTheme} from '@styles/theme'
 
 import ConfirmModal from '@components/dialog/ConfirmModal'
 import {closeGlobalBottomSheet} from '@components/GlobalBottomSheet'
@@ -18,7 +18,7 @@ import {
   DELETE_TEMPLATE_MODAL_TITLE,
   DELETE_TEMPLATE_SUCCESS,
   stringWithParameters
-} from '@constants/Strings'
+} from '@constants/strings'
 
 import styles from './index.styled'
 

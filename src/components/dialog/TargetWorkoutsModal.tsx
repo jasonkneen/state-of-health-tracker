@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 
 import {MaterialCommunityIcons} from '@expo/vector-icons'
 import useUserData from '@store/userData/useUserData'
-import {useStyleTheme} from '@theme/Theme'
+import {useStyleTheme} from '@styles/theme'
 
 import {
   TARGET_WORKOUTS_MODAL_BODY,
@@ -10,7 +10,7 @@ import {
   TARGET_WORKOUTS_MODAL_ERROR,
   TARGET_WORKOUTS_MODAL_TITLE,
   TOAST_TARGET_WORKOUTS_SET
-} from '@constants/Strings'
+} from '@constants/strings'
 
 import BaseInputModalProps from './BaseInputModalProps'
 import InputModal from './InputModal'

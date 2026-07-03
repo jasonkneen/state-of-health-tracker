@@ -2,10 +2,10 @@ import React from 'react'
 
 import {KeyboardTypeOptions} from 'react-native'
 
-import {Text, TextInput, useStyleTheme} from '@theme/Theme'
+import {Text, TextInput, useStyleTheme} from '@styles/theme'
 
-import FontSize from '@constants/FontSize'
-import Spacing from '@constants/Spacing'
+import FontSize from '@styles/fontSize'
+import Spacing from '@styles/spacing'
 
 export interface TextInputProps {
   header: string

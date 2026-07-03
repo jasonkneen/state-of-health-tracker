@@ -7,7 +7,7 @@ import {Ionicons} from '@expo/vector-icons'
 import {useCreateExerciseMutation} from '@queries/exercises/useCreateExerciseMutation'
 import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useNavigation} from '@react-navigation/native'
-import {Text, useStyleTheme} from '@theme/Theme'
+import {Text, useStyleTheme} from '@styles/theme'
 
 import LoadingOverlay from '@components/LoadingOverlay'
 import Picker from '@components/Picker'
@@ -25,7 +25,7 @@ import {
   CREATE_EXERCISE_NAME_PLACEHOLDER_TEXT,
   TOAST_ALREADY_EXISTS,
   TOAST_EXERCISE_CREATED
-} from '@constants/Strings'
+} from '@constants/strings'
 
 import styles, {createExerciseMaxPickerWidth} from './index.styled'
 import {Navigation} from '../../navigation/types'

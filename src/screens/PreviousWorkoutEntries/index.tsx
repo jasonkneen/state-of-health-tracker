@@ -5,13 +5,13 @@ import {FlatList, ListRenderItemInfo} from 'react-native'
 import {WorkoutSummary} from '@data/models/WorkoutSummary'
 import {FontAwesome5, MaterialCommunityIcons} from '@expo/vector-icons'
 import {useWorkoutSummariesInfiniteQuery} from '@queries/workouts/useWorkoutSummariesInfiniteQuery'
-import {Screen, useStyleTheme} from '@theme/Theme'
+import {Screen, useStyleTheme} from '@styles/theme'
 
 import Chip from '@components/Chip'
 import LoadingOverlay from '@components/LoadingOverlay'
 import PreviousEntryListItem, {EmptyState} from '@components/PreviousEntryListItem'
 
-import Spacing from '@constants/Spacing'
+import Spacing from '@styles/spacing'
 import {
   BEST_SET_LABEL,
   EXERCISE_LABEL,
@@ -19,7 +19,7 @@ import {
   PREVIOUS_WORKOUTS_ENTRIES_EMPTY_BODY,
   PREVIOUS_WORKOUTS_ENTRIES_EMPTY_TITLE,
   SETS_LABEL
-} from '@constants/Strings'
+} from '@constants/strings'
 
 import BestSetChip from './components/BestSetChip'
 import styles from './index.styled'

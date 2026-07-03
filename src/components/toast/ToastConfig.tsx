@@ -1,10 +1,10 @@
 import React from 'react'
 
-import {useStyleTheme} from '@theme/Theme'
+import {useStyleTheme} from '@styles/theme'
 import {BaseToast, ToastProps} from 'react-native-toast-message'
 
-import FontSize from '@constants/FontSize'
-import Spacing from '@constants/Spacing'
+import FontSize from '@styles/fontSize'
+import Spacing from '@styles/spacing'
 
 export default {
   success: (props: ToastProps) => (

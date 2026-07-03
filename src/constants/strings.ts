@@ -441,6 +441,104 @@ export const RUNS_BADGE_LONGEST = 'longest'
 
 export const RUNS_PACE_CAPTION = '%0 pace'
 
+export const RUNS_EMPTY_TITLE = 'No runs yet'
+
+export const RUNS_EMPTY_SUBTITLE = 'Start your first run to begin tracking your progress'
+
+export const RUN_RECOVERED_TOAST = 'Recovered an interrupted run'
+
+export const RUNS_SYNCED_DELETE_ERROR = "Synced runs can't be deleted yet"
+
+export const DELETE_RUN_MODAL_TITLE = 'Delete Run'
+
+export const DELETE_RUN_MODAL_BODY = 'Are you sure you want to delete this run? This action cannot be undone.'
+
+export const RUN_FLOW_TITLE = 'Run'
+
+export const FINISH_RUN_BUTTON_TEXT = 'Finish Run'
+
+export const RUN_COUNTDOWN_SUBTEXT = 'Get ready to run!'
+
+export const RUN_DEGRADED_BANNER =
+  'Background permission not granted — keep the app open and screen on to keep tracking.'
+
+export const RUN_BG_PERMISSION_TITLE = 'Track in the background?'
+
+export const RUN_BG_PERMISSION_BODY =
+  'To keep tracking your run when your screen is off or the app is backgrounded, choose "Always Allow" on the next prompt.'
+
+export const RUN_BG_PERMISSION_CONTINUE = 'Continue'
+
+export const RUN_PERMISSION_ERROR_TITLE = 'Location Permission Required'
+
+export const RUN_PERMISSION_ERROR_BODY =
+  'This app needs location access to track your run. Please enable location services in your device settings.'
+
+export const RUN_TOO_SHORT_TOAST = 'Run was too short to save'
+
+export const RUN_SAVE_ERROR_TOAST = 'Failed to save run'
+
+export const CANCEL_RUN_MODAL_TITLE = 'Cancel Run?'
+
+export const CANCEL_RUN_MODAL_BODY =
+  'Are you sure you want to cancel your run? All data will be lost and not saved to your history.'
+
+export const CANCEL_RUN_BUTTON_TEXT = 'Cancel Run'
+
+export const FINISH_RUN_MODAL_TITLE = 'Finish Run'
+
+export const FINISH_RUN_MODAL_BODY = "Ready to finish? You'll get a chance to review your stats before saving."
+
+export const RUN_IN_PROGRESS_TITLE = 'Run in Progress'
+
+export const RUN_IN_PROGRESS_BODY = 'You have an active run. What would you like to do?'
+
+export const RUN_CONTINUE_RUNNING = 'Continue Running'
+
+export const RUN_PAUSE_AND_EXIT = 'Pause & Exit'
+
+export const RUN_MAP_EMPTY_TEXT = 'Start running to see your route'
+
+export const RUN_STAT_TIME_HEADER = 'TIME'
+
+export const RUN_STAT_DISTANCE_HEADER = 'DISTANCE'
+
+export const RUN_STAT_AVG_PACE_LABEL = 'Avg Pace'
+
+export const RUN_STAT_SPEED_LABEL = 'Speed'
+
+export const RUN_STAT_CALORIES_LABEL = 'Calories'
+
+export const RUN_STAT_MI_UNIT = 'mi'
+
+export const RUN_STAT_MPH_UNIT = 'mph'
+
+export const RUN_TRACKING_STATUS = 'Tracking run...'
+
+export const RUN_PAUSED_STATUS = 'Paused'
+
+export const RUN_NOT_FOUND = 'Run not found'
+
+export const BACK_TO_RUNS_BUTTON_TEXT = 'Back to Runs'
+
+export const DISCARD_BUTTON_TEXT = 'Discard'
+
+export const SAVE_RUN_BUTTON_TEXT = 'Save Run'
+
+export const RUN_SAVED_TOAST = 'Run saved'
+
+export const RUN_SAVED_PR_TOAST = 'Run saved — new personal record!'
+
+export const DISCARD_RUN_MODAL_TITLE = 'Discard Run?'
+
+export const DISCARD_RUN_MODAL_BODY = "This run will be permanently deleted and won't be added to your history."
+
+export const RUN_SUMMARY_DISTANCE_LABEL = 'Distance (mi)'
+
+export const RUN_SUMMARY_TIME_LABEL = 'Time'
+
+export const RUN_SUMMARY_SPEED_LABEL = 'Avg Speed (mph)'
+
 export const PROGRESS_TITLE = 'Progress'
 
 export const PROGRESS_TAB_EXERCISES = 'Exercises'
@@ -455,11 +553,11 @@ export const PROGRESS_VOLUME_COMING_SOON_SUBTITLE = "Weekly volume and muscle gr
 
 export const PROGRESS_BODY_COMING_SOON_SUBTITLE = "Body weight tracking isn't set up yet."
 
-export const PROGRESS_EST_1RM_LABEL = 'EST. 1-REP MAX'
+export const PROGRESS_TOP_SET_LABEL = 'TOP SET'
 
-export const PROGRESS_1RM_UNIT = 'lbs'
+export const PROGRESS_WEIGHT_UNIT = 'lbs'
 
-export const PROGRESS_1RM_DELTA_TEXT = '%0 lbs · %1 wks'
+export const PROGRESS_TOP_SET_DELTA_TEXT = '%0% vs %1 wks ago'
 
 export const PROGRESS_NEW_PR_LABEL = 'NEW PR'
 

@@ -4,6 +4,7 @@ import {View} from 'react-native'
 
 import {deriveLoggingTypeFromExerciseType} from '@data/converters/ExerciseConverter'
 import {ExerciseBodyPartEnum, ExerciseTypeEnum} from '@data/models/Exercise'
+import {Navigation} from '@navigation/types'
 import {useCreateExerciseMutation} from '@queries/exercises/useCreateExerciseMutation'
 import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useNavigation} from '@react-navigation/native'
@@ -30,9 +31,8 @@ import {
 } from '@constants/strings'
 
 import styles, {createExerciseMaxPickerWidth} from './index.styled'
-import {Navigation} from '../../navigation/types'
-import {combineExerciseNameType} from '../../utility/combineExerciseNameType'
-import {exerciseTypeValues, bodyPartValues} from '../../utility/exercisePickerItems'
+import {bodyPartValues, exerciseTypeValues} from './index.util'
+import {combineExerciseNameType} from './index.util'
 
 const CreateExerciseScreen = () => {
   const {goBack} = useNavigation<Navigation>()

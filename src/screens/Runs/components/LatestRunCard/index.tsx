@@ -4,6 +4,7 @@ import {View} from 'react-native'
 
 import {Run} from '@data/models/Run'
 import {Theme} from '@styles/theme'
+import {formatPace, formatRunDuration} from '@utility/RunUtility'
 import Svg, {Defs, Pattern, Rect} from 'react-native-svg'
 
 import Text from '@components/Text'
@@ -18,7 +19,6 @@ import {
 } from '@constants/strings'
 
 import styles from './index.styled'
-import {formatPace, formatRunDuration} from '../../../../utility/RunUtility'
 
 interface Props {
   run: Run

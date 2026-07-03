@@ -30,7 +30,7 @@ import {
 
 import CreateTemplateModal from './components/CreateTemplateModal'
 import styles from './index.styled'
-import {filterExercises} from '../../utility/filterExercises'
+import {filterExercises} from './index.util'
 
 const FAB_TRANSITION_MS = 200
 

@@ -166,12 +166,21 @@ export const filterRunPoints = (
   return filtered
 }
 
-/** Aggregates distance/duration/pace/speed/calories from a (typically already-filtered) polyline. */
-export const calculateRunStats = (points: Location.LocationObject[]): RunStats => {
+/**
+ * Aggregates distance/duration/pace/speed/calories from a (typically
+ * already-filtered) polyline.
+ *
+ * `movingDurationMs` is the session-clock moving time (elapsed minus paused).
+ * It must be passed whenever it is known: the point-timestamp span still
+ * includes paused wall-clock time (excluding paused *points* doesn't shrink
+ * the gap between the surrounding timestamps) and misses the GPS warm-up
+ * window, so it is only a fallback.
+ */
+export const calculateRunStats = (points: Location.LocationObject[], movingDurationMs?: number): RunStats => {
   if (points.length < 2) {
     return {
       distanceMeters: 0,
-      durationMs: 0,
+      durationMs: Math.max(0, movingDurationMs ?? 0),
       avgSpeedMetersPerSecond: 0,
       avgPaceSecondsPerKm: 0,
       calories: 0
@@ -184,7 +193,7 @@ export const calculateRunStats = (points: Location.LocationObject[]): RunStats =
     distanceMeters += haversineDistanceMeters(points[i - 1].coords, points[i].coords)
   }
 
-  const durationMs = points[points.length - 1].timestamp - points[0].timestamp
+  const durationMs = Math.max(0, movingDurationMs ?? points[points.length - 1].timestamp - points[0].timestamp)
   const durationSeconds = durationMs / 1000
   const avgSpeedMetersPerSecond = durationSeconds > 0 ? distanceMeters / durationSeconds : 0
 
@@ -202,16 +211,18 @@ export const calculateRunStats = (points: Location.LocationObject[]): RunStats =
  * applies the GPS filtering pass, then computes stats from the result.
  * `rawPoints` should be the full, unfiltered buffer contents (raw points
  * stay persisted separately so this can be re-run later with different
- * options).
+ * options). Pass `movingDurationMs` (session clock, pauses excluded)
+ * whenever it is known — see `calculateRunStats`.
  */
 export const processRunPoints = (
   rawPoints: Location.LocationObject[],
   pauseSegments: PauseSegment[] = [],
+  movingDurationMs?: number,
   options: RunFilterOptions = DEFAULT_RUN_FILTER_OPTIONS
 ): ProcessedRun => {
   const unpaused = excludePausedPoints(rawPoints, pauseSegments)
   const filteredPoints = filterRunPoints(unpaused, options)
-  const stats = calculateRunStats(filteredPoints)
+  const stats = calculateRunStats(filteredPoints, movingDurationMs)
 
   return {filteredPoints, stats}
 }

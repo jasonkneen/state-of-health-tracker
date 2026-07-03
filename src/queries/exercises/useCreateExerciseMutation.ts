@@ -1,5 +1,5 @@
 import {Exercise} from '@data/models/Exercise'
-import {createExercise} from '@service/exercises/createExercise'
+import {createExercise} from '@queries/api/exercises/createExercise'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 
 import {mutationKeys, queryKeys} from '../keys'

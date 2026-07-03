@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react'
 
 import {View} from 'react-native'
 
-import {RecordTypeEnum} from '@data/models/PersonalRecord'
 import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useExerciseHistoryQuery} from '@queries/records/useExerciseHistoryQuery'
 import {useRecordsQuery} from '@queries/records/useRecordsQuery'
@@ -17,16 +16,13 @@ import {
   PROGRESS_NO_WEIGHT_DATA_SUBTITLE
 } from '@constants/strings'
 
-import EstOneRepMaxCard from '../EstOneRepMaxCard'
+import {buildTopSetTrend, getTopSetDelta, groupHistoryIntoSessions} from '../../index.util'
 import ExerciseChipRow from '../ExerciseChipRow'
 import RecentSessionsList from '../RecentSessionsList'
 import SessionSummaryCards from '../SessionSummaryCards'
+import TopSetCard from '../TopSetCard'
 import styles from './index.styled'
-import {
-  buildOneRepMaxTrend,
-  getOneRepMaxDelta,
-  groupHistoryIntoSessions
-} from '../../../../utility/ExerciseHistoryUtility'
+import {buildPrCard} from './index.util'
 
 const ExercisesTab = () => {
   const {data: exercises = []} = useExercisesQuery()
@@ -52,35 +48,11 @@ const ExercisesTab = () => {
   }
 
   const sessions = groupHistoryIntoSessions(history)
-  const trend = buildOneRepMaxTrend(sessions)
-  const delta = getOneRepMaxDelta(trend)
-
-  const oneRepMaxRecord = records.find(
-    record => record.exerciseId === selectedExerciseId && record.recordType === RecordTypeEnum.MAX_ESTIMATED_1RM
-  )
-  const maxWeightRecord = records.find(
-    record => record.exerciseId === selectedExerciseId && record.recordType === RecordTypeEnum.MAX_WEIGHT
-  )
+  const trend = buildTopSetTrend(sessions)
+  const delta = getTopSetDelta(trend)
 
   const latestSession = sessions[0] ?? null
-
-  const isNewPR = !!(maxWeightRecord && latestSession && maxWeightRecord.achievedAt.slice(0, 10) === latestSession.date)
-
-  const previousBestWeight = isNewPR
-    ? sessions
-        .filter(session => session.date < latestSession!.date)
-        .reduce((best, session) => Math.max(best, session.topSet?.weight ?? 0), 0)
-    : 0
-
-  const prCard =
-    isNewPR && maxWeightRecord && maxWeightRecord.repsAtRecord
-      ? {
-          weight: maxWeightRecord.value,
-          reps: maxWeightRecord.repsAtRecord,
-          date: maxWeightRecord.achievedAt.slice(0, 10),
-          deltaLbs: previousBestWeight > 0 ? Math.round(maxWeightRecord.value - previousBestWeight) : null
-        }
-      : null
+  const prCard = buildPrCard(records, sessions, selectedExerciseId)
 
   return (
     <View>
@@ -98,13 +70,7 @@ const ExercisesTab = () => {
         <Text style={styles.noteText}>{PROGRESS_NO_WEIGHT_DATA_SUBTITLE}</Text>
       )}
 
-      {trend.length > 0 && (
-        <EstOneRepMaxCard
-          trend={trend}
-          currentValue={oneRepMaxRecord?.value ?? trend[trend.length - 1].value}
-          delta={delta}
-        />
-      )}
+      {trend.length > 0 && <TopSetCard trend={trend} delta={delta} />}
 
       {latestSession && (
         <SessionSummaryCards

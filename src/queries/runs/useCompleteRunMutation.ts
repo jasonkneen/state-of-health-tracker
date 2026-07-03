@@ -1,8 +1,8 @@
 import {RunPersonalRecord} from '@data/models/RunPersonalRecord'
 import {RunRecord} from '@data/models/RunRecord'
-import {createRun} from '@service/runs/createRun'
+import {createRun} from '@queries/api/runs/createRun'
+import {updateRun} from '@queries/api/runs/updateRun'
 import offlineRunStorageService from '@service/runs/OfflineRunStorageService'
-import {updateRun} from '@service/runs/updateRun'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 
 import {mutationKeys, queryKeys} from '../keys'
@@ -14,23 +14,22 @@ export interface CompleteRunResult {
   newRecords: RunPersonalRecord[]
 }
 
-// Orchestrates completing a run: saves the finished RunRecord locally first
-// (so the run survives even if the network push fails or the app is
-// offline), then pushes it to the server and refreshes the runs list +
-// weekly summary. Mirrors useCompleteWorkoutMutation's shape. The caller
-// (RunSummary screen) is responsible for calling `runSessionService.discard`
-// once this resolves, per RunSessionService.stop()'s contract — this hook
-// only knows about the sync/storage layer, not the session/buffer.
+// Orchestrates saving a reviewed run: clears the draft flag and persists
+// locally first (so the run survives even if the network push fails or the
+// app is offline), then pushes it to the server and refreshes the runs list +
+// weekly summary. Mirrors useCompleteWorkoutMutation's shape.
 export const useCompleteRunMutation = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
     mutationKey: mutationKeys.completeRun,
     mutationFn: async (run: RunRecord): Promise<CompleteRunResult> => {
-      await offlineRunStorageService.save(run)
+      const confirmed: RunRecord = {...run, draft: false}
+
+      await offlineRunStorageService.save(confirmed)
 
       try {
-        const {run: synced, newRecords} = await pushRun(run)
+        const {run: synced, newRecords} = await pushRun(confirmed)
 
         await offlineRunStorageService.save(synced)
 
@@ -38,10 +37,11 @@ export const useCompleteRunMutation = () => {
       } catch (error) {
         // Network push failed — the run is safely stored locally and will
         // be picked up by syncOfflineRuns on a later app open/foreground.
-        return {run, newRecords: []}
+        return {run: confirmed, newRecords: []}
       }
     },
-    onSuccess: () => {
+    onSuccess: (_, run) => {
+      queryClient.invalidateQueries({queryKey: queryKeys.run(run.localId)})
       queryClient.invalidateQueries({queryKey: queryKeys.runs})
       queryClient.invalidateQueries({queryKey: queryKeys.weeklyRunSummary})
     }

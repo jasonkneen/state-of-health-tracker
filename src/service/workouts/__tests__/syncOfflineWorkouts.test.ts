@@ -1,7 +1,7 @@
+import {saveWorkoutDay} from '@queries/api/workouts/saveWorkoutDay'
+import {updateWorkoutDay} from '@queries/api/workouts/updateWorkoutDay'
 import offlineWorkoutStorageService from '@service/workouts/OfflineWorkoutStorageService'
-import {saveWorkoutDay} from '@service/workouts/saveWorkoutDay'
 import syncOfflineWorkouts from '@service/workouts/syncOfflineWorkouts'
-import {updateWorkoutDay} from '@service/workouts/updateWorkoutDay'
 
 jest.mock('@service/workouts/OfflineWorkoutStorageService', () => ({
   readAll: jest.fn(),
@@ -10,19 +10,19 @@ jest.mock('@service/workouts/OfflineWorkoutStorageService', () => ({
   deleteAllSynced: jest.fn()
 }))
 
-jest.mock('@service/workouts/saveWorkoutDay', () => ({
+jest.mock('@queries/api/workouts/saveWorkoutDay', () => ({
   saveWorkoutDay: jest.fn()
 }))
 
-jest.mock('@service/workouts/updateWorkoutDay', () => ({
+jest.mock('@queries/api/workouts/updateWorkoutDay', () => ({
   updateWorkoutDay: jest.fn()
 }))
 
-jest.mock('../../../utility/CrashUtility', () => ({
+jest.mock('@utility/CrashUtility', () => ({
   recordError: jest.fn()
 }))
 
-jest.mock('../../../utility/isServerFailureError', () => ({
+jest.mock('@utility/isServerFailureError', () => ({
   isServerFailureError: jest.fn()
 }))
 
@@ -32,7 +32,7 @@ const mockDeleteByDate = offlineWorkoutStorageService.deleteByDate as jest.Mock
 const mockDeleteAllSynced = offlineWorkoutStorageService.deleteAllSynced as jest.Mock
 const mockSaveWorkoutDay = saveWorkoutDay as jest.Mock
 const mockUpdateWorkoutDay = updateWorkoutDay as jest.Mock
-const mockIsServerFailureError = require('../../../utility/isServerFailureError').isServerFailureError as jest.Mock
+const mockIsServerFailureError = require('@utility/isServerFailureError').isServerFailureError as jest.Mock
 
 const TODAY_ISO = '2025-10-20'
 

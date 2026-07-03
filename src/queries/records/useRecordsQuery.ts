@@ -1,4 +1,4 @@
-import {fetchRecords} from '@service/records/fetchRecords'
+import {fetchRecords} from '@queries/api/records/fetchRecords'
 import {useQuery} from '@tanstack/react-query'
 
 import {queryKeys} from '../keys'

@@ -1,4 +1,4 @@
-import {fetchExerciseHistory} from '@service/records/fetchExerciseHistory'
+import {fetchExerciseHistory} from '@queries/api/records/fetchExerciseHistory'
 import {useQuery} from '@tanstack/react-query'
 
 import {queryKeys} from '../keys'

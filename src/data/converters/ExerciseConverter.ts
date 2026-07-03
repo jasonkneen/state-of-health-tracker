@@ -54,8 +54,6 @@ export const mapExerciseBodyPart = (muscleGroup: string): ExerciseBodyPartEnum =
   }
 }
 
-// Smart default for exercise creation: derives a logging type from the
-// equipment type the user already picks, so bodyweight/timed exercises work
 // Logging is always inferred from the exercise type — the user picks one thing
 // and the set inputs follow. WEIGHTED_BODYWEIGHT, TIME_REPS, and DISTANCE_TIME
 // have no producing type yet; they stay in the enum for stored data.

@@ -13,6 +13,8 @@ export type RunSessionStatus = 'idle' | 'active' | 'paused' | 'completed'
 export type RunSessionState = {
   runId: string | null
   startTime: number | null
+  /** Set when the run completes — recovery needs it to compute the real moving time. */
+  endTime: number | null
   pauseSegments: PauseSegment[]
   status: RunSessionStatus
   /** Starts a fresh session record. Called once by RunSessionService.start(). */
@@ -27,9 +29,10 @@ export type RunSessionState = {
   reset: () => void
 }
 
-const idleState: Pick<RunSessionState, 'runId' | 'startTime' | 'pauseSegments' | 'status'> = {
+const idleState: Pick<RunSessionState, 'runId' | 'startTime' | 'endTime' | 'pauseSegments' | 'status'> = {
   runId: null,
   startTime: null,
+  endTime: null,
   pauseSegments: [],
   status: 'idle'
 }
@@ -49,6 +52,7 @@ export const useRunSessionStore = create<RunSessionState>()(
         set({
           runId,
           startTime,
+          endTime: null,
           pauseSegments: [],
           status: 'active'
         })
@@ -84,14 +88,15 @@ export const useRunSessionStore = create<RunSessionState>()(
 
       complete: () => {
         set(state => {
+          const now = Date.now()
           const pauseSegments = [...state.pauseSegments]
           const last = pauseSegments[pauseSegments.length - 1]
 
           if (last && last.end === undefined) {
-            pauseSegments[pauseSegments.length - 1] = {...last, end: Date.now()}
+            pauseSegments[pauseSegments.length - 1] = {...last, end: now}
           }
 
-          return {status: 'completed', pauseSegments}
+          return {status: 'completed', endTime: now, pauseSegments}
         })
       },
 

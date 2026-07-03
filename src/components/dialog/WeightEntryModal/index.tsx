@@ -3,6 +3,7 @@ import React, {useState} from 'react'
 import {FontAwesome5} from '@expo/vector-icons'
 import useUserData from '@store/userData/useUserData'
 import {Theme} from '@styles/theme'
+import {isNumber} from '@utility/TextUtility'
 
 import {showToast} from '@components/toast/util/ShowToast'
 
@@ -14,7 +15,6 @@ import {
   TOAST_WEIGHT_UPDATED
 } from '@constants/strings'
 
-import {isNumber} from '../../../utility/TextUtility'
 import BaseModalProps from '../BaseInputModalProps'
 import InputModal from '../InputModal'
 import styles from './index.styled'

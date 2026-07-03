@@ -2,13 +2,14 @@ import React from 'react'
 
 import {View} from 'react-native'
 
+import {formatDateToMonthDayName} from '@utility/DateUtility'
+
 import Text from '@components/Text'
 
 import {PROGRESS_RECENT_SESSIONS_HEADER} from '@constants/strings'
 
 import styles from './index.styled'
-import {formatDateToMonthDayName} from '../../../../utility/DateUtility'
-import {SessionSummary} from '../../../../utility/ExerciseHistoryUtility'
+import {SessionSummary} from '../../index.util'
 
 const MAX_SESSIONS_SHOWN = 8
 

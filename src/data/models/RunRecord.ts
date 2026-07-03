@@ -45,6 +45,13 @@ export interface RunRecord {
   splits?: RunRecordSplit[]
   synced?: boolean
   syncAttempts?: number
+  /**
+   * True while the run is awaiting the user's Save/Discard decision on
+   * RunSummary. Drafts are visible in the local pending list but are never
+   * pushed by syncOfflineRuns — saving clears the flag, discarding deletes
+   * the record.
+   */
+  draft?: boolean
 }
 
 export type RoutePoint = {lat: number; lng: number}
@@ -62,6 +69,14 @@ export function encodeRoutePolyline(points: {latitude: number; longitude: number
 
   for (let i = 0; i < points.length; i += step) {
     downsampled.push({lat: points[i].latitude, lng: points[i].longitude})
+  }
+
+  // Always keep the finish point — stepping can otherwise cut the route short
+  const last = points[points.length - 1]
+  const lastKept = downsampled[downsampled.length - 1]
+
+  if (lastKept.lat !== last.latitude || lastKept.lng !== last.longitude) {
+    downsampled.push({lat: last.latitude, lng: last.longitude})
   }
 
   return JSON.stringify(downsampled)

@@ -1,9 +1,9 @@
 import {AuthErrorPathEnum} from '@data/models/AuthError'
 import User, {CreateUserPayload} from '@data/models/User'
+import {createUser} from '@queries/api/auth/createUser'
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth'
 
 import {decodeAuthError} from './AuthErrorEnum'
-import {createUser} from './createUser'
 
 class AuthService {
   async registerUser(email: string, password: string): Promise<User> {

@@ -1,23 +1,27 @@
 import {RunRecord} from '@data/models/RunRecord'
-import {createRun} from '@service/runs/createRun'
+import {createRun} from '@queries/api/runs/createRun'
+import {updateRun} from '@queries/api/runs/updateRun'
 import offlineRunStorageService from '@service/runs/OfflineRunStorageService'
-import {updateRun} from '@service/runs/updateRun'
+import CrashUtility from '@utility/CrashUtility'
 
-import {isServerFailureError} from '../../utility/isServerFailureError'
+const MAX_SYNC_ATTEMPTS = 3
 
 /**
  * Bounded-retry background sync of every unsynced local run. Mirrors
- * `syncOfflineWorkouts` exactly, except it does not skip "today" — runs
- * aren't scoped to a calendar day the way a WorkoutDay is, so every unsynced
- * run is a candidate.
- * - If a run syncs successfully, marks it as synced.
- * - If a run fails 3 times, drops it (rather than retrying forever).
+ * `syncOfflineWorkouts`, except it does not skip "today" — runs aren't scoped
+ * to a calendar day the way a WorkoutDay is.
+ *
+ * - Drafts (awaiting the user's Save/Discard decision) are never pushed.
+ * - A run that fails MAX_SYNC_ATTEMPTS times is parked (skipped, kept on
+ *   disk) rather than deleted — a transient server outage must never destroy
+ *   a user's run. Parked runs stay visible as pending and can be swiped away.
  */
 export default async function syncOfflineRuns(): Promise<void> {
   const runs = await offlineRunStorageService.readAll()
 
   for (const run of runs) {
-    if (run.synced) continue
+    if (run.synced || run.draft) continue
+    if ((run.syncAttempts ?? 0) >= MAX_SYNC_ATTEMPTS) continue
 
     try {
       const result: RunRecord = run.id ? (await updateRun(run)).run : (await createRun(run)).run
@@ -27,24 +31,14 @@ export default async function syncOfflineRuns(): Promise<void> {
         synced: true,
         syncAttempts: 0
       })
-    } catch (err) {
-      if (!isServerFailureError(err)) {
-        continue
-      }
-
-      const attempts = (run.syncAttempts ?? 0) + 1
-
-      if (attempts >= 3) {
-        await offlineRunStorageService.deleteByLocalId(run.localId)
-      } else {
-        await offlineRunStorageService.save({
-          ...run,
-          syncAttempts: attempts
-        })
-      }
+    } catch (error) {
+      CrashUtility.recordError(error)
+      await offlineRunStorageService.save({
+        ...run,
+        syncAttempts: (run.syncAttempts ?? 0) + 1
+      })
     }
   }
 
-  // Clean up any records marked as synced
   await offlineRunStorageService.deleteAllSynced()
 }

@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react'
 import {MaterialCommunityIcons} from '@expo/vector-icons'
 import useUserData from '@store/userData/useUserData'
 import {Theme} from '@styles/theme'
+import {isNumber} from '@utility/TextUtility'
 
 import {
   TARGET_WORKOUTS_MODAL_BODY,
@@ -12,7 +13,6 @@ import {
   TOAST_TARGET_WORKOUTS_SET
 } from '@constants/strings'
 
-import {isNumber} from '../../../utility/TextUtility'
 import {showToast} from '../../toast/util/ShowToast'
 import BaseInputModalProps from '../BaseInputModalProps'
 import InputModal from '../InputModal'

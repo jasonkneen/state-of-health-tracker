@@ -6,6 +6,7 @@ import {Exercise} from '@data/models/Exercise'
 import {useNavigation} from '@react-navigation/native'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
 import {Theme} from '@styles/theme'
+import {formatExerciseSubtitle} from '@utility/formatExerciseSubtitle'
 
 import ExerciseOptionsBottomSheet from '@screens/AddExercise/components/ExerciseOptionsBottomSheet'
 
@@ -16,7 +17,6 @@ import {showToast} from '@components/toast/util/ShowToast'
 
 import {TOAST_EXERCISE_ADDED, TOAST_EXERCISE_ALREADY_ADDED} from '@constants/strings'
 
-import {formatExerciseSubtitle} from '../../../../utility/formatExerciseSubtitle'
 import styles from './index.styled'
 
 interface Props {

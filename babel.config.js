@@ -18,7 +18,11 @@ module.exports = function (api) {
             '@store': './src/store',
             '@data': './src/data',
             '@service': './src/service',
-            '@queries': './src/queries'
+            '@queries': './src/queries',
+            '@hooks': './src/hooks',
+            '@utility': './src/utility',
+            '@navigation': './src/navigation',
+            '@assets': './src/assets'
           }
         }
       ],

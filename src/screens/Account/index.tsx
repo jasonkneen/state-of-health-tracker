@@ -1,12 +1,13 @@
 import React from 'react'
 
-import {Linking, SafeAreaView, ScrollView, View} from 'react-native'
+import {Linking, ScrollView, View} from 'react-native'
 
 import {useWorkoutSummariesInfiniteQuery} from '@queries/workouts/useWorkoutSummariesInfiniteQuery'
 import useAuthStore from '@store/auth/useAuthStore'
 import useUserData from '@store/userData/useUserData'
 import {Theme} from '@styles/theme'
 import LinearGradient from 'react-native-linear-gradient'
+import {SafeAreaView} from 'react-native-safe-area-context'
 
 import BarbellIcon from '@components/icons/BarbellIcon'
 import DocumentIcon from '@components/icons/DocumentIcon'

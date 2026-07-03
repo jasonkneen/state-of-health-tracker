@@ -1,4 +1,4 @@
-import {deleteTemplate} from '@service/exercises/deleteTemplate'
+import {deleteTemplate} from '@queries/api/templates/deleteTemplate'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 
 import {mutationKeys, queryKeys} from '../keys'

@@ -1,4 +1,4 @@
-import {fetchWeeklyWorkoutSummaries} from '@service/workouts/fetchWeeklyWorkoutSummaries'
+import {fetchWeeklyWorkoutSummaries} from '@queries/api/workouts/fetchWeeklyWorkoutSummaries'
 import {useQuery} from '@tanstack/react-query'
 
 import {queryKeys} from '../keys'

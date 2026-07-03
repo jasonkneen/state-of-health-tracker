@@ -1,6 +1,5 @@
 import {format, isMonday, isValid, parse} from 'date-fns'
 
-// returns current date as Ex: September 28, 2023
 export const getCurrentDate = () => format(Date.now(), 'MMMM dd, yyyy')
 
 export const getCurrentDateISO = () => format(new Date(), 'yyyy-MM-dd')
@@ -9,7 +8,9 @@ export const formatDate = (date: number) => format(date, 'MMMM dd, yyyy')
 
 export const formatDateUTC = (isoDate: string) => {
   const [year, month, day] = isoDate.split('T')[0].split('-')
-  const date = new Date(Number(year), Number(month) - 1, Number(day))
+  // Build the date in UTC so formatting with timeZone: 'UTC' shows the same
+  // calendar day regardless of the device's timezone offset
+  const date = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day)))
 
   return date.toLocaleDateString('en-US', {
     year: 'numeric',
@@ -32,10 +33,9 @@ export const compareIsoDateStrings = (a: string, b: string): boolean => {
 
 export const formatDateToMonthDay = (date: string | number): string => format(new Date(date), 'M/d')
 
-// Ex: Sep 18
 export const formatDateToMonthDayName = (date: string | number): string => format(new Date(date), 'MMM d')
 
-export const ONE_DAY_MS = 1000 * 60 * 60 * 24 // 1000 ms * 60s * 60m * 24h
+export const ONE_DAY_MS = 1000 * 60 * 60 * 24
 
 export const getLast7Mondays = () => {
   const last7Mondays = []
@@ -69,5 +69,3 @@ export const formatDayMonthDay = (date: string | number): string => {
     return ''
   }
 }
-
-export const isDateOlderThanADay = (date: number) => Date.now() - date > ONE_DAY_MS

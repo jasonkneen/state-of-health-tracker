@@ -1,5 +1,5 @@
 import {ExerciseTemplate} from '@data/models/ExerciseTemplate'
-import {createTemplate} from '@service/exercises/createTemplate'
+import {createTemplate} from '@queries/api/templates/createTemplate'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 
 import {mutationKeys, queryKeys} from '../keys'

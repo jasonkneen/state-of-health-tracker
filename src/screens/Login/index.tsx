@@ -1,12 +1,15 @@
 import React, {useState} from 'react'
 
-import {Alert, Image, KeyboardAvoidingView, SafeAreaView, TouchableOpacity, View} from 'react-native'
+import {Alert, Image, KeyboardAvoidingView, TouchableOpacity, View} from 'react-native'
 
 import {isAuthError} from '@data/models/AuthError'
+import {Navigation} from '@navigation/types'
 import {useNavigation} from '@react-navigation/native'
 import useAuthStore from '@store/auth/useAuthStore'
 import {Theme} from '@styles/theme'
+import {isValidEmail, isValidPassword} from '@utility/AccountUtility'
 import LinearGradient from 'react-native-linear-gradient'
+import {SafeAreaView} from 'react-native-safe-area-context'
 
 import PrimaryButton from '@components/PrimaryButton'
 import Text from '@components/Text'
@@ -29,8 +32,6 @@ import {
 } from '@constants/strings'
 
 import styles from './index.styled'
-import {Navigation} from '../../navigation/types'
-import {isValidEmail, isValidPassword} from '../../utility/AccountUtility'
 
 const LOGIN_GRADIENT_COLORS = [Theme.colors.loginGradientStart, Theme.colors.loginGradientEnd]
 
@@ -82,7 +83,7 @@ const LogInScreen = () => {
         <KeyboardAvoidingView behavior="padding" style={styles.keyboardAvoidingView}>
           <View style={styles.container}>
             <View style={styles.brandContainer}>
-              <Image source={require('../../../assets/icon.png')} style={styles.appIcon} />
+              <Image source={require('@assets/icon.png')} style={styles.appIcon} />
 
               <Text style={styles.appName}>{APP_NAME}</Text>
 

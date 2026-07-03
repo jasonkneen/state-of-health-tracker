@@ -1,4 +1,4 @@
-import {fetchWeeklyRunSummary} from '@service/runs/fetchWeeklyRunSummary'
+import {fetchWeeklyRunSummary} from '@queries/api/runs/fetchWeeklyRunSummary'
 import {useQuery} from '@tanstack/react-query'
 
 import {queryKeys} from '../keys'

@@ -69,7 +69,11 @@ export default StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    marginRight: Spacing.X_SMALL
+    marginRight: Spacing.X_SMALL,
+    backgroundColor: Theme.colors.accentGreen
+  },
+  statusIndicatorPaused: {
+    backgroundColor: Theme.colors.fireOrange
   },
   statusText: {
     fontSize: FontSize.PARAGRAPH,

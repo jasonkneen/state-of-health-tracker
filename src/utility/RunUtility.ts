@@ -3,8 +3,10 @@ import {Run} from '@data/models/Run'
 import {ONE_DAY_MS} from './DateUtility'
 
 export const formatRunDuration = (durationSeconds: number): string => {
-  const totalMinutes = Math.floor(durationSeconds / 60)
-  const seconds = Math.round(durationSeconds % 60)
+  // Round before splitting so 59.5s carries into the minute (01:00, not 00:60)
+  const totalSeconds = Math.round(durationSeconds)
+  const totalMinutes = Math.floor(totalSeconds / 60)
+  const seconds = totalSeconds % 60
 
   return `${totalMinutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
 }
@@ -41,7 +43,7 @@ export const METERS_PER_MILE = 1609.34
 const SECONDS_PER_KM_TO_SECONDS_PER_MILE = 1.609344
 const METERS_PER_SECOND_TO_MPH = 2.2369362920544
 
-export const metersToMiles = (meters: number): number => meters / METERS_PER_MILE
+const metersToMiles = (meters: number): number => meters / METERS_PER_MILE
 
 /** Distance in miles, 2 decimal places, e.g. "3.14". */
 export const formatDistanceMiles = (meters: number): string => metersToMiles(meters).toFixed(2)

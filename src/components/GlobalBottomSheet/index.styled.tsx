@@ -1,10 +1,8 @@
-import {StyleSheet} from 'react-native'
+import {StyleSheet, ViewStyle} from 'react-native'
 
-import {initialWindowMetrics} from 'react-native-safe-area-context'
-
-// No SafeAreaProvider in the app tree, so read the static launch metrics for
-// the home-indicator inset
-const bottomInset = initialWindowMetrics?.insets.bottom ?? 0
+export const sheetContentPadding = (bottomInset: number): ViewStyle => ({
+  paddingBottom: 20 + bottomInset
+})
 
 export default StyleSheet.create({
   backdrop: {
@@ -29,7 +27,6 @@ export default StyleSheet.create({
     elevation: 10 // Android shadow
   },
   sheetContent: {
-    padding: 20,
-    paddingBottom: 20 + bottomInset
+    padding: 20
   }
 })

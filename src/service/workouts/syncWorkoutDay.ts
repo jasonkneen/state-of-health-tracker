@@ -1,8 +1,8 @@
 import {createWorkoutDay} from '@data/models/WorkoutDay'
-import {fetchWorkoutForDay} from '@service/workouts/fetchWorkoutForDay'
+import {fetchWorkoutForDay} from '@queries/api/workouts/fetchWorkoutForDay'
+import {saveWorkoutDay} from '@queries/api/workouts/saveWorkoutDay'
+import {updateWorkoutDay} from '@queries/api/workouts/updateWorkoutDay'
 import offlineWorkoutStorageService from '@service/workouts/OfflineWorkoutStorageService'
-import {saveWorkoutDay} from '@service/workouts/saveWorkoutDay'
-import {updateWorkoutDay} from '@service/workouts/updateWorkoutDay'
 
 /**
  * Synchronizes the workout for the specified day between remote and local storage.

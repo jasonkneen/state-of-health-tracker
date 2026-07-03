@@ -1,21 +1,21 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React from 'react'
 
 import {SectionList, SectionListRenderItem, View} from 'react-native'
 
 import {mapExerciseType} from '@data/converters/ExerciseConverter'
 import {CreateExercisePayload, Exercise, isExerciseObject} from '@data/models/Exercise'
 import {ExerciseTemplate} from '@data/models/ExerciseTemplate'
+import {Navigation} from '@navigation/types'
 import {useCreateExerciseMutation} from '@queries/exercises/useCreateExerciseMutation'
 import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {mutationKeys} from '@queries/keys'
 import {useTemplatesQuery} from '@queries/templates/useTemplatesQuery'
 import {useNavigation} from '@react-navigation/native'
-import exerciseSearchService from '@service/exercises/ExerciseSearchService'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
 import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
 import {useIsMutating} from '@tanstack/react-query'
-import {debounce} from 'lodash'
+import {formatExerciseSubtitle} from '@utility/formatExerciseSubtitle'
 
 import ExerciseTypeChip from '@components/ExerciseTypeChip'
 import {closeGlobalBottomSheet, openGlobalBottomSheet} from '@components/GlobalBottomSheet'
@@ -42,12 +42,11 @@ import {
   YOUR_EXERCISES_HEADER
 } from '@constants/strings'
 
-import {formatExerciseSubtitle} from '../../utility/formatExerciseSubtitle'
 import ExerciseListItem from './components/ExerciseListItem'
 import ExerciseOptionsBottomSheet from './components/ExerciseOptionsBottomSheet'
 import TemplateListItem from './components/TemplateListItem'
+import {useExerciseCatalogSearch} from './hooks/useExerciseCatalogSearch'
 import styles from './index.styled'
-import {Navigation} from '../../navigation/types'
 
 type SectionItem = Exercise | ExerciseTemplate | CreateExercisePayload
 
@@ -56,14 +55,10 @@ interface Section {
   data: SectionItem[]
 }
 
-const LoadBatchSize = 50
-
 const AddExerciseScreen = () => {
   const {push, goBack} = useNavigation<Navigation>()
 
-  const [searchText, setSearchText] = useState('')
-  const [catalogResults, setCatalogResults] = useState<CreateExercisePayload[]>([])
-  const [batchCount, setBatchCount] = useState(1)
+  const {searchTerm, isSearching, catalogResults, setSearchText, loadMoreCatalogResults} = useExerciseCatalogSearch()
 
   const {data: templates = []} = useTemplatesQuery()
   const {data: exercises = []} = useExercisesQuery()
@@ -75,32 +70,6 @@ const AddExerciseScreen = () => {
   const isDeletingExercise = useIsMutating({mutationKey: mutationKeys.deleteExercise}) > 0
   const isDeletingTemplate = useIsMutating({mutationKey: mutationKeys.deleteTemplate}) > 0
   const isUpdating = isDeletingExercise || isDeletingTemplate || isCreatingExercise
-
-  const searchTerm = searchText.trim()
-  const isSearching = searchTerm !== ''
-
-  const debouncedCatalogSearch = useCallback(
-    debounce((filter: string) => {
-      setCatalogResults(exerciseSearchService.searchExercises(filter, LoadBatchSize))
-      setBatchCount(1)
-    }, 300),
-    []
-  )
-
-  useEffect(() => {
-    debouncedCatalogSearch(searchTerm)
-
-    return debouncedCatalogSearch.cancel
-  }, [searchTerm, debouncedCatalogSearch])
-
-  const loadMoreCatalogResults = () => {
-    if (!isSearching) return
-
-    const nextBatch = batchCount + 1
-
-    setCatalogResults(exerciseSearchService.searchExercises(searchTerm, nextBatch * LoadBatchSize))
-    setBatchCount(nextBatch)
-  }
 
   const normalizedTerm = searchTerm.toLowerCase()
   const matchingExercises = exercises.filter(

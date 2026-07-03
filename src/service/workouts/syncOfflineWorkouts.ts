@@ -1,10 +1,10 @@
 import {WorkoutDay} from '@data/models/WorkoutDay'
-import {updateWorkoutDay} from '@service/workouts/updateWorkoutDay'
+import {saveWorkoutDay} from '@queries/api/workouts/saveWorkoutDay'
+import {updateWorkoutDay} from '@queries/api/workouts/updateWorkoutDay'
+import {compareIsoDateStrings} from '@utility/DateUtility'
+import {isServerFailureError} from '@utility/isServerFailureError'
 
 import offlineWorkoutStorageService from './OfflineWorkoutStorageService'
-import {saveWorkoutDay} from './saveWorkoutDay'
-import {compareIsoDateStrings} from '../../utility/DateUtility'
-import {isServerFailureError} from '../../utility/isServerFailureError'
 
 /**
  * Attempts to sync all unsynced workouts that are not from today.
@@ -54,6 +54,5 @@ export default async function syncOfflineWorkouts(todayISO: string) {
     }
   }
 
-  // Clean up any records marked as synced
   await offlineWorkoutStorageService.deleteAllSynced()
 }

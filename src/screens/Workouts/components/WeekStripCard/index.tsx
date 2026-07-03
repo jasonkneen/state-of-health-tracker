@@ -5,6 +5,7 @@ import {TouchableOpacity, View} from 'react-native'
 import {useWeeklyWorkoutSummariesQuery} from '@queries/workouts/useWeeklyWorkoutSummariesQuery'
 import useUserData from '@store/userData/useUserData'
 import {Theme} from '@styles/theme'
+import {formatDateToMonthDay, getLast7Mondays} from '@utility/DateUtility'
 import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated'
 
 import TargetWorkoutsModal from '@components/dialog/TargetWorkoutsModal'
@@ -15,7 +16,6 @@ import Text from '@components/Text'
 import {stringWithParameters, THIS_WEEK_LABEL, WEEK_PROGRESS_TEXT} from '@constants/strings'
 
 import styles from './index.styled'
-import {formatDateToMonthDay, getLast7Mondays} from '../../../../utility/DateUtility'
 import WeeklyBarGraph from '../WeeklyBarGraph'
 
 const REVEAL_DURATION_MS = 175

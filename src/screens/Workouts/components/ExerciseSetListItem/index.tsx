@@ -26,7 +26,7 @@ import {
   parseSetFieldText,
   SetFieldKey,
   setFieldToDisplayText
-} from '../../../../utility/exerciseSetFields'
+} from './index.util'
 
 interface Props {
   readonly exercise: Exercise

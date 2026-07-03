@@ -9,21 +9,16 @@ const OFFLINE_FILE_PATH = `${FileSystem.documentDirectory}unsynced-runs.json`
 const TEMP_FILE_PATH = `${FileSystem.documentDirectory}unsynced-runs.tmp.json`
 
 class OfflineRunStorageService {
-  private isLocked = false
+  // Serializes writes instead of dropping them — a skipped write here means a
+  // silently lost run (e.g. a recovery save racing a background sync).
+  private writeQueue: Promise<unknown> = Promise.resolve()
 
-  private async withLock(task: () => Promise<void>) {
-    if (this.isLocked) {
-      console.log('[OfflineRunStorage] Write in progress, skipping.')
+  private withLock(task: () => Promise<void>): Promise<void> {
+    const result = this.writeQueue.then(task)
 
-      return
-    }
+    this.writeQueue = result.catch(() => undefined)
 
-    this.isLocked = true
-    try {
-      await task()
-    } finally {
-      this.isLocked = false
-    }
+    return result
   }
 
   async readAll(): Promise<RunRecord[]> {
@@ -82,8 +77,6 @@ class OfflineRunStorageService {
         from: TEMP_FILE_PATH,
         to: OFFLINE_FILE_PATH
       })
-
-      console.log(`Deleted ${allRuns.length - unsyncedOnly.length} synced run(s).`)
     })
   }
 
@@ -99,8 +92,6 @@ class OfflineRunStorageService {
         from: TEMP_FILE_PATH,
         to: OFFLINE_FILE_PATH
       })
-
-      console.log(`Deleted run with localId ${localId}`)
     })
   }
 

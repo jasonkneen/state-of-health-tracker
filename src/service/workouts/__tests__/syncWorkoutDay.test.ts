@@ -1,9 +1,9 @@
 import {createWorkoutDay} from '@data/models/WorkoutDay'
-import {fetchWorkoutForDay} from '@service/workouts/fetchWorkoutForDay'
+import {fetchWorkoutForDay} from '@queries/api/workouts/fetchWorkoutForDay'
+import {saveWorkoutDay} from '@queries/api/workouts/saveWorkoutDay'
+import {updateWorkoutDay} from '@queries/api/workouts/updateWorkoutDay'
 import offlineWorkoutStorageService from '@service/workouts/OfflineWorkoutStorageService'
-import {saveWorkoutDay} from '@service/workouts/saveWorkoutDay'
 import {syncWorkoutDay} from '@service/workouts/syncWorkoutDay'
-import {updateWorkoutDay} from '@service/workouts/updateWorkoutDay'
 
 const mockFetch = fetchWorkoutForDay as jest.Mock
 const mockUpdate = updateWorkoutDay as jest.Mock
@@ -12,13 +12,13 @@ const mockCreate = createWorkoutDay as jest.Mock
 const mockFindLocal = offlineWorkoutStorageService.findLocalWorkoutByDate as jest.Mock
 const mockSaveLocal = offlineWorkoutStorageService.save as jest.Mock
 
-jest.mock('@service/workouts/fetchWorkoutForDay', () => ({
+jest.mock('@queries/api/workouts/fetchWorkoutForDay', () => ({
   fetchWorkoutForDay: jest.fn()
 }))
-jest.mock('@service/workouts/updateWorkoutDay', () => ({
+jest.mock('@queries/api/workouts/updateWorkoutDay', () => ({
   updateWorkoutDay: jest.fn()
 }))
-jest.mock('@service/workouts/saveWorkoutDay', () => ({
+jest.mock('@queries/api/workouts/saveWorkoutDay', () => ({
   saveWorkoutDay: jest.fn()
 }))
 jest.mock('@data/models/WorkoutDay', () => ({
@@ -194,7 +194,6 @@ describe('syncWorkoutDay', () => {
 
   describe('syncWorkoutDay - key two-call scenarios', () => {
     test('Offline fallback, then online fetch remote older, pushes local to remote', async () => {
-      // First call: offline, no local
       mockFetch.mockRejectedValueOnce(new Error('offline'))
       mockFindLocal.mockResolvedValueOnce(null)
       mockCreate.mockReturnValueOnce(newLocalWorkout)
@@ -205,7 +204,6 @@ describe('syncWorkoutDay', () => {
 
       jest.clearAllMocks()
 
-      // Second call: online, remote older
       mockFetch.mockResolvedValueOnce(remoteWorkout)
       mockFindLocal.mockResolvedValueOnce(newLocalWorkout)
       mockUpdate.mockResolvedValueOnce(updatedWorkout)
@@ -216,7 +214,6 @@ describe('syncWorkoutDay', () => {
       expect(secondResult).toEqual(updatedWorkout)
     })
     test('Offline fallback, then online fetch remote older, pushes local to remote', async () => {
-      // First call: offline, no local
       mockFetch.mockRejectedValueOnce(new Error('offline'))
       mockFindLocal.mockResolvedValueOnce(null)
       mockCreate.mockReturnValueOnce(newLocalWorkout)
@@ -227,7 +224,6 @@ describe('syncWorkoutDay', () => {
 
       jest.clearAllMocks()
 
-      // Second call: online, remote older
       mockFetch.mockResolvedValueOnce(remoteWorkoutOlder)
       mockFindLocal.mockResolvedValueOnce(newLocalWorkout)
       mockUpdate.mockResolvedValueOnce(updatedWorkout)
@@ -242,7 +238,6 @@ describe('syncWorkoutDay', () => {
     })
 
     test('Offline fallback twice returns same local workout', async () => {
-      // First call: offline, no local
       mockFetch.mockRejectedValueOnce(new Error('offline'))
       mockFindLocal.mockResolvedValueOnce(null)
       mockCreate.mockReturnValueOnce(newLocalWorkout)
@@ -253,7 +248,6 @@ describe('syncWorkoutDay', () => {
 
       jest.clearAllMocks()
 
-      // Second call: still offline
       mockFetch.mockRejectedValueOnce(new Error('still offline'))
       mockFindLocal.mockResolvedValueOnce(newLocalWorkout)
 
@@ -263,7 +257,6 @@ describe('syncWorkoutDay', () => {
     })
 
     test('Online fetch remote, then fetch again idempotent', async () => {
-      // First call: online, no local
       mockFetch.mockResolvedValueOnce(remoteWorkout)
       mockFindLocal.mockResolvedValueOnce(null)
 
@@ -274,7 +267,6 @@ describe('syncWorkoutDay', () => {
 
       jest.clearAllMocks()
 
-      // Second call: same remote again
       mockFetch.mockResolvedValueOnce(remoteWorkout)
       mockFindLocal.mockResolvedValueOnce(remoteWorkout)
 
@@ -285,7 +277,6 @@ describe('syncWorkoutDay', () => {
     })
 
     test('Online no remote, creates local, then pushes it next call', async () => {
-      // First call: no remote, no local
       mockFetch.mockResolvedValueOnce(null)
       mockFindLocal.mockResolvedValueOnce(null)
       mockCreate.mockReturnValueOnce(newLocalWorkout)
@@ -298,7 +289,6 @@ describe('syncWorkoutDay', () => {
 
       jest.clearAllMocks()
 
-      // Second call: still no remote, local exists
       mockFetch.mockResolvedValueOnce(null)
       mockFindLocal.mockResolvedValueOnce(newLocalWorkout)
       mockSave.mockResolvedValueOnce(newRemoteWorkout)

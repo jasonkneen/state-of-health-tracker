@@ -5,8 +5,8 @@ import * as Location from 'expo-location'
 export interface RunDraftInput {
   runId: string
   startTime: number
-  /** Defaults to Date.now() — recovery results (RunRecoveryResult) don't carry an explicit end time the way StopRunResult does. */
-  endTime?: number
+  /** Falls back to the last GPS fix (then Date.now()) when the true end time is unknown (dead-session recovery). */
+  endTime?: number | null
   filteredPoints: Location.LocationObject[]
   stats: RunStats
 }
@@ -19,7 +19,8 @@ export interface RunDraftInput {
  * encoding, not a real polyline codec — see RunRecord.ts.
  */
 export function buildDraftRunRecord(userId: string, input: RunDraftInput): RunRecord {
-  const endTime = input.endTime ?? Date.now()
+  const lastPoint = input.filteredPoints[input.filteredPoints.length - 1]
+  const endTime = input.endTime ?? lastPoint?.timestamp ?? Date.now()
 
   return {
     localId: input.runId,
@@ -36,6 +37,7 @@ export function buildDraftRunRecord(userId: string, input: RunDraftInput): RunRe
     routePolyline: encodeRoutePolyline(
       input.filteredPoints.map(point => ({latitude: point.coords.latitude, longitude: point.coords.longitude}))
     ),
-    synced: false
+    synced: false,
+    draft: true
   }
 }

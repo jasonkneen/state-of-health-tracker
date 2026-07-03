@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 
 import {DailyExercise} from '@data/models/DailyExercise'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
-import {formatExerciseSubtitle} from '../../../utility/formatExerciseSubtitle'
+import {formatExerciseSubtitle} from '@utility/formatExerciseSubtitle'
 
 import SectionListHeader from '@components/SectionListHeader'
 

@@ -16,7 +16,7 @@ import {UPDATE_APP_VERSION_BUTTON, UPDATE_APP_VERSION_TEXT, UPDATE_APP_VERSION_T
 import {urls} from '@constants/urls'
 
 import styles from './index.styled'
-import {isVersionGreaterOrEqual} from '../../utility/compareVersions'
+import {isVersionGreaterOrEqual} from './index.util'
 
 const MinimumVersionSheet = () => {
   const sheetRef = useRef<BottomSheet>(null)

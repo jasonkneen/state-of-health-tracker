@@ -3,9 +3,11 @@ import React, {useState} from 'react'
 import {Alert, TouchableOpacity, View} from 'react-native'
 
 import {isAuthError} from '@data/models/AuthError'
+import {Navigation} from '@navigation/types'
 import {useNavigation} from '@react-navigation/native'
 import useAuthStore from '@store/auth/useAuthStore'
 import Spacing from '@styles/spacing'
+import {isValidEmail, isValidPassword} from '@utility/AccountUtility'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 
 import PasswordTextInput from '@components/PasswordTextInput'
@@ -30,8 +32,6 @@ import {
 } from '@constants/strings'
 
 import styles from './index.styled'
-import {Navigation} from '../../navigation/types'
-import {isValidEmail, isValidPassword} from '../../utility/AccountUtility'
 
 interface Props {
   readonly authType: 'register' | 'log-in'

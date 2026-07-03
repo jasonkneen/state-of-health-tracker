@@ -1,78 +1,55 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 
-import {ActivityIndicator, SafeAreaView, ScrollView, View} from 'react-native'
+import {ActivityIndicator, ScrollView, View} from 'react-native'
 
-import {decodeRoutePolyline, RunRecord} from '@data/models/RunRecord'
+import {RunsStackParamList} from '@navigation/RunsStack'
 import {useCompleteRunMutation} from '@queries/runs/useCompleteRunMutation'
+import {useDiscardRunMutation} from '@queries/runs/useDiscardRunMutation'
+import {useRunRecordQuery} from '@queries/runs/useRunRecordQuery'
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native'
 import {NativeStackNavigationProp} from '@react-navigation/native-stack'
-import {runSessionService} from '@service/run/RunSessionService'
-import {fetchRun} from '@service/runs/fetchRun'
-import offlineRunStorageService from '@service/runs/OfflineRunStorageService'
 import {Theme} from '@styles/theme'
+import {SafeAreaView} from 'react-native-safe-area-context'
 
 import ConfirmModal from '@components/dialog/ConfirmModal'
 import PrimaryButton from '@components/PrimaryButton'
+import RunMapView from '@components/RunMapView'
 import Text from '@components/Text'
 import {showToast} from '@components/toast/util/ShowToast'
 
 import Screens from '@constants/screens'
+import {
+  BACK_TO_RUNS_BUTTON_TEXT,
+  DISCARD_BUTTON_TEXT,
+  DISCARD_RUN_MODAL_BODY,
+  DISCARD_RUN_MODAL_TITLE,
+  RUN_NOT_FOUND,
+  RUN_SAVE_ERROR_TOAST,
+  RUN_SAVED_PR_TOAST,
+  RUN_SAVED_TOAST,
+  SAVE_RUN_BUTTON_TEXT
+} from '@constants/strings'
 
 import styles, {confirmButtonBackground} from './index.styled'
-import {RunsStackParamList} from '../../navigation/RunsStack'
-import {formatDistanceMiles, formatPaceFromSecPerKm, formatRunDuration, formatSpeedMph} from '../../utility/RunUtility'
-import RunMapView from '../RunFlow/components/RunMapView'
+import {buildRunSummaryTiles, toRoutePoints} from './index.util'
 
 type RunSummaryNavigationProp = NativeStackNavigationProp<RunsStackParamList, typeof Screens.RUN_SUMMARY>
 type RunSummaryRouteProp = RouteProp<RunsStackParamList, typeof Screens.RUN_SUMMARY>
 
 // route.params.pending distinguishes the two ways this screen is reached:
-// - pending=true: a run RunFlow (or RunHistory's crash-recovery flow) just
-//   finished and saved as an unsynced draft — offer Save/Discard.
+// - pending=true: a run RunFlow (or the Runs screen's crash-recovery flow)
+//   just finished and saved as a local draft — offer Save/Discard.
 // - pending=false/undefined: an already-saved history run being re-viewed —
-//   read-only, loaded from local storage if still queued there, else fetched
-//   from the server (local storage is a sync queue, not a permanent mirror —
-//   see OfflineRunStorageService/syncOfflineRuns).
+//   read-only, loaded local-first (see useRunRecordQuery).
 const RunSummaryScreen = () => {
   const navigation = useNavigation<RunSummaryNavigationProp>()
   const route = useRoute<RunSummaryRouteProp>()
   const {runId, pending = false} = route.params
 
-  const [record, setRecord] = useState<RunRecord | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [isDiscardModalVisible, setIsDiscardModalVisible] = useState(false)
-
+  const {data: record, isLoading} = useRunRecordQuery(runId, pending)
   const completeRunMutation = useCompleteRunMutation()
-
-  useEffect(() => {
-    let cancelled = false
-
-    const load = async () => {
-      setIsLoading(true)
-
-      const local = await offlineRunStorageService.findLocalRunByLocalId(runId)
-
-      if (local) {
-        if (!cancelled) setRecord(local)
-      } else if (!pending) {
-        try {
-          const remote = await fetchRun(runId)
-
-          if (!cancelled) setRecord(remote)
-        } catch {
-          if (!cancelled) setRecord(null)
-        }
-      }
-
-      if (!cancelled) setIsLoading(false)
-    }
-
-    load()
-
-    return () => {
-      cancelled = true
-    }
-  }, [runId, pending])
+  const discardRunMutation = useDiscardRunMutation()
+  const [isDiscardModalVisible, setIsDiscardModalVisible] = useState(false)
 
   const handleSave = async () => {
     if (!record) return
@@ -80,13 +57,10 @@ const RunSummaryScreen = () => {
     try {
       const result = await completeRunMutation.mutateAsync(record)
 
-      await runSessionService.discard(record.localId)
-
-      showToast('success', result.newRecords.length > 0 ? 'Run saved — new personal record!' : 'Run saved')
-
+      showToast('success', result.newRecords.length > 0 ? RUN_SAVED_PR_TOAST : RUN_SAVED_TOAST)
       navigation.navigate(Screens.RUNS)
-    } catch (error) {
-      showToast('error', 'Failed to save run')
+    } catch {
+      showToast('error', RUN_SAVE_ERROR_TOAST)
     }
   }
 
@@ -94,8 +68,7 @@ const RunSummaryScreen = () => {
     setIsDiscardModalVisible(false)
 
     if (record) {
-      await runSessionService.discard(record.localId)
-      await offlineRunStorageService.deleteByLocalId(record.localId)
+      await discardRunMutation.mutateAsync(record.localId)
     }
 
     navigation.navigate(Screens.RUNS)
@@ -115,26 +88,22 @@ const RunSummaryScreen = () => {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.centered}>
-          <Text style={styles.notFoundText}>Run not found</Text>
+          <Text style={styles.notFoundText}>{RUN_NOT_FOUND}</Text>
 
-          <PrimaryButton label="Back to Runs" onPress={() => navigation.navigate(Screens.RUNS)} />
+          <PrimaryButton label={BACK_TO_RUNS_BUTTON_TEXT} onPress={() => navigation.navigate(Screens.RUNS)} />
         </View>
       </SafeAreaView>
     )
   }
 
-  const routePoints = decodeRoutePolyline(record.routePolyline).map(point => ({
-    latitude: point.lat,
-    longitude: point.lng
-  }))
-  const avgSpeedMetersPerSecond = record.durationSeconds > 0 ? record.distanceMeters / record.durationSeconds : 0
   const startedAt = new Date(record.startedAt)
+  const tiles = buildRunSummaryTiles(record)
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         <View style={styles.mapContainer}>
-          <RunMapView route={routePoints} />
+          <RunMapView route={toRoutePoints(record.routePolyline)} />
         </View>
 
         <View style={styles.headerRow}>
@@ -144,35 +113,13 @@ const RunSummaryScreen = () => {
         </View>
 
         <View style={styles.statsGrid}>
-          <View style={styles.statTile}>
-            <Text style={styles.statValue}>{formatDistanceMiles(record.distanceMeters)}</Text>
+          {tiles.map(tile => (
+            <View key={tile.label} style={styles.statTile}>
+              <Text style={styles.statValue}>{tile.value}</Text>
 
-            <Text style={styles.statLabel}>Distance (mi)</Text>
-          </View>
-
-          <View style={styles.statTile}>
-            <Text style={styles.statValue}>{formatRunDuration(record.durationSeconds)}</Text>
-
-            <Text style={styles.statLabel}>Time</Text>
-          </View>
-
-          <View style={styles.statTile}>
-            <Text style={styles.statValue}>{formatPaceFromSecPerKm(record.avgPaceSecPerKm ?? 0)}</Text>
-
-            <Text style={styles.statLabel}>Avg Pace</Text>
-          </View>
-
-          <View style={styles.statTile}>
-            <Text style={styles.statValue}>{formatSpeedMph(avgSpeedMetersPerSecond)}</Text>
-
-            <Text style={styles.statLabel}>Avg Speed (mph)</Text>
-          </View>
-
-          <View style={styles.statTile}>
-            <Text style={styles.statValue}>{Math.round(record.calories ?? 0)}</Text>
-
-            <Text style={styles.statLabel}>Calories</Text>
-          </View>
+              <Text style={styles.statLabel}>{tile.label}</Text>
+            </View>
+          ))}
         </View>
       </ScrollView>
 
@@ -181,18 +128,23 @@ const RunSummaryScreen = () => {
           <PrimaryButton
             width="48%"
             style={confirmButtonBackground(Theme.colors.track)}
-            label="Discard"
+            label={DISCARD_BUTTON_TEXT}
             onPress={() => setIsDiscardModalVisible(true)}
           />
 
-          <PrimaryButton width="48%" isLoading={completeRunMutation.isPending} label="Save Run" onPress={handleSave} />
+          <PrimaryButton
+            width="48%"
+            isLoading={completeRunMutation.isPending}
+            label={SAVE_RUN_BUTTON_TEXT}
+            onPress={handleSave}
+          />
         </View>
       )}
 
       <ConfirmModal
-        confirmationTitle="Discard Run?"
-        confirmationBody="This run will be permanently deleted and won't be added to your history."
-        confirmButtonText="Discard"
+        confirmationTitle={DISCARD_RUN_MODAL_TITLE}
+        confirmationBody={DISCARD_RUN_MODAL_BODY}
+        confirmButtonText={DISCARD_BUTTON_TEXT}
         isVisible={isDiscardModalVisible}
         onConfirmPressed={handleDiscardConfirmed}
         onCancel={() => setIsDiscardModalVisible(false)}

@@ -6,10 +6,9 @@ import offlineWorkoutStorageService from '@service/workouts/OfflineWorkoutStorag
 import syncOfflineWorkouts from '@service/workouts/syncOfflineWorkouts'
 import {syncWorkoutDay} from '@service/workouts/syncWorkoutDay'
 import {useSessionStore} from '@store/session/useSessionStore'
+import CrashUtility from '@utility/CrashUtility'
 import {create} from 'zustand'
 import {immer} from 'zustand/middleware/immer'
-
-import CrashUtility from '../../utility/CrashUtility'
 
 export type DailyWorkoutState = {
   currentWorkoutDay: WorkoutDay | null

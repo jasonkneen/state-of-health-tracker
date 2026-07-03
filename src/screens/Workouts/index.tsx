@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react'
 
 import {
   KeyboardAvoidingView,
-  SafeAreaView,
   SectionList,
   SectionListRenderItem,
   StyleSheet,
@@ -14,6 +13,7 @@ import {DailyExercise} from '@data/models/DailyExercise'
 import {ExerciseSet} from '@data/models/ExerciseSet'
 import Unique from '@data/models/Unique'
 import {AntDesign, Ionicons} from '@expo/vector-icons'
+import {Navigation} from '@navigation/types'
 import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useTemplatesQuery} from '@queries/templates/useTemplatesQuery'
 import {useCompleteWorkoutMutation} from '@queries/workouts/useCompleteWorkoutMutation'
@@ -23,8 +23,11 @@ import useAuthStore from '@store/auth/useAuthStore'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
 import {useSessionStore} from '@store/session/useSessionStore'
 import {Theme} from '@styles/theme'
+import {formatDayMonthDay} from '@utility/DateUtility'
+import ListSwipeItemManager from '@utility/ListSwipeItemManager'
 import * as Haptics from 'expo-haptics'
 import Animated, {FadeIn, FadeOut, ZoomIn} from 'react-native-reanimated'
+import {SafeAreaView} from 'react-native-safe-area-context'
 
 import FloatingActionButton from '@components/FloatingActionButton'
 import BarbellIcon from '@components/icons/BarbellIcon'
@@ -56,9 +59,6 @@ import ReorganizeExerciseList from './components/ReorganizeExerciseList'
 import WeekStripCard from './components/WeekStripCard'
 import WorkoutsSkeleton from './components/WorkoutsSkeleton'
 import styles from './index.styled'
-import {Navigation} from '../../navigation/types'
-import {formatDayMonthDay} from '../../utility/DateUtility'
-import ListSwipeItemManager from '../../utility/ListSwipeItemManager'
 
 interface Section extends Unique {
   dailyExercise: DailyExercise

@@ -2,12 +2,13 @@ import React from 'react'
 
 import {View} from 'react-native'
 
+import {formatDateToMonthDay} from '@utility/DateUtility'
+
 import Text from '@components/Text'
 
 import {PROGRESS_LAST_SESSION_LABEL, PROGRESS_NEW_PR_LABEL} from '@constants/strings'
 
 import styles from './index.styled'
-import {formatDateToMonthDay} from '../../../../utility/DateUtility'
 
 export interface PrCardData {
   weight: number

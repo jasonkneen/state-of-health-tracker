@@ -1,11 +1,12 @@
 import {RUN_LOCATION_TASK} from '@service/location/runLocationTask'
-import {PauseSegment, selectElapsedMs, useRunSessionStore} from '@store/runSession/useRunSessionStore'
+import {PauseSegment, selectElapsedMs, selectPausedMs, useRunSessionStore} from '@store/runSession/useRunSessionStore'
+import {Theme} from '@styles/theme'
+import CrashUtility from '@utility/CrashUtility'
 import * as Location from 'expo-location'
 import {v4 as uuidv4} from 'uuid'
 
 import {processRunPoints, RunStats} from './runMath'
 import {runPointBuffer} from './runPointBuffer'
-import CrashUtility from '../../utility/CrashUtility'
 
 // Re-exported so Phase B doesn't need to reach into the store module just to
 // read live elapsed time off a recovered/active session.
@@ -26,6 +27,8 @@ export type StopRunResult = {
 type RecoverBase = {
   runId: string
   startTime: number
+  /** Known only for 'completed-unsaved' sessions (set when stop() completed the session). */
+  endTime: number | null
   status: 'active' | 'paused' | 'completed'
   pauseSegments: PauseSegment[]
   rawPoints: Location.LocationObject[]
@@ -68,13 +71,11 @@ const START_LOCATION_OPTIONS: Location.LocationTaskOptions = {
   foregroundService: {
     notificationTitle: 'Run in progress',
     notificationBody: 'Tracking your route',
-    notificationColor: '#16BC85'
+    notificationColor: Theme.colors.accentGreen
   }
 }
 
 class RunSessionService {
-  // ---- Permission flow (plan doc §3) -------------------------------------
-
   /** Foreground-only request/check — call when the user enters the Runs feature. */
   async requestForegroundPermission(): Promise<Location.PermissionStatus> {
     const current = await Location.getForegroundPermissionsAsync()
@@ -125,8 +126,6 @@ class RunSessionService {
     return response.granted
   }
 
-  // ---- Session lifecycle ---------------------------------------------------
-
   /**
    * Starts a new run: generates a run id, initializes the session record +
    * point buffer, and starts the OS-level background location task.
@@ -141,6 +140,14 @@ class RunSessionService {
 
     if (foregroundStatus !== Location.PermissionStatus.GRANTED) {
       throw new Error('Cannot start a run without foreground location permission.')
+    }
+
+    // A dangling unresolved session (e.g. an abandoned recovery) would leak
+    // its point-buffer file forever — sweep it before starting fresh.
+    const previous = useRunSessionStore.getState()
+
+    if (previous.runId && previous.status !== 'idle') {
+      await runPointBuffer.clear(previous.runId)
     }
 
     const runId = uuidv4()
@@ -206,9 +213,13 @@ class RunSessionService {
     useRunSessionStore.getState().complete()
 
     const finalSession = useRunSessionStore.getState()
-    const endTime = Date.now()
+    const endTime = finalSession.endTime ?? Date.now()
+    const startTime = finalSession.startTime as number
+    // Moving time from the session clock — the GPS-point span still contains
+    // paused wall-clock time and misses the warm-up window.
+    const movingDurationMs = Math.max(0, endTime - startTime - selectPausedMs(finalSession, endTime))
     const rawPoints = await runPointBuffer.readAll(runId)
-    const {filteredPoints, stats} = processRunPoints(rawPoints, finalSession.pauseSegments)
+    const {filteredPoints, stats} = processRunPoints(rawPoints, finalSession.pauseSegments, movingDurationMs)
 
     // Clear the active-run pointer so a stray late-delivered batch never
     // appends to a run that's already been finalized.
@@ -216,7 +227,7 @@ class RunSessionService {
 
     return {
       runId,
-      startTime: finalSession.startTime as number,
+      startTime,
       endTime,
       pauseSegments: finalSession.pauseSegments,
       rawPoints,
@@ -250,21 +261,34 @@ class RunSessionService {
       return {kind: 'none'}
     }
 
-    const rawPoints = await runPointBuffer.readAll(session.runId)
-    const {filteredPoints, stats} = processRunPoints(rawPoints, session.pauseSegments)
+    const {runId, startTime, status, pauseSegments} = session
+    const rawPoints = await runPointBuffer.readAll(runId)
 
-    const base: RecoverBase = {
-      runId: session.runId,
-      startTime: session.startTime,
-      status: session.status,
-      pauseSegments: session.pauseSegments,
-      rawPoints,
-      filteredPoints,
-      stats
+    const buildBase = (effectiveEndTime: number | null): RecoverBase => {
+      // Moving time depends on how the session ended: a completed session
+      // knows its end, a dead session effectively ended at its last GPS fix,
+      // and a still-tracking session is measured up to now. The raw point
+      // span is never used — it includes paused wall-clock time.
+      const movingDurationMs =
+        effectiveEndTime !== null
+          ? Math.max(0, effectiveEndTime - startTime - selectPausedMs(session, effectiveEndTime))
+          : selectElapsedMs(session)
+      const {filteredPoints, stats} = processRunPoints(rawPoints, pauseSegments, movingDurationMs)
+
+      return {
+        runId,
+        startTime,
+        endTime: effectiveEndTime,
+        status,
+        pauseSegments,
+        rawPoints,
+        filteredPoints,
+        stats
+      }
     }
 
-    if (session.status === 'completed') {
-      return {kind: 'completed-unsaved', ...base}
+    if (status === 'completed') {
+      return {kind: 'completed-unsaved', ...buildBase(session.endTime ?? null)}
     }
 
     // Re-sync the buffer's active-run pointer in case this is a fresh JS
@@ -274,7 +298,13 @@ class RunSessionService {
 
     const isStillTracking = await Location.hasStartedLocationUpdatesAsync(RUN_LOCATION_TASK)
 
-    return {kind: isStillTracking ? 'active-tracking' : 'stopped-with-buffer', ...base}
+    if (isStillTracking) {
+      return {kind: 'active-tracking', ...buildBase(null)}
+    }
+
+    const lastPointTimestamp = rawPoints.length > 0 ? rawPoints[rawPoints.length - 1].timestamp : session.startTime
+
+    return {kind: 'stopped-with-buffer', ...buildBase(lastPointTimestamp)}
   }
 
   // ---- Optional live subscription (cosmetic only — never a stats source) --

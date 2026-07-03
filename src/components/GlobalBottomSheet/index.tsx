@@ -5,9 +5,10 @@ import {View, TouchableWithoutFeedback} from 'react-native'
 
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet'
 import {Theme} from '@styles/theme'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import {Subject} from 'rxjs'
 
-import styles from './index.styled'
+import styles, {sheetContentPadding} from './index.styled'
 
 interface BottomSheetEvent {
   action: 'open' | 'close'
@@ -29,6 +30,7 @@ export const closeGlobalBottomSheet = () => {
 
 const GlobalBottomSheet = () => {
   const sheetRef = useRef<BottomSheet>(null)
+  const insets = useSafeAreaInsets()
 
   const [content, setContent] = useState<ReactNode>(null)
   const [isOpen, setIsOpen] = useState(false)
@@ -68,7 +70,7 @@ const GlobalBottomSheet = () => {
         backgroundStyle={{backgroundColor: Theme.colors.background}}
         style={styles.sheetShadow}
         onClose={closeGlobalBottomSheet}>
-        <BottomSheetView style={styles.sheetContent}>{content}</BottomSheetView>
+        <BottomSheetView style={[styles.sheetContent, sheetContentPadding(insets.bottom)]}>{content}</BottomSheetView>
       </BottomSheet>
     </>
   )

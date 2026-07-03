@@ -1,4 +1,4 @@
-import {fetchWorkoutSummaries} from '@service/workouts/fetchWorkoutSummaries'
+import {fetchWorkoutSummaries} from '@queries/api/workouts/fetchWorkoutSummaries'
 import {useInfiniteQuery} from '@tanstack/react-query'
 
 import {queryKeys} from '../keys'

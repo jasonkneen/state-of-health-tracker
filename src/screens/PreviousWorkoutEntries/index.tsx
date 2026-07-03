@@ -8,6 +8,8 @@ import {Entypo, FontAwesome5, MaterialCommunityIcons} from '@expo/vector-icons'
 import {useWorkoutSummariesInfiniteQuery} from '@queries/workouts/useWorkoutSummariesInfiniteQuery'
 import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
+import {formatDateUTC} from '@utility/DateUtility'
+import {formatSecondsAsDuration} from '@utility/formatSecondsAsDuration'
 
 import Chip from '@components/Chip'
 import LoadingOverlay from '@components/LoadingOverlay'
@@ -26,8 +28,6 @@ import {
 
 import BestSetChip from './components/BestSetChip'
 import styles from './index.styled'
-import {formatDateUTC} from '../../utility/DateUtility'
-import {formatSecondsAsDuration} from '../../utility/exerciseSetFields'
 
 const PreviousWorkoutEntries = () => {
   const {data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage} = useWorkoutSummariesInfiniteQuery()

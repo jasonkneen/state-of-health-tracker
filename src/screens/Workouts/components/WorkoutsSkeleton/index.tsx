@@ -1,10 +1,12 @@
 import React from 'react'
 
-import {Dimensions, SafeAreaView, View} from 'react-native'
+import {Dimensions, View} from 'react-native'
 
 import {useSessionStore} from '@store/session/useSessionStore'
 import BorderRadius from '@styles/borderRadius'
 import Spacing from '@styles/spacing'
+import {formatDayMonthDay} from '@utility/DateUtility'
+import {SafeAreaView} from 'react-native-safe-area-context'
 
 import Skeleton from '@components/Skeleton'
 import Text from '@components/Text'
@@ -12,7 +14,6 @@ import Text from '@components/Text'
 import {WORKOUT_SCREEN_TITLE} from '@constants/strings'
 
 import styles from './index.styled'
-import {formatDayMonthDay} from '../../../../utility/DateUtility'
 
 // Mirrors the real section layout: ExerciseSetListItem uses a 34pt set-number
 // column, flex-1 input cells, and a 42pt check column inside MEDIUM padding

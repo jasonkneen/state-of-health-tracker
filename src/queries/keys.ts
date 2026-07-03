@@ -16,5 +16,7 @@ export const mutationKeys = {
   deleteExercise: ['deleteExercise'] as const,
   createTemplate: ['createTemplate'] as const,
   deleteTemplate: ['deleteTemplate'] as const,
-  completeRun: ['completeRun'] as const
+  completeRun: ['completeRun'] as const,
+  discardRun: ['discardRun'] as const,
+  syncOfflineRuns: ['syncOfflineRuns'] as const
 }

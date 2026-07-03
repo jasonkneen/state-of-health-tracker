@@ -1,4 +1,4 @@
-import {deleteExercise} from '@service/exercises/deleteExercise'
+import {deleteExercise} from '@queries/api/exercises/deleteExercise'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 
 import {mutationKeys, queryKeys} from '../keys'

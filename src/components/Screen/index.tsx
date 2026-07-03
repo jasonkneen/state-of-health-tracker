@@ -1,6 +1,8 @@
 import React from 'react'
 
-import {SafeAreaView, ViewProps} from 'react-native'
+import {ViewProps} from 'react-native'
+
+import {SafeAreaView} from 'react-native-safe-area-context'
 
 import styles from './index.styled'
 

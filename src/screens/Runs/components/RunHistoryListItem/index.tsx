@@ -4,6 +4,8 @@ import {View} from 'react-native'
 
 import {Run} from '@data/models/Run'
 import {Theme} from '@styles/theme'
+import {formatDateToMonthDayName} from '@utility/DateUtility'
+import {formatPace, formatRunDuration} from '@utility/RunUtility'
 
 import RunIcon from '@components/icons/RunIcon'
 import IconTile from '@components/IconTile'
@@ -12,8 +14,6 @@ import Text from '@components/Text'
 import {RUNS_BADGE_BEST_PACE, RUNS_BADGE_LONGEST, RUNS_PACE_CAPTION, stringWithParameters} from '@constants/strings'
 
 import styles from './index.styled'
-import {formatDateToMonthDayName} from '../../../../utility/DateUtility'
-import {formatPace, formatRunDuration} from '../../../../utility/RunUtility'
 
 export type RunBadge = 'best-pace' | 'longest' | undefined
 

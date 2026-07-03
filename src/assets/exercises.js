@@ -3156,7 +3156,7 @@ const exercises = [
     muscleGroup: 'Back'
   },
   {
-    name: 'World\'s Greatest Stretch',
+    name: "World's Greatest Stretch",
     type: 'Timed',
     muscleGroup: 'Back'
   },
@@ -5001,7 +5001,7 @@ const exercises = [
     muscleGroup: 'Shoulders'
   },
   {
-    name: 'Banded Y\'s',
+    name: "Banded Y's",
     type: 'Other',
     muscleGroup: 'Shoulders'
   },

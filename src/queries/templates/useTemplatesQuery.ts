@@ -1,4 +1,4 @@
-import {fetchTemplates} from '@service/exercises/fetchTemplates'
+import {fetchTemplates} from '@queries/api/templates/fetchTemplates'
 import {useQuery} from '@tanstack/react-query'
 
 import {queryKeys} from '../keys'

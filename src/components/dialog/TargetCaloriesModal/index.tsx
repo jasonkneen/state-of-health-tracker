@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react'
 import {MaterialCommunityIcons} from '@expo/vector-icons'
 import useUserData from '@store/userData/useUserData'
 import {Theme} from '@styles/theme'
+import {isNumber} from '@utility/TextUtility'
 
 import {showToast} from '@components/toast/util/ShowToast'
 
@@ -14,7 +15,6 @@ import {
   TOAST_TARGET_CALORIES_SET
 } from '@constants/strings'
 
-import {isNumber} from '../../../utility/TextUtility'
 import BaseInputModalProps from '../BaseInputModalProps'
 import InputModal from '../InputModal'
 import styles from './index.styled'

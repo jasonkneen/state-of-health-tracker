@@ -1,27 +1,21 @@
 import {WorkoutDay} from '@data/models/WorkoutDay'
+import {compareIsoDateStrings} from '@utility/DateUtility'
 import * as FileSystem from 'expo-file-system/legacy'
-
-import {compareIsoDateStrings} from '../../utility/DateUtility'
 
 const OFFLINE_FILE_PATH = `${FileSystem.documentDirectory}unsynced-workouts.json`
 const TEMP_FILE_PATH = `${FileSystem.documentDirectory}unsynced-workouts.tmp.json`
 
 class OfflineWorkoutStorageService {
-  private isLocked = false
+  // Serializes writes instead of dropping them — a skipped write here means a
+  // silently lost workout mutation when two callers race.
+  private writeQueue: Promise<unknown> = Promise.resolve()
 
-  private async withLock(task: () => Promise<void>) {
-    if (this.isLocked) {
-      console.log('[OfflineStorage] Write in progress, skipping.')
+  private withLock(task: () => Promise<void>): Promise<void> {
+    const result = this.writeQueue.then(task)
 
-      return
-    }
+    this.writeQueue = result.catch(() => undefined)
 
-    this.isLocked = true
-    try {
-      await task()
-    } finally {
-      this.isLocked = false
-    }
+    return result
   }
 
   async readAll(): Promise<WorkoutDay[]> {

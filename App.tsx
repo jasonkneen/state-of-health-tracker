@@ -5,10 +5,11 @@ import {LogBox, StatusBar, TouchableOpacity} from 'react-native'
 import {Ionicons} from '@expo/vector-icons'
 import {NavigationContainer} from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
-import {PersistQueryClientProvider} from '@tanstack/react-query-persist-client'
 import {Theme} from '@styles/theme'
+import {PersistQueryClientProvider} from '@tanstack/react-query-persist-client'
 import * as SplashScreen from 'expo-splash-screen'
 import {GestureHandlerRootView} from 'react-native-gesture-handler'
+import {initialWindowMetrics, SafeAreaProvider} from 'react-native-safe-area-context'
 import Toast from 'react-native-toast-message'
 
 import GlobalBottomSheet from './src/components/GlobalBottomSheet'
@@ -49,49 +50,51 @@ const App = () => {
         }
       }}>
       <GestureHandlerRootView style={{flex: 1}}>
-        <StatusBar barStyle="light-content" />
+        <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+          <StatusBar barStyle="light-content" />
 
-        <NavigationContainer theme={Theme}>
-          {!isAuthed ? (
-            <Stack.Navigator
-              initialRouteName={'Auth'}
-              screenOptions={({navigation}) => ({
-                headerLeft: () => backButton(() => navigation.goBack())
-              })}>
-              <Stack.Screen
-                name="Auth"
-                component={AuthStack}
-                options={{
-                  title: '',
-                  gestureEnabled: false,
-                  headerShown: false,
-                  presentation: 'modal'
-                }}
-              />
-            </Stack.Navigator>
-          ) : (
-            <Stack.Navigator
-              initialRouteName={'Home'}
-              screenOptions={({navigation}) => ({
-                headerLeft: () => backButton(() => navigation.goBack())
-              })}>
-              <Stack.Screen
-                name="Home"
-                component={HomeTabs}
-                options={{
-                  animation: 'fade',
-                  headerShown: false
-                }}
-              />
-            </Stack.Navigator>
-          )}
+          <NavigationContainer theme={Theme}>
+            {!isAuthed ? (
+              <Stack.Navigator
+                initialRouteName={'Auth'}
+                screenOptions={({navigation}) => ({
+                  headerLeft: () => backButton(() => navigation.goBack())
+                })}>
+                <Stack.Screen
+                  name="Auth"
+                  component={AuthStack}
+                  options={{
+                    title: '',
+                    gestureEnabled: false,
+                    headerShown: false,
+                    presentation: 'modal'
+                  }}
+                />
+              </Stack.Navigator>
+            ) : (
+              <Stack.Navigator
+                initialRouteName={'Home'}
+                screenOptions={({navigation}) => ({
+                  headerLeft: () => backButton(() => navigation.goBack())
+                })}>
+                <Stack.Screen
+                  name="Home"
+                  component={HomeTabs}
+                  options={{
+                    animation: 'fade',
+                    headerShown: false
+                  }}
+                />
+              </Stack.Navigator>
+            )}
 
-          <GlobalBottomSheet />
+            <GlobalBottomSheet />
 
-          <MinimumVersionSheet />
+            <MinimumVersionSheet />
 
-          <Toast config={ToastConfig} position="top" topOffset={50} />
-        </NavigationContainer>
+            <Toast config={ToastConfig} position="top" topOffset={50} />
+          </NavigationContainer>
+        </SafeAreaProvider>
       </GestureHandlerRootView>
     </PersistQueryClientProvider>
   )

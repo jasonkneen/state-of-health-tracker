@@ -244,7 +244,7 @@ const WorkoutsScreen = () => {
     )
 
     return (
-      <SafeAreaView>
+      <SafeAreaView edges={['top']}>
         <KeyboardAvoidingView behavior="padding">
           <SectionList
             windowSize={3}
@@ -326,7 +326,7 @@ const WorkoutsScreen = () => {
 
       {!isLoading && isReorganizing && (
         <Animated.View style={styles.root} entering={FadeIn.duration(REORG_TRANSITION_DURATION_MS)}>
-          <SafeAreaView style={styles.root}>
+          <SafeAreaView style={styles.root} edges={['top']}>
             <ReorganizeExerciseList
               dailyExercises={dailyExercises}
               onReorder={updateDailyExercises}

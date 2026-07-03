@@ -195,7 +195,7 @@ const AddExerciseScreen = () => {
             openGlobalBottomSheet(
               <ExerciseOptionsBottomSheet
                 title={payload.name}
-                subtitle={payload.exerciseBodyPart}
+                subtitle={formatExerciseSubtitle(payload.exerciseType, payload.exerciseBodyPart)}
                 onAddPressed={() => {
                   closeGlobalBottomSheet()
                   onCatalogExercisePressed(payload)

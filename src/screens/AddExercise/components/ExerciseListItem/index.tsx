@@ -3,8 +3,10 @@ import React from 'react'
 import {TouchableOpacity, View} from 'react-native'
 
 import {Exercise} from '@data/models/Exercise'
-import {useNavigation} from '@react-navigation/native'
+import {HomeTabsParamList} from '@navigation/HomeTabs'
+import {NavigationProp, useNavigation} from '@react-navigation/native'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
+import useProgressStore from '@store/progress/useProgressStore'
 import {Theme} from '@styles/theme'
 import {formatExerciseSubtitle} from '@utility/formatExerciseSubtitle'
 
@@ -15,6 +17,7 @@ import {closeGlobalBottomSheet, openGlobalBottomSheet} from '@components/GlobalB
 import Text from '@components/Text'
 import {showToast} from '@components/toast/util/ShowToast'
 
+import Screens from '@constants/screens'
 import {TOAST_EXERCISE_ADDED, TOAST_EXERCISE_ALREADY_ADDED} from '@constants/strings'
 
 import styles from './index.styled'
@@ -24,28 +27,36 @@ interface Props {
 }
 
 const ExerciseListItem = ({exercise}: Props) => {
-  const {goBack} = useNavigation()
+  const navigation = useNavigation<NavigationProp<HomeTabsParamList>>()
 
   const subtitle = formatExerciseSubtitle(exercise.exerciseType, exercise.exerciseBodyPart)
 
   const {addDailyExercise} = useDailyWorkoutEntryStore()
+  const {setSelectedExerciseId} = useProgressStore()
 
   const onAddToWorkoutPressed = () => {
     closeGlobalBottomSheet()
     if (addDailyExercise(exercise)) {
       showToast('success', TOAST_EXERCISE_ADDED, exercise.name)
-      goBack()
+      navigation.goBack()
     } else {
       showToast('error', TOAST_EXERCISE_ALREADY_ADDED, exercise.name)
     }
+  }
+
+  const onViewProgressionPressed = () => {
+    closeGlobalBottomSheet()
+    setSelectedExerciseId(exercise.id)
+    navigation.navigate('ProgressStack', {screen: Screens.PROGRESS})
   }
 
   const onPress = () => {
     openGlobalBottomSheet(
       <ExerciseOptionsBottomSheet
         title={exercise.name}
-        subtitle={exercise.exerciseBodyPart}
+        subtitle={subtitle}
         onAddPressed={onAddToWorkoutPressed}
+        onViewProgressionPressed={onViewProgressionPressed}
         exerciseToDelete={exercise}
       />
     )

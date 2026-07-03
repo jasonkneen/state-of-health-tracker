@@ -116,7 +116,7 @@ const PreviousWorkoutEntries = () => {
     <>
       {isLoading && <LoadingOverlay />}
 
-      <Screen>
+      <Screen edges={[]}>
         <FlatList
           style={styles.list}
           showsVerticalScrollIndicator={false}

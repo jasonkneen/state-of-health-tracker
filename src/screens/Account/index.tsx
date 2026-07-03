@@ -146,7 +146,7 @@ const AccountScreen = () => {
   )
 
   return (
-    <SafeAreaView>
+    <SafeAreaView edges={['top']}>
       <ScrollView style={styles.scrollView} keyboardShouldPersistTaps={true}>
         {header()}
 

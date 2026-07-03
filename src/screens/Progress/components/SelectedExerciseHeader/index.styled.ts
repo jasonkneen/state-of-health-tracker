@@ -6,28 +6,30 @@ import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
 
 export default StyleSheet.create({
-  row: {
+  container: {
     marginTop: Spacing.MEDIUM
   },
-  rowContent: {
-    columnGap: Spacing.X_SMALL,
-    paddingRight: Spacing.GUTTER
+  label: {
+    fontSize: FontSize.CAPTION,
+    fontWeight: '600',
+    color: Theme.colors.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 1
   },
   chip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    columnGap: Spacing.XX_SMALL,
     backgroundColor: Theme.colors.tile,
     borderRadius: BorderRadius.CHIP,
     paddingVertical: Spacing.X_SMALL,
-    paddingHorizontal: Spacing.MEDIUM
+    paddingHorizontal: Spacing.MEDIUM,
+    marginTop: Spacing.X_SMALL
   },
-  chipSelected: {
-    backgroundColor: Theme.colors.white
-  },
-  label: {
-    fontSize: FontSize.LABEL,
+  chipLabel: {
+    fontSize: FontSize.BODY,
     fontWeight: '600',
-    color: Theme.colors.textSecondary
-  },
-  labelSelected: {
-    color: Theme.colors.primary
+    flexShrink: 1
   }
 })

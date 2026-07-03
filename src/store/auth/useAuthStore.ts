@@ -2,6 +2,7 @@ import {queryClient} from '@queries/queryClient'
 import authService from '@service/auth/AuthService'
 import offlineWorkoutStorageService from '@service/workouts/OfflineWorkoutStorageService'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
+import useProgressStore from '@store/progress/useProgressStore'
 import {create} from 'zustand'
 
 export type AuthState = {
@@ -22,6 +23,7 @@ const clearUserSession = async () => {
   await offlineWorkoutStorageService.clear()
   queryClient.clear()
   useDailyWorkoutEntryStore.getState().reset()
+  useProgressStore.getState().reset()
 }
 
 const useAuthStore = create<AuthState>()(set => ({

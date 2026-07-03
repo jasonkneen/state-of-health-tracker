@@ -1,7 +1,8 @@
+import {Exercise, ExerciseBodyPartEnum, ExerciseTypeEnum, LoggingTypeEnum} from '@data/models/Exercise'
 import {PersonalRecord, RecordTypeEnum} from '@data/models/PersonalRecord'
 
 import {SessionSummary} from '../../../index.util'
-import {buildPrCard} from '../index.util'
+import {buildPrCard, getDefaultExerciseId} from '../index.util'
 
 const EXERCISE_ID = 'exercise-1'
 
@@ -64,5 +65,54 @@ describe('buildPrCard', () => {
 
   it('returns null when no exercise is selected', () => {
     expect(buildPrCard([makeRecord()], [makeSession()], undefined)).toBeNull()
+  })
+})
+
+const makeExercise = (id: string, overrides: Partial<Exercise> = {}): Exercise => ({
+  id,
+  name: `Exercise ${id}`,
+  exerciseType: ExerciseTypeEnum.BARBELL,
+  exerciseBodyPart: ExerciseBodyPartEnum.CHEST,
+  loggingType: LoggingTypeEnum.WEIGHT_REPS,
+  latestCompletedSets: [],
+  ...overrides
+})
+
+describe('getDefaultExerciseId', () => {
+  it('returns undefined when there are no exercises', () => {
+    expect(getDefaultExerciseId([], [makeRecord()])).toBeUndefined()
+  })
+
+  it('falls back to the first exercise when there are no records', () => {
+    expect(getDefaultExerciseId([makeExercise('a'), makeExercise('b')], [])).toBe('a')
+  })
+
+  it('picks the exercise with the most records over the first alphabetical one', () => {
+    const records = [
+      makeRecord({id: 'r1', exerciseId: 'b'}),
+      makeRecord({id: 'r2', exerciseId: 'b', recordType: RecordTypeEnum.MAX_REPS}),
+      makeRecord({id: 'r3', exerciseId: 'a'})
+    ]
+
+    expect(getDefaultExerciseId([makeExercise('a'), makeExercise('b')], records)).toBe('b')
+  })
+
+  it('breaks record-count ties by the most recently achieved record', () => {
+    const records = [
+      makeRecord({id: 'r1', exerciseId: 'a', achievedAt: '2026-05-01T09:00:00.000Z'}),
+      makeRecord({id: 'r2', exerciseId: 'b', achievedAt: '2026-06-20T09:00:00.000Z'})
+    ]
+
+    expect(getDefaultExerciseId([makeExercise('a'), makeExercise('b')], records)).toBe('b')
+  })
+
+  it('ignores records for exercises that no longer exist', () => {
+    const records = [
+      makeRecord({id: 'r1', exerciseId: 'deleted'}),
+      makeRecord({id: 'r2', exerciseId: 'deleted', recordType: RecordTypeEnum.MAX_REPS}),
+      makeRecord({id: 'r3', exerciseId: 'b'})
+    ]
+
+    expect(getDefaultExerciseId([makeExercise('a'), makeExercise('b')], records)).toBe('b')
   })
 })

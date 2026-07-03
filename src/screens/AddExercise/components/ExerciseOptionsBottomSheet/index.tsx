@@ -17,6 +17,7 @@ import {
   DELETE_EXERCISE_MODAL_BODY,
   DELETE_EXERCISE_MODAL_TITLE,
   DELETE_EXERCISE_SUCCESS,
+  VIEW_PROGRESSION_BUTTON_TEXT,
   stringWithParameters
 } from '@constants/strings'
 
@@ -24,12 +25,20 @@ interface Props {
   readonly title: string
   readonly subtitle?: string
   readonly onAddPressed: () => void
+  // Progression only exists for saved exercises, so catalog entries pass nothing
+  readonly onViewProgressionPressed?: () => void
   // When set, the sheet offers Delete for this saved exercise; catalog
   // entries aren't on the user's account yet, so they pass nothing
   readonly exerciseToDelete?: Exercise
 }
 
-const ExerciseOptionsBottomSheet = ({title, subtitle, onAddPressed, exerciseToDelete}: Props) => {
+const ExerciseOptionsBottomSheet = ({
+  title,
+  subtitle,
+  onAddPressed,
+  onViewProgressionPressed,
+  exerciseToDelete
+}: Props) => {
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false)
 
   const {mutateAsync: deleteExercise} = useDeleteExerciseMutation()
@@ -61,6 +70,15 @@ const ExerciseOptionsBottomSheet = ({title, subtitle, onAddPressed, exerciseToDe
       onPress: onAddPressed
     }
   ]
+
+  if (onViewProgressionPressed) {
+    options.push({
+      key: 'view-progression',
+      icon: <Ionicons name="trending-up" size={22} color={Theme.colors.teal} />,
+      label: VIEW_PROGRESSION_BUTTON_TEXT,
+      onPress: onViewProgressionPressed
+    })
+  }
 
   if (exerciseToDelete) {
     options.push({

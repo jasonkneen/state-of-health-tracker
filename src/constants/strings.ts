@@ -134,6 +134,8 @@ export const FROM_CATALOG_HEADER = 'From Catalog'
 
 export const ADD_TO_DAILY_WORKOUT_BUTTON_TEXT = 'Add to Daily Workout'
 
+export const VIEW_PROGRESSION_BUTTON_TEXT = 'View Progression'
+
 export const COMPLETE_BUTTON_TEXT = 'Complete'
 
 export const COMPLETE_WORKOUT_MODAL_TITLE = 'Complete Workout?'
@@ -567,8 +569,6 @@ export const PROGRESS_NEW_PR_LABEL = 'NEW PR'
 
 export const PROGRESS_BEST_LABEL = 'BEST'
 
-export const PROGRESS_LAST_SESSION_LABEL = 'LAST SESSION'
-
 export const PROGRESS_RECENT_SESSIONS_HEADER = 'Recent sessions'
 
 export const PROGRESS_SETS_SUFFIX = ' sets'
@@ -584,6 +584,10 @@ export const PROGRESS_NO_EXERCISES_TITLE = 'No exercises yet'
 export const PROGRESS_NO_EXERCISES_SUBTITLE = 'Add an exercise from a workout to start tracking progress.'
 
 export const PROGRESS_NO_WEIGHT_DATA_SUBTITLE = "This exercise doesn't track weight, so there's no 1-rep max to chart."
+
+export const PROGRESS_SELECTED_EXERCISE_LABEL = 'Selected exercise'
+
+export const PROGRESS_SELECT_EXERCISE_TITLE = 'Select an exercise'
 
 export const ACCOUNT_DAILY_CALORIES_LABEL = 'Daily calories'
 

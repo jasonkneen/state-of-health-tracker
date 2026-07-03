@@ -32,7 +32,7 @@ const ProgressScreen = () => {
   const [subTab, setSubTab] = useState<ProgressSubTab>('exercises')
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
         <Text style={styles.title}>{PROGRESS_TITLE}</Text>
 

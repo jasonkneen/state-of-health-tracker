@@ -97,7 +97,7 @@ const RunsScreen = () => {
 
   if (runs.length === 0) {
     return (
-      <SafeAreaView>
+      <SafeAreaView edges={['top']}>
         <View style={styles.content}>
           <View style={styles.headerRow}>
             <Text style={styles.title}>{RUNS_TITLE}</Text>
@@ -116,7 +116,7 @@ const RunsScreen = () => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView edges={['top']}>
       <SectionList
         style={styles.scrollView}
         contentContainerStyle={styles.content}

@@ -9,6 +9,8 @@ import {useCreateTemplateMutation} from '@queries/templates/useCreateTemplateMut
 import {useNavigation} from '@react-navigation/native'
 import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
+import {filterExercises} from '@utility/filterExercises'
+import {formatExerciseSubtitle} from '@utility/formatExerciseSubtitle'
 import * as Haptics from 'expo-haptics'
 import Animated, {ZoomIn, ZoomOut} from 'react-native-reanimated'
 
@@ -30,7 +32,6 @@ import {
 
 import CreateTemplateModal from './components/CreateTemplateModal'
 import styles from './index.styled'
-import {filterExercises} from './index.util'
 
 const FAB_TRANSITION_MS = 200
 
@@ -71,7 +72,7 @@ const CreateTemplateScreen = () => {
         leftRightMargin={Spacing.MEDIUM}
         title={item.name}
         backgroundColor={selected ? Theme.colors.tertiary : Theme.colors.background}
-        subtitle={item.exerciseBodyPart}
+        subtitle={formatExerciseSubtitle(item.exerciseType, item.exerciseBodyPart)}
         leading={renderSelectionCircle(index)}
         chip={<ExerciseTypeChip exerciseType={item.exerciseType} />}
         onPress={() => toggleExercise(item)}

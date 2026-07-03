@@ -5,7 +5,7 @@ import Spacing from '@styles/spacing'
 export default StyleSheet.create({
   list: {
     paddingTop: Spacing.MEDIUM,
-    height: '100%'
+    flex: 1
   },
   icon: {
     alignSelf: 'center',

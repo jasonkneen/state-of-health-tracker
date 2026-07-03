@@ -1,13 +1,18 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 
 import {View} from 'react-native'
 
+import {ProgressStackParamList} from '@navigation/ProgressStack'
 import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useExerciseHistoryQuery} from '@queries/records/useExerciseHistoryQuery'
 import {useRecordsQuery} from '@queries/records/useRecordsQuery'
+import {useNavigation} from '@react-navigation/native'
+import {NativeStackNavigationProp} from '@react-navigation/native-stack'
+import useProgressStore from '@store/progress/useProgressStore'
 
 import Text from '@components/Text'
 
+import Screens from '@constants/screens'
 import {
   PROGRESS_EMPTY_HISTORY_SUBTITLE,
   PROGRESS_EMPTY_HISTORY_TITLE,
@@ -17,25 +22,34 @@ import {
 } from '@constants/strings'
 
 import {buildTopSetTrend, getTopSetDelta, groupHistoryIntoSessions} from '../../index.util'
-import ExerciseChipRow from '../ExerciseChipRow'
+import NewPrCard from '../NewPrCard'
 import RecentSessionsList from '../RecentSessionsList'
-import SessionSummaryCards from '../SessionSummaryCards'
+import SelectedExerciseHeader from '../SelectedExerciseHeader'
 import TopSetCard from '../TopSetCard'
 import styles from './index.styled'
-import {buildPrCard} from './index.util'
+import {buildPrCard, getDefaultExerciseId} from './index.util'
 
 const ExercisesTab = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<ProgressStackParamList>>()
   const {data: exercises = []} = useExercisesQuery()
-  const [selectedExerciseId, setSelectedExerciseId] = useState<string | undefined>(undefined)
+  const {data: records = [], isLoading: isRecordsLoading} = useRecordsQuery()
+  const {selectedExerciseId, setSelectedExerciseId} = useProgressStore()
 
+  const isSelectionValid = exercises.some(exercise => exercise.id === selectedExerciseId)
+
+  // Records drive the default selection (the exercise with the most data), so
+  // wait for them to settle before committing — an error still falls back to
+  // the first exercise. Also re-derives the default when the stored selection
+  // points at an exercise that no longer exists.
   useEffect(() => {
-    if (!selectedExerciseId && exercises.length > 0) {
-      setSelectedExerciseId(exercises[0].id)
-    }
-  }, [exercises, selectedExerciseId])
+    if (isSelectionValid || exercises.length === 0 || isRecordsLoading) return
+
+    const defaultExerciseId = getDefaultExerciseId(exercises, records)
+
+    if (defaultExerciseId) setSelectedExerciseId(defaultExerciseId)
+  }, [exercises, records, isRecordsLoading, isSelectionValid, setSelectedExerciseId])
 
   const {data: history = [], isLoading: isHistoryLoading} = useExerciseHistoryQuery(selectedExerciseId)
-  const {data: records = []} = useRecordsQuery()
 
   if (exercises.length === 0) {
     return (
@@ -51,14 +65,20 @@ const ExercisesTab = () => {
   const trend = buildTopSetTrend(sessions)
   const delta = getTopSetDelta(trend)
 
-  const latestSession = sessions[0] ?? null
   const prCard = buildPrCard(records, sessions, selectedExerciseId)
+  const selectedExercise = exercises.find(exercise => exercise.id === selectedExerciseId)
+
+  const onChangeExercisePressed = () => {
+    navigation.navigate(Screens.SELECT_EXERCISE)
+  }
 
   return (
     <View>
-      <ExerciseChipRow exercises={exercises} selectedExerciseId={selectedExerciseId} onSelect={setSelectedExerciseId} />
+      {selectedExercise && (
+        <SelectedExerciseHeader exerciseName={selectedExercise.name} onPress={onChangeExercisePressed} />
+      )}
 
-      {!isHistoryLoading && sessions.length === 0 && (
+      {!!selectedExerciseId && !isHistoryLoading && sessions.length === 0 && (
         <View style={styles.emptyState}>
           <Text style={styles.emptyTitle}>{PROGRESS_EMPTY_HISTORY_TITLE}</Text>
 
@@ -72,17 +92,7 @@ const ExercisesTab = () => {
 
       {trend.length > 0 && <TopSetCard trend={trend} delta={delta} />}
 
-      {latestSession && (
-        <SessionSummaryCards
-          prCard={prCard}
-          lastSessionCard={{
-            weight: latestSession.topSet?.weight ?? null,
-            reps: latestSession.topSet?.reps ?? null,
-            date: latestSession.date,
-            setCount: latestSession.setCount
-          }}
-        />
-      )}
+      {prCard && <NewPrCard card={prCard} />}
 
       {sessions.length > 0 && <RecentSessionsList sessions={sessions} />}
     </View>

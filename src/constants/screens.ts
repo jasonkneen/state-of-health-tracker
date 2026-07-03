@@ -14,6 +14,7 @@ export default {
   RUN_FLOW: 'Run Flow',
   RUN_SUMMARY: 'Run Summary',
   PROGRESS: 'Progress',
+  SELECT_EXERCISE: 'Select Exercise',
   REGISTER: 'Register',
   LOG_IN: 'Log In',
   DEBUG: 'Debug',

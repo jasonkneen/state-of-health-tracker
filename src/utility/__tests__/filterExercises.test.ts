@@ -1,6 +1,6 @@
 import {Exercise, ExerciseBodyPartEnum, ExerciseTypeEnum, LoggingTypeEnum} from '@data/models/Exercise'
 
-import {filterExercises} from '../index.util'
+import {filterExercises} from '../filterExercises'
 
 const buildExercise = (
   name: string,

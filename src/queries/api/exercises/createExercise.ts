@@ -28,6 +28,7 @@ export async function createExercise(payload: CreateExercisePayload): Promise<Ex
       exerciseType: mapExerciseType(response.data.exerciseType),
       exerciseBodyPart: mapExerciseBodyPart(response.data.exerciseBodyPart),
       loggingType: mapLoggingType(response.data.loggingType ?? payload.loggingType ?? 'WEIGHT_REPS'),
+      totalCompletedSets: 0,
       latestCompletedSets: []
     }
   } catch (error) {

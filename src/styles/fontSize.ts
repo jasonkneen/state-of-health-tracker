@@ -5,6 +5,7 @@ export default {
   PARAGRAPH: 14,
 
   SCREEN_TITLE: 30,
+  STAT_HERO: 44,
   STAT_LG: 28,
   GREETING: 22,
   STAT: 20,

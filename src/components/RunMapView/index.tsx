@@ -18,6 +18,8 @@ interface Props {
   route: MapPoint[]
   /** Keeps the map following the live position while a run is active. Pass false for a static post-run route view. */
   isLive?: boolean
+  /** Pass false when the map is rendered full-bleed rather than inside a card. */
+  rounded?: boolean
 }
 
 // Note: the old feature/run branch rendered per-segment speed-colored
@@ -25,19 +27,19 @@ interface Props {
 // runMath.ts (which the plan doc explicitly calls out to consolidate) for a
 // cosmetic effect only, so it's dropped here in favor of a single solid
 // polyline — distance/speed math lives exclusively in runMath.ts now.
-const RunMapView = ({route, isLive = false}: Props) => {
+const RunMapView = ({route, isLive = false, rounded = true}: Props) => {
   const region = useMemo(() => regionFromRoute(route), [route])
 
   if (route.length === 0) {
     return (
-      <View style={styles.emptyContainer}>
+      <View style={[styles.emptyContainer, rounded && styles.containerRounded]}>
         <Text style={styles.emptyText}>{RUN_MAP_EMPTY_TEXT}</Text>
       </View>
     )
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, rounded && styles.containerRounded]}>
       <MapView
         provider={PROVIDER_DEFAULT}
         style={styles.map}

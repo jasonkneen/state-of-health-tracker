@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
 
-import {ActivityIndicator, ScrollView, View} from 'react-native'
+import {ActivityIndicator, ScrollView, TouchableOpacity, View} from 'react-native'
 
+import {Ionicons} from '@expo/vector-icons'
 import {RunsStackParamList} from '@navigation/RunsStack'
 import {useCompleteRunMutation} from '@queries/runs/useCompleteRunMutation'
 import {useDiscardRunMutation} from '@queries/runs/useDiscardRunMutation'
@@ -9,7 +10,8 @@ import {useRunRecordQuery} from '@queries/runs/useRunRecordQuery'
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native'
 import {NativeStackNavigationProp} from '@react-navigation/native-stack'
 import {Theme} from '@styles/theme'
-import {SafeAreaView} from 'react-native-safe-area-context'
+import LinearGradient from 'react-native-linear-gradient'
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
 
 import ConfirmModal from '@components/dialog/ConfirmModal'
 import PrimaryButton from '@components/PrimaryButton'
@@ -27,11 +29,20 @@ import {
   RUN_SAVE_ERROR_TOAST,
   RUN_SAVED_PR_TOAST,
   RUN_SAVED_TOAST,
+  RUN_STAT_MI_UNIT,
   SAVE_RUN_BUTTON_TEXT
 } from '@constants/strings'
 
-import styles, {confirmButtonBackground} from './index.styled'
-import {buildRunSummaryTiles, toRoutePoints} from './index.util'
+import styles, {backButtonPosition, confirmButtonBackground} from './index.styled'
+import {
+  buildRunSummaryTiles,
+  formatRunDateLine,
+  formatRunHeroDistance,
+  formatRunOverline,
+  toRoutePoints
+} from './index.util'
+
+const MAP_FADE_COLORS = [Theme.colors.backgroundTransparent, Theme.colors.background]
 
 type RunSummaryNavigationProp = NativeStackNavigationProp<RunsStackParamList, typeof Screens.RUN_SUMMARY>
 type RunSummaryRouteProp = RouteProp<RunsStackParamList, typeof Screens.RUN_SUMMARY>
@@ -46,6 +57,7 @@ const RunSummaryScreen = () => {
   const route = useRoute<RunSummaryRouteProp>()
   const {runId, pending = false} = route.params
 
+  const insets = useSafeAreaInsets()
   const {data: record, isLoading} = useRunRecordQuery(runId, pending)
   const completeRunMutation = useCompleteRunMutation()
   const discardRunMutation = useDiscardRunMutation()
@@ -96,32 +108,52 @@ const RunSummaryScreen = () => {
     )
   }
 
-  const startedAt = new Date(record.startedAt)
   const tiles = buildRunSummaryTiles(record)
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         <View style={styles.mapContainer}>
-          <RunMapView route={toRoutePoints(record.routePolyline)} />
+          <RunMapView route={toRoutePoints(record.routePolyline)} rounded={false} />
+
+          <LinearGradient colors={MAP_FADE_COLORS} style={styles.mapFade} pointerEvents="none" />
         </View>
 
-        <View style={styles.headerRow}>
-          <Text style={styles.dateText}>{startedAt.toLocaleDateString()}</Text>
+        <View style={styles.content}>
+          <Text style={styles.overline}>{formatRunOverline(record)}</Text>
 
-          <Text style={styles.timeText}>{startedAt.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</Text>
-        </View>
+          <View style={styles.heroRow}>
+            <Text style={styles.heroValue}>{formatRunHeroDistance(record)}</Text>
 
-        <View style={styles.statsGrid}>
-          {tiles.map(tile => (
-            <View key={tile.label} style={styles.statTile}>
-              <Text style={styles.statValue}>{tile.value}</Text>
+            <Text style={styles.heroUnit}>{RUN_STAT_MI_UNIT}</Text>
+          </View>
 
-              <Text style={styles.statLabel}>{tile.label}</Text>
-            </View>
-          ))}
+          <Text style={styles.dateLine}>{formatRunDateLine(record.startedAt)}</Text>
+
+          <View style={styles.statsGrid}>
+            {tiles.map(tile => (
+              <View key={tile.label} style={styles.statTile}>
+                <Text style={styles.statLabel}>{tile.label}</Text>
+
+                <View style={styles.statValueRow}>
+                  <Text style={styles.statValue}>{tile.value}</Text>
+
+                  {tile.unit && <Text style={styles.statUnit}>{tile.unit}</Text>}
+                </View>
+              </View>
+            ))}
+          </View>
         </View>
       </ScrollView>
+
+      {/* A pending run's only exits are the Save/Discard buttons below */}
+      {!pending && (
+        <TouchableOpacity
+          style={[styles.backButton, backButtonPosition(insets.top)]}
+          onPress={() => navigation.goBack()}>
+          <Ionicons name="chevron-back" size={20} color={Theme.colors.white} />
+        </TouchableOpacity>
+      )}
 
       {pending && (
         <View style={styles.actionRow}>
@@ -149,7 +181,7 @@ const RunSummaryScreen = () => {
         onConfirmPressed={handleDiscardConfirmed}
         onCancel={() => setIsDiscardModalVisible(false)}
       />
-    </SafeAreaView>
+    </View>
   )
 }
 

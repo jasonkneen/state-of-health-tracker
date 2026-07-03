@@ -1,6 +1,12 @@
 import {RunRecord} from '@data/models/RunRecord'
 
-import {buildRunSummaryTiles, toRoutePoints} from '../index.util'
+import {
+  buildRunSummaryTiles,
+  formatRunDateLine,
+  formatRunHeroDistance,
+  formatRunOverline,
+  toRoutePoints
+} from '../index.util'
 
 const makeRecord = (overrides: Partial<RunRecord> = {}): RunRecord => ({
   localId: 'local-1',
@@ -17,25 +23,44 @@ const makeRecord = (overrides: Partial<RunRecord> = {}): RunRecord => ({
 })
 
 describe('buildRunSummaryTiles', () => {
-  it('builds the five stat tiles from the record', () => {
+  it('builds the four stat tiles from the record', () => {
     const tiles = buildRunSummaryTiles(makeRecord())
 
-    expect(tiles.map(tile => tile.label)).toEqual(['Distance (mi)', 'Time', 'Avg Pace', 'Avg Speed (mph)', 'Calories'])
-    expect(tiles[0].value).toBe('1.00')
-    expect(tiles[1].value).toBe('10:00')
-    expect(tiles[4].value).toBe('105')
+    expect(tiles.map(tile => tile.label)).toEqual(['Time', 'Avg Pace', 'Avg Speed', 'Calories'])
+    expect(tiles.map(tile => tile.unit)).toEqual([undefined, '/mi', 'mph', 'cal'])
+    expect(tiles[0].value).toBe('10:00')
+    expect(tiles[3].value).toBe('105')
   })
 
   it('shows zero speed for a zero-duration record instead of dividing by zero', () => {
     const tiles = buildRunSummaryTiles(makeRecord({durationSeconds: 0}))
 
-    expect(tiles[3].value).toBe('0.0')
+    expect(tiles[2].value).toBe('0.0')
   })
 
   it('defaults missing pace and calories', () => {
     const tiles = buildRunSummaryTiles(makeRecord({avgPaceSecPerKm: null, calories: null}))
 
-    expect(tiles[4].value).toBe('0')
+    expect(tiles[3].value).toBe('0')
+  })
+})
+
+describe('formatRunHeroDistance', () => {
+  it('formats the distance in miles', () => {
+    expect(formatRunHeroDistance(makeRecord())).toBe('1.00')
+  })
+})
+
+describe('formatRunOverline', () => {
+  it('builds the overline from the run type', () => {
+    expect(formatRunOverline(makeRecord())).toBe('OUTDOOR Run')
+  })
+})
+
+describe('formatRunDateLine', () => {
+  it('formats the start time as a weekday, date, and time line', () => {
+    // Local-time ISO string (no Z) keeps the expectation timezone-independent
+    expect(formatRunDateLine('2026-07-03T14:32:00')).toBe('Friday, July 3 · 2:32 PM')
   })
 })
 

@@ -15,11 +15,11 @@ type ProgressStore = {
 }
 
 const useProgressStore = create<ProgressStore>(set => ({
-  selectedSubTab: 'exercises',
+  selectedSubTab: 'body',
   selectedExerciseId: undefined,
   setSelectedSubTab: subTab => set({selectedSubTab: subTab}),
   setSelectedExerciseId: exerciseId => set({selectedExerciseId: exerciseId}),
-  reset: () => set({selectedSubTab: 'exercises', selectedExerciseId: undefined})
+  reset: () => set({selectedSubTab: 'body', selectedExerciseId: undefined})
 }))
 
 export default useProgressStore

@@ -4,45 +4,33 @@ import {PersonalRecord, RecordTypeEnum} from '@data/models/PersonalRecord'
 
 import {SessionSummary} from '../../index.util'
 
+const latestCompletedAt = (exercise: Exercise): string =>
+  exercise.latestCompletedSets.reduce(
+    (latest, set) => (set.completedAt && set.completedAt > latest ? set.completedAt : latest),
+    ''
+  )
+
 /**
- * Picks the exercise to show by default: the one with the most personal
- * records (the closest available signal for "most set/rep-max data" without
- * fetching every exercise's history), tie-broken by the most recently
- * achieved record. Falls back to the first exercise when no records exist.
+ * Picks the exercise to show by default: the one with the most logged sets,
+ * tie-broken by the most recently completed set.
  */
-export const getDefaultExerciseId = (exercises: Exercise[], records: PersonalRecord[]): string | undefined => {
+export const getDefaultExerciseId = (exercises: Exercise[]): string | undefined => {
   if (exercises.length === 0) return undefined
 
-  const statsByExercise = new Map<string, {recordCount: number; latestAchievedAt: string}>()
+  let bestExercise = exercises[0]
 
-  records.forEach(record => {
-    const stats = statsByExercise.get(record.exerciseId) ?? {recordCount: 0, latestAchievedAt: ''}
-
-    statsByExercise.set(record.exerciseId, {
-      recordCount: stats.recordCount + 1,
-      latestAchievedAt: record.achievedAt > stats.latestAchievedAt ? record.achievedAt : stats.latestAchievedAt
-    })
-  })
-
-  let bestExercise: Exercise | null = null
-  let bestStats = {recordCount: 0, latestAchievedAt: ''}
-
-  exercises.forEach(exercise => {
-    const stats = statsByExercise.get(exercise.id)
-
-    if (!stats) return
-
-    const hasMoreRecords = stats.recordCount > bestStats.recordCount
+  exercises.slice(1).forEach(exercise => {
+    const hasMoreSets = exercise.totalCompletedSets > bestExercise.totalCompletedSets
     const isMoreRecent =
-      stats.recordCount === bestStats.recordCount && stats.latestAchievedAt > bestStats.latestAchievedAt
+      exercise.totalCompletedSets === bestExercise.totalCompletedSets &&
+      latestCompletedAt(exercise) > latestCompletedAt(bestExercise)
 
-    if (hasMoreRecords || isMoreRecent) {
+    if (hasMoreSets || isMoreRecent) {
       bestExercise = exercise
-      bestStats = stats
     }
   })
 
-  return (bestExercise ?? exercises[0]).id
+  return bestExercise.id
 }
 
 /**

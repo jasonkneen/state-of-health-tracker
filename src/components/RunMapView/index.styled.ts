@@ -7,8 +7,10 @@ import {Theme} from '@styles/theme'
 export default StyleSheet.create({
   container: {
     flex: 1,
-    borderRadius: BorderRadius.CARD_LG,
     overflow: 'hidden'
+  },
+  containerRounded: {
+    borderRadius: BorderRadius.CARD_LG
   },
   map: {
     flex: 1
@@ -17,8 +19,7 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Theme.colors.tile,
-    borderRadius: BorderRadius.CARD_LG
+    backgroundColor: Theme.colors.tile
   },
   emptyText: {
     fontSize: FontSize.PARAGRAPH,

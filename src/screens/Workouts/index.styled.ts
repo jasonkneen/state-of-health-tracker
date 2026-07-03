@@ -10,13 +10,11 @@ export const pagerPage = (width: number): ViewStyle => ({
   flex: 1
 })
 
-export const pagerPageContent = (isInteractive: boolean): ViewStyle => ({
-  flex: 1,
-  pointerEvents: isInteractive ? 'auto' : 'none'
-})
-
 export default StyleSheet.create({
   root: {
+    flex: 1
+  },
+  pagerPageContent: {
     flex: 1
   },
   headerRow: {

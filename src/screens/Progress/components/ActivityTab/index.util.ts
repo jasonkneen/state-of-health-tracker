@@ -13,40 +13,9 @@ import {
   stringWithParameters
 } from '@constants/strings'
 
+import {formatCount, parseDayKey} from '../../index.util'
+
 const WEEK_ROW_DAY_FORMAT = 'EEE · MMM d'
-const BAR_LABEL_FORMAT = 'EEEEE'
-
-export const formatCount = (value: number): string => value.toLocaleString('en-US')
-
-/** Parses a yyyy-MM-dd key as a local date (new Date('yyyy-MM-dd') would be UTC). */
-const parseDayKey = (dayKey: string): Date => {
-  const [year, month, day] = dayKey.split('-').map(Number)
-
-  return new Date(year, month - 1, day)
-}
-
-export interface StepBar {
-  date: string
-  label: string
-  heightPct: number
-  isToday: boolean
-  hitGoal: boolean
-}
-
-export const computeStepBars = (weekSteps: {date: string; steps: number}[], stepGoal: number): StepBar[] => {
-  const maxSteps = Math.max(...weekSteps.map(day => day.steps), 1)
-
-  return weekSteps.map((day, index) => ({
-    date: day.date,
-    label: format(parseDayKey(day.date), BAR_LABEL_FORMAT),
-    heightPct: day.steps / maxSteps,
-    isToday: index === weekSteps.length - 1,
-    hitGoal: stepGoal > 0 && day.steps >= stepGoal
-  }))
-}
-
-export const computeGoalProgress = (steps: number, stepGoal: number): number =>
-  stepGoal > 0 ? Math.min(steps / stepGoal, 1) : 0
 
 export type CalorieSegmentKey = 'lifts' | 'steps' | 'runs'
 

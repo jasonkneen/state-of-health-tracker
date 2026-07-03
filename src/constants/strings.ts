@@ -507,6 +507,8 @@ export const RUN_STAT_MI_UNIT = 'mi'
 
 export const RUN_STAT_MPH_UNIT = 'mph'
 
+export const RUN_STAT_PACE_UNIT = '/mi'
+
 export const RUN_TRACKING_STATUS = 'Tracking run...'
 
 export const RUN_PAUSED_STATUS = 'Paused'
@@ -527,11 +529,11 @@ export const DISCARD_RUN_MODAL_TITLE = 'Discard Run?'
 
 export const DISCARD_RUN_MODAL_BODY = "This run will be permanently deleted and won't be added to your history."
 
-export const RUN_SUMMARY_DISTANCE_LABEL = 'Distance (mi)'
-
 export const RUN_SUMMARY_TIME_LABEL = 'Time'
 
-export const RUN_SUMMARY_SPEED_LABEL = 'Avg Speed (mph)'
+export const RUN_SUMMARY_SPEED_LABEL = 'Avg Speed'
+
+export const RUN_SUMMARY_OVERLINE = '%0 Run'
 
 export const PROGRESS_TITLE = 'Progress'
 
@@ -542,6 +544,8 @@ export const PROGRESS_TAB_BODY = 'Body'
 export const PROGRESS_TAB_ACTIVITY = 'Activity'
 
 export const ACTIVITY_STEPS_TODAY_LABEL = 'STEPS TODAY'
+
+export const ACTIVITY_STEPS_DAY_LABEL = 'STEPS %0'
 
 export const ACTIVITY_STEP_GOAL_TEXT = '/ %0'
 

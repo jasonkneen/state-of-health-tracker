@@ -1,14 +1,16 @@
-import {StyleSheet} from 'react-native'
+import {StyleSheet, ViewStyle} from 'react-native'
 
 import FontSize from '@styles/fontSize'
 import Spacing from '@styles/spacing'
 
+export const pagerPage = (width: number): ViewStyle => ({
+  width
+})
+
 export default StyleSheet.create({
   safeArea: {flex: 1},
-  scrollView: {height: '100%'},
-  content: {
-    paddingHorizontal: Spacing.GUTTER,
-    paddingBottom: Spacing.X_LARGE
+  header: {
+    paddingHorizontal: Spacing.GUTTER
   },
   title: {
     fontSize: FontSize.SCREEN_TITLE,
@@ -17,7 +19,9 @@ export default StyleSheet.create({
     marginTop: Spacing.MEDIUM,
     marginBottom: Spacing.MEDIUM
   },
-  tabContent: {
-    marginTop: Spacing.SMALL
+  pageContent: {
+    paddingTop: Spacing.SMALL,
+    paddingHorizontal: Spacing.GUTTER,
+    paddingBottom: Spacing.X_LARGE
   }
 })

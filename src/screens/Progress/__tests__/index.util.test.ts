@@ -2,8 +2,10 @@ import {ExerciseHistoryEntry} from '@data/models/PersonalRecord'
 
 import {
   buildTopSetTrend,
+  formatCount,
   getTopSetDelta,
   groupHistoryIntoSessions,
+  parseDayKey,
   SessionSummary,
   TopSetTrendPoint
 } from '../index.util'
@@ -191,5 +193,21 @@ describe('getTopSetDelta', () => {
     const trend = [makePoint({date: '2026-06-01', score: 100}), makePoint({date: '2026-06-03', score: 110})]
 
     expect(getTopSetDelta(trend)?.weeks).toBe(1)
+  })
+})
+
+describe('formatCount', () => {
+  it('adds thousands separators', () => {
+    expect(formatCount(8432)).toBe('8,432')
+  })
+})
+
+describe('parseDayKey', () => {
+  it('parses a day key as a local date', () => {
+    const date = parseDayKey('2026-07-03')
+
+    expect(date.getFullYear()).toBe(2026)
+    expect(date.getMonth()).toBe(6)
+    expect(date.getDate()).toBe(3)
   })
 })

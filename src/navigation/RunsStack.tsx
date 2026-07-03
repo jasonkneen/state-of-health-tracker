@@ -39,6 +39,8 @@ const RunsStack = () => (
       options={{presentation: 'fullScreenModal', headerShown: false, gestureEnabled: false}}
     />
 
+    {/* The screen draws its map edge-to-edge with its own floating back
+        button, so the stack header stays hidden in both modes */}
     <Stack.Screen name={Screens.RUN_SUMMARY} component={RunSummaryScreen} options={{headerShown: false}} />
   </Stack.Navigator>
 )

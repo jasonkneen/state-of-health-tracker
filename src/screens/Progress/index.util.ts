@@ -54,6 +54,15 @@ export function groupHistoryIntoSessions(history: ExerciseHistoryEntry[]): Sessi
     .sort((a, b) => (a.date < b.date ? 1 : -1))
 }
 
+export const formatCount = (value: number): string => value.toLocaleString('en-US')
+
+/** Parses a yyyy-MM-dd key as a local date (new Date('yyyy-MM-dd') would be UTC). */
+export const parseDayKey = (dayKey: string): Date => {
+  const [year, month, day] = dayKey.split('-').map(Number)
+
+  return new Date(year, month - 1, day)
+}
+
 export interface TopSetTrendPoint {
   date: string
   weight: number

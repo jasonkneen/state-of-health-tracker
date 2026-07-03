@@ -27,6 +27,7 @@ const ExerciseResponse = io.type({
   exerciseType: io.string,
   exerciseBodyPart: io.string,
   loggingType: io.union([io.string, io.undefined]),
+  totalCompletedSets: optionalNumber,
   latestCompletedSets: io.array(LatestCompletedSet)
 })
 
@@ -47,6 +48,9 @@ export async function fetchExercises(): Promise<Exercise[]> {
         exerciseType: mapExerciseType(ex.exerciseType),
         exerciseBodyPart: mapExerciseBodyPart(ex.exerciseBodyPart),
         loggingType: mapLoggingType(ex.loggingType ?? 'WEIGHT_REPS'),
+        // Older backend responses predate the total — the latest session's
+        // set count is the closest available stand-in
+        totalCompletedSets: ex.totalCompletedSets ?? ex.latestCompletedSets.length,
         latestCompletedSets: ex.latestCompletedSets.map(set => ({
           id: set.id,
           reps: set.reps,

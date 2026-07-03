@@ -24,28 +24,19 @@ import {
   ACTIVITY_LEGEND_LIFTS,
   ACTIVITY_LEGEND_RUNS,
   ACTIVITY_LEGEND_STEPS,
-  ACTIVITY_STEP_GOAL_TEXT,
-  ACTIVITY_STEPS_TODAY_LABEL,
   ACTIVITY_TARGET_INTAKE_LABEL,
   ACTIVITY_TARGET_STEPS_LABEL,
   ACTIVITY_TARGETS_LABEL,
   ACTIVITY_THIS_WEEK_HEADER,
   ACTIVITY_EMPTY_WEEK_TEXT,
-  ACTIVITY_VS_AVG_TEXT,
-  stringWithParameters,
   TOAST_HEALTH_CONNECT_FAILED
 } from '@constants/strings'
 
-import styles, {barHeight, progressFillWidth, segmentFlex} from './index.styled'
-import {
-  buildWeekRows,
-  CalorieSegmentKey,
-  computeCalorieSegments,
-  computeGoalProgress,
-  computeStepBars,
-  formatCount
-} from './index.util'
+import styles, {segmentFlex} from './index.styled'
+import {buildWeekRows, CalorieSegmentKey, computeCalorieSegments} from './index.util'
 import useActivitySummary from '../../hooks/useActivitySummary'
+import {formatCount} from '../../index.util'
+import StepsCard from '../StepsCard'
 
 const SEGMENT_STYLES: Record<CalorieSegmentKey, object> = {
   lifts: styles.segmentLifts,
@@ -69,7 +60,6 @@ const ActivityTab = () => {
   const [isStepGoalModalVisible, setIsStepGoalModalVisible] = useState(false)
   const [isIntakeModalVisible, setIsIntakeModalVisible] = useState(false)
 
-  const stepBars = computeStepBars(summary.weekSteps, stepGoal)
   const segments = computeCalorieSegments(summary.today.liftKcal, summary.today.stepKcal, summary.today.runKcal)
   const weekRows = buildWeekRows(summary.previousDays, summary.isStepsAvailable)
 
@@ -121,49 +111,7 @@ const ActivityTab = () => {
       )}
 
       {showStepsCard && (
-        <View style={styles.card}>
-          <View style={styles.headerRow}>
-            <Text style={styles.label}>{ACTIVITY_STEPS_TODAY_LABEL}</Text>
-
-            {summary.vsAveragePct !== null && (
-              <Text style={[styles.vsAvg, summary.vsAveragePct < 0 && styles.vsAvgBehind]}>
-                {(summary.vsAveragePct >= 0 ? '▲ ' : '▼ ') +
-                  stringWithParameters(ACTIVITY_VS_AVG_TEXT, Math.abs(summary.vsAveragePct).toString())}
-              </Text>
-            )}
-          </View>
-
-          <View style={styles.valueRow}>
-            <TickerText text={formatCount(summary.today.steps)} direction={1} style={styles.value} />
-
-            <Text style={styles.unit}>{stringWithParameters(ACTIVITY_STEP_GOAL_TEXT, formatCount(stepGoal))}</Text>
-          </View>
-
-          <View style={styles.progressTrack}>
-            <View
-              style={[styles.progressFill, progressFillWidth(computeGoalProgress(summary.today.steps, stepGoal))]}
-            />
-          </View>
-
-          <View style={styles.barsRow}>
-            {stepBars.map(bar => (
-              <View key={bar.date} style={styles.barColumn}>
-                <View style={styles.barArea}>
-                  <View
-                    style={[
-                      styles.bar,
-                      bar.hitGoal && styles.barHitGoal,
-                      bar.isToday && styles.barToday,
-                      barHeight(bar.heightPct)
-                    ]}
-                  />
-                </View>
-
-                <Text style={[styles.barLabel, bar.isToday && styles.barLabelToday]}>{bar.label}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
+        <StepsCard weekSteps={summary.weekSteps} stepGoal={stepGoal} vsAveragePct={summary.vsAveragePct} />
       )}
 
       <View style={styles.card}>

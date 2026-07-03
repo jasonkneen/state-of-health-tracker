@@ -32,23 +32,21 @@ import {buildPrCard, getDefaultExerciseId} from './index.util'
 const ExercisesTab = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ProgressStackParamList>>()
   const {data: exercises = []} = useExercisesQuery()
-  const {data: records = [], isLoading: isRecordsLoading} = useRecordsQuery()
+  const {data: records = []} = useRecordsQuery()
   const selectedExerciseId = useProgressStore(state => state.selectedExerciseId)
   const setSelectedExerciseId = useProgressStore(state => state.setSelectedExerciseId)
 
   const isSelectionValid = exercises.some(exercise => exercise.id === selectedExerciseId)
 
-  // Records drive the default selection (the exercise with the most data), so
-  // wait for them to settle before committing — an error still falls back to
-  // the first exercise. Also re-derives the default when the stored selection
-  // points at an exercise that no longer exists.
+  // Also re-derives the default when the stored selection points at an
+  // exercise that no longer exists
   useEffect(() => {
-    if (isSelectionValid || exercises.length === 0 || isRecordsLoading) return
+    if (isSelectionValid || exercises.length === 0) return
 
-    const defaultExerciseId = getDefaultExerciseId(exercises, records)
+    const defaultExerciseId = getDefaultExerciseId(exercises)
 
     if (defaultExerciseId) setSelectedExerciseId(defaultExerciseId)
-  }, [exercises, records, isRecordsLoading, isSelectionValid, setSelectedExerciseId])
+  }, [exercises, isSelectionValid, setSelectedExerciseId])
 
   const {data: history = [], isLoading: isHistoryLoading} = useExerciseHistoryQuery(selectedExerciseId)
 

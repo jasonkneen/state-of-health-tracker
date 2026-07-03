@@ -12,6 +12,7 @@ const buildExercise = (
   exerciseType,
   exerciseBodyPart,
   loggingType: LoggingTypeEnum.WEIGHT_REPS,
+  totalCompletedSets: 0,
   latestCompletedSets: []
 })
 

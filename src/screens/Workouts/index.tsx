@@ -64,7 +64,7 @@ import ReorganizeExerciseList from './components/ReorganizeExerciseList'
 import WeekStripCard from './components/WeekStripCard'
 import WorkoutsSkeleton from './components/WorkoutsSkeleton'
 import {useWorkoutDayPager} from './hooks/useWorkoutDayPager'
-import styles, {pagerPage, pagerPageContent} from './index.styled'
+import styles, {pagerPage} from './index.styled'
 
 interface Section extends Unique {
   dailyExercise: DailyExercise
@@ -280,8 +280,14 @@ const WorkoutsScreen = () => {
     return (
       <View style={styles.root}>
         {workoutDayForPage && (
-          <Animated.View style={pagerPageContent(isInteractive)} entering={FadeIn.duration(CROSS_DISSOLVE_DURATION_MS)}>
-            {renderWorkoutDayPage(workoutDayForPage, dateIso, isInteractive)}
+          <Animated.View style={styles.pagerPageContent} entering={FadeIn.duration(CROSS_DISSOLVE_DURATION_MS)}>
+            {/* pointerEvents lives on a plain View, not the Animated.View: a
+                prop/style update committed while the entering animation is
+                still running can be dropped, leaving the page stuck
+                non-interactive after a remote load */}
+            <View style={styles.pagerPageContent} pointerEvents={isInteractive ? 'auto' : 'none'}>
+              {renderWorkoutDayPage(workoutDayForPage, dateIso, isInteractive)}
+            </View>
           </Animated.View>
         )}
 

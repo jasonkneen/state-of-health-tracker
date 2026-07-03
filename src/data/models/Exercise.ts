@@ -53,6 +53,7 @@ export interface Exercise {
   exerciseType: ExerciseTypeEnum
   exerciseBodyPart: ExerciseBodyPartEnum
   loggingType: LoggingTypeEnum
+  totalCompletedSets: number
   latestCompletedSets: ExerciseSet[]
 }
 

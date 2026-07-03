@@ -19,6 +19,7 @@ export function convertWorkoutDay(data: io.TypeOf<typeof WorkoutDayResponse>): W
         exerciseType: mapExerciseType(entry.exercise.exerciseType),
         exerciseBodyPart: mapExerciseBodyPart(entry.exercise.exerciseBodyPart),
         loggingType: mapLoggingType(entry.exercise.loggingType ?? 'WEIGHT_REPS'),
+        totalCompletedSets: 0,
         latestCompletedSets: []
       },
       sets: entry.sets

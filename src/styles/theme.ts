@@ -37,6 +37,8 @@ export const Theme = {
   colors: {
     ...DefaultTheme.colors,
     background: page,
+    // Fully transparent `background` — pair with it in fade-out gradients
+    backgroundTransparent: `${page}00`,
     accentColor: green,
     primary: page,
     primarySelected: tile,

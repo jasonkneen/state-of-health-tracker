@@ -74,45 +74,57 @@ const makeExercise = (id: string, overrides: Partial<Exercise> = {}): Exercise =
   exerciseType: ExerciseTypeEnum.BARBELL,
   exerciseBodyPart: ExerciseBodyPartEnum.CHEST,
   loggingType: LoggingTypeEnum.WEIGHT_REPS,
+  totalCompletedSets: 0,
   latestCompletedSets: [],
   ...overrides
 })
 
+const makeCompletedSet = (id: string, completedAt: string) => ({
+  id,
+  reps: 5,
+  weight: 135,
+  setNumber: 1,
+  completed: true,
+  completedAt
+})
+
 describe('getDefaultExerciseId', () => {
   it('returns undefined when there are no exercises', () => {
-    expect(getDefaultExerciseId([], [makeRecord()])).toBeUndefined()
+    expect(getDefaultExerciseId([])).toBeUndefined()
   })
 
-  it('falls back to the first exercise when there are no records', () => {
-    expect(getDefaultExerciseId([makeExercise('a'), makeExercise('b')], [])).toBe('a')
+  it('falls back to the first exercise when no exercise has logged sets', () => {
+    expect(getDefaultExerciseId([makeExercise('a'), makeExercise('b')])).toBe('a')
   })
 
-  it('picks the exercise with the most records over the first alphabetical one', () => {
-    const records = [
-      makeRecord({id: 'r1', exerciseId: 'b'}),
-      makeRecord({id: 'r2', exerciseId: 'b', recordType: RecordTypeEnum.MAX_REPS}),
-      makeRecord({id: 'r3', exerciseId: 'a'})
+  it('picks the exercise with the most logged sets over the first alphabetical one', () => {
+    const exercises = [
+      makeExercise('a', {totalCompletedSets: 3}),
+      makeExercise('b', {totalCompletedSets: 12}),
+      makeExercise('c', {totalCompletedSets: 7})
     ]
 
-    expect(getDefaultExerciseId([makeExercise('a'), makeExercise('b')], records)).toBe('b')
+    expect(getDefaultExerciseId(exercises)).toBe('b')
   })
 
-  it('breaks record-count ties by the most recently achieved record', () => {
-    const records = [
-      makeRecord({id: 'r1', exerciseId: 'a', achievedAt: '2026-05-01T09:00:00.000Z'}),
-      makeRecord({id: 'r2', exerciseId: 'b', achievedAt: '2026-06-20T09:00:00.000Z'})
+  it('breaks set-count ties by the most recently completed set', () => {
+    const exercises = [
+      makeExercise('a', {
+        totalCompletedSets: 5,
+        latestCompletedSets: [makeCompletedSet('s1', '2026-05-01T09:00:00.000Z')]
+      }),
+      makeExercise('b', {
+        totalCompletedSets: 5,
+        latestCompletedSets: [makeCompletedSet('s2', '2026-06-20T09:00:00.000Z')]
+      })
     ]
 
-    expect(getDefaultExerciseId([makeExercise('a'), makeExercise('b')], records)).toBe('b')
+    expect(getDefaultExerciseId(exercises)).toBe('b')
   })
 
-  it('ignores records for exercises that no longer exist', () => {
-    const records = [
-      makeRecord({id: 'r1', exerciseId: 'deleted'}),
-      makeRecord({id: 'r2', exerciseId: 'deleted', recordType: RecordTypeEnum.MAX_REPS}),
-      makeRecord({id: 'r3', exerciseId: 'b'})
-    ]
+  it('keeps the first exercise on a tie with no recency signal', () => {
+    const exercises = [makeExercise('a', {totalCompletedSets: 5}), makeExercise('b', {totalCompletedSets: 5})]
 
-    expect(getDefaultExerciseId([makeExercise('a'), makeExercise('b')], records)).toBe('b')
+    expect(getDefaultExerciseId(exercises)).toBe('a')
   })
 })

@@ -3,12 +3,12 @@ import React, {useState} from 'react'
 import {View} from 'react-native'
 
 import {ExerciseBodyPartEnum, ExerciseTypeEnum} from '@data/models/Exercise'
-import {Ionicons} from '@expo/vector-icons'
 import {useCreateExerciseMutation} from '@queries/exercises/useCreateExerciseMutation'
 import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useNavigation} from '@react-navigation/native'
 import {Theme} from '@styles/theme'
 
+import BarbellIcon from '@components/icons/BarbellIcon'
 import LoadingOverlay from '@components/LoadingOverlay'
 import Picker from '@components/Picker'
 import PrimaryButton from '@components/PrimaryButton'
@@ -83,7 +83,9 @@ const CreateExerciseScreen = () => {
     <>
       {isCreatingExercise && <LoadingOverlay />}
 
-      <Ionicons style={styles.icon} name="barbell" size={128} color={Theme.colors.secondary} />
+      <View style={styles.icon}>
+        <BarbellIcon size={128} color={Theme.colors.secondary} />
+      </View>
 
       <View style={styles.inputContainer}>
         <TextInputWithHeader

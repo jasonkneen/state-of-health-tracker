@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native'
 
+import BorderRadius from '@styles/borderRadius'
 import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
 
@@ -7,30 +8,32 @@ export const SEARCH_BAR_HEIGHT = 64
 
 export default StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
     width: '100%',
     height: SEARCH_BAR_HEIGHT,
-    backgroundColor: Theme.colors.secondary
+    justifyContent: 'center',
+    paddingHorizontal: Spacing.MEDIUM
   },
   inputContainer: {
-    backgroundColor: Theme.colors.background,
-    alignSelf: 'center',
-    borderRadius: 50,
     flexDirection: 'row',
-    width: '90%'
+    alignItems: 'center',
+    backgroundColor: Theme.colors.inset,
+    borderWidth: 1,
+    borderColor: Theme.colors.inputBorder,
+    borderRadius: BorderRadius.PILL,
+    paddingHorizontal: Spacing.SMALL
   },
   searchIcon: {
-    alignSelf: 'center',
-    marginLeft: Spacing.MEDIUM
+    marginLeft: Spacing.XX_SMALL,
+    marginRight: Spacing.XX_SMALL
   },
   input: {
-    borderRadius: 50,
+    flex: 1,
     borderWidth: 0,
-    flex: 1
+    borderRadius: 0,
+    backgroundColor: 'transparent'
   },
   cancelButton: {
-    alignSelf: 'center',
-    marginRight: Spacing.MEDIUM
+    padding: Spacing.XX_SMALL,
+    marginRight: Spacing.XX_SMALL
   }
 })

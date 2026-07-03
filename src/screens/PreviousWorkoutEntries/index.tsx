@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {FlatList, ListRenderItemInfo} from 'react-native'
+import {ActivityIndicator, FlatList, ListRenderItemInfo} from 'react-native'
 
 import {WorkoutSummary} from '@data/models/WorkoutSummary'
 import {FontAwesome5, MaterialCommunityIcons} from '@expo/vector-icons'
@@ -73,7 +73,7 @@ const PreviousWorkoutEntries = () => {
 
   return (
     <>
-      {(isLoading || isFetchingNextPage) && <LoadingOverlay />}
+      {isLoading && <LoadingOverlay />}
 
       <Screen>
         <FlatList
@@ -81,11 +81,17 @@ const PreviousWorkoutEntries = () => {
           showsVerticalScrollIndicator={false}
           data={summaries}
           renderItem={renderItem}
+          onEndReachedThreshold={0.75}
           onEndReached={() => {
-            if (hasNextPage) {
+            if (hasNextPage && !isFetchingNextPage) {
               fetchNextPage()
             }
           }}
+          ListFooterComponent={
+            isFetchingNextPage ? (
+              <ActivityIndicator style={styles.footerSpinner} size="small" color={Theme.colors.textSecondary} />
+            ) : null
+          }
         />
       </Screen>
     </>

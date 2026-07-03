@@ -13,8 +13,6 @@ export default {
   RUNS: 'Runs',
   REGISTER: 'Register',
   LOG_IN: 'Log In',
-  WORKOUT_TEMPLATE_DETAIL: 'Workout Template',
   DEBUG: 'Debug',
-  CREATE_TEMPLATE: 'Create Template',
-  SEARCH_EXERCISES: 'Search Exercises'
+  CREATE_TEMPLATE: 'Create Template'
 } as const

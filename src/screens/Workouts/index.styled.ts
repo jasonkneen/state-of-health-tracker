@@ -27,7 +27,6 @@ export default StyleSheet.create({
   },
   emptyIcon: {
     alignSelf: 'center',
-    marginRight: -Spacing.MEDIUM,
     marginTop: Spacing.MEDIUM
   },
   addExerciseRow: {
@@ -56,6 +55,18 @@ export default StyleSheet.create({
   sectionList: {
     width: '100%',
     height: '100%'
+  },
+  reorganizeHint: {
+    fontSize: FontSize.PARAGRAPH,
+    color: Theme.colors.textSecondary,
+    marginTop: Spacing.X_SMALL,
+    marginLeft: Spacing.GUTTER,
+    marginBottom: Spacing.SMALL
+  },
+  fabContainer: {
+    position: 'absolute',
+    right: Spacing.GUTTER,
+    bottom: Spacing.LARGE
   },
   loadingIndicator: {
     height: 250,

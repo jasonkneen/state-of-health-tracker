@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
 
-import {TouchableOpacity, View} from 'react-native'
+import {View} from 'react-native'
 
+import {Exercise} from '@data/models/Exercise'
 import {ExerciseTemplate} from '@data/models/ExerciseTemplate'
 import {Ionicons} from '@expo/vector-icons'
 import {useDeleteTemplateMutation} from '@queries/templates/useDeleteTemplateMutation'
@@ -9,6 +10,7 @@ import {Theme} from '@styles/theme'
 
 import ConfirmModal from '@components/dialog/ConfirmModal'
 import {closeGlobalBottomSheet} from '@components/GlobalBottomSheet'
+import OptionsSheetLayout, {SheetOptionItem} from '@components/OptionsSheetLayout'
 import Text from '@components/Text'
 import {showToast} from '@components/toast/util/ShowToast'
 
@@ -18,23 +20,23 @@ import {
   DELETE_TEMPLATE_MODAL_BODY,
   DELETE_TEMPLATE_MODAL_TITLE,
   DELETE_TEMPLATE_SUCCESS,
-  stringWithParameters
+  stringWithParameters,
+  TEMPLATE_EXERCISES_LABEL,
+  TEMPLATE_START
 } from '@constants/strings'
 
 import styles from './index.styled'
 
 interface Props {
   readonly template: ExerciseTemplate
+  readonly exercises: Exercise[]
+  readonly onStartPressed: () => void
 }
 
-const DeleteTemplateBottomSheet = ({template}: Props) => {
+const TemplateOptionsBottomSheet = ({template, exercises, onStartPressed}: Props) => {
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false)
 
   const {mutateAsync: deleteTemplate} = useDeleteTemplateMutation()
-
-  const handleDeletePressed = () => {
-    setIsConfirmModalVisible(true)
-  }
 
   const closeSheet = () => {
     closeGlobalBottomSheet()
@@ -53,6 +55,21 @@ const DeleteTemplateBottomSheet = ({template}: Props) => {
     }
   }
 
+  const options: SheetOptionItem[] = [
+    {
+      key: 'start',
+      icon: <Ionicons name="play-circle-outline" size={22} color={Theme.colors.accentGreen} />,
+      label: TEMPLATE_START,
+      onPress: onStartPressed
+    },
+    {
+      key: 'delete',
+      icon: <Ionicons name="trash-bin-outline" size={22} color={Theme.colors.error} />,
+      label: DELETE_BUTTON_TEXT,
+      onPress: () => setIsConfirmModalVisible(true)
+    }
+  ]
+
   return (
     <>
       <ConfirmModal
@@ -63,23 +80,23 @@ const DeleteTemplateBottomSheet = ({template}: Props) => {
         onCancel={closeSheet}
       />
 
-      <View>
-        <Text style={styles.title} numberOfLines={2}>
-          {template.name}
-        </Text>
+      <OptionsSheetLayout title={template.name} subtitle={template.tagline || undefined} options={options}>
+        <Text style={styles.exercisesLabel}>{TEMPLATE_EXERCISES_LABEL}</Text>
 
-        <Text style={styles.tagline} numberOfLines={1}>
-          {template.tagline}
-        </Text>
+        {exercises.map((exercise, index) => (
+          <View key={exercise.id} style={styles.exerciseRow}>
+            <Text style={styles.exerciseIndex}>{index + 1}</Text>
 
-        <TouchableOpacity onPress={handleDeletePressed} activeOpacity={0.7} style={styles.deleteContainer}>
-          <Ionicons name="trash-bin-outline" size={20} color={Theme.colors.error} />
+            <Text style={styles.exerciseName} numberOfLines={1}>
+              {exercise.name}
+            </Text>
 
-          <Text style={styles.deleteText}>{DELETE_BUTTON_TEXT}</Text>
-        </TouchableOpacity>
-      </View>
+            <Text style={styles.exerciseBodyPart}>{exercise.exerciseBodyPart}</Text>
+          </View>
+        ))}
+      </OptionsSheetLayout>
     </>
   )
 }
 
-export default DeleteTemplateBottomSheet
+export default TemplateOptionsBottomSheet

@@ -3,7 +3,7 @@ import {ReactNode} from 'react'
 
 import {View, TouchableWithoutFeedback} from 'react-native'
 
-import BottomSheet from '@gorhom/bottom-sheet'
+import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet'
 import {Theme} from '@styles/theme'
 import {Subject} from 'rxjs'
 
@@ -62,13 +62,13 @@ const GlobalBottomSheet = () => {
       <BottomSheet
         ref={sheetRef}
         index={-1}
-        snapPoints={['25%']}
+        enableDynamicSizing
         enablePanDownToClose
         handleIndicatorStyle={{backgroundColor: Theme.colors.white}}
         backgroundStyle={{backgroundColor: Theme.colors.background}}
         style={styles.sheetShadow}
         onClose={closeGlobalBottomSheet}>
-        <View style={styles.sheetContent}>{content}</View>
+        <BottomSheetView style={styles.sheetContent}>{content}</BottomSheetView>
       </BottomSheet>
     </>
   )

@@ -6,8 +6,11 @@ import Shadow from '@styles/shadow'
 import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
 
+// Also retint the baked-in green CTA glow so destructive buttons don't sit
+// on a green shadow
 export const confirmButtonBackground = (color: string): ViewStyle => ({
-  backgroundColor: color
+  backgroundColor: color,
+  shadowColor: color
 })
 
 export default StyleSheet.create({

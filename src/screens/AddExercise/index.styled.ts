@@ -29,5 +29,17 @@ export default StyleSheet.create({
     alignSelf: 'flex-end',
     marginTop: Spacing.MEDIUM,
     marginBottom: Spacing.MEDIUM
+  },
+  searchSectionHeaderContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: Spacing.MEDIUM,
+    marginRight: Spacing.MEDIUM,
+    marginVertical: Spacing.MEDIUM
+  },
+  createFooterButton: {
+    alignSelf: 'center',
+    marginTop: Spacing.MEDIUM,
+    marginBottom: Spacing.LARGE
   }
 })

@@ -7,8 +7,6 @@ import AddExerciseScreen from '@screens/AddExercise'
 import CreateExerciseScreen from '@screens/CreateExercise'
 import CreateTemplateScreen from '@screens/CreateTemplate'
 import PreviousWorkoutEntries from '@screens/PreviousWorkoutEntries'
-import SearchExercisesScreen from '@screens/SearchExercises'
-import WorkoutTemplateDetailScreen from '@screens/TemplateDetail'
 import WorkoutsScreen from '@screens/Workouts'
 
 import Screens from '@constants/screens'
@@ -48,18 +46,6 @@ const WorkoutsStack = () => {
         name={Screens.CREATE_TEMPLATE}
         component={CreateTemplateScreen}
       />
-
-      <Stack.Screen
-        options={{
-          headerStyle: {
-            backgroundColor: Theme.colors.secondary
-          }
-        }}
-        name={Screens.SEARCH_EXERCISES}
-        component={SearchExercisesScreen}
-      />
-
-      <Stack.Screen name={Screens.WORKOUT_TEMPLATE_DETAIL} component={WorkoutTemplateDetailScreen} />
 
       <Stack.Screen
         name={Screens.PREVIOUS_DAILY_EXERCISE_ENTRIES}

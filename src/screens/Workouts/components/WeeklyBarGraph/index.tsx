@@ -13,8 +13,8 @@ import {stringWithParameters, WEEKLY_TARGET_CAPTION, WEEKLY_WORKOUTS_GRAPH_TITLE
 import styles, {BAR_MAX_HEIGHT} from './index.styled'
 import {formatDateToMonthDay, getLast7Mondays} from '../../../../utility/DateUtility'
 
-const BAR_RISE_STAGGER_MS = 80
-const BAR_RISE_DURATION_MS = 550
+const BAR_RISE_STAGGER_MS = 40
+const BAR_RISE_DURATION_MS = 275
 const EMPTY_WEEK_BAR_HEIGHT = 4
 
 interface BarProps {

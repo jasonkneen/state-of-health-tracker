@@ -35,7 +35,7 @@ const SearchBar = (props: Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <Ionicons style={styles.searchIcon} name="search" size={20} color={Theme.colors.secondary} />
+        <Ionicons style={styles.searchIcon} name="search" size={20} color={Theme.colors.textSecondary} />
 
         <TextInput
           maxLength={100}
@@ -47,7 +47,7 @@ const SearchBar = (props: Props) => {
 
         {searchText !== '' && (
           <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
-            <Ionicons name="close" size={20} color={Theme.colors.white} />
+            <Ionicons name="close" size={20} color={Theme.colors.textSecondary} />
           </TouchableOpacity>
         )}
       </View>

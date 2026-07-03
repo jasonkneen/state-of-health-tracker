@@ -5,13 +5,11 @@ import {TouchableOpacity, View} from 'react-native'
 import {DailyExercise} from '@data/models/DailyExercise'
 import {Ionicons, MaterialCommunityIcons} from '@expo/vector-icons'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
-import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import Modal from 'react-native-modal'
 
 import ConfirmModal from '@components/dialog/ConfirmModal'
-import ReorganizeModal from '@components/dialog/ReorganizeModal'
 import Text from '@components/Text'
 
 import {
@@ -22,30 +20,29 @@ import {
   ORGANIZE_EXERCISES_BUTTON_TEXT
 } from '@constants/strings'
 
+import styles from './index.styled'
+
 interface Props {
   readonly isVisible: boolean
   readonly dropdownTopMargin: number
   readonly dailyExerciseToDelete?: DailyExercise
-  readonly dailyExercisesToReorg: DailyExercise[]
   readonly onDropdownCancel: (isVisible: boolean) => void
+  readonly onReorganize: () => void
 }
 
 const ExerciseListItemDropdown = (props: Props) => {
-  const {isVisible, dropdownTopMargin, onDropdownCancel, dailyExerciseToDelete, dailyExercisesToReorg} = props
+  const {isVisible, dropdownTopMargin, onDropdownCancel, dailyExerciseToDelete, onReorganize} = props
 
-  const {deleteDailyExercise, updateDailyExercises} = useDailyWorkoutEntryStore()
+  const {deleteDailyExercise} = useDailyWorkoutEntryStore()
 
   const [isDeleteConfirmationModalVisible, setIsDeleteConfirmationModalVisible] = useState(false)
   const [doDelete, setDoDelete] = useState(false)
-
-  const [isReorgModalVisible, setIsReorgModalVisible] = useState(false)
   const [doReorg, setDoReorg] = useState(false)
 
   const cancel = () => {
     onDropdownCancel?.(false)
     setIsDeleteConfirmationModalVisible(false)
     setDoDelete(false)
-    setIsReorgModalVisible(false)
     setDoReorg(false)
   }
 
@@ -63,11 +60,6 @@ const ExerciseListItemDropdown = (props: Props) => {
     if (dailyExerciseToDelete) {
       deleteDailyExercise(dailyExerciseToDelete.id)
     }
-    cancel()
-  }
-
-  const confirmReorgPressed = (dailyExercises: DailyExercise[]) => {
-    updateDailyExercises(dailyExercises)
     cancel()
   }
 
@@ -89,71 +81,28 @@ const ExerciseListItemDropdown = (props: Props) => {
         if (doDelete) {
           setIsDeleteConfirmationModalVisible(true)
         } else if (doReorg) {
-          setIsReorgModalVisible(true)
+          setDoReorg(false)
+          onReorganize()
         }
       }}
       onBackdropPress={cancel}
       isVisible={isVisible}>
-      <View style={{flex: 1}} pointerEvents="box-none">
-        <View
-          style={{
-            margin: Spacing.X_SMALL,
-            padding: Spacing.SMALL,
-            width: 200,
-            marginTop: dropdownTopMargin,
-            borderTopLeftRadius: 0,
-            borderRadius: 10,
-            backgroundColor: Theme.colors.secondary
-          }}>
-          <TouchableOpacity
-            style={{
-              alignItems: 'center',
-              flexDirection: 'row'
-            }}
-            onPress={dropdownDeleteItemPressed}>
-            <Ionicons name="trash-bin-outline" size={24} color={Theme.colors.errorLight} />
+      <View style={styles.container} pointerEvents="box-none">
+        <View style={[styles.dropdownCard, {marginTop: dropdownTopMargin}]}>
+          <TouchableOpacity style={styles.menuItem} onPress={dropdownDeleteItemPressed}>
+            <Ionicons name="trash-bin-outline" size={24} color={Theme.colors.error} />
 
-            <Text
-              style={{
-                fontWeight: 'bold',
-                marginLeft: Spacing.SMALL
-              }}>
-              {DELETE_EXERCISE_BUTTON_TEXT}
-            </Text>
+            <Text style={styles.menuItemLabel}>{DELETE_EXERCISE_BUTTON_TEXT}</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={{
-              marginTop: Spacing.XX_SMALL,
-              alignItems: 'center',
-              flexDirection: 'row'
-            }}
-            onPress={dropdownReorgItemPressed}>
+          <TouchableOpacity style={styles.menuItemSpaced} onPress={dropdownReorgItemPressed}>
             <MaterialCommunityIcons name="gesture-tap-hold" size={24} color={Theme.colors.white} />
 
-            <Text
-              style={{
-                fontWeight: 'bold',
-                marginLeft: Spacing.SMALL
-              }}>
-              {ORGANIZE_EXERCISES_BUTTON_TEXT}
-            </Text>
+            <Text style={styles.menuItemLabel}>{ORGANIZE_EXERCISES_BUTTON_TEXT}</Text>
           </TouchableOpacity>
         </View>
       </View>
     </Modal>
-  )
-
-  const reorganizeModal = () => (
-    <ReorganizeModal
-      getTitleForItem={item => item.exercise.name}
-      items={dailyExercisesToReorg}
-      isVisible={isReorgModalVisible}
-      onCancel={cancel}
-      onConfirm={(items: DailyExercise[]) => {
-        confirmReorgPressed(items)
-      }}
-    />
   )
 
   const confirmDeleteModal = () => (
@@ -174,8 +123,6 @@ const ExerciseListItemDropdown = (props: Props) => {
       {dropdownModal()}
 
       {confirmDeleteModal()}
-
-      {reorganizeModal()}
     </>
   )
 }

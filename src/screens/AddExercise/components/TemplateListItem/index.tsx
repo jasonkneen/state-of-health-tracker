@@ -3,36 +3,60 @@ import React from 'react'
 import {TouchableOpacity, View} from 'react-native'
 
 import {ExerciseTemplate} from '@data/models/ExerciseTemplate'
+import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useNavigation} from '@react-navigation/native'
+import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
 import {Theme} from '@styles/theme'
 
-import DeleteTemplateBottomSheet from '@screens/AddExercise/components/DeleteTemplateBottomSheet'
+import TemplateOptionsBottomSheet from '@screens/AddExercise/components/TemplateOptionsBottomSheet'
 
-import {openGlobalBottomSheet} from '@components/GlobalBottomSheet'
+import {closeGlobalBottomSheet, openGlobalBottomSheet} from '@components/GlobalBottomSheet'
 import Text from '@components/Text'
+import {showToast} from '@components/toast/util/ShowToast'
 
-import Screens from '@constants/screens'
+import {
+  stringWithParameters,
+  TOAST_TEMPLATE_EXERCISES_ADDED,
+  TOAST_TEMPLATE_EXERCISES_ADDED_BODY
+} from '@constants/strings'
 
 import styles from './index.styled'
-import {Navigation} from '../../../../navigation/types'
 
 interface Props {
   template: ExerciseTemplate
 }
 
 const TemplateListItem = ({template}: Props) => {
-  const {push} = useNavigation<Navigation>()
+  const {goBack} = useNavigation()
 
-  const onPress = () => {
-    push(Screens.WORKOUT_TEMPLATE_DETAIL, {template})
+  const {data: allExercises = []} = useExercisesQuery()
+  const {addDailyExercise} = useDailyWorkoutEntryStore()
+
+  const templateExercises = allExercises.filter(exercise => template.exerciseIds.includes(exercise.id))
+
+  const onStartWorkoutPressed = () => {
+    closeGlobalBottomSheet()
+    templateExercises.forEach(exercise => addDailyExercise(exercise))
+    showToast(
+      'success',
+      TOAST_TEMPLATE_EXERCISES_ADDED,
+      stringWithParameters(TOAST_TEMPLATE_EXERCISES_ADDED_BODY, template.name)
+    )
+    goBack()
   }
 
-  const onLongPress = () => {
-    openGlobalBottomSheet(<DeleteTemplateBottomSheet template={template} />)
+  const onPress = () => {
+    openGlobalBottomSheet(
+      <TemplateOptionsBottomSheet
+        template={template}
+        exercises={templateExercises}
+        onStartPressed={onStartWorkoutPressed}
+      />
+    )
   }
 
   return (
-    <TouchableOpacity activeOpacity={0.5} delayPressIn={50} onLongPress={onLongPress} onPress={onPress}>
+    <TouchableOpacity activeOpacity={0.5} delayPressIn={50} onPress={onPress}>
       <View
         style={[
           styles.container,

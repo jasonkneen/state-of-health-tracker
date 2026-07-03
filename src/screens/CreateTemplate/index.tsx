@@ -1,26 +1,27 @@
 import React, {useState} from 'react'
 
-import {FlatList, ListRenderItemInfo, View} from 'react-native'
+import {FlatList, ListRenderItemInfo, ScrollView, TouchableOpacity, View} from 'react-native'
 
 import {Exercise} from '@data/models/Exercise'
-import {MaterialCommunityIcons} from '@expo/vector-icons'
+import {Ionicons, MaterialCommunityIcons} from '@expo/vector-icons'
 import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useCreateTemplateMutation} from '@queries/templates/useCreateTemplateMutation'
 import {useNavigation} from '@react-navigation/native'
 import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
+import * as Haptics from 'expo-haptics'
+import Animated, {ZoomIn, ZoomOut} from 'react-native-reanimated'
 
 import ExerciseTypeChip from '@components/ExerciseTypeChip'
+import FloatingActionButton from '@components/FloatingActionButton'
 import ListItem from '@components/ListItem'
 import LoadingOverlay from '@components/LoadingOverlay'
-import PrimaryButton from '@components/PrimaryButton'
 import SearchBar from '@components/SearchBar'
 import Text from '@components/Text'
 import {showToast} from '@components/toast/util/ShowToast'
 
 import {
   CREATE_TEMPLATE_NO_EXERCISES,
-  NEXT_BUTTON_TEXT,
   SEARCH_EXERCISES_PLACEHOLDER,
   SELECT_EXERCISES_FOR_TEMPLATE_TITLE,
   TOAST_TEMPLATE_CREATED,
@@ -30,6 +31,8 @@ import {
 import CreateTemplateModal from './components/CreateTemplateModal'
 import styles from './index.styled'
 import {filterExercises} from '../../utility/filterExercises'
+
+const FAB_TRANSITION_MS = 200
 
 const CreateTemplateScreen = () => {
   const {goBack} = useNavigation()
@@ -43,25 +46,62 @@ const CreateTemplateScreen = () => {
 
   const exercises = filterExercises(allExercises, searchFilter)
 
-  const renderItem = ({item}: ListRenderItemInfo<Exercise>) => (
-    <ListItem
-      isSwipeable={false}
-      leftRightMargin={Spacing.MEDIUM}
-      title={item.name}
-      backgroundColor={selectedExercises.includes(item) ? Theme.colors.tertiary : Theme.colors.background}
-      subtitle={item.exerciseBodyPart}
-      chip={<ExerciseTypeChip exerciseType={item.exerciseType} />}
-      onPress={() => {
-        if (selectedExercises.includes(item)) {
-          setSelectedExercises(prev => prev.filter(e => e.id !== item.id))
-        } else {
-          setSelectedExercises(prev => [...prev, item])
-        }
-      }}
-    />
+  const isSelected = (exercise: Exercise) => selectedExercises.some(e => e.id === exercise.id)
+
+  const toggleExercise = (exercise: Exercise) => {
+    Haptics.selectionAsync()
+    setSelectedExercises(prev =>
+      prev.some(e => e.id === exercise.id) ? prev.filter(e => e.id !== exercise.id) : [...prev, exercise]
+    )
+  }
+
+  const renderSelectionCircle = (selected: boolean) => (
+    <View style={[styles.selectCircle, selected && styles.selectCircleSelected]}>
+      {selected && <Ionicons name="checkmark" size={14} color={Theme.colors.onInverse} />}
+    </View>
   )
 
-  const onNextPressed = () => {
+  const renderItem = ({item}: ListRenderItemInfo<Exercise>) => {
+    const selected = isSelected(item)
+
+    return (
+      <ListItem
+        isSwipeable={false}
+        leftRightMargin={Spacing.MEDIUM}
+        title={item.name}
+        backgroundColor={selected ? Theme.colors.tertiary : Theme.colors.background}
+        subtitle={item.exerciseBodyPart}
+        leading={renderSelectionCircle(selected)}
+        chip={<ExerciseTypeChip exerciseType={item.exerciseType} />}
+        onPress={() => toggleExercise(item)}
+      />
+    )
+  }
+
+  const renderSelectedTray = () => (
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      keyboardShouldPersistTaps="always"
+      style={styles.selectedTray}
+      contentContainerStyle={styles.selectedTrayContent}>
+      {selectedExercises.map(exercise => (
+        <TouchableOpacity
+          key={exercise.id}
+          style={styles.selectedChip}
+          activeOpacity={0.7}
+          onPress={() => toggleExercise(exercise)}>
+          <Text style={styles.selectedChipText} numberOfLines={1}>
+            {exercise.name}
+          </Text>
+
+          <Ionicons name="close" size={14} color={Theme.colors.textSecondary} />
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
+  )
+
+  const onFinishSelectionPressed = () => {
     if (selectedExercises.length > 0) setIsModalVisible(true)
   }
 
@@ -93,26 +133,40 @@ const CreateTemplateScreen = () => {
         handleCreate={handleCreate}
       />
 
-      <SearchBar placeholder={SEARCH_EXERCISES_PLACEHOLDER} onSearchTextChanged={setSearchFilter} />
+      <FlatList
+        keyboardShouldPersistTaps="always"
+        keyboardDismissMode="on-drag"
+        initialNumToRender={10}
+        data={exercises}
+        contentContainerStyle={styles.listContent}
+        ListHeaderComponent={
+          <>
+            <SearchBar placeholder={SEARCH_EXERCISES_PLACEHOLDER} onSearchTextChanged={setSearchFilter} />
 
-      {exercises.length === 0 ? (
-        <>
-          <MaterialCommunityIcons style={styles.emptyIcon} name="kettlebell" size={100} color={Theme.colors.white} />
+            {selectedExercises.length > 0 && renderSelectedTray()}
 
-          <Text style={styles.emptyText}>{CREATE_TEMPLATE_NO_EXERCISES}</Text>
-        </>
-      ) : (
-        <FlatList
-          keyboardShouldPersistTaps="always"
-          keyboardDismissMode="on-drag"
-          initialNumToRender={10}
-          data={[...selectedExercises, ...exercises.filter(e => !selectedExercises.includes(e))]}
-          ListHeaderComponent={<Text style={styles.headerText}>{SELECT_EXERCISES_FOR_TEMPLATE_TITLE}</Text>}
-          ListFooterComponent={
-            <PrimaryButton style={styles.footerButton} label={NEXT_BUTTON_TEXT} onPress={onNextPressed} />
-          }
-          renderItem={renderItem}
-        />
+            <Text style={styles.headerText}>{SELECT_EXERCISES_FOR_TEMPLATE_TITLE}</Text>
+          </>
+        }
+        ListEmptyComponent={
+          <>
+            <MaterialCommunityIcons style={styles.emptyIcon} name="kettlebell" size={100} color={Theme.colors.white} />
+
+            <Text style={styles.emptyText}>{CREATE_TEMPLATE_NO_EXERCISES}</Text>
+          </>
+        }
+        renderItem={renderItem}
+      />
+
+      {selectedExercises.length > 0 && (
+        <Animated.View
+          style={styles.fabContainer}
+          entering={ZoomIn.duration(FAB_TRANSITION_MS)}
+          exiting={ZoomOut.duration(FAB_TRANSITION_MS)}>
+          <FloatingActionButton onPress={onFinishSelectionPressed}>
+            <Ionicons name="checkmark" size={28} color={Theme.colors.onInverse} />
+          </FloatingActionButton>
+        </Animated.View>
       )}
     </View>
   )

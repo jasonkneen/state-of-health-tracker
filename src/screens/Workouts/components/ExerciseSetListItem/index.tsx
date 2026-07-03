@@ -38,13 +38,18 @@ const ExerciseSetListItem = (props: Props) => {
   const [weightInputError, setWeightInputError] = useState(false)
   const [repsInputError, setRepsInputError] = useState(false)
 
+  // History may have fewer sets than today's workout, so sets past the end
+  // fall back to the last set of the previous session
+  const previousSets = exercise.latestCompletedSets
+  const previousSet = previousSets.length > 0 ? previousSets[Math.min(index, previousSets.length - 1)] : undefined
+
   const completeSetChecked = (isChecked: boolean) => {
     let weight
 
     if (weightText !== '') {
       weight = parseInt(weightText, 10)
     } else {
-      weight = exercise.latestCompletedSets[index]?.weight
+      weight = previousSet?.weight
       if (weight) {
         setWeightText(weight.toString())
       }
@@ -55,7 +60,7 @@ const ExerciseSetListItem = (props: Props) => {
     if (repsText !== '') {
       reps = parseInt(repsText, 10)
     } else {
-      reps = exercise.latestCompletedSets[index]?.reps
+      reps = previousSet?.reps
       if (reps) {
         setRepsText(reps.toString())
       }
@@ -111,8 +116,7 @@ const ExerciseSetListItem = (props: Props) => {
             value={weightText}
             onChangeText={onWeightTextChanged}
             editable={!set.completed}
-            placeholder={exercise.latestCompletedSets[index]?.weight?.toString()}
-            returnKeyType="done"
+            placeholder={previousSet?.weight?.toString()}
             contextMenuHidden={true}
             textAlign="center"
             maxLength={4}
@@ -129,8 +133,7 @@ const ExerciseSetListItem = (props: Props) => {
             value={repsText}
             onChangeText={onRepsTextChanged}
             editable={!set.completed}
-            placeholder={exercise.latestCompletedSets[index]?.reps?.toString()}
-            returnKeyType="done"
+            placeholder={previousSet?.reps?.toString()}
             contextMenuHidden={true}
             textAlign="center"
             maxLength={4}

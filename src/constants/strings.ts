@@ -130,6 +130,10 @@ export const WORKOUTS_TITLE = 'Workouts'
 
 export const YOUR_EXERCISES_HEADER = 'Your Exercises'
 
+export const FROM_CATALOG_HEADER = 'From Catalog'
+
+export const ADD_TO_DAILY_WORKOUT_BUTTON_TEXT = 'Add to Daily Workout'
+
 export const EXERCISES_HEADER = 'Exercises'
 
 export const TEMPLATES_HEADER = 'Templates'
@@ -141,6 +145,8 @@ export const DAILY_WORKOUT_TITLE = 'Daily Workout'
 export const DELETE_EXERCISE_BUTTON_TEXT = 'Delete Exercise'
 
 export const ORGANIZE_EXERCISES_BUTTON_TEXT = 'Organize Exercises'
+
+export const REORGANIZE_HINT_TEXT = 'Drag exercises to reorder, then tap the check to finish'
 
 export const LBS_LABEL = 'lbs'
 
@@ -189,8 +195,6 @@ export const DELETE_TEMPLATE_MODAL_BODY = 'This will remove %0 from your saved t
 export const ADD_SET_BUTTON_TEXT = 'Set'
 
 export const ADD_MEAL_PLACEHOLDER_TEXT = 'Ex: Lunch'
-
-export const REORG_MODAL_BODY = 'Drag items to organize'
 
 export const EXERCISE_LABEL = 'Exercise'
 
@@ -340,6 +344,8 @@ export const TEMPLATE_MODAL_ERROR_TEXT = 'Please Enter a Template Name'
 
 export const TEMPLATE_START = 'Start Workout'
 
+export const TEMPLATE_EXERCISES_LABEL = 'Exercises'
+
 export const TOAST_TEMPLATE_EXERCISES_ADDED = 'Exercises Added!'
 
 export const TOAST_TEMPLATE_EXERCISES_ADDED_BODY = 'From Template: %0'
@@ -356,10 +362,10 @@ export const DELETE_TEMPLATE_ERROR = 'Error deleting template. Please check your
 
 export const SEARCH_ADD_EXERCISE_ERROR = 'Error adding exercise. Please check your connection and try again.'
 
-export const SEARCH_ADD_EXERCISE_SUCCESS = 'Exercise Added'
+export const NO_SEARCH_RESULTS_TEXT = 'No exercises found. Try a different search or create your own below.'
 
 export const CREATE_TEMPLATE_NO_EXERCISES =
-  "To create a template, you must first add exercises to your list. Tap '+ Add Exercise' on the previous screen to get started."
+  "To create a template, you must first add exercises to your list. Tap '+ Create Exercise' on the previous screen to get started."
 
 export const UPDATE_APP_VERSION_TITLE = 'Update Required'
 

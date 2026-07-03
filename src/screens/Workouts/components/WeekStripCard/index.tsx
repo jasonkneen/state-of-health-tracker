@@ -18,7 +18,7 @@ import styles from './index.styled'
 import {formatDateToMonthDay, getLast7Mondays} from '../../../../utility/DateUtility'
 import WeeklyBarGraph from '../WeeklyBarGraph'
 
-const REVEAL_DURATION_MS = 350
+const REVEAL_DURATION_MS = 175
 const MAX_WEEK_CIRCLES = 7
 
 const WeekStripCard = () => {

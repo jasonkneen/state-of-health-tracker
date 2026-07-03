@@ -11,11 +11,11 @@ import ExerciseListItemDropdown from './ExerciseListItemDropdown'
 
 interface Props {
   dailyExercise: DailyExercise
-  dailyExercisesToReorg: DailyExercise[]
+  onReorganizePressed: () => void
 }
 
 const ExerciseSectionListHeader = (props: Props) => {
-  const {dailyExercise, dailyExercisesToReorg} = props
+  const {dailyExercise, onReorganizePressed} = props
 
   const [isDropdownVisible, setIsDropdownVisible] = useState(false)
   const [dropdownTopMargin, setDropdownTopMargin] = useState(0)
@@ -30,8 +30,8 @@ const ExerciseSectionListHeader = (props: Props) => {
       }}
       isVisible={isDropdownVisible}
       dropdownTopMargin={dropdownTopMargin}
-      dailyExercisesToReorg={dailyExercisesToReorg}
       dailyExerciseToDelete={dropdownDailyExercise}
+      onReorganize={onReorganizePressed}
     />
   )
 

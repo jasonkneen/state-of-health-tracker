@@ -14,6 +14,7 @@ interface Props {
   readonly title: string
   readonly subtitle: string
   readonly chip?: React.JSX.Element
+  readonly leading?: React.JSX.Element
   readonly swipeableRef?: (ref: Swipeable) => void
   readonly onSwipeActivated?: () => void
   readonly onDeletePressed?: () => void
@@ -32,6 +33,7 @@ const ListItem = (props: Props) => {
     title,
     subtitle,
     chip,
+    leading,
     onDeletePressed,
     swipeableRef,
     onSwipeActivated,
@@ -62,6 +64,8 @@ const ListItem = (props: Props) => {
             onPress?.()
           }}>
           <View style={[styles.item, itemBackground(backgroundColor, leftRightMargin)]}>
+            {leading && <View style={styles.leadingContainer}>{leading}</View>}
+
             <View style={styles.textContainer}>
               <Text style={styles.title} numberOfLines={1}>
                 {title}

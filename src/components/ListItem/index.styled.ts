@@ -24,6 +24,10 @@ export default StyleSheet.create({
   textContainer: {
     flex: 1
   },
+  leadingContainer: {
+    justifyContent: 'center',
+    marginLeft: Spacing.X_SMALL
+  },
   title: {
     fontWeight: 'bold',
     marginLeft: 10,

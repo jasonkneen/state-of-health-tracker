@@ -18,5 +18,8 @@ export default StyleSheet.create({
     paddingRight: Spacing.SMALL,
     paddingLeft: Spacing.SMALL,
     alignSelf: 'flex-start'
+  },
+  footerSpinner: {
+    marginVertical: Spacing.MEDIUM
   }
 })

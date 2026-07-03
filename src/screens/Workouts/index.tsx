@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import {
   KeyboardAvoidingView,
@@ -22,8 +22,11 @@ import useAuthStore from '@store/auth/useAuthStore'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
 import {useSessionStore} from '@store/session/useSessionStore'
 import {Theme} from '@styles/theme'
-import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
+import * as Haptics from 'expo-haptics'
+import Animated, {FadeIn, FadeOut, ZoomIn} from 'react-native-reanimated'
 
+import FloatingActionButton from '@components/FloatingActionButton'
+import BarbellIcon from '@components/icons/BarbellIcon'
 import LoadingOverlay from '@components/LoadingOverlay'
 import {EmptyState} from '@components/PreviousEntryListItem'
 import PrimaryButton from '@components/PrimaryButton'
@@ -35,12 +38,14 @@ import {
   ADD_EXERCISE_BUTTON_TEXT,
   EMPTY_DAILY_WORKOUT_BODY,
   EMPTY_DAILY_WORKOUT_TITLE,
+  REORGANIZE_HINT_TEXT,
   VIEW_PREVIOUS_WORKOUTS_BUTTON_TEXT,
   WORKOUT_SCREEN_TITLE
 } from '@constants/strings'
 
 import ExerciseSectionListHeader from './components/ExerciseSectionListHeader'
 import ExerciseSetListItem from './components/ExerciseSetListItem'
+import ReorganizeExerciseList from './components/ReorganizeExerciseList'
 import WeekStripCard from './components/WeekStripCard'
 import WorkoutsSkeleton from './components/WorkoutsSkeleton'
 import styles from './index.styled'
@@ -56,12 +61,16 @@ interface Section extends Unique {
 const listSwipeItemManager = new ListSwipeItemManager()
 
 const CROSS_DISSOLVE_DURATION_MS = 400
+const REORG_TRANSITION_DURATION_MS = 200
 
 const WorkoutsScreen = () => {
   const navigation = useNavigation<Navigation>()
 
   const {userId} = useAuthStore()
-  const {initCurrentWorkoutDay, isInitializing, currentWorkoutDay, deleteSet} = useDailyWorkoutEntryStore()
+  const {initCurrentWorkoutDay, isInitializing, currentWorkoutDay, deleteSet, updateDailyExercises} =
+    useDailyWorkoutEntryStore()
+
+  const [isReorganizing, setIsReorganizing] = useState(false)
   const {isLoading: isLoadingSummaries} = useWeeklyWorkoutSummariesQuery()
   const {sessionStartDate} = useSessionStore()
 
@@ -98,7 +107,11 @@ const WorkoutsScreen = () => {
 
       {!isInitializing && dailyExercises.length === 0 && (
         <EmptyState
-          icon={<Ionicons style={styles.emptyIcon} name="barbell" size={200} color={Theme.colors.track} />}
+          icon={
+            <View style={styles.emptyIcon}>
+              <BarbellIcon size={200} color={Theme.colors.track} />
+            </View>
+          }
           title={EMPTY_DAILY_WORKOUT_TITLE}
           body={EMPTY_DAILY_WORKOUT_BODY}
         />
@@ -125,8 +138,28 @@ const WorkoutsScreen = () => {
     </>
   )
 
+  const startReorganizing = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+    setIsReorganizing(true)
+  }
+
+  const finishReorganizing = () => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+    setIsReorganizing(false)
+  }
+
+  const renderReorganizeHeader = () => (
+    <>
+      <Text style={styles.dateOverline}>{formatDayMonthDay(sessionStartDate)}</Text>
+
+      <Text style={styles.workoutTitle}>{WORKOUT_SCREEN_TITLE}</Text>
+
+      <Text style={styles.reorganizeHint}>{REORGANIZE_HINT_TEXT}</Text>
+    </>
+  )
+
   const renderSectionItemHeader = (dailyExercise: DailyExercise) => (
-    <ExerciseSectionListHeader dailyExercise={dailyExercise} dailyExercisesToReorg={dailyExercises} />
+    <ExerciseSectionListHeader dailyExercise={dailyExercise} onReorganizePressed={startReorganizing} />
   )
 
   const renderItem: SectionListRenderItem<ExerciseSet, Section> = ({item, section, index}) => (
@@ -142,7 +175,7 @@ const WorkoutsScreen = () => {
 
   return (
     <View style={styles.root}>
-      {!isLoading && (
+      {!isLoading && !isReorganizing && (
         <Animated.View style={styles.root} entering={FadeIn.duration(CROSS_DISSOLVE_DURATION_MS)}>
           <SafeAreaView>
             <KeyboardAvoidingView behavior="padding">
@@ -162,6 +195,26 @@ const WorkoutsScreen = () => {
               />
             </KeyboardAvoidingView>
           </SafeAreaView>
+        </Animated.View>
+      )}
+
+      {!isLoading && isReorganizing && (
+        <Animated.View style={styles.root} entering={FadeIn.duration(REORG_TRANSITION_DURATION_MS)}>
+          <SafeAreaView style={styles.root}>
+            <ReorganizeExerciseList
+              dailyExercises={dailyExercises}
+              onReorder={updateDailyExercises}
+              listHeader={renderReorganizeHeader()}
+            />
+          </SafeAreaView>
+
+          <Animated.View
+            style={styles.fabContainer}
+            entering={ZoomIn.duration(REORG_TRANSITION_DURATION_MS).delay(100)}>
+            <FloatingActionButton onPress={finishReorganizing}>
+              <Ionicons name="checkmark" size={28} color={Theme.colors.onInverse} />
+            </FloatingActionButton>
+          </Animated.View>
         </Animated.View>
       )}
 

@@ -1,5 +1,11 @@
 import {StyleSheet} from 'react-native'
 
+import {initialWindowMetrics} from 'react-native-safe-area-context'
+
+// No SafeAreaProvider in the app tree, so read the static launch metrics for
+// the home-indicator inset
+const bottomInset = initialWindowMetrics?.insets.bottom ?? 0
+
 export default StyleSheet.create({
   backdrop: {
     position: 'absolute',
@@ -7,7 +13,7 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.1)'
+    backgroundColor: 'rgba(0,0,0,0.5)'
   },
   backdropTouchableArea: {
     flex: 1
@@ -23,6 +29,7 @@ export default StyleSheet.create({
     elevation: 10 // Android shadow
   },
   sheetContent: {
-    padding: 20
+    padding: 20,
+    paddingBottom: 20 + bottomInset
   }
 })

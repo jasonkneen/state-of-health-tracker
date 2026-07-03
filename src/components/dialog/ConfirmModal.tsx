@@ -3,7 +3,8 @@ import React, {useEffect} from 'react'
 import {View} from 'react-native'
 
 import Shadow from '@styles/shadow'
-import {Text, useStyleTheme} from '@styles/theme'
+import Text from '@components/Text'
+import {Theme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import Modal from 'react-native-modal'
 
@@ -29,7 +30,7 @@ const ConfirmModal = (props: Props) => {
     confirmationTitle,
     confirmationBody,
     confirmButtonText = DELETE_BUTTON_TEXT,
-    confirmButtonColor = useStyleTheme().colors.error,
+    confirmButtonColor = Theme.colors.error,
     isVisible,
     onConfirmPressed,
     onCancel
@@ -63,7 +64,7 @@ const ConfirmModal = (props: Props) => {
           style={{
             ...Shadow.MODAL,
             borderRadius: BorderRadius.MODAL,
-            backgroundColor: useStyleTheme().colors.primary,
+            backgroundColor: Theme.colors.primary,
             alignSelf: 'center',
             width: '90%',
             padding: Spacing.LARGE

@@ -3,8 +3,8 @@ import React, {useState} from 'react'
 import {TouchableOpacity, View} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
-import {Text, useStyleTheme} from '@styles/theme'
-
+import Text from '@components/Text'
+import {Theme} from '@styles/theme'
 import TargetCaloriesModal from '@components/dialog/TargetCaloriesModal'
 import TargetWorkoutsModal from '@components/dialog/TargetWorkoutsModal'
 import WeightEntryModal from '@components/dialog/WeightEntryModal'
@@ -24,7 +24,7 @@ const AccountListItem = (props: Props) => {
   const {clickable = true, text, icon, type, onPressOverride} = props
 
   const iconSize = 24
-  const iconColor = useStyleTheme().colors.white
+  const iconColor = Theme.colors.white
 
   const [isInputModalVisible, setIsInputModalVisible] = useState(false)
 

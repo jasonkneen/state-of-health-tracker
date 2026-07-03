@@ -9,7 +9,7 @@ import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useNavigation} from '@react-navigation/native'
 import exerciseSearchService from '@service/exercises/ExerciseSearchService'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
-import {useStyleTheme} from '@styles/theme'
+import {Theme} from '@styles/theme'
 import {debounce} from 'lodash'
 
 import ExerciseTypeChip from '@components/ExerciseTypeChip'
@@ -28,8 +28,6 @@ const LoadBatchSize = 50
 
 const SearchExercisesScreen = () => {
   const {popToTop} = useNavigation<Navigation>()
-  const theme = useStyleTheme()
-
   const [searchText, setSearchText] = useState('')
   const [results, setResults] = useState<CreateExercisePayload[]>([])
   const [batchCount, setBatchCount] = useState(1)
@@ -94,7 +92,7 @@ const SearchExercisesScreen = () => {
       isSwipeable={false}
       leftRightMargin={Spacing.SMALL}
       title={item.name}
-      backgroundColor={theme.colors.background}
+      backgroundColor={Theme.colors.background}
       subtitle={item.exerciseBodyPart}
       chip={<ExerciseTypeChip exerciseType={mapExerciseType(item.exerciseType)} />}
       onPress={() => onExercisePressed(item)}

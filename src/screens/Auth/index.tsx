@@ -4,8 +4,7 @@ import {Image, View} from 'react-native'
 
 import {useNavigation} from '@react-navigation/native'
 import useAuthStore from '@store/auth/useAuthStore'
-import {useStyleTheme} from '@styles/theme'
-
+import {Theme} from '@styles/theme'
 import Screens from '@constants/screens'
 
 import styles from './index.styled'
@@ -13,9 +12,6 @@ import {Navigation} from '../../navigation/types'
 
 const RootAuthScreen = () => {
   const {push} = useNavigation<Navigation>()
-
-  const theme = useStyleTheme()
-
   const [isRendered, setIsRendered] = useState(false)
 
   const {initAuth} = useAuthStore()
@@ -35,7 +31,7 @@ const RootAuthScreen = () => {
   }
 
   return (
-    <View onLayout={onLayout} style={[styles.container, {backgroundColor: theme.colors.background}]}>
+    <View onLayout={onLayout} style={[styles.container, {backgroundColor: Theme.colors.background}]}>
       <Image source={require('../../assets/splash.png')} style={styles.splashImage} resizeMode="cover" />
     </View>
   )

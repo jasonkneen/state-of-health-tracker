@@ -4,8 +4,7 @@ import {TextStyle, View, ViewStyle} from 'react-native'
 
 import {useWeeklyWorkoutSummariesQuery} from '@queries/workouts/useWeeklyWorkoutSummariesQuery'
 import useUserData from '@store/userData/useUserData'
-import {useStyleTheme} from '@styles/theme'
-
+import {Theme} from '@styles/theme'
 import BarGraph from '@components/BarGraph'
 import TargetWorkoutsModal from '@components/dialog/TargetWorkoutsModal'
 
@@ -60,13 +59,13 @@ const WeeklyWorkoutsGraphModule = () => {
 
   const barStyle = (label: string): ViewStyle => {
     const currentWeek = xAxisLabels[xAxisLabels.length - 1]
-    let backgroundColor = useStyleTheme().colors.secondaryLighter
+    let backgroundColor = Theme.colors.secondaryLighter
     let opacity = currentWeek === label ? 1 : 0.5
 
     const didHitTarget = weekWorkoutsCompletedMap[label] >= targetWorkoutsPerWeek
 
     if (didHitTarget) {
-      backgroundColor = useStyleTheme().colors.success
+      backgroundColor = Theme.colors.success
       opacity = 1
     }
 

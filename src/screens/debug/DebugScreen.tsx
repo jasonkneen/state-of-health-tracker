@@ -4,8 +4,7 @@ import {ScrollView} from 'react-native'
 
 import {WorkoutDay} from '@data/models/WorkoutDay'
 import offlineWorkoutStorageService from '@service/workouts/OfflineWorkoutStorageService'
-import {Text} from '@styles/theme'
-
+import Text from '@components/Text'
 import PrimaryButton from '@components/PrimaryButton'
 
 const DebugScreen = () => {

@@ -4,8 +4,8 @@ import {TouchableOpacity, View} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
 import {useNavigation} from '@react-navigation/native'
-import {Text, useStyleTheme} from '@styles/theme'
-
+import Text from '@components/Text'
+import {Theme} from '@styles/theme'
 import Screens from '@constants/screens'
 import {SEARCH_EXERCISES_PLACEHOLDER} from '@constants/strings'
 
@@ -14,24 +14,22 @@ import {Navigation} from '../../../../navigation/types'
 
 const ExerciseSearchBarButton = () => {
   const {navigate} = useNavigation<Navigation>()
-  const theme = useStyleTheme()
-
   const onPress = () => {
     navigate(Screens.SEARCH_EXERCISES)
   }
 
   return (
     <>
-      <View style={[styles.searchBarBackground, {backgroundColor: theme.colors.secondary}]} />
+      <View style={[styles.searchBarBackground, {backgroundColor: Theme.colors.secondary}]} />
 
-      <View style={[styles.container, {backgroundColor: theme.colors.secondary}]}>
+      <View style={[styles.container, {backgroundColor: Theme.colors.secondary}]}>
         <TouchableOpacity
           activeOpacity={0.8}
-          style={[styles.innerContainer, {backgroundColor: theme.colors.background}]}
+          style={[styles.innerContainer, {backgroundColor: Theme.colors.background}]}
           onPress={onPress}>
-          <Ionicons style={styles.icon} name="search" size={20} color={theme.colors.secondary} />
+          <Ionicons style={styles.icon} name="search" size={20} color={Theme.colors.secondary} />
 
-          <Text style={[styles.placeholder, {color: theme.colors.tertiary}]} numberOfLines={1}>
+          <Text style={[styles.placeholder, {color: Theme.colors.tertiary}]} numberOfLines={1}>
             {SEARCH_EXERCISES_PLACEHOLDER}
           </Text>
         </TouchableOpacity>

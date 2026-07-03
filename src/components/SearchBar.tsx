@@ -3,8 +3,8 @@ import React, {useEffect, useState} from 'react'
 import {Keyboard, TouchableOpacity, View} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
-import {TextInput, useStyleTheme} from '@styles/theme'
-
+import TextInput from '@components/TextInput'
+import {Theme} from '@styles/theme'
 import Spacing from '@styles/spacing'
 
 interface Props {
@@ -37,11 +37,11 @@ const SearchBar = (props: Props) => {
         justifyContent: 'center',
         width: '100%',
         height: SEARCH_BAR_HEIGHT,
-        backgroundColor: useStyleTheme().colors.secondary
+        backgroundColor: Theme.colors.secondary
       }}>
       <View
         style={{
-          backgroundColor: useStyleTheme().colors.background,
+          backgroundColor: Theme.colors.background,
           alignSelf: 'center',
           borderRadius: 50,
           flexDirection: 'row',
@@ -54,7 +54,7 @@ const SearchBar = (props: Props) => {
           }}
           name="search"
           size={20}
-          color={useStyleTheme().colors.secondary}
+          color={Theme.colors.secondary}
         />
 
         <TextInput
@@ -76,7 +76,7 @@ const SearchBar = (props: Props) => {
               marginRight: Spacing.MEDIUM
             }}
             onPress={onCancel}>
-            <Ionicons name="close" size={20} color={useStyleTheme().colors.white} />
+            <Ionicons name="close" size={20} color={Theme.colors.white} />
           </TouchableOpacity>
         )}
       </View>

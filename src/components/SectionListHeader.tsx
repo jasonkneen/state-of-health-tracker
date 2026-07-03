@@ -2,8 +2,8 @@ import React from 'react'
 
 import {TouchableOpacity, View, ViewProps} from 'react-native'
 
-import {Text, useStyleTheme} from '@styles/theme'
-
+import Text from '@components/Text'
+import {Theme} from '@styles/theme'
 import BorderRadius from '@styles/borderRadius'
 import FontSize from '@styles/fontSize'
 import Spacing from '@styles/spacing'
@@ -30,8 +30,8 @@ const SectionListHeader = (props: Props) => {
           borderBottomWidth: 0,
           borderBottomLeftRadius: 0,
           borderBottomRightRadius: 0,
-          backgroundColor: useStyleTheme().colors.background,
-          borderColor: useStyleTheme().colors.border,
+          backgroundColor: Theme.colors.background,
+          borderColor: Theme.colors.border,
           padding: Spacing.SMALL,
           marginTop: Spacing.X_SMALL,
           marginLeft: Spacing.MEDIUM,
@@ -55,7 +55,7 @@ const SectionListHeader = (props: Props) => {
             fontWeight: 'bold',
             fontSize: FontSize.H3,
             marginRight: Spacing.SMALL,
-            backgroundColor: useStyleTheme().colors.background
+            backgroundColor: Theme.colors.background
           }}>
           {title}
         </Text>
@@ -82,7 +82,7 @@ export const SectionListFooter = (props: ViewProps) => {
       style={{
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: useStyleTheme().colors.border,
+        borderColor: Theme.colors.border,
         borderTopWidth: 0,
         borderBottomLeftRadius: BorderRadius.SECTION,
         borderBottomRightRadius: BorderRadius.SECTION,

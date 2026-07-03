@@ -3,8 +3,8 @@ import React from 'react'
 import {Dimensions, TextStyle, TouchableOpacity, View, ViewStyle} from 'react-native'
 
 import Shadow from '@styles/shadow'
-import {Text, useStyleTheme} from '@styles/theme'
-
+import Text from '@components/Text'
+import {Theme} from '@styles/theme'
 import borderRadius from '@styles/borderRadius'
 import Spacing from '@styles/spacing'
 
@@ -159,9 +159,9 @@ const BarGraph = (props: Props) => {
         marginLeft: margin,
         marginRight: margin,
         width,
-        backgroundColor: useStyleTheme().colors.tertiary,
+        backgroundColor: Theme.colors.tertiary,
         borderRadius: borderRadius.SECTION,
-        borderColor: useStyleTheme().colors.secondary,
+        borderColor: Theme.colors.secondary,
         borderWidth: 1,
         marginBottom: Spacing.SMALL
       }}>

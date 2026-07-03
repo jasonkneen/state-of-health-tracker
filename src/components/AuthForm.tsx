@@ -5,7 +5,8 @@ import {Alert, TouchableOpacity, View} from 'react-native'
 import {isAuthError} from '@data/models/AuthError'
 import {useNavigation} from '@react-navigation/native'
 import useAuthStore from '@store/auth/useAuthStore'
-import {Text, useStyleTheme} from '@styles/theme'
+import Text from '@components/Text'
+import {Theme} from '@styles/theme'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 
 import Screens from '@constants/screens'
@@ -166,7 +167,7 @@ const AuthForm = (props: Props) => {
                   marginTop: Spacing.LARGE,
                   alignSelf: 'center',
                   fontWeight: 'bold',
-                  color: useStyleTheme().colors.secondaryLighter
+                  color: Theme.colors.secondaryLighter
                 }}>
                 {AUTH_NO_ACCOUNT_BUTTON_TEXT}
               </Text>

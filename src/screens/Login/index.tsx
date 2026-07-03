@@ -2,8 +2,7 @@ import React from 'react'
 
 import {SafeAreaView, View} from 'react-native'
 
-import {Text} from '@styles/theme'
-
+import Text from '@components/Text'
 import AuthForm from '@components/AuthForm'
 import HorizontalDivider from '@components/HorizontalDivider'
 

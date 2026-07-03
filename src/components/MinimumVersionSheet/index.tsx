@@ -5,8 +5,8 @@ import Constants from 'expo-constants'
 import {noop} from 'lodash'
 
 import BottomSheet from '@gorhom/bottom-sheet'
-import {Text, useStyleTheme} from '@styles/theme'
-
+import Text from '@components/Text'
+import {Theme} from '@styles/theme'
 import {getMinimumAppVersion, initRemoteConfig} from '@service/remoteConfig/initRemoteConfig'
 import {closeGlobalBottomSheet} from '@components/GlobalBottomSheet'
 
@@ -18,7 +18,6 @@ import {isVersionGreaterOrEqual} from '../../utility/compareVersions'
 import styles from './index.styled'
 
 const MinimumVersionSheet = () => {
-  const theme = useStyleTheme()
   const sheetRef = useRef<BottomSheet>(null)
 
   const [isOpen, setIsOpen] = useState(false)
@@ -63,7 +62,7 @@ const MinimumVersionSheet = () => {
         enablePanDownToClose={false}
         enableHandlePanningGesture={false}
         handleComponent={null}
-        backgroundStyle={{backgroundColor: theme.colors.background}}
+        backgroundStyle={{backgroundColor: Theme.colors.background}}
         style={styles.sheetShadow}
         onClose={noop}>
         <View style={styles.sheetContent}>

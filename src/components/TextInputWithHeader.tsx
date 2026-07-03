@@ -2,8 +2,9 @@ import React from 'react'
 
 import {KeyboardTypeOptions} from 'react-native'
 
-import {Text, TextInput, useStyleTheme} from '@styles/theme'
-
+import Text from '@components/Text'
+import TextInput from '@components/TextInput'
+import {Theme} from '@styles/theme'
 import FontSize from '@styles/fontSize'
 import Spacing from '@styles/spacing'
 
@@ -63,7 +64,7 @@ const TextInputWithHeader = (props: TextInputProps) => {
       {showError && (
         <Text
           style={{
-            color: useStyleTheme().colors.error,
+            color: Theme.colors.error,
             alignSelf: 'flex-start',
             fontSize: FontSize.PARAGRAPH,
             fontWeight: '300',

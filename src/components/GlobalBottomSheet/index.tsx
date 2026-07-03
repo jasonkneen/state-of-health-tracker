@@ -4,7 +4,7 @@ import {ReactNode} from 'react'
 import {View, TouchableWithoutFeedback} from 'react-native'
 
 import BottomSheet from '@gorhom/bottom-sheet'
-import {useStyleTheme} from '@styles/theme'
+import {Theme} from '@styles/theme'
 import {Subject} from 'rxjs'
 
 import styles from './index.styled'
@@ -28,7 +28,6 @@ export const closeGlobalBottomSheet = () => {
 }
 
 const GlobalBottomSheet = () => {
-  const theme = useStyleTheme()
   const sheetRef = useRef<BottomSheet>(null)
 
   const [content, setContent] = useState<ReactNode>(null)
@@ -65,8 +64,8 @@ const GlobalBottomSheet = () => {
         index={-1}
         snapPoints={['25%']}
         enablePanDownToClose
-        handleIndicatorStyle={{backgroundColor: theme.colors.white}}
-        backgroundStyle={{backgroundColor: theme.colors.background}}
+        handleIndicatorStyle={{backgroundColor: Theme.colors.white}}
+        backgroundStyle={{backgroundColor: Theme.colors.background}}
         style={styles.sheetShadow}
         onClose={closeGlobalBottomSheet}>
         <View style={styles.sheetContent}>{content}</View>

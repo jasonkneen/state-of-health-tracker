@@ -3,7 +3,8 @@ import React, {useEffect, useState} from 'react'
 import {TouchableOpacity, View} from 'react-native'
 
 import Shadow from '@styles/shadow'
-import {Text, useStyleTheme} from '@styles/theme'
+import Text from '@components/Text'
+import {Theme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import DraggableFlatList, {RenderItemParams, ScaleDecorator} from 'react-native-draggable-flatlist'
 import Modal from 'react-native-modal'
@@ -50,7 +51,7 @@ const ReorganizeModal = <T extends object>(props: Props<T>) => {
             marginBottom: 2,
             fontSize: FontSize.H2,
             fontWeight: 'bold',
-            color: useStyleTheme().colors.white
+            color: Theme.colors.white
           }}>
           {getTitleForItem(item)}
         </Text>
@@ -80,7 +81,7 @@ const ReorganizeModal = <T extends object>(props: Props<T>) => {
           style={{
             ...Shadow.MODAL,
             borderRadius: BorderRadius.MODAL,
-            backgroundColor: useStyleTheme().colors.primary,
+            backgroundColor: Theme.colors.primary,
             alignSelf: 'center',
             width: '90%',
             padding: Spacing.MEDIUM
@@ -124,7 +125,7 @@ const ReorganizeModal = <T extends object>(props: Props<T>) => {
             <PrimaryButton
               width="48%"
               style={{
-                backgroundColor: useStyleTheme().colors.secondaryLighter,
+                backgroundColor: Theme.colors.secondaryLighter,
                 padding: Spacing.X_SMALL
               }}
               label={CONFIRM_BUTTON_TEXT}

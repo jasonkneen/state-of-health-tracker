@@ -2,8 +2,7 @@ import React from 'react'
 
 import {ActivityIndicator, View, ViewStyle} from 'react-native'
 
-import {useStyleTheme} from '@styles/theme'
-
+import {Theme} from '@styles/theme'
 interface Props {
   style?: ViewStyle
 }
@@ -25,7 +24,7 @@ const LoadingOverlay = (props: Props) => {
         },
         style
       ]}>
-      <ActivityIndicator size="large" color={useStyleTheme().colors.secondaryLighter} />
+      <ActivityIndicator size="large" color={Theme.colors.secondaryLighter} />
     </View>
   )
 }

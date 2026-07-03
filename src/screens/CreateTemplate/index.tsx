@@ -7,8 +7,8 @@ import {MaterialCommunityIcons} from '@expo/vector-icons'
 import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useCreateTemplateMutation} from '@queries/templates/useCreateTemplateMutation'
 import {useNavigation} from '@react-navigation/native'
-import {Text, useStyleTheme} from '@styles/theme'
-
+import Text from '@components/Text'
+import {Theme} from '@styles/theme'
 import ExerciseTypeChip from '@components/ExerciseTypeChip'
 import ListItem from '@components/ListItem'
 import LoadingOverlay from '@components/LoadingOverlay'
@@ -31,7 +31,6 @@ import styles from './index.styled'
 import {filterExercises} from '../../utility/filterExercises'
 
 const CreateTemplateScreen = () => {
-  const theme = useStyleTheme()
   const {goBack} = useNavigation()
 
   const {data: allExercises = []} = useExercisesQuery()
@@ -48,7 +47,7 @@ const CreateTemplateScreen = () => {
       isSwipeable={false}
       leftRightMargin={Spacing.MEDIUM}
       title={item.name}
-      backgroundColor={selectedExercises.includes(item) ? theme.colors.tertiary : theme.colors.background}
+      backgroundColor={selectedExercises.includes(item) ? Theme.colors.tertiary : Theme.colors.background}
       subtitle={item.exerciseBodyPart}
       chip={<ExerciseTypeChip exerciseType={item.exerciseType} />}
       onPress={() => {
@@ -101,7 +100,7 @@ const CreateTemplateScreen = () => {
             style={styles.emptyIcon}
             name="kettlebell"
             size={100}
-            color={useStyleTheme().colors.white}
+            color={Theme.colors.white}
           />
 
           <Text style={styles.emptyText}>{CREATE_TEMPLATE_NO_EXERCISES}</Text>

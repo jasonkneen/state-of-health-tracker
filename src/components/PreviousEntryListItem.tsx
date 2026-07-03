@@ -2,8 +2,8 @@ import React from 'react'
 
 import {View} from 'react-native'
 
-import {Text, useStyleTheme} from '@styles/theme'
-
+import Text from '@components/Text'
+import {Theme} from '@styles/theme'
 import BorderRadius from '@styles/borderRadius'
 import FontSize from '@styles/fontSize'
 import Spacing from '@styles/spacing'
@@ -31,7 +31,7 @@ const PreviousEntryListItem = <T extends object>(props: Props<T>) => {
         paddingBottom: Spacing.X_SMALL,
         borderRadius: BorderRadius.SECTION,
         borderWidth: 1,
-        borderColor: useStyleTheme().colors.border,
+        borderColor: Theme.colors.border,
         marginBottom: Spacing.MEDIUM
       }}>
       <Text
@@ -74,7 +74,7 @@ const PreviousEntryListItem = <T extends object>(props: Props<T>) => {
         <View
           key={i}
           style={{
-            backgroundColor: useStyleTheme().colors.tertiary,
+            backgroundColor: Theme.colors.tertiary,
             borderRadius: BorderRadius.SECTION,
             marginBottom: Spacing.XX_SMALL,
             paddingLeft: Spacing.SMALL,

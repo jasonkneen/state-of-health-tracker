@@ -3,7 +3,7 @@ import React from 'react'
 import {Animated, TouchableOpacity, ViewProps} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
-import {useStyleTheme} from '@styles/theme'
+import {Theme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler'
 
@@ -60,7 +60,7 @@ const SwipeDeleteListItem = (props: Props) => {
                   alignItems: 'flex-end',
                   transform: [{translateX: translation}]
                 }}>
-                <Ionicons name="trash-bin-outline" size={24} color={useStyleTheme().colors.error} />
+                <Ionicons name="trash-bin-outline" size={24} color={Theme.colors.error} />
               </Animated.View>
             </TouchableOpacity>
           )

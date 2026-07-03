@@ -4,7 +4,9 @@ import {TouchableOpacity, View} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
 import Shadow from '@styles/shadow'
-import {Text, TextInput, useStyleTheme} from '@styles/theme'
+import Text from '@components/Text'
+import TextInput from '@components/TextInput'
+import {Theme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import Modal from 'react-native-modal'
 
@@ -74,11 +76,11 @@ const InputModal = (props: Props) => {
           borderRadius: BorderRadius.MODAL,
           width: '90%',
           paddingBottom: Spacing.LARGE,
-          backgroundColor: useStyleTheme().colors.primary,
+          backgroundColor: Theme.colors.primary,
           alignSelf: 'center'
         }}>
         <TouchableOpacity onPress={onCancel}>
-          <Ionicons name="close" size={24} color={useStyleTheme().colors.white} style={{alignSelf: 'flex-end'}} />
+          <Ionicons name="close" size={24} color={Theme.colors.white} style={{alignSelf: 'flex-end'}} />
         </TouchableOpacity>
 
         <Text
@@ -118,7 +120,7 @@ const InputModal = (props: Props) => {
         {showError && (
           <Text
             style={{
-              color: useStyleTheme().colors.error,
+              color: Theme.colors.error,
               alignSelf: 'flex-start',
               fontSize: FontSize.PARAGRAPH,
               fontWeight: '300',

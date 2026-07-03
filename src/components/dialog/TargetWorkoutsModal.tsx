@@ -2,8 +2,7 @@ import React, {useEffect, useState} from 'react'
 
 import {MaterialCommunityIcons} from '@expo/vector-icons'
 import useUserData from '@store/userData/useUserData'
-import {useStyleTheme} from '@styles/theme'
-
+import {Theme} from '@styles/theme'
 import {
   TARGET_WORKOUTS_MODAL_BODY,
   TARGET_WORKOUTS_MODAL_BUTTON,
@@ -54,7 +53,7 @@ const TargetWorkoutsModal = (props: BaseInputModalProps) => {
           style={{alignSelf: 'center'}}
           name="weight-lifter"
           size={96}
-          color={useStyleTheme().colors.secondaryLighter}
+          color={Theme.colors.secondaryLighter}
         />
       }
       value={value}

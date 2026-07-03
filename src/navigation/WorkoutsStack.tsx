@@ -1,8 +1,7 @@
 import React from 'react'
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
-import {useStyleTheme} from '@styles/theme'
-
+import {Theme} from '@styles/theme'
 import AddExerciseScreen from '@screens/AddExercise'
 import CreateExerciseScreen from '@screens/CreateExercise'
 import CreateTemplateScreen from '@screens/CreateTemplate'
@@ -17,14 +16,12 @@ import {PREVIOUS_WORKOUTS_TITLE} from '@constants/strings'
 const Stack = createNativeStackNavigator()
 
 const WorkoutsStack = () => {
-  const theme = useStyleTheme()
-
   return (
     <Stack.Navigator
       screenOptions={{
         headerBackButtonDisplayMode: 'minimal',
-        headerStyle: {backgroundColor: theme.colors.background},
-        headerTintColor: theme.colors.white,
+        headerStyle: {backgroundColor: Theme.colors.background},
+        headerTintColor: Theme.colors.white,
         headerShadowVisible: false
       }}>
       <Stack.Screen name={Screens.WORKOUTS} component={WorkoutsScreen} options={{headerShown: false}} />
@@ -34,7 +31,7 @@ const WorkoutsStack = () => {
       <Stack.Screen
         options={{
           headerStyle: {
-            backgroundColor: useStyleTheme().colors.secondary
+            backgroundColor: Theme.colors.secondary
           }
         }}
         name={Screens.ADD_EXERCISE}
@@ -44,7 +41,7 @@ const WorkoutsStack = () => {
       <Stack.Screen
         options={{
           headerStyle: {
-            backgroundColor: useStyleTheme().colors.secondary
+            backgroundColor: Theme.colors.secondary
           }
         }}
         name={Screens.CREATE_TEMPLATE}
@@ -54,7 +51,7 @@ const WorkoutsStack = () => {
       <Stack.Screen
         options={{
           headerStyle: {
-            backgroundColor: useStyleTheme().colors.secondary
+            backgroundColor: Theme.colors.secondary
           }
         }}
         name={Screens.SEARCH_EXERCISES}

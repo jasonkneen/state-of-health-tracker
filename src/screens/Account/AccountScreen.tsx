@@ -7,8 +7,8 @@ import {useWorkoutSummariesInfiniteQuery} from '@queries/workouts/useWorkoutSumm
 import useAuthStore from '@store/auth/useAuthStore'
 import {useSessionStore} from '@store/session/useSessionStore'
 import useUserData from '@store/userData/useUserData'
-import {Text, useStyleTheme} from '@styles/theme'
-
+import Text from '@components/Text'
+import {Theme} from '@styles/theme'
 import HorizontalDivider from '@components/HorizontalDivider'
 
 import FontSize from '@styles/fontSize'
@@ -41,7 +41,7 @@ const AccountScreen = () => {
   const totalSummaries = summariesData?.pages[0]?.pagination.total ?? 0
 
   const iconSize = 24
-  const iconColor = useStyleTheme().colors.white
+  const iconColor = Theme.colors.white
 
   const getWelcomeMessage = () => {
     return ACCOUNT_LOGGED_IN_AS + userEmail
@@ -138,7 +138,7 @@ const AccountScreen = () => {
       <Text
         style={{
           fontWeight: 'bold',
-          backgroundColor: useStyleTheme().colors.background,
+          backgroundColor: Theme.colors.background,
           paddingTop: Spacing.MEDIUM,
           paddingLeft: Spacing.LARGE,
           paddingBottom: Spacing.SMALL

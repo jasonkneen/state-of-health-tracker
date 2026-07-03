@@ -4,8 +4,8 @@ import {TouchableOpacity, View} from 'react-native'
 
 import {ExerciseTemplate} from '@data/models/ExerciseTemplate'
 import {useNavigation} from '@react-navigation/native'
-import {Text, useStyleTheme} from '@styles/theme'
-
+import Text from '@components/Text'
+import {Theme} from '@styles/theme'
 import DeleteTemplateBottomSheet from '@screens/AddExercise/components/DeleteTemplateBottomSheet'
 
 import {openGlobalBottomSheet} from '@components/GlobalBottomSheet'
@@ -20,8 +20,6 @@ interface Props {
 }
 
 const TemplateListItem = ({template}: Props) => {
-  const theme = useStyleTheme()
-
   const {push} = useNavigation<Navigation>()
 
   const onPress = () => {
@@ -38,8 +36,8 @@ const TemplateListItem = ({template}: Props) => {
         style={[
           styles.container,
           {
-            backgroundColor: theme.colors.background,
-            borderColor: theme.colors.border
+            backgroundColor: Theme.colors.background,
+            borderColor: Theme.colors.border
           }
         ]}>
         <View style={styles.textContainer}>

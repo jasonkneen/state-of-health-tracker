@@ -2,8 +2,8 @@ import React from 'react'
 
 import {ActivityIndicator, DimensionValue, StyleProp, TouchableOpacity, View, ViewStyle} from 'react-native'
 
-import {Text, useStyleTheme} from '@styles/theme'
-
+import Text from '@components/Text'
+import {Theme} from '@styles/theme'
 import BorderRadius from '@styles/borderRadius'
 import FontSize from '@styles/fontSize'
 import Spacing from '@styles/spacing'
@@ -18,9 +18,6 @@ interface Props {
 
 const PrimaryButton = (props: Props) => {
   const {label, isLoading = false, onPress, style, width = '100%'} = props
-
-  const theme = useStyleTheme()
-
   const handlePress = () => {
     if (!isLoading) {
       onPress()
@@ -38,16 +35,16 @@ const PrimaryButton = (props: Props) => {
       <View
         style={[
           {
-            backgroundColor: useStyleTheme().colors.secondary,
+            backgroundColor: Theme.colors.secondary,
             borderRadius: BorderRadius.BUTTON,
-            borderColor: useStyleTheme().colors.secondaryLighter,
+            borderColor: Theme.colors.secondaryLighter,
             padding: Spacing.SMALL,
             alignItems: 'center'
           },
           style
         ]}>
         {isLoading ? (
-          <ActivityIndicator size="small" color={theme.colors.secondaryLighter} />
+          <ActivityIndicator size="small" color={Theme.colors.secondaryLighter} />
         ) : (
           <Text
             style={{

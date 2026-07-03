@@ -2,8 +2,7 @@ import React, {useState} from 'react'
 
 import {FontAwesome5} from '@expo/vector-icons'
 import useUserData from '@store/userData/useUserData'
-import {useStyleTheme} from '@styles/theme'
-
+import {Theme} from '@styles/theme'
 import {showToast} from '@components/toast/util/ShowToast'
 
 import Spacing from '@styles/spacing'
@@ -55,7 +54,7 @@ const WeightEntryModal = (props: BaseModalProps) => {
             alignSelf: 'center',
             marginBottom: Spacing.X_SMALL
           }}
-          color={useStyleTheme().colors.secondaryLighter}
+          color={Theme.colors.secondaryLighter}
         />
       }
       value={value}

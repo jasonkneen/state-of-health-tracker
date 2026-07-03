@@ -5,7 +5,9 @@ import {TouchableOpacity, View} from 'react-native'
 import {Exercise} from '@data/models/Exercise'
 import {ExerciseSet} from '@data/models/ExerciseSet'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
-import {Text, TextInput, useStyleTheme} from '@styles/theme'
+import Text from '@components/Text'
+import TextInput from '@components/TextInput'
+import {Theme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import {Swipeable} from 'react-native-gesture-handler'
@@ -142,7 +144,7 @@ const ExerciseSetListItem = (props: Props) => {
         onDeletePressed={onDeletePressed}>
         <View
           style={{
-            backgroundColor: set.completed ? useStyleTheme().colors.secondaryLighter : useStyleTheme().colors.tertiary,
+            backgroundColor: set.completed ? Theme.colors.secondaryLighter : Theme.colors.tertiary,
             borderRadius: BorderRadius.SECTION,
             marginBottom: Spacing.XX_SMALL,
             paddingLeft: Spacing.SMALL,
@@ -170,7 +172,7 @@ const ExerciseSetListItem = (props: Props) => {
               height: 30,
               padding: 0,
               fontWeight: set.completed ? 'bold' : 'normal',
-              backgroundColor: weightInputError ? useStyleTheme().colors.errorLight : useStyleTheme().colors.primary
+              backgroundColor: weightInputError ? Theme.colors.errorLight : Theme.colors.primary
             }}
             keyboardType="number-pad"
           />
@@ -191,7 +193,7 @@ const ExerciseSetListItem = (props: Props) => {
               height: 30,
               padding: 0,
               fontWeight: set.completed ? 'bold' : 'normal',
-              backgroundColor: repsInputError ? useStyleTheme().colors.errorLight : useStyleTheme().colors.primary
+              backgroundColor: repsInputError ? Theme.colors.errorLight : Theme.colors.primary
             }}
             keyboardType="number-pad"
           />
@@ -206,7 +208,7 @@ const ExerciseSetListItem = (props: Props) => {
             <BouncyCheckbox
               disabled={checkboxDisabled}
               isChecked={set.completed}
-              fillColor={set.completed ? useStyleTheme().colors.secondary : useStyleTheme().colors.secondaryLighter}
+              fillColor={set.completed ? Theme.colors.secondary : Theme.colors.secondaryLighter}
               style={{width: 25}}
               size={30}
               onPress={completeSetChecked}
@@ -220,10 +222,10 @@ const ExerciseSetListItem = (props: Props) => {
           position: 'absolute',
           width: 1,
           height: '100%',
-          backgroundColor: useStyleTheme().colors.background,
+          backgroundColor: Theme.colors.background,
           paddingRight: Spacing.MEDIUM,
           borderRightWidth: 1,
-          borderRightColor: useStyleTheme().colors.border
+          borderRightColor: Theme.colors.border
         }}
       />
 
@@ -234,9 +236,9 @@ const ExerciseSetListItem = (props: Props) => {
           width: 1,
           height: '100%',
           paddingRight: Spacing.MEDIUM,
-          backgroundColor: useStyleTheme().colors.background,
+          backgroundColor: Theme.colors.background,
           borderLeftWidth: 1,
-          borderLeftColor: useStyleTheme().colors.border
+          borderLeftColor: Theme.colors.border
         }}
       />
     </View>

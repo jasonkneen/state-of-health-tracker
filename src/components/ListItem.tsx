@@ -2,7 +2,8 @@ import React from 'react'
 
 import {TouchableOpacity, View} from 'react-native'
 
-import {Text, useStyleTheme} from '@styles/theme'
+import Text from '@components/Text'
+import {Theme} from '@styles/theme'
 import {Swipeable} from 'react-native-gesture-handler'
 
 import BorderRadius from '@styles/borderRadius'
@@ -41,7 +42,7 @@ const ListItem = (props: Props) => {
     leftRightMargin = 28,
     deleteIconRightMargin = 0,
     isSwipeable = true,
-    backgroundColor = useStyleTheme().colors.background,
+    backgroundColor = Theme.colors.background,
     isTappable = true
   } = props
 
@@ -69,7 +70,7 @@ const ListItem = (props: Props) => {
                 backgroundColor,
                 borderRadius: BorderRadius.LIST_ITEM,
                 borderWidth: 1,
-                borderColor: useStyleTheme().colors.border,
+                borderColor: Theme.colors.border,
                 padding: Spacing.X_SMALL,
                 marginTop: Spacing.XX_SMALL,
                 marginBottom: Spacing.XX_SMALL,
@@ -116,10 +117,10 @@ const ListItem = (props: Props) => {
             position: 'absolute',
             width: 1,
             height: '100%',
-            backgroundColor: useStyleTheme().colors.background,
+            backgroundColor: Theme.colors.background,
             paddingRight: Spacing.MEDIUM,
             borderRightWidth: 1,
-            borderRightColor: useStyleTheme().colors.border
+            borderRightColor: Theme.colors.border
           }}
         />
       )}
@@ -132,9 +133,9 @@ const ListItem = (props: Props) => {
             width: 1,
             height: '100%',
             paddingRight: Spacing.MEDIUM,
-            backgroundColor: useStyleTheme().colors.background,
+            backgroundColor: Theme.colors.background,
             borderLeftWidth: 1,
-            borderLeftColor: useStyleTheme().colors.border
+            borderLeftColor: Theme.colors.border
           }}
         />
       )}

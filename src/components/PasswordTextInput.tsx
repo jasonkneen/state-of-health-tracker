@@ -3,8 +3,7 @@ import React, {useState} from 'react'
 import {TouchableOpacity} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
-import {useStyleTheme} from '@styles/theme'
-
+import {Theme} from '@styles/theme'
 import TextInputWithHeader, {TextInputProps} from './TextInputWithHeader'
 
 const PasswordTextInput = (props: TextInputProps) => {
@@ -28,7 +27,7 @@ const PasswordTextInput = (props: TextInputProps) => {
           }}
           name={secureEntry ? 'eye' : 'eye-off'}
           size={24}
-          color={useStyleTheme().colors.white}
+          color={Theme.colors.white}
         />
       </TouchableOpacity>
 

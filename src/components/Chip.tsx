@@ -2,8 +2,8 @@ import React from 'react'
 
 import {StyleProp, View, ViewStyle} from 'react-native'
 
-import {Text, useStyleTheme} from '@styles/theme'
-
+import Text from '@components/Text'
+import {Theme} from '@styles/theme'
 import BorderRadius from '@styles/borderRadius'
 import Spacing from '@styles/spacing'
 
@@ -21,7 +21,7 @@ const Chip = (props: Props) => {
       style={[
         {
           borderRadius: BorderRadius.CHIP,
-          backgroundColor: useStyleTheme().colors.chip,
+          backgroundColor: Theme.colors.chip,
           padding: Spacing.XX_SMALL,
           paddingRight: Spacing.X_SMALL,
           flexDirection: 'row',

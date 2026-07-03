@@ -3,8 +3,8 @@ import React from 'react'
 import {StyleProp, TouchableOpacity, View, ViewStyle} from 'react-native'
 
 import {AntDesign} from '@expo/vector-icons'
-import {Text, useStyleTheme} from '@styles/theme'
-
+import Text from '@components/Text'
+import {Theme} from '@styles/theme'
 import BorderRadius from '@styles/borderRadius'
 import FontSize from '@styles/fontSize'
 import Spacing from '@styles/spacing'
@@ -25,14 +25,14 @@ const SecondaryButton = (props: Props) => {
           {
             borderRadius: BorderRadius.BUTTON,
             borderWidth: 1,
-            borderColor: useStyleTheme().colors.border,
+            borderColor: Theme.colors.border,
             padding: Spacing.X_SMALL,
             alignItems: 'center',
             flexDirection: 'row'
           },
           style
         ]}>
-        <AntDesign name="plus" size={24} color={useStyleTheme().colors.white} />
+        <AntDesign name="plus" size={24} color={Theme.colors.white} />
 
         {label && (
           <Text

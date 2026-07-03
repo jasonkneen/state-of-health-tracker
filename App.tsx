@@ -6,7 +6,7 @@ import {Ionicons} from '@expo/vector-icons'
 import {NavigationContainer} from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import {PersistQueryClientProvider} from '@tanstack/react-query-persist-client'
-import {darkTheme, useStyleTheme} from '@styles/theme'
+import {Theme} from '@styles/theme'
 import * as SplashScreen from 'expo-splash-screen'
 import {GestureHandlerRootView} from 'react-native-gesture-handler'
 import Toast from 'react-native-toast-message'
@@ -33,7 +33,7 @@ const App = () => {
   const backButton = (onPress: () => void) => {
     return (
       <TouchableOpacity onPress={onPress}>
-        <Ionicons name="chevron-back" size={24} color={useStyleTheme().colors.white} />
+        <Ionicons name="chevron-back" size={24} color={Theme.colors.white} />
       </TouchableOpacity>
     )
   }
@@ -51,7 +51,7 @@ const App = () => {
       <GestureHandlerRootView style={{flex: 1}}>
         <StatusBar barStyle="light-content" />
 
-        <NavigationContainer theme={darkTheme}>
+        <NavigationContainer theme={Theme}>
           {!isAuthed ? (
             <Stack.Navigator
               initialRouteName={'Auth'}

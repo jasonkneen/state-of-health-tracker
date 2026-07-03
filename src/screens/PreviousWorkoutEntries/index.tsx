@@ -5,8 +5,8 @@ import {FlatList, ListRenderItemInfo} from 'react-native'
 import {WorkoutSummary} from '@data/models/WorkoutSummary'
 import {FontAwesome5, MaterialCommunityIcons} from '@expo/vector-icons'
 import {useWorkoutSummariesInfiniteQuery} from '@queries/workouts/useWorkoutSummariesInfiniteQuery'
-import {Screen, useStyleTheme} from '@styles/theme'
-
+import Screen from '@components/Screen'
+import {Theme} from '@styles/theme'
 import Chip from '@components/Chip'
 import LoadingOverlay from '@components/LoadingOverlay'
 import PreviousEntryListItem, {EmptyState} from '@components/PreviousEntryListItem'
@@ -38,7 +38,7 @@ const PreviousWorkoutEntries = () => {
             style={styles.icon}
             name="weight-lifter"
             size={230}
-            color={useStyleTheme().colors.secondary}
+            color={Theme.colors.secondary}
           />
         }
         title={PREVIOUS_WORKOUTS_ENTRIES_EMPTY_TITLE}
@@ -61,7 +61,7 @@ const PreviousWorkoutEntries = () => {
             <FontAwesome5
               name="weight-hanging"
               size={14}
-              color={useStyleTheme().colors.secondaryLighter}
+              color={Theme.colors.secondaryLighter}
               style={{
                 marginRight: Spacing.XX_SMALL
               }}

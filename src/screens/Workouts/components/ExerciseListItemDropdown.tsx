@@ -5,7 +5,8 @@ import {TouchableOpacity, View} from 'react-native'
 import {DailyExercise} from '@data/models/DailyExercise'
 import {Ionicons, MaterialCommunityIcons} from '@expo/vector-icons'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
-import {Text, useStyleTheme} from '@styles/theme'
+import Text from '@components/Text'
+import {Theme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import Modal from 'react-native-modal'
 
@@ -102,7 +103,7 @@ const ExerciseListItemDropdown = (props: Props) => {
             marginTop: dropdownTopMargin,
             borderTopLeftRadius: 0,
             borderRadius: 10,
-            backgroundColor: useStyleTheme().colors.secondary
+            backgroundColor: Theme.colors.secondary
           }}>
           <TouchableOpacity
             style={{
@@ -110,7 +111,7 @@ const ExerciseListItemDropdown = (props: Props) => {
               flexDirection: 'row'
             }}
             onPress={dropdownDeleteItemPressed}>
-            <Ionicons name="trash-bin-outline" size={24} color={useStyleTheme().colors.errorLight} />
+            <Ionicons name="trash-bin-outline" size={24} color={Theme.colors.errorLight} />
 
             <Text
               style={{
@@ -128,7 +129,7 @@ const ExerciseListItemDropdown = (props: Props) => {
               flexDirection: 'row'
             }}
             onPress={dropdownReorgItemPressed}>
-            <MaterialCommunityIcons name="gesture-tap-hold" size={24} color={useStyleTheme().colors.white} />
+            <MaterialCommunityIcons name="gesture-tap-hold" size={24} color={Theme.colors.white} />
 
             <Text
               style={{

@@ -13,8 +13,8 @@ import {useNavigation} from '@react-navigation/native'
 import useAuthStore from '@store/auth/useAuthStore'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
 import {useSessionStore} from '@store/session/useSessionStore'
-import {Text, useStyleTheme} from '@styles/theme'
-
+import Text from '@components/Text'
+import {Theme} from '@styles/theme'
 import LoadingOverlay from '@components/LoadingOverlay'
 import {EmptyState} from '@components/PreviousEntryListItem'
 import PrimaryButton from '@components/PrimaryButton'
@@ -101,7 +101,7 @@ const WorkoutsScreen = () => {
           {dailyExercises.length === 0 && (
             <EmptyState
               icon={
-                <Ionicons style={styles.emptyIcon} name="barbell" size={200} color={useStyleTheme().colors.secondary} />
+                <Ionicons style={styles.emptyIcon} name="barbell" size={200} color={Theme.colors.secondary} />
               }
               title={EMPTY_DAILY_WORKOUT_TITLE}
               body={EMPTY_DAILY_WORKOUT_BODY}

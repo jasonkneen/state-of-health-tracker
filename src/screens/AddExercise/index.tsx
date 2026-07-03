@@ -9,8 +9,7 @@ import {mutationKeys} from '@queries/keys'
 import {useTemplatesQuery} from '@queries/templates/useTemplatesQuery'
 import {useNavigation} from '@react-navigation/native'
 import {useIsMutating} from '@tanstack/react-query'
-import {Text} from '@styles/theme'
-
+import Text from '@components/Text'
 import LoadingOverlay from '@components/LoadingOverlay'
 import SecondaryButton from '@components/SecondaryButton'
 

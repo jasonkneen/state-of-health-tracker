@@ -5,8 +5,8 @@ import {TouchableOpacity, View} from 'react-native'
 import {Exercise} from '@data/models/Exercise'
 import {useNavigation} from '@react-navigation/native'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
-import {Text, useStyleTheme} from '@styles/theme'
-
+import Text from '@components/Text'
+import {Theme} from '@styles/theme'
 import DeleteExerciseBottomSheet from '@screens/AddExercise/components/DeleteExerciseBottomSheet'
 
 import ExerciseTypeChip from '@components/ExerciseTypeChip'
@@ -22,8 +22,6 @@ interface Props {
 }
 
 const ExerciseListItem = ({exercise}: Props) => {
-  const theme = useStyleTheme()
-
   const {goBack} = useNavigation()
 
   const {addDailyExercise} = useDailyWorkoutEntryStore()
@@ -47,8 +45,8 @@ const ExerciseListItem = ({exercise}: Props) => {
         style={[
           styles.container,
           {
-            backgroundColor: theme.colors.background,
-            borderColor: theme.colors.border
+            backgroundColor: Theme.colors.background,
+            borderColor: Theme.colors.border
           }
         ]}>
         <View style={styles.textContainer}>

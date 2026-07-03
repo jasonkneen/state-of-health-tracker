@@ -2,8 +2,7 @@ import React from 'react'
 
 import {Ionicons, MaterialCommunityIcons} from '@expo/vector-icons'
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
-import {useStyleTheme} from '@styles/theme'
-
+import {Theme} from '@styles/theme'
 import AccountScreen from '@screens/Account/AccountScreen'
 // import DebugScreen from '@screens/debug/DebugScreen'
 
@@ -15,8 +14,6 @@ import WorkoutsStack from './WorkoutsStack'
 const Tab = createBottomTabNavigator()
 
 const HomeTabs = () => {
-  const theme = useStyleTheme()
-
   const barbellIcon = (color: string) => <Ionicons name="barbell" size={24} color={color} style={{marginBottom: -3}} />
 
   const accountIcon = (color: string) => (
@@ -30,18 +27,18 @@ const HomeTabs = () => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
-        sceneStyle: {backgroundColor: theme.colors.background},
+        sceneStyle: {backgroundColor: Theme.colors.background},
         tabBarIcon: ({color}) => {
           if (route.name === 'WorkoutsStack') return barbellIcon(color)
           if (route.name === Screens.ACCOUNT) return accountIcon(color)
           if (route.name === Screens.DEBUG) return debugIcon(color)
         },
         headerShown: false,
-        tabBarActiveTintColor: theme.colors.white,
-        tabBarInactiveTintColor: theme.colors.grey,
+        tabBarActiveTintColor: Theme.colors.white,
+        tabBarInactiveTintColor: Theme.colors.grey,
         tabBarStyle: {
           borderTopWidth: 0,
-          backgroundColor: theme.colors.navBar
+          backgroundColor: Theme.colors.navBar
         }
       })}>
       <Tab.Screen name={'WorkoutsStack'} component={WorkoutsStack} options={{title: WORKOUTS_TITLE}} />

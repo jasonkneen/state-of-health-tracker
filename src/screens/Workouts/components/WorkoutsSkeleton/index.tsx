@@ -3,8 +3,8 @@ import React from 'react'
 import {Dimensions, SafeAreaView, View} from 'react-native'
 
 import {useSessionStore} from '@store/session/useSessionStore'
-import {Text, useStyleTheme} from '@styles/theme'
-
+import Text from '@components/Text'
+import {Theme} from '@styles/theme'
 import Skeleton from '@components/Skeleton'
 
 import BorderRadius from '@styles/borderRadius'
@@ -17,8 +17,6 @@ import {formatDayMonthDay} from '../../../../utility/DateUtility'
 const exerciseSetWidth = Dimensions.get('window').width - 50
 
 const WorkoutsSkeleton = () => {
-  const theme = useStyleTheme()
-
   const fakeXAxis = () => (
     <View style={styles.xAxisContainer}>
       {[2, 4, 2, 2, 1, 3, 2].map((barCount, i) => (
@@ -49,8 +47,8 @@ const WorkoutsSkeleton = () => {
         style={[
           styles.graphContainer,
           {
-            backgroundColor: theme.colors.tertiary,
-            borderColor: theme.colors.secondary
+            backgroundColor: Theme.colors.tertiary,
+            borderColor: Theme.colors.secondary
           }
         ]}>
         <Skeleton height={15} width={150} borderRadius={6} style={{marginBottom: 12}} />
@@ -74,7 +72,7 @@ const WorkoutsSkeleton = () => {
         style={[
           styles.exerciseItemContainer,
           {
-            borderColor: theme.colors.secondary
+            borderColor: Theme.colors.secondary
           }
         ]}>
         <View style={styles.contentContainer}>
@@ -100,7 +98,7 @@ const WorkoutsSkeleton = () => {
         style={[
           styles.exerciseItemContainer,
           {
-            borderColor: theme.colors.secondary
+            borderColor: Theme.colors.secondary
           }
         ]}>
         <View style={styles.contentContainer}>

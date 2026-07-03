@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
 
-import {TouchableOpacity, View} from 'react-native'
+import {Alert, TouchableOpacity, View} from 'react-native'
 
+import {isAuthError} from '@data/models/AuthError'
 import {useNavigation} from '@react-navigation/native'
 import useAuthStore from '@store/auth/useAuthStore'
 import {Text, useStyleTheme} from '@theme/Theme'
@@ -16,9 +17,12 @@ import {
   AUTH_FORM_PASSWORD_CONFIRM_ERROR,
   AUTH_FORM_PASSWORD_ERROR,
   AUTH_FORM_PASSWORD_HEADER,
+  AUTH_GENERIC_ERROR_MESSAGE,
+  AUTH_GENERIC_ERROR_TITLE,
   AUTH_LOG_IN_BUTTON_TEXT,
   AUTH_NO_ACCOUNT_BUTTON_TEXT,
-  AUTH_REGISTER_BUTTON_TEXT
+  AUTH_REGISTER_BUTTON_TEXT,
+  OKAY_BUTTON_TEXT
 } from '@constants/Strings'
 
 import PasswordTextInput from './PasswordTextInput'
@@ -83,13 +87,22 @@ const AuthForm = (props: Props) => {
     setConfirmPassword(text)
   }
 
-  const handleAuth = () => {
-    if (validate()) {
+  const handleAuth = async () => {
+    if (!validate()) {
+      return
+    }
+
+    try {
       if (authType === 'register') {
-        registerUser(email, password)
+        await registerUser(email, password)
       } else {
-        loginUser(email, password)
+        await loginUser(email, password)
       }
+    } catch (error) {
+      const title = isAuthError(error) ? error.errorPath : AUTH_GENERIC_ERROR_TITLE
+      const message = isAuthError(error) ? error.errorMessage : AUTH_GENERIC_ERROR_MESSAGE
+
+      Alert.alert(title, message, [{text: OKAY_BUTTON_TEXT}])
     }
   }
 

@@ -1,6 +1,6 @@
+import {AuthErrorPathEnum} from '@data/models/AuthError'
 import User, {CreateUserPayload} from '@data/models/User'
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth'
-import {AuthErrorPathEnum} from '@store/user/models/AuthError'
 
 import {decodeAuthError} from './AuthErrorEnum'
 import {createUser} from './createUser'

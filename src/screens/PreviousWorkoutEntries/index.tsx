@@ -4,7 +4,7 @@ import {FlatList, ListRenderItemInfo} from 'react-native'
 
 import {WorkoutSummary} from '@data/models/WorkoutSummary'
 import {FontAwesome5, MaterialCommunityIcons} from '@expo/vector-icons'
-import useWorkoutSummariesStore from '@store/workoutSummaries/useWorkoutSummariesStore'
+import {useWorkoutSummariesInfiniteQuery} from '@queries/workouts/useWorkoutSummariesInfiniteQuery'
 import {Screen, useStyleTheme} from '@theme/Theme'
 
 import Chip from '@components/Chip'
@@ -26,9 +26,11 @@ import styles from './index.styled'
 import {formatDateUTC} from '../../utility/DateUtility'
 
 const PreviousWorkoutEntries = () => {
-  const {isFetching, summaries, fetchSummaries} = useWorkoutSummariesStore()
+  const {data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage} = useWorkoutSummariesInfiniteQuery()
 
-  if (summaries.length === 0) {
+  const summaries = data?.pages.flatMap(page => page.summaries) ?? []
+
+  if (!isLoading && summaries.length === 0) {
     return (
       <EmptyState
         icon={
@@ -75,7 +77,7 @@ const PreviousWorkoutEntries = () => {
 
   return (
     <>
-      {isFetching && <LoadingOverlay />}
+      {(isLoading || isFetchingNextPage) && <LoadingOverlay />}
 
       <Screen>
         <FlatList
@@ -83,7 +85,11 @@ const PreviousWorkoutEntries = () => {
           showsVerticalScrollIndicator={false}
           data={summaries}
           renderItem={renderItem}
-          onEndReached={fetchSummaries}
+          onEndReached={() => {
+            if (hasNextPage) {
+              fetchNextPage()
+            }
+          }}
         />
       </Screen>
     </>

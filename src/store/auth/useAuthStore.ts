@@ -1,137 +1,100 @@
-import {authEventType} from '@data/types/authEvent'
-import {authStatus} from '@data/types/authStatus'
-import {decodeAuthError} from '@service/auth/AuthErrorEnum'
+import {queryClient} from '@queries/queryClient'
 import authService from '@service/auth/AuthService'
 import offlineWorkoutStorageService from '@service/workouts/OfflineWorkoutStorageService'
-import {AuthError, AuthErrorPathEnum} from '@store/user/models/AuthError'
+import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
 import {create} from 'zustand'
-import {immer} from 'zustand/middleware/immer'
-
-import {AuthSubject$} from '@screens/Auth'
 
 export type AuthState = {
   userId: string | null
   userEmail: string | null
   isAuthed: boolean
   isAttemptingAuth: boolean
-  initAuth: () => void
-  loginUser: (email: string, password: string) => void
-  registerUser: (email: string, password: string) => void
-  logoutUser: () => void
-  deleteUser: () => void
+  initAuth: () => boolean
+  loginUser: (email: string, password: string) => Promise<void>
+  registerUser: (email: string, password: string) => Promise<void>
+  logoutUser: () => Promise<void>
+  deleteUser: () => Promise<void>
 }
 
-const useAuthStore = create<AuthState>()(
-  immer(set => ({
-    userId: null,
-    userEmail: null,
-    isAuthed: false,
-    isAttemptingAuth: false,
-    initAuth: () => {
-      const user = authService.getCurrentUser()
-      const isAuthed = user !== null
-      const userId = user?.uid
+// Clears everything owned by the previous account so a different login never
+// sees stale data: server cache, unsynced workouts, and the in-progress workout.
+const clearUserSession = async () => {
+  await offlineWorkoutStorageService.clear()
+  queryClient.clear()
+  useDailyWorkoutEntryStore.getState().reset()
+}
+
+const useAuthStore = create<AuthState>()(set => ({
+  userId: null,
+  userEmail: null,
+  isAuthed: false,
+  isAttemptingAuth: false,
+  initAuth: () => {
+    const user = authService.getCurrentUser()
+    const isAuthed = user !== null
+
+    set({
+      userId: user?.uid ?? null,
+      userEmail: user?.email ?? null,
+      isAuthed
+    })
+
+    return isAuthed
+  },
+  loginUser: async (email, password) => {
+    set({isAttemptingAuth: true})
+    try {
+      const user = await authService.logInUser(email, password)
 
       set({
-        userId,
-        userEmail: user?.email || null,
-        isAuthed: isAuthed
+        userId: user.id,
+        userEmail: user.email,
+        isAuthed: true
       })
-
-      AuthSubject$.next({
-        type: authEventType.Status,
-        status: isAuthed ? authStatus.Authed : authStatus.Unauthed
-      })
-    },
-    loginUser: async (email, password) => {
-      set({isAttemptingAuth: true})
-      try {
-        const user = await authService.logInUser(email, password)
-
-        set({
-          userEmail: user.email,
-          isAuthed: true
-        })
-
-        AuthSubject$.next({
-          type: authEventType.Status,
-          status: authStatus.Authed
-        })
-      } catch (error: any) {
-        const code = error?.code || error?.errorCode || 'unknown'
-        const authError: AuthError = {
-          errorPath: AuthErrorPathEnum.LOGIN,
-          errorMessage: decodeAuthError(code),
-          errorDate: Date.now(),
-          errorCode: code
-        }
-
-        AuthSubject$.next({
-          type: authEventType.Error,
-          error: authError
-        })
-
-        set({isAuthed: false})
-      } finally {
-        set({isAttemptingAuth: false})
-      }
-    },
-    registerUser: async (email, password) => {
-      set({isAttemptingAuth: true})
-      try {
-        const account = await authService.registerUser(email, password)
-
-        set({
-          userEmail: account.email,
-          isAuthed: true
-        })
-
-        AuthSubject$.next({
-          type: authEventType.Status,
-          status: authStatus.Authed
-        })
-      } catch (error: any) {
-        const code = error?.code || error?.errorCode || 'unknown'
-        const authError: AuthError = {
-          errorPath: AuthErrorPathEnum.LOGIN,
-          errorMessage: decodeAuthError(code),
-          errorDate: Date.now(),
-          errorCode: code
-        }
-
-        AuthSubject$.next({
-          type: authEventType.Error,
-          error: authError
-        })
-
-        set({isAuthed: false})
-      } finally {
-        set({isAttemptingAuth: false})
-      }
-    },
-    logoutUser: async () => {
-      await authService.logOutUser()
-      await offlineWorkoutStorageService.clear()
-      //TODO: reset other zustand stores (exercises, workouts, etc.)
-
-      set({
-        userId: null,
-        userEmail: null,
-        isAuthed: false
-      })
-    },
-    deleteUser: async () => {
-      await authService.deleteCurrentUser()
-      await offlineWorkoutStorageService.clear()
-      //TODO: reset other zustand stores (exercises, workouts, etc.)
-
-      set({
-        userId: null,
-        userEmail: null,
-        isAuthed: false
-      })
+    } catch (error) {
+      set({isAuthed: false})
+      throw error
+    } finally {
+      set({isAttemptingAuth: false})
     }
-  }))
-)
+  },
+  registerUser: async (email, password) => {
+    set({isAttemptingAuth: true})
+    try {
+      const account = await authService.registerUser(email, password)
+
+      set({
+        userId: account.id,
+        userEmail: account.email,
+        isAuthed: true
+      })
+    } catch (error) {
+      set({isAuthed: false})
+      throw error
+    } finally {
+      set({isAttemptingAuth: false})
+    }
+  },
+  logoutUser: async () => {
+    await authService.logOutUser()
+    await clearUserSession()
+
+    set({
+      userId: null,
+      userEmail: null,
+      isAuthed: false
+    })
+  },
+  deleteUser: async () => {
+    await authService.deleteCurrentUser()
+    await clearUserSession()
+
+    set({
+      userId: null,
+      userEmail: null,
+      isAuthed: false
+    })
+  }
+}))
 
 export default useAuthStore

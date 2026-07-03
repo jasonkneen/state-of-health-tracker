@@ -4,16 +4,19 @@ import {TouchableOpacity, View} from 'react-native'
 
 import {Exercise} from '@data/models/Exercise'
 import {Ionicons} from '@expo/vector-icons'
-import useExercisesStore from '@store/exercises/useExercisesStore'
+import {useDeleteExerciseMutation} from '@queries/exercises/useDeleteExerciseMutation'
 import {Text, useStyleTheme} from '@theme/Theme'
 
 import ConfirmModal from '@components/dialog/ConfirmModal'
 import {closeGlobalBottomSheet} from '@components/GlobalBottomSheet'
+import {showToast} from '@components/toast/util/ShowToast'
 
 import {
   DELETE_BUTTON_TEXT,
+  DELETE_EXERCISE_ERROR,
   DELETE_EXERCISE_MODAL_BODY,
   DELETE_EXERCISE_MODAL_TITLE,
+  DELETE_EXERCISE_SUCCESS,
   stringWithParameters
 } from '@constants/Strings'
 
@@ -26,7 +29,7 @@ interface Props {
 const DeleteExerciseBottomSheet = ({exercise}: Props) => {
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false)
 
-  const {deleteExercise} = useExercisesStore()
+  const {mutateAsync: deleteExercise} = useDeleteExerciseMutation()
 
   const handleDeletePressed = () => {
     setIsConfirmModalVisible(true)
@@ -37,9 +40,16 @@ const DeleteExerciseBottomSheet = ({exercise}: Props) => {
     setIsConfirmModalVisible(false)
   }
 
-  const onConfirmedPressed = () => {
-    deleteExercise(exercise.id)
+  // Safe to toast after the await even though closing the sheet unmounts this
+  // component — showToast is a global imperative call, not component state.
+  const onConfirmedPressed = async () => {
     closeSheet()
+    try {
+      await deleteExercise(exercise.id)
+      showToast('success', DELETE_EXERCISE_SUCCESS)
+    } catch {
+      showToast('error', DELETE_EXERCISE_ERROR)
+    }
   }
 
   return (

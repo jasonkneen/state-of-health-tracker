@@ -6,13 +6,13 @@ import {DailyExercise} from '@data/models/DailyExercise'
 import {ExerciseSet} from '@data/models/ExerciseSet'
 import Unique from '@data/models/Unique'
 import {Ionicons} from '@expo/vector-icons'
+import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
+import {useTemplatesQuery} from '@queries/templates/useTemplatesQuery'
+import {useWeeklyWorkoutSummariesQuery} from '@queries/workouts/useWeeklyWorkoutSummariesQuery'
 import {useNavigation} from '@react-navigation/native'
+import useAuthStore from '@store/auth/useAuthStore'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
-import useExercisesStore from '@store/exercises/useExercisesStore'
-import useExerciseTemplateStore from '@store/exerciseTemplates/useExerciseTemplateStore'
 import {useSessionStore} from '@store/session/useSessionStore'
-import useWeeklyWorkoutSummariesStore from '@store/weeklyWorkoutSummaries/useWeeklyWorkoutSummariesStore'
-import useWorkoutSummariesStore from '@store/workoutSummaries/useWorkoutSummariesStore'
 import {Text, useStyleTheme} from '@theme/Theme'
 
 import LoadingOverlay from '@components/LoadingOverlay'
@@ -39,7 +39,6 @@ import styles from './index.styled'
 import {Navigation} from '../../navigation/types'
 import {formatDayMonthDay} from '../../utility/DateUtility'
 import ListSwipeItemManager from '../../utility/ListSwipeItemManager'
-import auth from '@react-native-firebase/auth'
 
 interface Section extends Unique {
   dailyExercise: DailyExercise
@@ -51,19 +50,19 @@ const listSwipeItemManager = new ListSwipeItemManager()
 const WorkoutsScreen = () => {
   const navigation = useNavigation<Navigation>()
 
+  const {userId} = useAuthStore()
   const {initCurrentWorkoutDay, isInitializing, currentWorkoutDay, deleteSet} = useDailyWorkoutEntryStore()
-  const {isLoadingSummaries, fetchWeeklySummaries} = useWeeklyWorkoutSummariesStore()
-  const {fetchExercises} = useExercisesStore()
-  const {fetchSummaries} = useWorkoutSummariesStore()
-  const {fetchTemplates} = useExerciseTemplateStore()
+  const {isLoading: isLoadingSummaries} = useWeeklyWorkoutSummariesQuery()
   const {sessionStartDate} = useSessionStore()
 
+  // Mounting these warms the cache so Add Exercise opens instantly and the
+  // exercises list is persisted for offline use
+  useExercisesQuery()
+  useTemplatesQuery()
+
   useEffect(() => {
-    initCurrentWorkoutDay()
-    fetchExercises()
-    fetchSummaries()
-    fetchTemplates()
-    fetchWeeklySummaries()
+    initCurrentWorkoutDay(userId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally run only on mount
   }, [])
 
   if (isInitializing || isLoadingSummaries) return <WorkoutsSkeleton />

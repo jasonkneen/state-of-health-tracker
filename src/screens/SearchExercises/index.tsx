@@ -3,15 +3,14 @@ import React, {useCallback, useEffect, useState} from 'react'
 import {FlatList, ListRenderItemInfo, View} from 'react-native'
 
 import {mapExerciseType} from '@data/converters/ExerciseConverter'
-import {CreateExercisePayload} from '@data/models/Exercise'
+import {CreateExercisePayload, Exercise} from '@data/models/Exercise'
+import {useCreateExerciseMutation} from '@queries/exercises/useCreateExerciseMutation'
+import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useNavigation} from '@react-navigation/native'
 import exerciseSearchService from '@service/exercises/ExerciseSearchService'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
-import useExercisesStore from '@store/exercises/useExercisesStore'
 import {useStyleTheme} from '@theme/Theme'
 import {debounce} from 'lodash'
-
-import {CreateExerciseEvent, CreateExerciseEventSubject$} from '@screens/CreateExercise'
 
 import ExerciseTypeChip from '@components/ExerciseTypeChip'
 import ListItem from '@components/ListItem'
@@ -34,9 +33,9 @@ const SearchExercisesScreen = () => {
   const [searchText, setSearchText] = useState('')
   const [results, setResults] = useState<CreateExercisePayload[]>([])
   const [batchCount, setBatchCount] = useState(1)
-  const [isCreatingExercise, setIsCreatingExercise] = useState(false)
 
-  const {createExercise, findExercise} = useExercisesStore()
+  const {data: exercises = []} = useExercisesQuery()
+  const {mutateAsync: createExercise, isPending: isCreatingExercise} = useCreateExerciseMutation()
   const {addDailyExercise} = useDailyWorkoutEntryStore()
 
   const debouncedSearch = useCallback(
@@ -48,29 +47,6 @@ const SearchExercisesScreen = () => {
     }, 300),
     []
   )
-
-  useEffect(() => {
-    const sub = CreateExerciseEventSubject$.subscribe({
-      next: ({event, payload}) => {
-        if (event === CreateExerciseEvent.Created || event === CreateExerciseEvent.Exists) {
-          const exercise = findExercise(payload.name, payload.exerciseType)
-
-          if (exercise) {
-            showToast('success', SEARCH_ADD_EXERCISE_SUCCESS, payload.name)
-            addDailyExercise(exercise)
-            popToTop()
-          }
-        } else if (event === CreateExerciseEvent.Error) {
-          showToast('error', SEARCH_ADD_EXERCISE_ERROR)
-        }
-        setIsCreatingExercise(false)
-      }
-    })
-
-    return () => {
-      sub.unsubscribe()
-    }
-  }, [])
 
   useEffect(() => {
     debouncedSearch(searchText)
@@ -87,9 +63,30 @@ const SearchExercisesScreen = () => {
     setBatchCount(nextBatch)
   }
 
-  const onExercisePressed = (exercise: CreateExercisePayload) => {
-    setIsCreatingExercise(true)
-    createExercise(exercise)
+  const addToWorkout = (exercise: Exercise) => {
+    showToast('success', SEARCH_ADD_EXERCISE_SUCCESS, exercise.name)
+    addDailyExercise(exercise)
+    popToTop()
+  }
+
+  const onExercisePressed = async (payload: CreateExercisePayload) => {
+    const existing = exercises.find(
+      e => e.name === payload.name && e.exerciseType === mapExerciseType(payload.exerciseType)
+    )
+
+    if (existing) {
+      addToWorkout(existing)
+
+      return
+    }
+
+    try {
+      const created = await createExercise(payload)
+
+      addToWorkout(created)
+    } catch (error) {
+      showToast('error', SEARCH_ADD_EXERCISE_ERROR)
+    }
   }
 
   const renderItem = ({item}: ListRenderItemInfo<CreateExercisePayload>) => (

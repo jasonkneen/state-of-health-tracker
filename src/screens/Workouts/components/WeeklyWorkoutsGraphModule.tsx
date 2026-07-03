@@ -2,8 +2,8 @@ import React, {useState} from 'react'
 
 import {TextStyle, View, ViewStyle} from 'react-native'
 
+import {useWeeklyWorkoutSummariesQuery} from '@queries/workouts/useWeeklyWorkoutSummariesQuery'
 import useUserData from '@store/userData/useUserData'
-import useWeeklyWorkoutSummariesStore from '@store/weeklyWorkoutSummaries/useWeeklyWorkoutSummariesStore'
 import {useStyleTheme} from '@theme/Theme'
 
 import BarGraph from '@components/BarGraph'
@@ -21,7 +21,7 @@ const WeeklyWorkoutsGraphModule = () => {
   const [isInputModalVisible, setIsInputModalVisible] = useState(false)
 
   const {targetWorkouts} = useUserData()
-  const {weeklySummaries} = useWeeklyWorkoutSummariesStore()
+  const {data: weeklySummaries = []} = useWeeklyWorkoutSummariesQuery()
 
   const targetWorkoutsPerWeek = Math.max(targetWorkouts, 1)
 

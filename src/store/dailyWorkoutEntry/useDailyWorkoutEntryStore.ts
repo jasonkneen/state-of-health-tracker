@@ -1,55 +1,66 @@
 import {createDailyExercise, DailyExercise} from '@data/models/DailyExercise'
 import {Exercise} from '@data/models/Exercise'
 import {createSet} from '@data/models/ExerciseSet'
-import {WorkoutDay} from '@data/models/WorkoutDay'
+import {createWorkoutDay, WorkoutDay} from '@data/models/WorkoutDay'
 import offlineWorkoutStorageService from '@service/workouts/OfflineWorkoutStorageService'
+import syncOfflineWorkouts from '@service/workouts/syncOfflineWorkouts'
+import {syncWorkoutDay} from '@service/workouts/syncWorkoutDay'
 import {useSessionStore} from '@store/session/useSessionStore'
 import {create} from 'zustand'
 import {immer} from 'zustand/middleware/immer'
-import useAuthStore from '@store/auth/useAuthStore'
-import {syncWorkoutDay} from '@service/workouts/syncWorkoutDay'
-import syncOfflineWorkouts from '@service/workouts/syncOfflineWorkouts'
+
+import CrashUtility from '../../utility/CrashUtility'
 
 export type DailyWorkoutState = {
   currentWorkoutDay: WorkoutDay | null
-  initCurrentWorkoutDay: () => Promise<void>
   isInitializing: boolean
+  initCurrentWorkoutDay: (userId: string | null) => Promise<void>
   addDailyExercise: (exercise: Exercise) => boolean
   deleteDailyExercise: (dailyExerciseId: string) => void
   updateDailyExercises: (dailyExercises: DailyExercise[]) => void
   addSet: (exercise: Exercise) => void
   completeSet: (exercise: Exercise, setId: string, isCompleted: boolean, weight?: number, reps?: number) => void
   deleteSet: (exercise: Exercise, setId: string) => void
+  reset: () => void
 }
 
 const useDailyWorkoutEntryStore = create<DailyWorkoutState>()(
   immer((set, get) => {
-    const persist = async () => {
+    const persist = () => {
       const state = get()
 
       if (state.currentWorkoutDay) {
-        await offlineWorkoutStorageService.save({
-          ...state.currentWorkoutDay,
-          updatedAt: Date.now(),
-          synced: false
-        })
+        offlineWorkoutStorageService
+          .save({
+            ...state.currentWorkoutDay,
+            updatedAt: Date.now(),
+            synced: false
+          })
+          .catch(error => CrashUtility.recordError(error))
       }
     }
 
     return {
       currentWorkoutDay: null,
       isInitializing: false,
-      initCurrentWorkoutDay: async () => {
+      initCurrentWorkoutDay: async userId => {
         set({isInitializing: true})
         const today = useSessionStore.getState().sessionStartDateIso
-        const userId = useAuthStore.getState().userId
-        await syncOfflineWorkouts(today)
 
-        const syncedWorkout = await syncWorkoutDay(today, userId ?? '')
-        set({
-          currentWorkoutDay: syncedWorkout,
-          isInitializing: false
-        })
+        try {
+          await syncOfflineWorkouts(today)
+
+          const syncedWorkout = await syncWorkoutDay(today, userId ?? '')
+
+          set({currentWorkoutDay: syncedWorkout})
+        } catch (error) {
+          CrashUtility.recordError(error)
+          // syncWorkoutDay falls back to local storage internally; if even that
+          // fails, start an empty workout so the screen is never stuck loading
+          set({currentWorkoutDay: createWorkoutDay(userId ?? '', today)})
+        } finally {
+          set({isInitializing: false})
+        }
       },
 
       addDailyExercise: exercise => {
@@ -156,6 +167,13 @@ const useDailyWorkoutEntryStore = create<DailyWorkoutState>()(
         })
 
         persist()
+      },
+
+      reset: () => {
+        set({
+          currentWorkoutDay: null,
+          isInitializing: false
+        })
       }
     }
   })

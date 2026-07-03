@@ -2,11 +2,7 @@ import * as io from 'io-ts'
 
 import httpRequest, {HttpRequestOptions, HttpResponse} from './httpRequest'
 
-export function httpGet<T>(
-  url: string,
-  decoder: io.Type<T>,
-  options?: HttpRequestOptions
-): Promise<HttpResponse<T> | null> {
+export function httpGet<T>(url: string, decoder: io.Type<T>, options?: HttpRequestOptions): Promise<HttpResponse<T>> {
   return httpRequest('GET', url, decoder, options, {})
 }
 
@@ -14,7 +10,7 @@ export function httpDelete<T>(
   url: string,
   decoder: io.Type<T>,
   options?: HttpRequestOptions
-): Promise<HttpResponse<T> | null> {
+): Promise<HttpResponse<T>> {
   return httpRequest('DELETE', url, decoder, options, {})
 }
 
@@ -23,7 +19,7 @@ export function httpPost<T>(
   decoder: io.Type<T>,
   body?: any,
   options?: HttpRequestOptions
-): Promise<HttpResponse<T> | null> {
+): Promise<HttpResponse<T>> {
   return httpRequest('POST', url, decoder, options, body)
 }
 
@@ -32,6 +28,6 @@ export function httpPut<T>(
   decoder: io.Type<T>,
   body?: any,
   options?: HttpRequestOptions
-): Promise<HttpResponse<T> | null> {
+): Promise<HttpResponse<T>> {
   return httpRequest('PUT', url, decoder, options, body)
 }

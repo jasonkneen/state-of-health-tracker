@@ -3,10 +3,9 @@ import React from 'react'
 import {FlatList, ListRenderItemInfo} from 'react-native'
 
 import {Exercise} from '@data/models/Exercise'
-import {useNavigation} from '@react-navigation/native'
+import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
+import {useNavigation, useRoute} from '@react-navigation/native'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
-import useExercisesStore from '@store/exercises/useExercisesStore'
-import useExerciseTemplateStore from '@store/exerciseTemplates/useExerciseTemplateStore'
 import {Text, useStyleTheme} from '@theme/Theme'
 
 import ExerciseTypeChip from '@components/ExerciseTypeChip'
@@ -22,17 +21,18 @@ import {
 } from '@constants/Strings'
 
 import styles from './index.styled'
-import {Navigation} from '../../navigation/types'
+import {Navigation, WorkoutTemplateRoute} from '../../navigation/types'
 
 const WorkoutTemplateDetailScreen = () => {
   const {pop} = useNavigation<Navigation>()
-  const {getExercises} = useExercisesStore()
+  const {
+    params: {template}
+  } = useRoute<WorkoutTemplateRoute>()
+
+  const {data: allExercises = []} = useExercisesQuery()
   const {addDailyExercise} = useDailyWorkoutEntryStore()
-  const {selectedTemplate} = useExerciseTemplateStore()
 
-  if (!selectedTemplate) return null
-
-  const exercises = getExercises(selectedTemplate.exerciseIds)
+  const exercises = allExercises.filter(exercise => template.exerciseIds.includes(exercise.id))
 
   const addExerciseToDailyEntry = () => {
     exercises.forEach(exercise => {
@@ -45,7 +45,7 @@ const WorkoutTemplateDetailScreen = () => {
     showToast(
       'success',
       TOAST_TEMPLATE_EXERCISES_ADDED,
-      stringWithParameters(TOAST_TEMPLATE_EXERCISES_ADDED_BODY, selectedTemplate.name)
+      stringWithParameters(TOAST_TEMPLATE_EXERCISES_ADDED_BODY, template.name)
     )
     pop(2)
   }
@@ -66,9 +66,7 @@ const WorkoutTemplateDetailScreen = () => {
       stickyHeaderIndices={[0]}
       data={exercises}
       ListHeaderComponent={
-        <Text style={[styles.headerText, {backgroundColor: useStyleTheme().colors.background}]}>
-          {selectedTemplate.name}
-        </Text>
+        <Text style={[styles.headerText, {backgroundColor: useStyleTheme().colors.background}]}>{template.name}</Text>
       }
       ListFooterComponent={
         <PrimaryButton style={styles.footerButton} label={TEMPLATE_START} onPress={onStartWorkoutPressed} />

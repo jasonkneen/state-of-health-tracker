@@ -1,4 +1,5 @@
-import {NavigatorScreenParams} from '@react-navigation/native'
+import {ExerciseTemplate} from '@data/models/ExerciseTemplate'
+import {NavigatorScreenParams, RouteProp} from '@react-navigation/native'
 import {NativeStackNavigationProp} from '@react-navigation/native-stack'
 
 export type AuthStackParamList = {
@@ -9,7 +10,7 @@ export type AuthStackParamList = {
 export type RootStackParamList = {
   'Add Exercise': undefined
   'Previous Daily Exercise Entries': undefined
-  'Workout Template': undefined
+  'Workout Template': {template: ExerciseTemplate}
   'Create Exercise': undefined
   'Create Template': undefined
   'Search Exercises': undefined
@@ -18,3 +19,5 @@ export type RootStackParamList = {
 }
 
 export type Navigation = NativeStackNavigationProp<RootStackParamList>
+
+export type WorkoutTemplateRoute = RouteProp<RootStackParamList, 'Workout Template'>

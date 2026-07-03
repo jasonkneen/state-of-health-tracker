@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 
 import {View} from 'react-native'
 
-import {CreateExercisePayload, ExerciseBodyPartEnum, ExerciseTypeEnum} from '@data/models/Exercise'
+import {ExerciseBodyPartEnum, ExerciseTypeEnum} from '@data/models/Exercise'
 import {Ionicons} from '@expo/vector-icons'
+import {useCreateExerciseMutation} from '@queries/exercises/useCreateExerciseMutation'
+import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useNavigation} from '@react-navigation/native'
-import useExercisesStore from '@store/exercises/useExercisesStore'
 import {Text, useStyleTheme} from '@theme/Theme'
-import {Subject} from 'rxjs'
 
 import LoadingOverlay from '@components/LoadingOverlay'
 import Picker from '@components/Picker'
@@ -32,22 +32,12 @@ import {Navigation} from '../../navigation/types'
 import {combineExerciseNameType} from '../../utility/combineExerciseNameType'
 import {exerciseTypeValues, bodyPartValues} from '../../utility/exercisePickerItems'
 
-export enum CreateExerciseEvent {
-  Created = 'created',
-  Exists = 'deleted',
-  Error = 'error'
-}
-
-export const CreateExerciseEventSubject$ = new Subject<{
-  event: CreateExerciseEvent
-  payload: CreateExercisePayload
-}>()
-
 const CreateExerciseScreen = () => {
   const theme = useStyleTheme()
   const {goBack} = useNavigation<Navigation>()
 
-  const {createExercise} = useExercisesStore()
+  const {data: exercises = []} = useExercisesQuery()
+  const {mutateAsync: createExercise, isPending: isCreatingExercise} = useCreateExerciseMutation()
 
   const [exerciseNameText, setExerciseNameText] = useState('')
   const [showExerciseNameError, setShowExerciseNameError] = useState(false)
@@ -55,46 +45,38 @@ const CreateExerciseScreen = () => {
   const [exerciseType, setExerciseType] = useState<ExerciseTypeEnum>(ExerciseTypeEnum.BARBELL)
   const [bodyPart, setBodyPart] = useState<ExerciseBodyPartEnum>(ExerciseBodyPartEnum.CHEST)
 
-  const [isCreatingExercise, setIsCreatingExercise] = useState(false)
-
-  useEffect(() => {
-    const sub = CreateExerciseEventSubject$.subscribe({
-      next: ({event, payload}) => {
-        if (event === CreateExerciseEvent.Created) {
-          showToast('success', TOAST_EXERCISE_CREATED, payload.name)
-          goBack()
-        } else if (event === CreateExerciseEvent.Exists) {
-          showToast('error', `${combineExerciseNameType(payload.name, payload.exerciseType)} ${TOAST_ALREADY_EXISTS}`)
-        } else if (event === CreateExerciseEvent.Error) {
-          showToast('error', CREATE_EXERCISE_ERROR)
-        }
-        setIsCreatingExercise(false)
-      }
-    })
-
-    return () => {
-      sub.unsubscribe()
-    }
-  }, [])
-
   const onNameTextChanged = (text: string) => {
     setExerciseNameText(text)
     setShowExerciseNameError(false)
   }
 
-  const onCreateExercisePressed = () => {
+  const onCreateExercisePressed = async () => {
     if (exerciseNameText === '') {
       setShowExerciseNameError(true)
 
       return
     }
 
-    setIsCreatingExercise(true)
-    createExercise({
-      name: exerciseNameText,
-      exerciseType,
-      exerciseBodyPart: bodyPart
-    })
+    const alreadyExists = exercises.some(e => e.name === exerciseNameText && e.exerciseType === exerciseType)
+
+    if (alreadyExists) {
+      showToast('error', `${combineExerciseNameType(exerciseNameText, exerciseType)} ${TOAST_ALREADY_EXISTS}`)
+
+      return
+    }
+
+    try {
+      await createExercise({
+        name: exerciseNameText,
+        exerciseType,
+        exerciseBodyPart: bodyPart
+      })
+
+      showToast('success', TOAST_EXERCISE_CREATED, exerciseNameText)
+      goBack()
+    } catch (error) {
+      showToast('error', CREATE_EXERCISE_ERROR)
+    }
   }
 
   return (

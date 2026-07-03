@@ -1,24 +1,18 @@
 import {useEffect, useState} from 'react'
 
-import {Alert, View, Image} from 'react-native'
+import {Image, View} from 'react-native'
 
-import {AuthEvent, authEventType} from '@data/types/authEvent'
-import {authStatus} from '@data/types/authStatus'
 import {useNavigation} from '@react-navigation/native'
 import useAuthStore from '@store/auth/useAuthStore'
 import {useStyleTheme} from '@theme/Theme'
-import {Subject} from 'rxjs'
 
 import Screens from '@constants/Screens'
-import {OKAY_BUTTON_TEXT} from '@constants/Strings'
 
 import styles from './index.styled'
 import {Navigation} from '../../navigation/types'
 
-export const AuthSubject$ = new Subject<AuthEvent>()
-
 const RootAuthScreen = () => {
-  const {replace, push} = useNavigation<Navigation>()
+  const {push} = useNavigation<Navigation>()
 
   const theme = useStyleTheme()
 
@@ -27,34 +21,12 @@ const RootAuthScreen = () => {
   const {initAuth} = useAuthStore()
 
   useEffect(() => {
-    if (isRendered) {
-      initAuth()
+    // When a user is already signed in, initAuth flips isAuthed and the root
+    // navigator swaps to Home; otherwise send them to the login screen.
+    if (isRendered && !initAuth()) {
+      push('Auth', {screen: Screens.LOG_IN})
     }
   }, [isRendered])
-
-  useEffect(() => {
-    const subscription = AuthSubject$.subscribe({
-      next: (event: AuthEvent) => {
-        if (event.type === authEventType.Error) {
-          Alert.alert(event.error.errorPath, event.error.errorMessage, [
-            {
-              text: OKAY_BUTTON_TEXT
-            }
-          ])
-        } else {
-          if (event.status === authStatus.Unauthed) {
-            push('Auth', {screen: Screens.LOG_IN})
-          } else if (event.status === authStatus.Authed) {
-            replace('Home')
-          }
-        }
-      }
-    })
-
-    return () => {
-      subscription.unsubscribe()
-    }
-  }, [])
 
   const onLayout = () => {
     if (!isRendered) {

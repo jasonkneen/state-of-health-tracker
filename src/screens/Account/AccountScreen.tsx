@@ -3,10 +3,10 @@ import React from 'react'
 import {Linking, SafeAreaView, ScrollView} from 'react-native'
 
 import {FontAwesome5, Ionicons, MaterialCommunityIcons} from '@expo/vector-icons'
+import {useWorkoutSummariesInfiniteQuery} from '@queries/workouts/useWorkoutSummariesInfiniteQuery'
 import useAuthStore from '@store/auth/useAuthStore'
 import {useSessionStore} from '@store/session/useSessionStore'
 import useUserData from '@store/userData/useUserData'
-import useWorkoutSummariesStore from '@store/workoutSummaries/useWorkoutSummariesStore'
 import {Text, useStyleTheme} from '@theme/Theme'
 
 import HorizontalDivider from '@components/HorizontalDivider'
@@ -36,7 +36,9 @@ const AccountScreen = () => {
   const {sessionStartDate} = useSessionStore()
 
   const {userEmail, isAuthed} = useAuthStore()
-  const {totalSummaries} = useWorkoutSummariesStore()
+  const {data: summariesData} = useWorkoutSummariesInfiniteQuery()
+
+  const totalSummaries = summariesData?.pages[0]?.pagination.total ?? 0
 
   const iconSize = 24
   const iconColor = useStyleTheme().colors.white

@@ -5,12 +5,14 @@ import useAuthStore from '@store/auth/useAuthStore'
 import {useStyleTheme} from '@theme/Theme'
 
 import ConfirmModal from '@components/dialog/ConfirmModal'
+import {showToast} from '@components/toast/util/ShowToast'
 
 import {
   ACCOUNT_LOG_IN_LIST_ITEM,
   ACCOUNT_LOG_OUT_LIST_ITEM,
   LOG_OUT_CONFIRM_MODAL_BODY,
-  LOG_OUT_CONFIRM_MODAL_HEADER
+  LOG_OUT_CONFIRM_MODAL_HEADER,
+  LOGOUT_ACCOUNT_ERROR
 } from '@constants/Strings'
 
 import AccountListItem from './AccountListItem'
@@ -30,7 +32,7 @@ const AuthListItem = () => {
         onConfirmPressed={() => {
           setIsConfirmModalVisible(false)
           if (isAuthed) {
-            logoutUser()
+            logoutUser().catch(() => showToast('error', LOGOUT_ACCOUNT_ERROR))
           }
         }}
         onCancel={() => {

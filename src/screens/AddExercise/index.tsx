@@ -1,18 +1,18 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 
 import {SectionList, SectionListRenderItem, View} from 'react-native'
 
 import {Exercise, isExerciseObject} from '@data/models/Exercise'
 import {ExerciseTemplate} from '@data/models/ExerciseTemplate'
+import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
+import {mutationKeys} from '@queries/keys'
+import {useTemplatesQuery} from '@queries/templates/useTemplatesQuery'
 import {useNavigation} from '@react-navigation/native'
-import useExercisesStore from '@store/exercises/useExercisesStore'
-import useExerciseTemplateStore from '@store/exerciseTemplates/useExerciseTemplateStore'
+import {useIsMutating} from '@tanstack/react-query'
 import {Text} from '@theme/Theme'
-import {Subject} from 'rxjs'
 
 import LoadingOverlay from '@components/LoadingOverlay'
 import SecondaryButton from '@components/SecondaryButton'
-import {showToast} from '@components/toast/util/ShowToast'
 
 import Screens from '@constants/Screens'
 import {
@@ -37,20 +37,17 @@ interface Section {
   data: SectionItem[]
 }
 
-export const ExerciseScreenUpdateSubject$ = new Subject<{
-  isUpdating: boolean
-  updatePayload?: {
-    success: boolean
-    message: string
-    message2?: string
-  }
-}>()
-
 const AddExerciseScreen = () => {
   const {push} = useNavigation<Navigation>()
 
-  const {templates} = useExerciseTemplateStore()
-  const {exercises} = useExercisesStore()
+  const {data: templates = []} = useTemplatesQuery()
+  const {data: exercises = []} = useExercisesQuery()
+
+  // Deletes are triggered from the global bottom sheet, so this screen reflects
+  // their in-flight state through the mutation cache rather than local state
+  const isDeletingExercise = useIsMutating({mutationKey: mutationKeys.deleteExercise}) > 0
+  const isDeletingTemplate = useIsMutating({mutationKey: mutationKeys.deleteTemplate}) > 0
+  const isUpdating = isDeletingExercise || isDeletingTemplate
 
   const sections: Section[] = [
     {
@@ -62,23 +59,6 @@ const AddExerciseScreen = () => {
       data: exercises
     }
   ]
-
-  const [isUpdating, setIsUpdating] = useState(false)
-
-  useEffect(() => {
-    const sub = ExerciseScreenUpdateSubject$.subscribe({
-      next: ({isUpdating, updatePayload}) => {
-        setIsUpdating(isUpdating)
-        if (updatePayload) {
-          showToast(updatePayload.success ? 'success' : 'error', updatePayload.message, updatePayload?.message2)
-        }
-      }
-    })
-
-    return () => {
-      sub.unsubscribe()
-    }
-  }, [])
 
   const renderHeader = (section: Section) => {
     const isEmpty = section.data.length === 0

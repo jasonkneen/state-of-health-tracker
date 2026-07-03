@@ -11,3 +11,7 @@ export interface AuthError {
   errorCode: string
   errorMessage: string
 }
+
+export function isAuthError(error: unknown): error is AuthError {
+  return typeof error === 'object' && error !== null && 'errorPath' in error && 'errorMessage' in error
+}

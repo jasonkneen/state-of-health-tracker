@@ -1,14 +1,13 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 
 import {FlatList, ListRenderItemInfo, View} from 'react-native'
 
 import {Exercise} from '@data/models/Exercise'
 import {MaterialCommunityIcons} from '@expo/vector-icons'
+import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
+import {useCreateTemplateMutation} from '@queries/templates/useCreateTemplateMutation'
 import {useNavigation} from '@react-navigation/native'
-import useExercisesStore from '@store/exercises/useExercisesStore'
-import useExerciseTemplateStore from '@store/exerciseTemplates/useExerciseTemplateStore'
 import {Text, useStyleTheme} from '@theme/Theme'
-import {Subject} from 'rxjs'
 
 import ExerciseTypeChip from '@components/ExerciseTypeChip'
 import ListItem from '@components/ListItem'
@@ -29,41 +28,20 @@ import {
 
 import CreateTemplateModal from './components/CreateTemplateModal'
 import styles from './index.styled'
-
-export const CreateTemplateEventSubject$ = new Subject<{
-  success: boolean
-  message: string
-}>()
+import {filterExercises} from '../../utility/filterExercises'
 
 const CreateTemplateScreen = () => {
   const theme = useStyleTheme()
   const {goBack} = useNavigation()
 
-  const {getFilterExercises} = useExercisesStore()
-  const {createTemplate} = useExerciseTemplateStore()
+  const {data: allExercises = []} = useExercisesQuery()
+  const {mutateAsync: createTemplate, isPending: isCreatingTemplate} = useCreateTemplateMutation()
 
-  const [exercises, setExercises] = useState<Exercise[]>(getFilterExercises(''))
+  const [searchFilter, setSearchFilter] = useState('')
   const [selectedExercises, setSelectedExercises] = useState<Exercise[]>([])
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const [isCreatingTemplate, setIsCreatingTemplate] = useState(false)
 
-  useEffect(() => {
-    const sub = CreateTemplateEventSubject$.subscribe({
-      next: ({success, message}) => {
-        if (success) {
-          goBack()
-          showToast('success', TOAST_TEMPLATE_CREATED, message)
-        } else {
-          showToast('error', TOAST_TEMPLATE_CREATION_ERROR)
-        }
-        setIsCreatingTemplate(false)
-      }
-    })
-
-    return () => {
-      sub.unsubscribe()
-    }
-  }, [])
+  const exercises = filterExercises(allExercises, searchFilter)
 
   const renderItem = ({item}: ListRenderItemInfo<Exercise>) => (
     <ListItem
@@ -87,19 +65,23 @@ const CreateTemplateScreen = () => {
     if (selectedExercises.length > 0) setIsModalVisible(true)
   }
 
-  const onSearchTextChanged = (filter: string) => {
-    setExercises(getFilterExercises(filter))
+  const handleCreate = async (name: string, tagline: string) => {
+    setIsModalVisible(false)
+
+    try {
+      const created = await createTemplate({
+        name,
+        tagline,
+        exerciseIds: selectedExercises.map(e => e.id)
+      })
+
+      goBack()
+      showToast('success', TOAST_TEMPLATE_CREATED, created.name)
+    } catch (error) {
+      showToast('error', TOAST_TEMPLATE_CREATION_ERROR)
+    }
   }
 
-  const handleCreate = (name: string, tagline: string) => {
-    setIsModalVisible(false)
-    setIsCreatingTemplate(true)
-    createTemplate({
-      name,
-      tagline,
-      exerciseIds: selectedExercises.map(e => e.id)
-    })
-  }
   return (
     <View style={styles.container}>
       {isCreatingTemplate && <LoadingOverlay />}
@@ -111,7 +93,7 @@ const CreateTemplateScreen = () => {
         handleCreate={handleCreate}
       />
 
-      <SearchBar placeholder={SEARCH_EXERCISES_PLACEHOLDER} onSearchTextChanged={onSearchTextChanged} />
+      <SearchBar placeholder={SEARCH_EXERCISES_PLACEHOLDER} onSearchTextChanged={setSearchFilter} />
 
       {exercises.length === 0 ? (
         <>

@@ -286,6 +286,10 @@ export const AUTH_NO_ACCOUNT_BUTTON_TEXT = "Don't have an account? Click here to
 
 export const AUTH_TO_CONTINUE_DESC = 'To continue, please log in or create an account.'
 
+export const AUTH_GENERIC_ERROR_TITLE = 'Authentication Failed'
+
+export const AUTH_GENERIC_ERROR_MESSAGE = 'Something went wrong. Please try again.'
+
 export const ACCOUNT_LOG_IN_LIST_ITEM = 'Log In'
 
 export const ACCOUNT_LOG_OUT_LIST_ITEM = 'Log Out'

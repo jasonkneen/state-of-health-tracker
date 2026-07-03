@@ -4,7 +4,6 @@ import {TouchableOpacity, View} from 'react-native'
 
 import {ExerciseTemplate} from '@data/models/ExerciseTemplate'
 import {useNavigation} from '@react-navigation/native'
-import useExerciseTemplateStore from '@store/exerciseTemplates/useExerciseTemplateStore'
 import {Text, useStyleTheme} from '@theme/Theme'
 
 import DeleteTemplateBottomSheet from '@screens/AddExercise/components/DeleteTemplateBottomSheet'
@@ -24,11 +23,9 @@ const TemplateListItem = ({template}: Props) => {
   const theme = useStyleTheme()
 
   const {push} = useNavigation<Navigation>()
-  const {setSelectedTemplate} = useExerciseTemplateStore()
 
   const onPress = () => {
-    setSelectedTemplate(template)
-    push(Screens.WORKOUT_TEMPLATE_DETAIL)
+    push(Screens.WORKOUT_TEMPLATE_DETAIL, {template})
   }
 
   const onLongPress = () => {

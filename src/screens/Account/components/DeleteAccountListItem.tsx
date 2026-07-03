@@ -5,10 +5,12 @@ import useAuthStore from '@store/auth/useAuthStore'
 import {useStyleTheme} from '@theme/Theme'
 
 import ConfirmModal from '@components/dialog/ConfirmModal'
+import {showToast} from '@components/toast/util/ShowToast'
 
 import {
   DELETE_ACCOUNT_CONFIRM_MODAL_BODY,
   DELETE_ACCOUNT_CONFIRM_MODAL_HEADER,
+  DELETE_ACCOUNT_ERROR,
   DELETE_ACCOUNT_LIST_ITEM,
   DELETE_BUTTON_TEXT
 } from '@constants/Strings'
@@ -28,7 +30,7 @@ const DeleteAccountListItem = () => {
         confirmationBody={DELETE_ACCOUNT_CONFIRM_MODAL_BODY}
         isVisible={isConfirmModalVisible}
         onConfirmPressed={() => {
-          deleteUser()
+          deleteUser().catch(() => showToast('error', DELETE_ACCOUNT_ERROR))
           setIsConfirmModalVisible(false)
         }}
         onCancel={() => {

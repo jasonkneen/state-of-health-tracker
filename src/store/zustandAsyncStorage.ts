@@ -5,7 +5,7 @@ export const zustandAsyncStorage: PersistStorage<unknown> = {
   getItem: async name => {
     const value = await AsyncStorage.getItem(name)
 
-    return value ? JSON.parse(value) : null // ✅ parsed value
+    return value ? JSON.parse(value) : null
   },
   setItem: async (name, value) => {
     await AsyncStorage.setItem(name, JSON.stringify(value))

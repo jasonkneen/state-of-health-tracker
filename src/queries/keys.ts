@@ -6,6 +6,7 @@ export const queryKeys = {
 }
 
 export const mutationKeys = {
+  completeWorkout: ['completeWorkout'] as const,
   createExercise: ['createExercise'] as const,
   deleteExercise: ['deleteExercise'] as const,
   createTemplate: ['createTemplate'] as const,

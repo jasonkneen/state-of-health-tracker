@@ -18,6 +18,7 @@ interface Props {
   confirmationBody: string
   confirmButtonText?: string
   confirmButtonColor?: string
+  cancelButtonColor?: string
   isVisible: boolean
   onConfirmPressed: () => void
   onCancel: () => void
@@ -29,6 +30,7 @@ const ConfirmModal = (props: Props) => {
     confirmationBody,
     confirmButtonText = DELETE_BUTTON_TEXT,
     confirmButtonColor = Theme.colors.error,
+    cancelButtonColor = Theme.colors.accentGreen,
     isVisible,
     onConfirmPressed,
     onCancel
@@ -61,7 +63,7 @@ const ConfirmModal = (props: Props) => {
           <View style={styles.buttonRow}>
             <PrimaryButton
               width="48%"
-              style={styles.button}
+              style={[styles.button, confirmButtonBackground(cancelButtonColor)]}
               label={CANCEL_BUTTON_TEXT}
               onPress={() => {
                 onCancel()

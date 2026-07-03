@@ -1,11 +1,10 @@
-import * as io from 'io-ts'
-
-import {httpGet} from '@service/http/httpUtil'
-import Endpoints from '@constants/endpoints'
-
-import {WorkoutDay} from '@data/models/WorkoutDay'
 import {mapWorkoutDay} from '@data/converters/mapWorkoutDay'
 import {WorkoutDayResponse} from '@data/decoders/WorkoutDayDecoder'
+import {WorkoutDay} from '@data/models/WorkoutDay'
+import {httpGet} from '@service/http/httpUtil'
+import * as io from 'io-ts'
+
+import Endpoints from '@constants/endpoints'
 
 import CrashUtility from '../../utility/CrashUtility'
 

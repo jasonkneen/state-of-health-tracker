@@ -134,6 +134,18 @@ export const FROM_CATALOG_HEADER = 'From Catalog'
 
 export const ADD_TO_DAILY_WORKOUT_BUTTON_TEXT = 'Add to Daily Workout'
 
+export const COMPLETE_BUTTON_TEXT = 'Complete'
+
+export const COMPLETE_WORKOUT_MODAL_TITLE = 'Complete Workout?'
+
+export const COMPLETE_WORKOUT_MODAL_BODY = 'Do you want to complete your workout for today? You can still make edits after.'
+
+export const WORKOUT_COMPLETED_LABEL = 'Completed'
+
+export const TOAST_WORKOUT_COMPLETED = 'Workout Complete!'
+
+export const COMPLETE_WORKOUT_ERROR = 'Unable to complete your workout. Please check your connection and try again.'
+
 export const EXERCISES_HEADER = 'Exercises'
 
 export const TEMPLATES_HEADER = 'Templates'

@@ -1,9 +1,9 @@
-import Endpoints from '@constants/endpoints'
-import {WorkoutDay} from '@data/models/WorkoutDay'
 import {mapWorkoutDay} from '@data/converters/mapWorkoutDay'
 import {WorkoutDayResponse} from '@data/decoders/WorkoutDayDecoder'
-
+import {WorkoutDay} from '@data/models/WorkoutDay'
 import {httpPost} from '@service/http/httpUtil'
+
+import Endpoints from '@constants/endpoints'
 
 import CrashUtility from '../../utility/CrashUtility'
 
@@ -18,6 +18,7 @@ export async function saveWorkoutDay(workoutDay: WorkoutDay): Promise<WorkoutDay
     const data = response.data
 
     const mappedWorkoutDay = mapWorkoutDay(data)
+
     mappedWorkoutDay.synced = true
 
     return mappedWorkoutDay

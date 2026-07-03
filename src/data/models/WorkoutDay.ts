@@ -8,6 +8,8 @@ export interface WorkoutDay {
   updatedAt: number
   syncAttempts?: number // track how many times we've tried to sync this workout
   synced?: boolean // track if local data is dirty and needs to be synced
+  startedAt?: number // local-only: when the first exercise was added today
+  completedAt?: number // local-only: when the user tapped Complete Daily Workout
 }
 
 export function createWorkoutDay(userId: string, date: string, dailyExercises: DailyExercise[] = []): WorkoutDay {

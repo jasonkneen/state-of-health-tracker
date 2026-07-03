@@ -9,6 +9,12 @@ export default StyleSheet.create({
   root: {
     flex: 1
   },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    marginRight: Spacing.GUTTER
+  },
   dateOverline: {
     fontSize: FontSize.OVERLINE,
     fontWeight: '600',
@@ -24,6 +30,26 @@ export default StyleSheet.create({
     letterSpacing: -0.4,
     marginTop: Spacing.XX_SMALL,
     marginLeft: Spacing.GUTTER
+  },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: Spacing.X_SMALL
+  },
+  completedChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: Spacing.XX_SMALL,
+    backgroundColor: Theme.colors.greenTint,
+    borderRadius: BorderRadius.PILL,
+    paddingVertical: Spacing.XX_SMALL,
+    paddingHorizontal: Spacing.X_SMALL,
+    marginTop: Spacing.XX_SMALL
+  },
+  completedChipText: {
+    fontSize: FontSize.LABEL,
+    fontWeight: '600',
+    color: Theme.colors.greenOnTint
   },
   emptyIcon: {
     alignSelf: 'center',

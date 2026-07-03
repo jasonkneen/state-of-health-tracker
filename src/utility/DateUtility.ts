@@ -1,4 +1,4 @@
-import {format, isMonday} from 'date-fns'
+import {format, isMonday, isValid, parse} from 'date-fns'
 
 // returns current date as Ex: September 28, 2023
 export const getCurrentDate = () => format(Date.now(), 'MMMM dd, yyyy')
@@ -56,7 +56,15 @@ export const getLast7Mondays = () => {
 
 export const formatDayMonthDay = (date: string | number): string => {
   try {
-    return format(new Date(date), 'EEEE, LLLL do')
+    if (typeof date === 'number') {
+      return format(date, 'EEEE, LLLL do')
+    }
+
+    // Hermes' Date constructor only parses ISO strings, so parse the
+    // 'MMMM dd, yyyy' session-date format explicitly
+    const parsed = parse(date, 'MMMM dd, yyyy', new Date())
+
+    return format(isValid(parsed) ? parsed : new Date(date), 'EEEE, LLLL do')
   } catch (e) {
     return ''
   }

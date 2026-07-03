@@ -6,6 +6,9 @@ import Shadow from '@styles/shadow'
 import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
 
+const SET_NUMBER_COLUMN_WIDTH = 34
+const CHECK_COLUMN_WIDTH = 42
+
 export default StyleSheet.create({
   dateOverline: {
     fontSize: FontSize.OVERLINE,
@@ -37,27 +40,47 @@ export default StyleSheet.create({
   },
   circlesRow: {
     flexDirection: 'row',
+    alignItems: 'center',
     columnGap: Spacing.XX_SMALL + 2
   },
   exerciseCard: {
     ...Shadow.CARD,
     backgroundColor: Theme.colors.card,
     borderRadius: BorderRadius.CARD_LG,
-    padding: Spacing.MEDIUM,
     marginHorizontal: Spacing.GUTTER,
-    marginTop: Spacing.SMALL
+    marginTop: Spacing.SMALL,
+    paddingBottom: Spacing.MEDIUM
   },
   exerciseCardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: Spacing.SMALL
+    padding: Spacing.MEDIUM,
+    paddingBottom: Spacing.SMALL
+  },
+  labelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: Spacing.X_SMALL,
+    paddingHorizontal: Spacing.MEDIUM,
+    paddingBottom: Spacing.XX_SMALL
   },
   setRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     columnGap: Spacing.X_SMALL,
-    marginTop: Spacing.X_SMALL
+    paddingHorizontal: Spacing.MEDIUM,
+    paddingVertical: Spacing.XX_SMALL
+  },
+  setNumberColumn: {
+    width: SET_NUMBER_COLUMN_WIDTH
+  },
+  cellColumn: {
+    flex: 1,
+    alignItems: 'center'
+  },
+  checkColumn: {
+    width: CHECK_COLUMN_WIDTH,
+    alignItems: 'center'
   }
 })

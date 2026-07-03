@@ -21,6 +21,8 @@ export type DailyWorkoutState = {
   addSet: (exercise: Exercise) => void
   completeSet: (exercise: Exercise, setId: string, isCompleted: boolean, weight?: number, reps?: number) => void
   deleteSet: (exercise: Exercise, setId: string) => void
+  markWorkoutCompleted: () => void
+  setWorkoutDayId: (id: string) => void
   reset: () => void
 }
 
@@ -77,6 +79,10 @@ const useDailyWorkoutEntryStore = create<DailyWorkoutState>()(
             return
           }
 
+          if (workout.dailyExercises.length === 0 && !workout.startedAt) {
+            workout.startedAt = Date.now()
+          }
+
           workout.dailyExercises.push(createDailyExercise(exercise, workout.dailyExercises.length + 1))
         })
 
@@ -97,6 +103,12 @@ const useDailyWorkoutEntryStore = create<DailyWorkoutState>()(
             ...e,
             order: index + 1
           }))
+
+          // Deleting the last exercise resets the workout timer; it restarts
+          // when the next first exercise is added
+          if (workout.dailyExercises.length === 0) {
+            workout.startedAt = undefined
+          }
         })
 
         persist()
@@ -164,6 +176,34 @@ const useDailyWorkoutEntryStore = create<DailyWorkoutState>()(
           if (!entry) return
 
           entry.sets = entry.sets.filter(s => s.id !== setId)
+        })
+
+        persist()
+      },
+
+      // The network push lives in useCompleteWorkoutMutation; the store only
+      // records the completion locally. If the push fails, completedAt is
+      // already persisted and the regular sync flow picks it up later.
+      markWorkoutCompleted: () => {
+        const now = Date.now()
+
+        set(state => {
+          const workout = state.currentWorkoutDay
+
+          if (!workout) return
+
+          workout.completedAt = now
+          workout.updatedAt = now
+        })
+
+        persist()
+      },
+
+      setWorkoutDayId: id => {
+        set(state => {
+          if (state.currentWorkoutDay) {
+            state.currentWorkoutDay.id = id
+          }
         })
 
         persist()

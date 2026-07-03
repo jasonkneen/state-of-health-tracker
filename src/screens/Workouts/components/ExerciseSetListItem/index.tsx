@@ -9,6 +9,7 @@ import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
 import * as Haptics from 'expo-haptics'
 import {Swipeable} from 'react-native-gesture-handler'
+import Animated, {useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming} from 'react-native-reanimated'
 
 import CheckIcon from '@components/icons/CheckIcon'
 import SwipeDeleteListItem from '@components/SwipeDeleteListItem'
@@ -32,6 +33,12 @@ const ExerciseSetListItem = (props: Props) => {
   const {exercise, set, index, swipeableRef, onSwipeActivated, onDeletePressed} = props
 
   const {completeSet} = useDailyWorkoutEntryStore()
+
+  const checkScale = useSharedValue(1)
+
+  const checkAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{scale: checkScale.value}]
+  }))
 
   const [weightText, setWeightText] = useState(set.weight?.toString() ?? '')
   const [repsText, setRepsText] = useState(set.reps?.toString() ?? '')
@@ -76,6 +83,7 @@ const ExerciseSetListItem = (props: Props) => {
     }
 
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+    checkScale.value = withSequence(withTiming(0.7, {duration: 30}), withSpring(1, {damping: 38, stiffness: 900}))
     completeSet(exercise, set.id, isChecked, weight, reps)
   }
 
@@ -146,12 +154,14 @@ const ExerciseSetListItem = (props: Props) => {
           />
 
           <View style={styles.checkColumn}>
-            <TouchableOpacity
-              style={[styles.checkCircle, set.completed && styles.checkCircleDone]}
-              activeOpacity={0.6}
-              onPress={() => completeSetChecked(!set.completed)}>
-              {set.completed && <CheckIcon color={Theme.colors.white} />}
-            </TouchableOpacity>
+            <Animated.View style={checkAnimatedStyle}>
+              <TouchableOpacity
+                style={[styles.checkCircle, set.completed && styles.checkCircleDone]}
+                activeOpacity={0.6}
+                onPress={() => completeSetChecked(!set.completed)}>
+                {set.completed && <CheckIcon color={Theme.colors.white} />}
+              </TouchableOpacity>
+            </Animated.View>
           </View>
         </View>
       </SwipeDeleteListItem>

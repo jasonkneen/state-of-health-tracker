@@ -1,9 +1,8 @@
-import offlineWorkoutStorageService from '@service/workouts/OfflineWorkoutStorageService'
-
-import {fetchWorkoutForDay} from '@service/workouts/fetchWorkoutForDay'
-import {updateWorkoutDay} from '@service/workouts/updateWorkoutDay'
-import {saveWorkoutDay} from '@service/workouts/saveWorkoutDay'
 import {createWorkoutDay} from '@data/models/WorkoutDay'
+import {fetchWorkoutForDay} from '@service/workouts/fetchWorkoutForDay'
+import offlineWorkoutStorageService from '@service/workouts/OfflineWorkoutStorageService'
+import {saveWorkoutDay} from '@service/workouts/saveWorkoutDay'
+import {updateWorkoutDay} from '@service/workouts/updateWorkoutDay'
 
 /**
  * Synchronizes the workout for the specified day between remote and local storage.
@@ -32,36 +31,50 @@ export async function syncWorkoutDay(today: string, userId: string) {
       console.log('[Sync] Found remote workout:', remote)
 
       const local = await offlineWorkoutStorageService.findLocalWorkoutByDate(today)
+
       console.log('[Sync] Found local workout:', local)
 
       if (local && !local.synced && local.updatedAt > remote.updatedAt) {
         console.log('[Sync] Local is newer and unsynced — pushing local to remote')
         const updated = await updateWorkoutDay({...local, id: remote.id})
+
         console.log('[Sync] Remote update successful:', updated)
 
-        return updated
+        // startedAt/completedAt are local-only, so carry them across the
+        // server round-trip
+        return {...updated, startedAt: local.startedAt, completedAt: local.completedAt}
       } else {
         console.log('[Sync] Remote is up-to-date — syncing remote -> local')
-        await offlineWorkoutStorageService.save(remote)
-        return remote
+        const merged = {...remote, startedAt: local?.startedAt, completedAt: local?.completedAt}
+
+        await offlineWorkoutStorageService.save(merged)
+
+        return merged
       }
     } else {
       console.log('[Sync] No remote workout found — attempting to push local to remote')
 
       try {
         const local = await offlineWorkoutStorageService.findLocalWorkoutByDate(today)
+
         console.log('[Sync] Local workout to sync:', local)
 
         if (local) {
           const newRemote = await saveWorkoutDay(local)
+
           console.log('[Sync] Created remote workout from local:', newRemote)
 
-          await offlineWorkoutStorageService.save(newRemote)
-          return newRemote
+          const merged = {...newRemote, startedAt: local.startedAt, completedAt: local.completedAt}
+
+          await offlineWorkoutStorageService.save(merged)
+
+          return merged
         } else {
           console.log('[Sync] No local workout found — creating new local workout')
           const newEmptyLocal = createWorkoutDay(userId, today)
+
           await offlineWorkoutStorageService.save(newEmptyLocal)
+
           return newEmptyLocal
         }
       } catch (error) {
@@ -71,11 +84,14 @@ export async function syncWorkoutDay(today: string, userId: string) {
 
         if (local) {
           console.log('[Sync] Using existing local workout after remote failure:', local)
+
           return local
         } else {
           console.log('[Sync] No local workout available — creating new one')
           const newEmptyLocal = createWorkoutDay(userId, today)
+
           await offlineWorkoutStorageService.save(newEmptyLocal)
+
           return newEmptyLocal
         }
       }
@@ -87,11 +103,14 @@ export async function syncWorkoutDay(today: string, userId: string) {
 
     if (local) {
       console.log('[Sync] Using local workout due to fetch failure:', local)
+
       return local
     } else {
       console.log('[Sync] No local workout available — creating new one')
       const newEmptyLocal = createWorkoutDay(userId, today)
+
       await offlineWorkoutStorageService.save(newEmptyLocal)
+
       return newEmptyLocal
     }
   }

@@ -1,6 +1,6 @@
-import syncOfflineWorkouts from '@service/workouts/syncOfflineWorkouts'
 import offlineWorkoutStorageService from '@service/workouts/OfflineWorkoutStorageService'
 import {saveWorkoutDay} from '@service/workouts/saveWorkoutDay'
+import syncOfflineWorkouts from '@service/workouts/syncOfflineWorkouts'
 import {updateWorkoutDay} from '@service/workouts/updateWorkoutDay'
 
 jest.mock('@service/workouts/OfflineWorkoutStorageService', () => ({

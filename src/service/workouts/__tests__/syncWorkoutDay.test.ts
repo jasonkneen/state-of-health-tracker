@@ -1,10 +1,9 @@
-import {syncWorkoutDay} from '@service/workouts/syncWorkoutDay'
-
-import {fetchWorkoutForDay} from '@service/workouts/fetchWorkoutForDay'
-import {updateWorkoutDay} from '@service/workouts/updateWorkoutDay'
-import {saveWorkoutDay} from '@service/workouts/saveWorkoutDay'
 import {createWorkoutDay} from '@data/models/WorkoutDay'
+import {fetchWorkoutForDay} from '@service/workouts/fetchWorkoutForDay'
 import offlineWorkoutStorageService from '@service/workouts/OfflineWorkoutStorageService'
+import {saveWorkoutDay} from '@service/workouts/saveWorkoutDay'
+import {syncWorkoutDay} from '@service/workouts/syncWorkoutDay'
+import {updateWorkoutDay} from '@service/workouts/updateWorkoutDay'
 
 const mockFetch = fetchWorkoutForDay as jest.Mock
 const mockUpdate = updateWorkoutDay as jest.Mock
@@ -201,6 +200,7 @@ describe('syncWorkoutDay', () => {
       mockCreate.mockReturnValueOnce(newLocalWorkout)
 
       const firstResult = await syncWorkoutDay(today, userId)
+
       expect(firstResult).toEqual(newLocalWorkout)
 
       jest.clearAllMocks()
@@ -222,6 +222,7 @@ describe('syncWorkoutDay', () => {
       mockCreate.mockReturnValueOnce(newLocalWorkout)
 
       const firstResult = await syncWorkoutDay(today, userId)
+
       expect(firstResult).toEqual(newLocalWorkout)
 
       jest.clearAllMocks()
@@ -247,6 +248,7 @@ describe('syncWorkoutDay', () => {
       mockCreate.mockReturnValueOnce(newLocalWorkout)
 
       const firstResult = await syncWorkoutDay(today, userId)
+
       expect(firstResult).toEqual(newLocalWorkout)
 
       jest.clearAllMocks()
@@ -256,6 +258,7 @@ describe('syncWorkoutDay', () => {
       mockFindLocal.mockResolvedValueOnce(newLocalWorkout)
 
       const secondResult = await syncWorkoutDay(today, userId)
+
       expect(secondResult).toEqual(newLocalWorkout)
     })
 
@@ -265,6 +268,7 @@ describe('syncWorkoutDay', () => {
       mockFindLocal.mockResolvedValueOnce(null)
 
       const firstResult = await syncWorkoutDay(today, userId)
+
       expect(mockSaveLocal).toHaveBeenCalledWith(remoteWorkout)
       expect(firstResult).toEqual(remoteWorkout)
 
@@ -275,6 +279,7 @@ describe('syncWorkoutDay', () => {
       mockFindLocal.mockResolvedValueOnce(remoteWorkout)
 
       const secondResult = await syncWorkoutDay(today, userId)
+
       expect(mockSaveLocal).toHaveBeenCalledWith(remoteWorkout)
       expect(secondResult).toEqual(remoteWorkout)
     })
@@ -286,6 +291,7 @@ describe('syncWorkoutDay', () => {
       mockCreate.mockReturnValueOnce(newLocalWorkout)
 
       const firstResult = await syncWorkoutDay(today, userId)
+
       expect(mockCreate).toHaveBeenCalled()
       expect(mockSaveLocal).toHaveBeenCalledWith(newLocalWorkout)
       expect(firstResult).toEqual(newLocalWorkout)
@@ -298,6 +304,7 @@ describe('syncWorkoutDay', () => {
       mockSave.mockResolvedValueOnce(newRemoteWorkout)
 
       const secondResult = await syncWorkoutDay(today, userId)
+
       expect(mockSave).toHaveBeenCalledWith(newLocalWorkout)
       expect(mockSaveLocal).toHaveBeenCalledWith(newRemoteWorkout)
       expect(secondResult).toEqual(newRemoteWorkout)

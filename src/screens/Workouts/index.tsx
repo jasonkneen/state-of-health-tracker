@@ -16,6 +16,7 @@ import Unique from '@data/models/Unique'
 import {AntDesign, Ionicons} from '@expo/vector-icons'
 import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useTemplatesQuery} from '@queries/templates/useTemplatesQuery'
+import {useCompleteWorkoutMutation} from '@queries/workouts/useCompleteWorkoutMutation'
 import {useWeeklyWorkoutSummariesQuery} from '@queries/workouts/useWeeklyWorkoutSummariesQuery'
 import {useNavigation} from '@react-navigation/native'
 import useAuthStore from '@store/auth/useAuthStore'
@@ -27,22 +28,28 @@ import Animated, {FadeIn, FadeOut, ZoomIn} from 'react-native-reanimated'
 
 import FloatingActionButton from '@components/FloatingActionButton'
 import BarbellIcon from '@components/icons/BarbellIcon'
+import CheckIcon from '@components/icons/CheckIcon'
 import LoadingOverlay from '@components/LoadingOverlay'
 import {EmptyState} from '@components/PreviousEntryListItem'
 import PrimaryButton from '@components/PrimaryButton'
 import {SectionListFooter} from '@components/SectionListHeader'
 import Text from '@components/Text'
+import {showToast} from '@components/toast/util/ShowToast'
 
 import Screens from '@constants/screens'
 import {
   ADD_EXERCISE_BUTTON_TEXT,
+  COMPLETE_WORKOUT_ERROR,
   EMPTY_DAILY_WORKOUT_BODY,
   EMPTY_DAILY_WORKOUT_TITLE,
   REORGANIZE_HINT_TEXT,
+  TOAST_WORKOUT_COMPLETED,
   VIEW_PREVIOUS_WORKOUTS_BUTTON_TEXT,
+  WORKOUT_COMPLETED_LABEL,
   WORKOUT_SCREEN_TITLE
 } from '@constants/strings'
 
+import CompleteWorkoutPanel from './components/CompleteWorkoutPanel'
 import ExerciseSectionListHeader from './components/ExerciseSectionListHeader'
 import ExerciseSetListItem from './components/ExerciseSetListItem'
 import ReorganizeExerciseList from './components/ReorganizeExerciseList'
@@ -69,6 +76,7 @@ const WorkoutsScreen = () => {
   const {userId} = useAuthStore()
   const {initCurrentWorkoutDay, isInitializing, currentWorkoutDay, deleteSet, updateDailyExercises} =
     useDailyWorkoutEntryStore()
+  const {mutateAsync: completeWorkout, isPending: isCompletingWorkout} = useCompleteWorkoutMutation()
 
   const [isReorganizing, setIsReorganizing] = useState(false)
   const {isLoading: isLoadingSummaries} = useWeeklyWorkoutSummariesQuery()
@@ -95,11 +103,43 @@ const WorkoutsScreen = () => {
 
   listSwipeItemManager.setRows(dailyExercises)
 
+  const onCompleteWorkoutPressed = async () => {
+    try {
+      await completeWorkout()
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+      showToast('success', TOAST_WORKOUT_COMPLETED)
+    } catch {
+      showToast('error', COMPLETE_WORKOUT_ERROR)
+    }
+  }
+
   const renderHeader = () => (
     <>
-      <Text style={styles.dateOverline}>{formatDayMonthDay(sessionStartDate)}</Text>
+      <View style={styles.headerRow}>
+        <View>
+          <Text style={styles.dateOverline}>{formatDayMonthDay(sessionStartDate)}</Text>
 
-      <Text style={styles.workoutTitle}>{WORKOUT_SCREEN_TITLE}</Text>
+          <View style={styles.titleRow}>
+            <Text style={styles.workoutTitle}>{WORKOUT_SCREEN_TITLE}</Text>
+
+            {!!currentWorkoutDay?.completedAt && (
+              <View style={styles.completedChip}>
+                <CheckIcon color={Theme.colors.greenOnTint} size={10} strokeWidth={3.4} />
+
+                <Text style={styles.completedChipText}>{WORKOUT_COMPLETED_LABEL}</Text>
+              </View>
+            )}
+          </View>
+        </View>
+
+        {!!currentWorkoutDay?.startedAt && !currentWorkoutDay.completedAt && (
+          <CompleteWorkoutPanel
+            startedAt={currentWorkoutDay.startedAt}
+            isCompleting={isCompletingWorkout}
+            onCompletePressed={onCompleteWorkoutPressed}
+          />
+        )}
+      </View>
 
       <WeekStripCard />
 

@@ -314,6 +314,14 @@ const WorkoutsScreen = () => {
     selectDay(todayIso)
   }
 
+  // When the session date rolls over while mounted (app resumed after
+  // midnight), the pages re-derive from the new todayIso but the scroll
+  // position and selected day don't — snap to today so the visible page,
+  // header date, and interactivity stay consistent. No-ops on mount.
+  useEffect(() => {
+    goToToday()
+  }, [todayIso])
+
   return (
     <View style={styles.root}>
       {!isLoading && !isReorganizing && (

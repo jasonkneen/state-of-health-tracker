@@ -2,7 +2,7 @@ import {LoggingTypeEnum} from '@data/models/Exercise'
 import {ExerciseSet} from '@data/models/ExerciseSet'
 import {METERS_PER_MILE} from '@utility/RunUtility'
 
-import {ADDED_LBS_LABEL, DISTANCE_MI_LABEL, DURATION_SEC_LABEL, LBS_LABEL, REPS_LABEL} from '@constants/strings'
+import {DISTANCE_MI_LABEL, DURATION_SEC_LABEL, REPS_LABEL} from '@constants/strings'
 
 import {
   emptyFieldTexts,
@@ -19,56 +19,70 @@ const makeSet = (overrides: Partial<ExerciseSet> = {}): ExerciseSet => ({
 })
 
 describe('getSetFieldsForLoggingType', () => {
+  const weightLabel = 'lbs'
+
   it('returns required weight and reps for WEIGHT_REPS', () => {
-    expect(getSetFieldsForLoggingType(LoggingTypeEnum.WEIGHT_REPS)).toEqual([
-      {key: 'weight', label: LBS_LABEL, required: true},
+    expect(getSetFieldsForLoggingType(LoggingTypeEnum.WEIGHT_REPS, weightLabel)).toEqual([
+      {key: 'weight', label: 'lbs', required: true},
       {key: 'reps', label: REPS_LABEL, required: true}
     ])
   })
 
   it('returns only required reps for BODYWEIGHT_REPS', () => {
-    expect(getSetFieldsForLoggingType(LoggingTypeEnum.BODYWEIGHT_REPS)).toEqual([
+    expect(getSetFieldsForLoggingType(LoggingTypeEnum.BODYWEIGHT_REPS, weightLabel)).toEqual([
       {key: 'reps', label: REPS_LABEL, required: true}
     ])
   })
 
   it('returns optional added weight and required reps for WEIGHTED_BODYWEIGHT', () => {
-    expect(getSetFieldsForLoggingType(LoggingTypeEnum.WEIGHTED_BODYWEIGHT)).toEqual([
-      {key: 'addedWeight', label: ADDED_LBS_LABEL, required: false},
+    expect(getSetFieldsForLoggingType(LoggingTypeEnum.WEIGHTED_BODYWEIGHT, weightLabel)).toEqual([
+      {key: 'addedWeight', label: '+lbs', required: false},
+      {key: 'reps', label: REPS_LABEL, required: true}
+    ])
+  })
+
+  it('labels weight fields with the given weight unit', () => {
+    expect(getSetFieldsForLoggingType(LoggingTypeEnum.WEIGHT_REPS, 'kg')).toEqual([
+      {key: 'weight', label: 'kg', required: true},
+      {key: 'reps', label: REPS_LABEL, required: true}
+    ])
+
+    expect(getSetFieldsForLoggingType(LoggingTypeEnum.WEIGHTED_BODYWEIGHT, 'st')).toEqual([
+      {key: 'addedWeight', label: '+st', required: false},
       {key: 'reps', label: REPS_LABEL, required: true}
     ])
   })
 
   it('returns only required duration for TIME_ONLY', () => {
-    expect(getSetFieldsForLoggingType(LoggingTypeEnum.TIME_ONLY)).toEqual([
+    expect(getSetFieldsForLoggingType(LoggingTypeEnum.TIME_ONLY, weightLabel)).toEqual([
       {key: 'durationSeconds', label: DURATION_SEC_LABEL, required: true}
     ])
   })
 
   it('returns required duration and reps for TIME_REPS', () => {
-    expect(getSetFieldsForLoggingType(LoggingTypeEnum.TIME_REPS)).toEqual([
+    expect(getSetFieldsForLoggingType(LoggingTypeEnum.TIME_REPS, weightLabel)).toEqual([
       {key: 'durationSeconds', label: DURATION_SEC_LABEL, required: true},
       {key: 'reps', label: REPS_LABEL, required: true}
     ])
   })
 
   it('returns required weight and duration for WEIGHT_TIME', () => {
-    expect(getSetFieldsForLoggingType(LoggingTypeEnum.WEIGHT_TIME)).toEqual([
-      {key: 'weight', label: LBS_LABEL, required: true},
+    expect(getSetFieldsForLoggingType(LoggingTypeEnum.WEIGHT_TIME, weightLabel)).toEqual([
+      {key: 'weight', label: 'lbs', required: true},
       {key: 'durationSeconds', label: DURATION_SEC_LABEL, required: true}
     ])
   })
 
   it('returns required distance and duration for DISTANCE_TIME', () => {
-    expect(getSetFieldsForLoggingType(LoggingTypeEnum.DISTANCE_TIME)).toEqual([
+    expect(getSetFieldsForLoggingType(LoggingTypeEnum.DISTANCE_TIME, weightLabel)).toEqual([
       {key: 'distanceMeters', label: DISTANCE_MI_LABEL, required: true},
       {key: 'durationSeconds', label: DURATION_SEC_LABEL, required: true}
     ])
   })
 
   it('falls back to weight and reps for an unknown logging type', () => {
-    expect(getSetFieldsForLoggingType('SOMETHING_ELSE' as LoggingTypeEnum)).toEqual([
-      {key: 'weight', label: LBS_LABEL, required: true},
+    expect(getSetFieldsForLoggingType('SOMETHING_ELSE' as LoggingTypeEnum, weightLabel)).toEqual([
+      {key: 'weight', label: 'lbs', required: true},
       {key: 'reps', label: REPS_LABEL, required: true}
     ])
   })

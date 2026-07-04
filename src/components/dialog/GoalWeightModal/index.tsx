@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 
 import {MaterialCommunityIcons} from '@expo/vector-icons'
+import {useWeightUnitLabel} from '@hooks/userData/useWeightUnitLabel'
 import useUserData from '@store/userData/useUserData'
 import {Theme} from '@styles/theme'
 
@@ -8,7 +9,8 @@ import {
   GOAL_WEIGHT_MODAL_BODY,
   GOAL_WEIGHT_MODAL_BUTTON,
   GOAL_WEIGHT_MODAL_ERROR,
-  GOAL_WEIGHT_MODAL_TITLE
+  GOAL_WEIGHT_MODAL_TITLE,
+  stringWithParameters
 } from '@constants/strings'
 
 import BaseInputModalProps from '../BaseInputModalProps'
@@ -22,6 +24,7 @@ const GoalWeightModal = (props: BaseInputModalProps) => {
 
   const goalWeight = useUserData(state => state.goalWeight)
   const setGoalWeight = useUserData(state => state.setGoalWeight)
+  const weightUnitLabel = useWeightUnitLabel()
 
   const [value, setValue] = useState(goalWeight?.toString() ?? '')
   const [showError, setShowError] = useState(false)
@@ -50,7 +53,7 @@ const GoalWeightModal = (props: BaseInputModalProps) => {
   return (
     <InputModal
       title={GOAL_WEIGHT_MODAL_TITLE}
-      subtitle={GOAL_WEIGHT_MODAL_BODY}
+      subtitle={stringWithParameters(GOAL_WEIGHT_MODAL_BODY, weightUnitLabel)}
       icon={<MaterialCommunityIcons style={styles.icon} name="bullseye-arrow" size={96} color={Theme.colors.teal} />}
       value={value}
       isVisible={isVisible}

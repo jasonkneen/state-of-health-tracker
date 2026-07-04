@@ -7,7 +7,7 @@ import {CreateFoodRouteProp, Navigation} from '@navigation/types'
 import {useCreateFoodMutation} from '@queries/foods/useCreateFoodMutation'
 import {useScanNutritionLabelMutation} from '@queries/macros/useScanNutritionLabelMutation'
 import {useNavigation, useRoute} from '@react-navigation/native'
-import {captureMealPhoto, PhotoSource} from '@utility/MealPhotoUtility'
+import {captureMealPhoto, PhotoSource} from '@utility/PhotoCaptureUtility'
 
 import LoadingOverlay from '@components/LoadingOverlay'
 import Picker from '@components/Picker'

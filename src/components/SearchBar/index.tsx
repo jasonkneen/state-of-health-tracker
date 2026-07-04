@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 
-import {Keyboard, TouchableOpacity, View} from 'react-native'
+import {ActivityIndicator, Keyboard, TouchableOpacity, View} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
 import {Theme} from '@styles/theme'
@@ -13,11 +13,12 @@ export {SEARCH_BAR_HEIGHT} from './index.styled'
 
 interface Props {
   placeholder?: string
+  isLoading?: boolean
   onSearchTextChanged: (text: string) => void
 }
 
 const SearchBar = (props: Props) => {
-  const {onSearchTextChanged, placeholder} = props
+  const {onSearchTextChanged, placeholder, isLoading} = props
 
   const [searchText, setSearchText] = useState('')
 
@@ -44,6 +45,8 @@ const SearchBar = (props: Props) => {
           onChangeText={setSearchText}
           placeholder={placeholder}
         />
+
+        {isLoading && <ActivityIndicator size="small" color={Theme.colors.textSecondary} />}
 
         {searchText !== '' && (
           <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>

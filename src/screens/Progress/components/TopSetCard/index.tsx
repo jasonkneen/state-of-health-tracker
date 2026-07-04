@@ -2,6 +2,7 @@ import React, {useRef, useState} from 'react'
 
 import {View} from 'react-native'
 
+import {useWeightUnitLabel} from '@hooks/userData/useWeightUnitLabel'
 import {Theme} from '@styles/theme'
 import {formatDateToMonthDay, formatDateToMonthDayName} from '@utility/DateUtility'
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
@@ -10,12 +11,7 @@ import MiniLineChart from '@components/MiniLineChart'
 import Text from '@components/Text'
 import TickerText from '@components/TickerText'
 
-import {
-  PROGRESS_TOP_SET_DELTA_TEXT,
-  PROGRESS_TOP_SET_LABEL,
-  PROGRESS_WEIGHT_UNIT,
-  stringWithParameters
-} from '@constants/strings'
+import {PROGRESS_TOP_SET_DELTA_TEXT, PROGRESS_TOP_SET_LABEL, stringWithParameters} from '@constants/strings'
 
 import styles from './index.styled'
 import {TopSetTrendPoint, TrendDelta} from '../../index.util'
@@ -28,6 +24,7 @@ interface Props {
 const DELTA_FADE_DURATION_MS = 80
 
 const TopSetCard = ({trend, delta}: Props) => {
+  const weightUnitLabel = useWeightUnitLabel()
   const [scrubbedPoint, setScrubbedPoint] = useState<TopSetTrendPoint | null>(null)
   const [tickDirection, setTickDirection] = useState<1 | -1>(1)
   const previousIndexRef = useRef(trend.length - 1)
@@ -79,7 +76,7 @@ const TopSetCard = ({trend, delta}: Props) => {
       <View style={styles.valueRow}>
         <TickerText text={`${Math.round(displayedPoint.weight)}`} direction={tickDirection} style={styles.value} />
 
-        <Text style={styles.unit}>{PROGRESS_WEIGHT_UNIT}</Text>
+        <Text style={styles.unit}>{weightUnitLabel}</Text>
 
         <TickerText text={`× ${displayedPoint.reps}`} direction={tickDirection} style={styles.reps} />
       </View>

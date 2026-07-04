@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 
-import {ActivityIndicator, SectionList, SectionListRenderItem, View} from 'react-native'
+import {SectionList, SectionListRenderItem, View} from 'react-native'
 
 import {BrandedFood} from '@data/models/BrandedFood'
 import {Food, formatServingText} from '@data/models/Food'
@@ -10,7 +10,6 @@ import {useDeleteFoodMutation} from '@queries/foods/useDeleteFoodMutation'
 import {useFoodsInfiniteQuery} from '@queries/foods/useFoodsQuery'
 import {useNavigation, useRoute} from '@react-navigation/native'
 import Spacing from '@styles/spacing'
-import {Theme} from '@styles/theme'
 import ListSwipeItemManager from '@utility/ListSwipeItemManager'
 
 import SearchBar from '@components/SearchBar'
@@ -76,13 +75,26 @@ const AddFoodScreen = () => {
   const isBrandedSearchActive = debouncedQuery.trim().length > BRANDED_MIN_QUERY_LENGTH
   const brandedFoods = isBrandedSearchActive ? (brandedQuery.data ?? []) : []
 
+  // Excludes pagination so scrolling the library doesn't flash the search spinner
+  const isSearching = (foodsQuery.isFetching && !foodsQuery.isFetchingNextPage) || brandedQuery.isFetching
+
   listSwipeItemManager.setRows(foods)
 
-  const sections: Section[] = [{key: 'library', title: YOUR_FOODS_HEADER, data: foods}]
+  const sections: Section[] = []
 
   // The branded section stays quiet unless it has something to show — errors
   // and empty results just leave the library list as the only content
-  if (isBrandedSearchActive && (brandedFoods.length > 0 || brandedQuery.isFetching)) {
+  const showBranded = isBrandedSearchActive && (brandedFoods.length > 0 || brandedQuery.isFetching)
+
+  // An empty library yields to branded results; without them it stays visible
+  // so the empty state and New Food button still render
+  const showLibrary = foods.length > 0 || foodsQuery.isLoading || !showBranded
+
+  if (showLibrary) {
+    sections.push({key: 'library', title: YOUR_FOODS_HEADER, data: foods})
+  }
+
+  if (showBranded) {
     sections.push({key: 'branded', title: BRANDED_HEADER, data: brandedFoods})
   }
 
@@ -137,7 +149,12 @@ const AddFoodScreen = () => {
         <View style={styles.sectionHeaderRow}>
           <Text style={styles.sectionHeaderText}>{section.title}</Text>
 
-          {brandedQuery.isFetching && <ActivityIndicator size="small" color={Theme.colors.textMuted} />}
+          {!showLibrary && (
+            <SecondaryButton
+              label={NEW_FOOD_BUTTON_TEXT}
+              onPress={() => navigation.push(Screens.CREATE_FOOD, {prefillName: searchText})}
+            />
+          )}
         </View>
       )
     }
@@ -152,8 +169,6 @@ const AddFoodScreen = () => {
             onPress={() => navigation.push(Screens.CREATE_FOOD, {prefillName: searchText})}
           />
         </View>
-
-        {foodsQuery.isLoading && <ActivityIndicator style={styles.libraryLoading} color={Theme.colors.textMuted} />}
 
         {!foodsQuery.isLoading && foods.length === 0 && (
           <Text style={styles.emptyText}>{NO_FOOD_FOUND_EMPTY_TEXT}</Text>
@@ -176,7 +191,11 @@ const AddFoodScreen = () => {
 
           <Text style={styles.title}>{ADD_FOOD_TITLE}</Text>
 
-          <SearchBar placeholder={SEARCH_YOUR_FOODS_PLACEHOLDER} onSearchTextChanged={setSearchText} />
+          <SearchBar
+            placeholder={SEARCH_YOUR_FOODS_PLACEHOLDER}
+            isLoading={isSearching}
+            onSearchTextChanged={setSearchText}
+          />
 
           <AiEscapeHatchCard onPress={() => navigation.push(Screens.LOG_WITH_AI, {mealId, initialText: searchText})} />
         </>

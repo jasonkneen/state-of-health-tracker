@@ -2,6 +2,7 @@ import React from 'react'
 
 import {LoggingTypeEnum} from '@data/models/Exercise'
 import {WorkoutSummaryBestSet} from '@data/models/WorkoutSummary'
+import {useWeightUnitLabel} from '@hooks/userData/useWeightUnitLabel'
 
 import Chip from '@components/Chip'
 
@@ -14,7 +15,9 @@ interface Props {
 }
 
 const BestSetChip = ({loggingType, bestSet}: Props) => {
-  return <Chip label={bestSetLabel(loggingType, bestSet)} style={styles.chip} />
+  const weightUnitLabel = useWeightUnitLabel()
+
+  return <Chip label={bestSetLabel(loggingType, weightUnitLabel, bestSet)} style={styles.chip} />
 }
 
 export default BestSetChip

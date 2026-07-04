@@ -1,35 +1,45 @@
 import React from 'react'
 
-import {Linking, ScrollView, View} from 'react-native'
+import {ActivityIndicator, Image, Linking, ScrollView, TouchableOpacity, View} from 'react-native'
 
+import {useWeightUnitLabel} from '@hooks/userData/useWeightUnitLabel'
+import {mutationKeys} from '@queries/keys'
 import {useRunsTotalQuery} from '@queries/runs/useRunsTotalQuery'
+import {useUserAvatarQuery} from '@queries/user/useUserAvatarQuery'
 import {useWeighInsQuery} from '@queries/weighIns/useWeighInsQuery'
 import {useWorkoutSummariesInfiniteQuery} from '@queries/workouts/useWorkoutSummariesInfiniteQuery'
 import useAuthStore from '@store/auth/useAuthStore'
 import useUserData from '@store/userData/useUserData'
 import {Theme} from '@styles/theme'
+import {useIsMutating} from '@tanstack/react-query'
 import LinearGradient from 'react-native-linear-gradient'
 import {SafeAreaView} from 'react-native-safe-area-context'
 
+import {openGlobalBottomSheet} from '@components/GlobalBottomSheet'
 import BarbellIcon from '@components/icons/BarbellIcon'
+import CameraIcon from '@components/icons/CameraIcon'
 import DocumentIcon from '@components/icons/DocumentIcon'
 import DumbbellIcon from '@components/icons/DumbbellIcon'
 import FlameIcon from '@components/icons/FlameIcon'
 import RunIcon from '@components/icons/RunIcon'
 import ScaleIcon from '@components/icons/ScaleIcon'
+import StepsIcon from '@components/icons/StepsIcon'
 import Text from '@components/Text'
 
 import {
   ACCOUNT_AUTH_SECTION_TITLE,
   ACCOUNT_DAILY_CALORIES_LABEL,
+  ACCOUNT_DAILY_STEPS_LABEL,
   ACCOUNT_LOGGED_IN_AS_GUEST,
   GUEST_AVATAR_INITIAL,
   ACCOUNT_PRIVACY_POLICY,
+  ACCOUNT_SETTINGS_SECTION_TITLE,
   ACCOUNT_STATS_SECTION_TITLE,
   ACCOUNT_TARGETS_SECTION_TITLE,
   ACCOUNT_TOTAL_RUNS_LABEL,
   ACCOUNT_TOTAL_WEIGH_INS_LABEL,
   ACCOUNT_TOTAL_WORKOUT_DAYS_LABEL,
+  ACCOUNT_WEIGHT_UNIT_LABEL,
   ACCOUNT_WELCOME_TEXT,
   ACCOUNT_WORKOUTS_PER_WEEK_LABEL
 } from '@constants/strings'
@@ -37,19 +47,26 @@ import {
 import AccountListItem from './components/AccountListItem'
 import AuthListItem from './components/AuthListItem'
 import DeleteAccountListItem from './components/DeleteAccountListItem'
+import ProfilePhotoBottomSheet from './components/ProfilePhotoBottomSheet'
+import WeightUnitBottomSheet from './components/WeightUnitBottomSheet'
 import styles from './index.styled'
 
 const TILE_ICON_SIZE = 17
+const AVATAR_CAMERA_ICON_SIZE = 26
 
 const AccountScreen = () => {
   const targetWorkouts = useUserData(state => state.targetWorkouts)
   const targetCalories = useUserData(state => state.targetCalories)
+  const stepGoal = useUserData(state => state.stepGoal)
+  const weightUnitLabel = useWeightUnitLabel()
 
   const userEmail = useAuthStore(state => state.userEmail)
   const isAuthed = useAuthStore(state => state.isAuthed)
   const {data: summariesData} = useWorkoutSummariesInfiniteQuery()
   const {data: weighIns = []} = useWeighInsQuery()
   const {data: totalRuns = 0} = useRunsTotalQuery()
+  const {data: avatarBase64} = useUserAvatarQuery(isAuthed)
+  const isUploadingAvatar = useIsMutating({mutationKey: mutationKeys.updateAvatar}) > 0
 
   const totalSummaries = summariesData?.pages[0]?.pagination.total ?? 0
 
@@ -64,15 +81,32 @@ const AccountScreen = () => {
     }
   }
 
+  const avatarContent = () => {
+    if (isUploadingAvatar) return <ActivityIndicator color={Theme.colors.white} />
+
+    if (avatarBase64) {
+      return <Image source={{uri: `data:image/jpeg;base64,${avatarBase64}`}} style={styles.avatarImage} />
+    }
+
+    if (isAuthed) return <CameraIcon color={Theme.colors.white} size={AVATAR_CAMERA_ICON_SIZE} />
+
+    return <Text style={styles.avatarInitials}>{initials}</Text>
+  }
+
   const header = () => (
     <View style={styles.headerRow}>
-      <LinearGradient
-        colors={[Theme.colors.lime, Theme.colors.teal]}
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 1}}
-        style={styles.avatar}>
-        <Text style={styles.avatarInitials}>{initials}</Text>
-      </LinearGradient>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        disabled={!isAuthed || isUploadingAvatar}
+        onPress={() => openGlobalBottomSheet(<ProfilePhotoBottomSheet />)}>
+        <LinearGradient
+          colors={[Theme.colors.lime, Theme.colors.teal]}
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 1}}
+          style={styles.avatar}>
+          {avatarContent()}
+        </LinearGradient>
+      </TouchableOpacity>
 
       <View>
         <Text style={styles.greeting}>{ACCOUNT_WELCOME_TEXT}</Text>
@@ -100,8 +134,33 @@ const AccountScreen = () => {
           label={ACCOUNT_WORKOUTS_PER_WEEK_LABEL}
           value={targetWorkouts.toString()}
           tileVariant="green"
-          isLastInGroup={true}
           icon={<BarbellIcon color={Theme.colors.accentGreen} size={TILE_ICON_SIZE} />}
+        />
+
+        <AccountListItem
+          type="step-goal"
+          label={ACCOUNT_DAILY_STEPS_LABEL}
+          value={stepGoal.toLocaleString()}
+          tileVariant="teal"
+          isLastInGroup={true}
+          icon={<StepsIcon color={Theme.colors.teal} size={TILE_ICON_SIZE} />}
+        />
+      </View>
+    </>
+  )
+
+  const settingsSection = () => (
+    <>
+      <Text style={styles.sectionHeader}>{ACCOUNT_SETTINGS_SECTION_TITLE}</Text>
+
+      <View style={styles.groupCard}>
+        <AccountListItem
+          type="info"
+          label={ACCOUNT_WEIGHT_UNIT_LABEL}
+          value={weightUnitLabel}
+          isLastInGroup={true}
+          icon={<ScaleIcon color={Theme.colors.textSecondary} size={TILE_ICON_SIZE} />}
+          onPressOverride={() => openGlobalBottomSheet(<WeightUnitBottomSheet />)}
         />
       </View>
     </>
@@ -168,6 +227,8 @@ const AccountScreen = () => {
         {targetsSection()}
 
         {statsSection()}
+
+        {settingsSection()}
 
         {authSection()}
 

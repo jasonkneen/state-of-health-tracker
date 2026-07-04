@@ -2,6 +2,7 @@ import React from 'react'
 
 import {View} from 'react-native'
 
+import {useWeightUnitLabel} from '@hooks/userData/useWeightUnitLabel'
 import {formatDateToMonthDay} from '@utility/DateUtility'
 
 import Text from '@components/Text'
@@ -22,8 +23,11 @@ interface Props {
 }
 
 const NewPrCard = ({card}: Props) => {
+  const weightUnitLabel = useWeightUnitLabel()
+
   const caption =
-    formatDateToMonthDay(card.date) + (card.deltaLbs !== null && card.deltaLbs > 0 ? ` · +${card.deltaLbs} lbs` : '')
+    formatDateToMonthDay(card.date) +
+    (card.deltaLbs !== null && card.deltaLbs > 0 ? ` · +${card.deltaLbs} ${weightUnitLabel}` : '')
 
   return (
     <View style={styles.card}>

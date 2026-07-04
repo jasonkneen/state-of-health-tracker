@@ -1,3 +1,5 @@
+import {WeightUnit} from '@data/models/WeightUnit'
+
 export const CAL_LABEL = 'cal'
 
 export const CAL_LABEL_PLURAL = 'cals'
@@ -41,7 +43,6 @@ export const CREATE_FOOD_FAT_ERROR_TEXT = 'Please enter the total grams of fat p
 export const CREATE_FOOD_CALORIES_ERROR_TEXT = 'Please enter the calories per serving'
 
 export const QUICK_ADD_FOOD_SCREEN_TITLE = 'Add Food'
-
 
 export const PREVIOUS_ENTRIES_TITLE = 'Previous Entries'
 
@@ -144,11 +145,7 @@ export const ORGANIZE_EXERCISES_BUTTON_TEXT = 'Organize Exercises'
 
 export const REORGANIZE_HINT_TEXT = 'Drag exercises to reorder, then tap the check to finish'
 
-export const LBS_LABEL = 'lbs'
-
 export const REPS_LABEL = 'reps'
-
-export const ADDED_LBS_LABEL = '+lbs'
 
 export const DURATION_SEC_LABEL = 'mm:ss'
 
@@ -575,8 +572,6 @@ export const STEP_GOAL_MODAL_BUTTON = 'Set Goal'
 
 export const PROGRESS_TOP_SET_LABEL = 'TOP SET'
 
-export const PROGRESS_WEIGHT_UNIT = 'lbs'
-
 export const PROGRESS_TOP_SET_DELTA_TEXT = '%0% vs %1 wks ago'
 
 export const PROGRESS_NEW_PR_LABEL = 'NEW PR'
@@ -605,7 +600,7 @@ export const PROGRESS_SELECT_EXERCISE_TITLE = 'Select an exercise'
 
 export const PROGRESS_BODY_WEIGHT_LABEL = 'BODY WEIGHT'
 
-export const PROGRESS_BODY_DELTA_TEXT = '%0 lbs · %1 wks'
+export const PROGRESS_BODY_DELTA_TEXT = '%0 %1 · %2 wks'
 
 export const PROGRESS_BODY_CHANGE_LABEL = 'CHANGE'
 
@@ -635,7 +630,7 @@ export const LOG_WEIGHT_DATE_LABEL = 'Date'
 
 export const LOG_WEIGHT_TIME_LABEL = 'Time'
 
-export const LOG_WEIGHT_WEIGHT_LABEL = 'Weight (lbs)'
+export const LOG_WEIGHT_WEIGHT_LABEL = 'Weight (%0)'
 
 export const LOG_WEIGHT_PLACEHOLDER = '0.0'
 
@@ -651,7 +646,7 @@ export const TOAST_WEIGHT_LOG_FAILED = "Couldn't save weigh-in"
 
 export const GOAL_WEIGHT_MODAL_TITLE = 'Goal Weight'
 
-export const GOAL_WEIGHT_MODAL_BODY = 'What weight are you aiming for? (lbs)'
+export const GOAL_WEIGHT_MODAL_BODY = 'What weight are you aiming for? (%0)'
 
 export const GOAL_WEIGHT_MODAL_BUTTON = 'Set Goal'
 
@@ -685,9 +680,39 @@ export const ACCOUNT_TOTAL_RUNS_LABEL = 'Total runs'
 
 export const ACCOUNT_TOTAL_WORKOUT_DAYS_LABEL = 'Total workout days'
 
-export const LBS_SUFFIX = ' lbs'
+export const ACCOUNT_DAILY_STEPS_LABEL = 'Daily steps'
+
+export const ACCOUNT_SETTINGS_SECTION_TITLE = 'Settings'
+
+export const ACCOUNT_WEIGHT_UNIT_LABEL = 'Weight unit'
+
+export const WEIGHT_UNIT_SHEET_TITLE = 'Weight unit'
+
+export const WEIGHT_UNIT_SHEET_SUBTITLE = 'Your preferred unit for weights across the app'
+
+export const WEIGHT_UNIT_LABELS: Record<WeightUnit, string> = {
+  lbs: 'lbs',
+  kg: 'kg',
+  st: 'st'
+}
+
+export const WEIGHT_UNIT_OPTION_LABELS: Record<WeightUnit, string> = {
+  lbs: 'Pounds (lbs)',
+  kg: 'Kilograms (kg)',
+  st: 'Stones (st)'
+}
 
 export const GUEST_AVATAR_INITIAL = 'G'
+
+export const PROFILE_PHOTO_SHEET_TITLE = 'Profile photo'
+
+export const PROFILE_PHOTO_SHEET_SUBTITLE = 'Add a photo to personalize your account'
+
+export const PROFILE_PHOTO_TAKE_PHOTO = 'Take photo'
+
+export const PROFILE_PHOTO_CHOOSE_FROM_LIBRARY = 'Choose from library'
+
+export const PROFILE_PHOTO_UPLOAD_ERROR = 'Could not upload your photo. Please try again.'
 
 export function stringWithParameters(str: string = '', ...parameters: string[]): string {
   let updatedStr = str
@@ -707,7 +732,8 @@ export const LOG_WITH_AI_TITLE = 'Log with AI'
 
 export const LOG_WITH_AI_CARD_SUBTITLE = 'Type or snap what you ate — we estimate it'
 
-export const LOG_WITH_AI_PLACEHOLDER = 'Just type what you ate… "2 eggs, toast with peanut butter, iced latte"'
+export const LOG_WITH_AI_PLACEHOLDER =
+  'Just type (or speak) what you ate… "2 eggs, toast with peanut butter, iced latte"'
 
 export const ESTIMATE_IT_BUTTON_TEXT = 'Estimate it'
 
@@ -726,6 +752,14 @@ export const ESTIMATE_ERROR_TEXT = "Couldn't estimate that. Try again."
 export const TAKE_PHOTO_TEXT = 'Take photo'
 
 export const PHOTO_LIBRARY_TEXT = 'Photo library'
+
+export const DICTATION_BUTTON_ACCESSIBILITY_LABEL = 'Dictate what you ate'
+
+export const DICTATION_UNAVAILABLE_TEXT = 'Voice dictation isn’t available on this device.'
+
+export const DICTATION_PERMISSION_ERROR_TEXT = 'Allow microphone and speech recognition access to dictate.'
+
+export const DICTATION_ERROR_TEXT = 'Dictation stopped working. Try again.'
 
 export const ADD_FOOD_TITLE = 'Add Food'
 

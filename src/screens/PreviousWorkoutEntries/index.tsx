@@ -5,6 +5,7 @@ import {ActivityIndicator, FlatList, ListRenderItemInfo} from 'react-native'
 import {mapLoggingType} from '@data/converters/ExerciseConverter'
 import {WorkoutSummary} from '@data/models/WorkoutSummary'
 import {Entypo, FontAwesome5, MaterialCommunityIcons} from '@expo/vector-icons'
+import {useWeightUnitLabel} from '@hooks/userData/useWeightUnitLabel'
 import {useWorkoutSummariesInfiniteQuery} from '@queries/workouts/useWorkoutSummariesInfiniteQuery'
 import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
@@ -21,7 +22,6 @@ import {
   BEST_SET_LABEL,
   EXERCISE_LABEL,
   HISTORY_TITLE,
-  LBS_LABEL,
   PREVIOUS_WORKOUTS_ENTRIES_EMPTY_BODY,
   PREVIOUS_WORKOUTS_ENTRIES_EMPTY_TITLE,
   REPS_LABEL,
@@ -33,6 +33,7 @@ import styles from './index.styled'
 
 const PreviousWorkoutEntries = () => {
   const {data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage} = useWorkoutSummariesInfiniteQuery()
+  const weightUnitLabel = useWeightUnitLabel()
 
   const summaries = data?.pages.flatMap(page => page.summaries) ?? []
 
@@ -68,7 +69,7 @@ const PreviousWorkoutEntries = () => {
           {item.totalWeight > 0 && (
             <Chip
               style={styles.chipContainer}
-              label={`${item.totalWeight} ${LBS_LABEL}`}
+              label={`${item.totalWeight} ${weightUnitLabel}`}
               icon={
                 <FontAwesome5
                   name="weight-hanging"

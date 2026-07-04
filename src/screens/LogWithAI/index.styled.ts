@@ -7,6 +7,7 @@ import {Theme} from '@styles/theme'
 
 const GRADIENT_TILE_SIZE = 36
 const TEXT_INPUT_MIN_HEIGHT = 130
+const MIC_BUTTON_SIZE = 34
 
 export default StyleSheet.create({
   scrollContent: {
@@ -39,7 +40,24 @@ export default StyleSheet.create({
     minHeight: TEXT_INPUT_MIN_HEIGHT,
     textAlignVertical: 'top',
     borderRadius: BorderRadius.INPUT,
-    fontSize: FontSize.BODY
+    fontSize: FontSize.BODY,
+    paddingBottom: MIC_BUTTON_SIZE + Spacing.SMALL
+  },
+  micButton: {
+    position: 'absolute',
+    right: Spacing.X_SMALL,
+    bottom: Spacing.X_SMALL,
+    width: MIC_BUTTON_SIZE,
+    height: MIC_BUTTON_SIZE,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: MIC_BUTTON_SIZE / 2,
+    borderWidth: 1,
+    borderColor: Theme.colors.inputBorder
+  },
+  micButtonActive: {
+    borderColor: Theme.colors.accentGreen,
+    backgroundColor: Theme.colors.accentGreen
   },
   photoButtonsRow: {
     flexDirection: 'row',

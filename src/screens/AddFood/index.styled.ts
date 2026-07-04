@@ -33,9 +33,6 @@ export default StyleSheet.create({
     fontSize: FontSize.H3,
     fontWeight: 'bold'
   },
-  libraryLoading: {
-    marginTop: Spacing.MEDIUM
-  },
   emptyText: {
     fontWeight: '200',
     paddingHorizontal: Spacing.MEDIUM,

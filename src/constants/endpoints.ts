@@ -9,6 +9,7 @@ const Endpoints = {
   WeeklyWorkoutSummary: `${baseApiUrl}/workouts/weekly-summary/7`,
   ExerciseTemplates: `${baseApiUrl}/templates`,
   User: `${baseApiUrl}/user`,
+  UserAvatar: `${baseApiUrl}/user/avatar`,
   Records: `${baseApiUrl}/records`,
   ExerciseHistory: (exerciseId: string) => `${baseApiUrl}/exercises/${exerciseId}/history`,
   Run: `${baseApiUrl}/run/`,

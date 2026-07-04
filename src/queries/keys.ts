@@ -18,7 +18,8 @@ export const queryKeys = {
   dailyMacros: (date: string) => ['dailyMacros', date] as const,
   macrosHistory: ['macrosHistory'] as const,
   foods: (query: string) => ['foods', query] as const,
-  brandedFoodSearch: (query: string) => ['brandedFoodSearch', query] as const
+  brandedFoodSearch: (query: string) => ['brandedFoodSearch', query] as const,
+  userAvatar: ['userAvatar'] as const
 }
 
 export const mutationKeys = {
@@ -40,5 +41,6 @@ export const mutationKeys = {
   scanNutritionLabel: ['scanNutritionLabel'] as const,
   updateMacroTargets: ['updateMacroTargets'] as const,
   createFood: ['createFood'] as const,
-  deleteFood: ['deleteFood'] as const
+  deleteFood: ['deleteFood'] as const,
+  updateAvatar: ['updateAvatar'] as const
 }

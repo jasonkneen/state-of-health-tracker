@@ -48,6 +48,13 @@
       "expo-font",
       "expo-file-system",
       [
+        "expo-speech-recognition",
+        {
+          "microphonePermission": "State of Health uses your microphone so you can speak what you ate and let AI estimate calories and macros.",
+          "speechRecognitionPermission": "State of Health uses speech recognition to turn what you say into text for AI meal estimation."
+        }
+      ],
+      [
         "expo-location",
         {
           "isIosBackgroundLocationEnabled": true,

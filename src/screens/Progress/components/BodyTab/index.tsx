@@ -3,6 +3,7 @@ import React, {useRef, useState} from 'react'
 import {Alert, TouchableOpacity, View} from 'react-native'
 
 import {WeighIn} from '@data/models/WeighIn'
+import {useWeightUnitLabel} from '@hooks/userData/useWeightUnitLabel'
 import {ProgressStackParamList} from '@navigation/ProgressStack'
 import {useDeleteWeighInMutation} from '@queries/weighIns/useDeleteWeighInMutation'
 import {useWeighInsQuery} from '@queries/weighIns/useWeighInsQuery'
@@ -25,8 +26,6 @@ import {showToast} from '@components/toast/util/ShowToast'
 
 import Screens from '@constants/screens'
 import {
-  LBS_LABEL,
-  LBS_SUFFIX,
   OKAY_BUTTON_TEXT,
   PROGRESS_BODY_CHANGE_INFO_BODY,
   PROGRESS_BODY_CHANGE_INFO_TITLE,
@@ -43,7 +42,6 @@ import {
   PROGRESS_BODY_WEIGH_IN_META,
   PROGRESS_BODY_WEIGH_INS_HEADER,
   PROGRESS_BODY_WEIGHT_LABEL,
-  PROGRESS_WEIGHT_UNIT,
   stringWithParameters,
   TIME_OF_DAY_AFTERNOON,
   TIME_OF_DAY_EVENING,
@@ -79,6 +77,7 @@ const BodyTab = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ProgressStackParamList>>()
   const {data: weighIns = []} = useWeighInsQuery()
   const goalWeight = useUserData(state => state.goalWeight)
+  const weightUnitLabel = useWeightUnitLabel()
   const {mutateAsync: deleteWeighInAsync} = useDeleteWeighInMutation()
 
   const [isGoalModalVisible, setIsGoalModalVisible] = useState(false)
@@ -162,6 +161,7 @@ const BodyTab = () => {
                   {stringWithParameters(
                     PROGRESS_BODY_DELTA_TEXT,
                     formatWeightValue(Math.abs(delta.lbs)),
+                    weightUnitLabel,
                     delta.weeks.toString()
                   )}
                 </Text>
@@ -173,7 +173,7 @@ const BodyTab = () => {
         <View style={styles.valueRow}>
           <TickerText text={formatWeightValue(displayedPoint.value)} direction={tickDirection} style={styles.value} />
 
-          <Text style={styles.unit}>{PROGRESS_WEIGHT_UNIT}</Text>
+          <Text style={styles.unit}>{weightUnitLabel}</Text>
         </View>
 
         <View style={styles.chartWrapper}>
@@ -226,7 +226,7 @@ const BodyTab = () => {
               {goalWeight !== null ? formatWeightValue(goalWeight) : PROGRESS_BODY_EMPTY_STAT}
 
               <Text style={styles.footerUnit}>
-                {goalWeight !== null ? LBS_SUFFIX : ` ${PROGRESS_BODY_SET_GOAL_LABEL}`}
+                {goalWeight !== null ? ` ${weightUnitLabel}` : ` ${PROGRESS_BODY_SET_GOAL_LABEL}`}
               </Text>
             </Text>
           </TouchableOpacity>
@@ -237,7 +237,7 @@ const BodyTab = () => {
             <Text style={styles.footerValue}>
               {toGoLbs !== null ? formatListWeight(toGoLbs) : PROGRESS_BODY_EMPTY_STAT}
 
-              {toGoLbs !== null && <Text style={styles.footerUnit}>{LBS_SUFFIX}</Text>}
+              {toGoLbs !== null && <Text style={styles.footerUnit}>{` ${weightUnitLabel}`}</Text>}
             </Text>
           </View>
         </View>
@@ -257,7 +257,7 @@ const BodyTab = () => {
           onDeletePressed={() => onDeleteWeighIn(row.weighIn)}>
           <View style={styles.weighInRow}>
             <View>
-              <Text style={styles.weighInWeight}>{`${formatListWeight(row.weighIn.weight)} ${LBS_LABEL}`}</Text>
+              <Text style={styles.weighInWeight}>{`${formatListWeight(row.weighIn.weight)} ${weightUnitLabel}`}</Text>
 
               <Text style={styles.weighInMeta}>
                 {stringWithParameters(

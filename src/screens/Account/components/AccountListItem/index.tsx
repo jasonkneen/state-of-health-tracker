@@ -4,6 +4,7 @@ import {TouchableOpacity} from 'react-native'
 
 import {Theme} from '@styles/theme'
 
+import StepGoalModal from '@components/dialog/StepGoalModal'
 import TargetCaloriesModal from '@components/dialog/TargetCaloriesModal'
 import TargetWorkoutsModal from '@components/dialog/TargetWorkoutsModal'
 import ChevronRightIcon from '@components/icons/ChevronRightIcon'
@@ -17,7 +18,7 @@ interface Props {
   readonly value?: string
   readonly icon: React.JSX.Element
   readonly tileVariant?: IconTileVariant
-  readonly type: 'target-calories' | 'target-workouts' | 'auth' | 'info' | 'display-name'
+  readonly type: 'target-calories' | 'target-workouts' | 'step-goal' | 'auth' | 'info' | 'display-name'
   readonly clickable?: boolean
   readonly danger?: boolean
   readonly isLastInGroup?: boolean
@@ -50,6 +51,8 @@ const AccountListItem = (props: Props) => {
         return <TargetCaloriesModal {...dialogProps} />
       case 'target-workouts':
         return <TargetWorkoutsModal {...dialogProps} />
+      case 'step-goal':
+        return <StepGoalModal {...dialogProps} />
       default:
         break
     }

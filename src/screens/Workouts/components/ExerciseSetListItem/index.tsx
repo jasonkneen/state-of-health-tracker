@@ -4,6 +4,7 @@ import {TouchableOpacity, View} from 'react-native'
 
 import {Exercise} from '@data/models/Exercise'
 import {ExerciseSet} from '@data/models/ExerciseSet'
+import {useWeightUnitLabel} from '@hooks/userData/useWeightUnitLabel'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
 import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
@@ -41,6 +42,7 @@ const ExerciseSetListItem = (props: Props) => {
   const {exercise, set, index, swipeableRef, onSwipeActivated, onDeletePressed} = props
 
   const completeSet = useDailyWorkoutEntryStore(state => state.completeSet)
+  const weightUnitLabel = useWeightUnitLabel()
 
   const checkScale = useSharedValue(1)
 
@@ -48,7 +50,7 @@ const ExerciseSetListItem = (props: Props) => {
     transform: [{scale: checkScale.value}]
   }))
 
-  const fields = getSetFieldsForLoggingType(exercise.loggingType)
+  const fields = getSetFieldsForLoggingType(exercise.loggingType, weightUnitLabel)
 
   const [fieldTexts, setFieldTexts] = useState<Record<SetFieldKey, string>>(() => emptyFieldTexts(set))
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<SetFieldKey, boolean>>>({})

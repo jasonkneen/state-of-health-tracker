@@ -24,7 +24,12 @@ export default StyleSheet.create({
     height: AVATAR_SIZE,
     borderRadius: BorderRadius.PILL,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    overflow: 'hidden'
+  },
+  avatarImage: {
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE
   },
   avatarInitials: {
     fontSize: FontSize.GREETING,

@@ -7,7 +7,8 @@ import {QueryClient} from '@tanstack/react-query'
 // workout flow keeps working offline (replaces the old offline exercises store).
 // dailyMacros/foods persist so the Macros screen renders offline (display only —
 // there is no offline write queue for macros in v1).
-export const PERSISTED_QUERY_KEYS: string[] = ['exercises', 'dailyMacros', 'foods']
+// userAvatar persists so the profile photo shows on cold launch without a refetch.
+export const PERSISTED_QUERY_KEYS: string[] = ['exercises', 'dailyMacros', 'foods', 'userAvatar']
 
 export const queryClient = new QueryClient({
   defaultOptions: {

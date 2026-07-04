@@ -3,6 +3,7 @@ import React, {useState} from 'react'
 import {ScrollView, TouchableOpacity, View} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
+import {useWeightUnitLabel} from '@hooks/userData/useWeightUnitLabel'
 import {useLogWeighInMutation} from '@queries/weighIns/useLogWeighInMutation'
 import {useNavigation} from '@react-navigation/native'
 import {Theme} from '@styles/theme'
@@ -16,7 +17,6 @@ import TextInput from '@components/TextInput'
 import {showToast} from '@components/toast/util/ShowToast'
 
 import {
-  LBS_LABEL,
   LOG_WEIGHT_DATE_LABEL,
   LOG_WEIGHT_ERROR,
   LOG_WEIGHT_PLACEHOLDER,
@@ -24,6 +24,7 @@ import {
   LOG_WEIGHT_TIME_LABEL,
   LOG_WEIGHT_TITLE,
   LOG_WEIGHT_WEIGHT_LABEL,
+  stringWithParameters,
   TIME_OF_DAY_AFTERNOON_OPTION,
   TIME_OF_DAY_EVENING_OPTION,
   TIME_OF_DAY_MORNING_OPTION,
@@ -44,6 +45,7 @@ const TIME_OPTIONS = [
 const LogWeightScreen = () => {
   const {goBack} = useNavigation()
   const {mutateAsync: logWeighInAsync, isPending} = useLogWeighInMutation()
+  const weightUnitLabel = useWeightUnitLabel()
 
   const [weightText, setWeightText] = useState('')
   const [date, setDate] = useState(new Date())
@@ -86,7 +88,7 @@ const LogWeightScreen = () => {
       </View>
 
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-        <Text style={styles.fieldLabel}>{LOG_WEIGHT_WEIGHT_LABEL}</Text>
+        <Text style={styles.fieldLabel}>{stringWithParameters(LOG_WEIGHT_WEIGHT_LABEL, weightUnitLabel)}</Text>
 
         <View style={styles.weightInputRow}>
           <TextInput
@@ -99,7 +101,7 @@ const LogWeightScreen = () => {
             autoFocus
           />
 
-          <Text style={styles.weightUnit}>{LBS_LABEL}</Text>
+          <Text style={styles.weightUnit}>{weightUnitLabel}</Text>
         </View>
 
         {showError && <Text style={styles.errorText}>{LOG_WEIGHT_ERROR}</Text>}

@@ -11,11 +11,12 @@ import {useLogMealEntryMutation} from '@queries/macros/useLogMealEntryMutation'
 import {useNavigation, useRoute} from '@react-navigation/native'
 import {useSessionStore} from '@store/session/useSessionStore'
 import {Theme} from '@styles/theme'
-import {captureMealPhoto, PhotoSource} from '@utility/MealPhotoUtility'
+import {captureMealPhoto, PhotoSource} from '@utility/PhotoCaptureUtility'
 import * as Haptics from 'expo-haptics'
 import LinearGradient from 'react-native-linear-gradient'
 
 import InputModal from '@components/dialog/InputModal'
+import MicIcon from '@components/icons/MicIcon'
 import PrimaryButton from '@components/PrimaryButton'
 import SegmentedControl from '@components/SegmentedControl'
 import Text from '@components/Text'
@@ -25,6 +26,7 @@ import {showActionToast, showToast} from '@components/toast/util/ShowToast'
 import {
   AI_ESTIMATE_HEADER,
   CONFIRM_BUTTON_TEXT,
+  DICTATION_BUTTON_ACCESSIBILITY_LABEL,
   ESTIMATE_ADJUST_TIP,
   ESTIMATE_ERROR_TEXT,
   ESTIMATE_IT_BUTTON_TEXT,
@@ -43,6 +45,7 @@ import {
 
 import EstimateItemRow from './components/EstimateItemRow'
 import PhotoChip from './components/PhotoChip'
+import {useVoiceDictation} from './hooks/useVoiceDictation'
 import styles from './index.styled'
 import {
   buildLogEntryPayload,
@@ -61,6 +64,7 @@ const SPARKLE_GLYPH = '✦'
 const PHOTO_ONLY_SUMMARY_TEXT = 'Photo'
 const TAP_TO_EDIT_HINT = 'Tap to edit and re-estimate'
 const CALORIE_INPUT_ERROR = 'Enter a valid calorie amount.'
+const MAX_INPUT_LENGTH = 500
 
 type Stage = 'input' | 'review'
 
@@ -89,6 +93,10 @@ const LogWithAIScreen = () => {
   const [selectedMealId, setSelectedMealId] = useState<string | undefined>(route.params?.mealId)
   const [isLogging, setIsLogging] = useState(false)
 
+  const {isDictating, toggleDictation, stopDictation} = useVoiceDictation(text, dictatedText =>
+    setText(dictatedText.slice(0, MAX_INPUT_LENGTH))
+  )
+
   const meals = useMemo(() => sortMealsBySortOrder(dailyMacros?.meals ?? []), [dailyMacros?.meals])
   const selectedMeal = meals.find(meal => meal.id === selectedMealId) ?? meals[0]
   const mealOptions = meals.map(meal => ({key: meal.id, label: meal.name}))
@@ -100,6 +108,7 @@ const LogWithAIScreen = () => {
   const runEstimate = async () => {
     if (!canEstimate || isEstimating) return
 
+    stopDictation()
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
 
     try {
@@ -207,16 +216,30 @@ const LogWithAIScreen = () => {
     </View>
   )
 
+  const onDictatePressed = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+    toggleDictation()
+  }
+
   const inputStage = (
     <>
-      <TextInput
-        style={styles.textInput}
-        multiline={true}
-        maxLength={500}
-        placeholder={LOG_WITH_AI_PLACEHOLDER}
-        value={text}
-        onChangeText={setText}
-      />
+      <View>
+        <TextInput
+          style={styles.textInput}
+          multiline={true}
+          maxLength={MAX_INPUT_LENGTH}
+          placeholder={LOG_WITH_AI_PLACEHOLDER}
+          value={text}
+          onChangeText={setText}
+        />
+
+        <TouchableOpacity
+          style={[styles.micButton, isDictating && styles.micButtonActive]}
+          accessibilityLabel={DICTATION_BUTTON_ACCESSIBILITY_LABEL}
+          onPress={onDictatePressed}>
+          <MicIcon color={isDictating ? Theme.colors.white : Theme.colors.textSecondary} />
+        </TouchableOpacity>
+      </View>
 
       {photo ? (
         <PhotoChip onRemove={() => setPhoto(null)} />

@@ -3,7 +3,7 @@ import {ExerciseSet} from '@data/models/ExerciseSet'
 import {formatSecondsAsDuration} from '@utility/formatSecondsAsDuration'
 import {METERS_PER_MILE} from '@utility/RunUtility'
 
-import {ADDED_LBS_LABEL, DISTANCE_MI_LABEL, DURATION_SEC_LABEL, LBS_LABEL, REPS_LABEL} from '@constants/strings'
+import {DISTANCE_MI_LABEL, DURATION_SEC_LABEL, REPS_LABEL} from '@constants/strings'
 
 export type SetFieldKey = 'weight' | 'reps' | 'addedWeight' | 'durationSeconds' | 'distanceMeters'
 
@@ -15,13 +15,14 @@ export interface SetFieldConfig {
 
 // Which inputs a set shows, and which of them block completing the set —
 // driven by the exercise's loggingType, not by exerciseType (equipment).
-export const getSetFieldsForLoggingType = (loggingType: LoggingTypeEnum): SetFieldConfig[] => {
+// weightLabel is the user's display unit; it never affects the stored values.
+export const getSetFieldsForLoggingType = (loggingType: LoggingTypeEnum, weightLabel: string): SetFieldConfig[] => {
   switch (loggingType) {
     case LoggingTypeEnum.BODYWEIGHT_REPS:
       return [{key: 'reps', label: REPS_LABEL, required: true}]
     case LoggingTypeEnum.WEIGHTED_BODYWEIGHT:
       return [
-        {key: 'addedWeight', label: ADDED_LBS_LABEL, required: false},
+        {key: 'addedWeight', label: `+${weightLabel}`, required: false},
         {key: 'reps', label: REPS_LABEL, required: true}
       ]
     case LoggingTypeEnum.TIME_ONLY:
@@ -33,7 +34,7 @@ export const getSetFieldsForLoggingType = (loggingType: LoggingTypeEnum): SetFie
       ]
     case LoggingTypeEnum.WEIGHT_TIME:
       return [
-        {key: 'weight', label: LBS_LABEL, required: true},
+        {key: 'weight', label: weightLabel, required: true},
         {key: 'durationSeconds', label: DURATION_SEC_LABEL, required: true}
       ]
     case LoggingTypeEnum.DISTANCE_TIME:
@@ -44,7 +45,7 @@ export const getSetFieldsForLoggingType = (loggingType: LoggingTypeEnum): SetFie
     case LoggingTypeEnum.WEIGHT_REPS:
     default:
       return [
-        {key: 'weight', label: LBS_LABEL, required: true},
+        {key: 'weight', label: weightLabel, required: true},
         {key: 'reps', label: REPS_LABEL, required: true}
       ]
   }

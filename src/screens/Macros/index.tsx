@@ -9,6 +9,7 @@ import {Navigation} from '@navigation/types'
 import {useDailyMacrosQuery} from '@queries/macros/useDailyMacrosQuery'
 import {useDeleteMealEntryMutation} from '@queries/macros/useDeleteMealEntryMutation'
 import {useNavigation} from '@react-navigation/native'
+import {isLogWithAiEnabled} from '@service/remoteConfig/initRemoteConfig'
 import {useSessionStore} from '@store/session/useSessionStore'
 import useUserDataStore from '@store/userData/useUserData'
 import {Theme} from '@styles/theme'
@@ -96,9 +97,11 @@ const MacrosScreen = () => {
           <DailySummaryCard totals={day.totals} targets={targets} />
         </View>
 
-        <View style={styles.aiCardContainer}>
-          <LogWithAICard onPress={goToLogWithAI} />
-        </View>
+        {isLogWithAiEnabled() && (
+          <View style={styles.aiCardContainer}>
+            <LogWithAICard onPress={goToLogWithAI} />
+          </View>
+        )}
 
         {day.meals.map(meal => (
           <View key={meal.id} style={styles.mealCardContainer}>

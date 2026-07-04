@@ -1,12 +1,19 @@
 import {estimateMacros} from '@queries/api/macros/estimateMacros'
-import {useMutation} from '@tanstack/react-query'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
 
-import {mutationKeys} from '../keys'
+import {mutationKeys, queryKeys} from '../keys'
 
-// No cache writes — the estimate feeds the review UI; nothing is persisted
-// until the user confirms and entries are logged via useLogMealEntryMutation.
-export const useEstimateMacrosMutation = () =>
-  useMutation({
+// The estimate feeds the review UI and persists nothing (entries are logged
+// via useLogMealEntryMutation) — but each call consumes one unit of the free
+// daily AI quota, so the usage meter is refreshed.
+export const useEstimateMacrosMutation = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
     mutationKey: mutationKeys.estimateMacros,
-    mutationFn: estimateMacros
+    mutationFn: estimateMacros,
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: queryKeys.aiUsage})
+    }
   })
+}

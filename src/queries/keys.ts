@@ -19,7 +19,8 @@ export const queryKeys = {
   macrosHistory: ['macrosHistory'] as const,
   foods: (query: string) => ['foods', query] as const,
   brandedFoodSearch: (query: string) => ['brandedFoodSearch', query] as const,
-  userAvatar: ['userAvatar'] as const
+  userAvatar: ['userAvatar'] as const,
+  aiUsage: ['aiUsage'] as const
 }
 
 export const mutationKeys = {

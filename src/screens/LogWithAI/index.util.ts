@@ -68,3 +68,6 @@ export const formatAddItemsLabel = (count: number, mealName: string): string =>
   `Add ${count} ${count === 1 ? 'item' : 'items'} to ${mealName}`
 
 export const formatTotalCaloriesLabel = (totalCalories: number): string => `~${totalCalories} ${CAL_LABEL} total`
+
+export const formatAiUsageCaption = (used: number, limit: number): string =>
+  `${Math.max(limit - used, 0)} of ${limit} AI estimates left today`

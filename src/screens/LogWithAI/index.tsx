@@ -5,12 +5,15 @@ import {ScrollView, TouchableOpacity, View} from 'react-native'
 import {EstimateItem} from '@data/models/MacroEstimate'
 import {LogWithAIRouteProp, Navigation} from '@navigation/types'
 import {useCreateFoodMutation} from '@queries/foods/useCreateFoodMutation'
+import {useAiUsageQuery} from '@queries/macros/useAiUsageQuery'
 import {useDailyMacrosQuery} from '@queries/macros/useDailyMacrosQuery'
 import {useEstimateMacrosMutation} from '@queries/macros/useEstimateMacrosMutation'
 import {useLogMealEntryMutation} from '@queries/macros/useLogMealEntryMutation'
 import {useNavigation, useRoute} from '@react-navigation/native'
+import {isLogWithAiEnabled} from '@service/remoteConfig/initRemoteConfig'
 import {useSessionStore} from '@store/session/useSessionStore'
 import {Theme} from '@styles/theme'
+import {API_ERROR_CODES, getApiErrorCode} from '@utility/ApiErrorUtility'
 import {captureMealPhoto, PhotoSource} from '@utility/PhotoCaptureUtility'
 import * as Haptics from 'expo-haptics'
 import LinearGradient from 'react-native-linear-gradient'
@@ -24,7 +27,10 @@ import TextInput from '@components/TextInput'
 import {showActionToast, showToast} from '@components/toast/util/ShowToast'
 
 import {
+  AI_DAILY_LIMIT_TOAST,
   AI_ESTIMATE_HEADER,
+  AI_FREE_FOR_NOW_CAPTION,
+  AI_UNAVAILABLE_TEXT,
   CONFIRM_BUTTON_TEXT,
   DICTATION_BUTTON_ACCESSIBILITY_LABEL,
   ESTIMATE_ADJUST_TIP,
@@ -50,6 +56,7 @@ import styles from './index.styled'
 import {
   buildLogEntryPayload,
   formatAddItemsLabel,
+  formatAiUsageCaption,
   formatTotalCaloriesLabel,
   MAX_CALORIE_INPUT_LENGTH,
   parseCalorieInput,
@@ -75,6 +82,7 @@ const LogWithAIScreen = () => {
   const sessionStartDateIso = useSessionStore(state => state.sessionStartDateIso)
 
   const {data: dailyMacros} = useDailyMacrosQuery(sessionStartDateIso)
+  const {data: aiUsage} = useAiUsageQuery()
   const {mutateAsync: estimateMacros, isPending: isEstimating} = useEstimateMacrosMutation()
   const {mutateAsync: logMealEntry} = useLogMealEntryMutation(sessionStartDateIso)
   const {mutateAsync: createFood} = useCreateFoodMutation()
@@ -121,7 +129,15 @@ const LogWithAIScreen = () => {
       setNotes(estimate.notes)
       setStage('review')
     } catch (error) {
-      showToast('error', ESTIMATE_ERROR_TEXT)
+      const code = getApiErrorCode(error)
+
+      if (code === API_ERROR_CODES.quotaExceeded) {
+        showToast('error', AI_DAILY_LIMIT_TOAST)
+      } else if (code === API_ERROR_CODES.featureDisabled) {
+        showToast('error', AI_UNAVAILABLE_TEXT)
+      } else {
+        showToast('error', ESTIMATE_ERROR_TEXT)
+      }
     }
   }
 
@@ -263,6 +279,12 @@ const LogWithAIScreen = () => {
       />
 
       <Text style={styles.caption}>{isEstimating ? ESTIMATING_TEXT : ESTIMATES_NOT_AUDITS_CAPTION}</Text>
+
+      {aiUsage && !aiUsage.unlimited && (
+        <Text style={styles.caption}>
+          {`${AI_FREE_FOR_NOW_CAPTION} · ${formatAiUsageCaption(aiUsage.used, aiUsage.limit)}`}
+        </Text>
+      )}
     </>
   )
 
@@ -312,6 +334,16 @@ const LogWithAIScreen = () => {
       </TouchableOpacity>
     </>
   )
+
+  if (!isLogWithAiEnabled()) {
+    return (
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        {titleBlock}
+
+        <Text style={styles.caption}>{AI_UNAVAILABLE_TEXT}</Text>
+      </ScrollView>
+    )
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">

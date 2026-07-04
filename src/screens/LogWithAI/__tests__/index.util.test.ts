@@ -4,6 +4,7 @@ import {InputMethodEnum} from '@data/models/MealEntry'
 import {
   buildLogEntryPayload,
   formatAddItemsLabel,
+  formatAiUsageCaption,
   formatTotalCaloriesLabel,
   parseCalorieInput,
   scaleItemToCalories,
@@ -146,5 +147,15 @@ describe('formatItemSubtitle', () => {
 
   it('shows macros alone when quantity is empty', () => {
     expect(formatItemSubtitle({...base, quantityText: ''})).toBe('13g P · 1g C · 10g F')
+  })
+})
+
+describe('formatAiUsageCaption', () => {
+  it('shows how many free estimates remain today', () => {
+    expect(formatAiUsageCaption(2, 5)).toBe('3 of 5 AI estimates left today')
+  })
+
+  it('clamps to 0 when the backend over-counts', () => {
+    expect(formatAiUsageCaption(6, 5)).toBe('0 of 5 AI estimates left today')
   })
 })

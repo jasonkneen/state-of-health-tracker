@@ -7,6 +7,8 @@ import {CreateFoodRouteProp, Navigation} from '@navigation/types'
 import {useCreateFoodMutation} from '@queries/foods/useCreateFoodMutation'
 import {useScanNutritionLabelMutation} from '@queries/macros/useScanNutritionLabelMutation'
 import {useNavigation, useRoute} from '@react-navigation/native'
+import {isLogWithAiEnabled} from '@service/remoteConfig/initRemoteConfig'
+import {API_ERROR_CODES, getApiErrorCode} from '@utility/ApiErrorUtility'
 import {captureMealPhoto, PhotoSource} from '@utility/PhotoCaptureUtility'
 
 import LoadingOverlay from '@components/LoadingOverlay'
@@ -17,6 +19,8 @@ import TextInput from '@components/TextInput'
 import {showToast} from '@components/toast/util/ShowToast'
 
 import {
+  AI_DAILY_LIMIT_TOAST,
+  AI_UNAVAILABLE_TEXT,
   CALORIES_AUTO_LABEL,
   CANCEL_BUTTON_TEXT,
   CREATE_FOOD_BUTTON_TEXT,
@@ -132,8 +136,16 @@ const CreateFoodScreen = () => {
       setShowNameError(false)
       setShowMacrosError(false)
       setUnitPickerKey(key => key + 1)
-    } catch {
-      showToast('error', TOAST_GENERIC_ERROR)
+    } catch (error) {
+      const code = getApiErrorCode(error)
+
+      if (code === API_ERROR_CODES.quotaExceeded) {
+        showToast('error', AI_DAILY_LIMIT_TOAST)
+      } else if (code === API_ERROR_CODES.featureDisabled) {
+        showToast('error', AI_UNAVAILABLE_TEXT)
+      } else {
+        showToast('error', TOAST_GENERIC_ERROR)
+      }
     }
   }
 
@@ -253,11 +265,13 @@ const CreateFoodScreen = () => {
             />
           </View>
 
-          <TouchableOpacity style={styles.scanHintCard} activeOpacity={0.7} onPress={onScanHintPressed}>
-            <Text style={styles.scanHintGlyph}>✦</Text>
+          {isLogWithAiEnabled() && (
+            <TouchableOpacity style={styles.scanHintCard} activeOpacity={0.7} onPress={onScanHintPressed}>
+              <Text style={styles.scanHintGlyph}>✦</Text>
 
-            <Text style={styles.scanHintText}>{LABEL_SCAN_HINT}</Text>
-          </TouchableOpacity>
+              <Text style={styles.scanHintText}>{LABEL_SCAN_HINT}</Text>
+            </TouchableOpacity>
+          )}
 
           <PrimaryButton
             style={styles.button}

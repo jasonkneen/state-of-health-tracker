@@ -16,15 +16,13 @@ const Endpoints = {
   Runs: `${baseApiUrl}/runs`,
   WeighIn: `${baseApiUrl}/weigh-in/`,
   WeighIns: `${baseApiUrl}/weigh-ins`,
-  // Function rather than a fixed string (like WeeklyWorkoutSummary) since the
-  // Runs history screen may want to tune the window later; callers that just
-  // want the current convenience default can call `Endpoints.WeeklyRunSummary()`.
   WeeklyRunSummary: (numOfWeeks: number = 7) => `${baseApiUrl}/runs/weekly-summary/${numOfWeeks}`,
   DailyMacros: (date: string) => `${baseApiUrl}/macros/${date}`,
   MacrosHistory: `${baseApiUrl}/macros/history`,
   MacroMealEntries: (mealId: string) => `${baseApiUrl}/macros/meal/${mealId}/entries`,
   MacroEntry: (entryId: string) => `${baseApiUrl}/macros/entry/${entryId}`,
   MacroEstimate: `${baseApiUrl}/macros/estimate`,
+  AiUsage: `${baseApiUrl}/macros/ai-usage`,
   MacroLabelScan: `${baseApiUrl}/macros/label-scan`,
   MacroTargets: `${baseApiUrl}/user/targets`,
   Foods: `${baseApiUrl}/foods`,

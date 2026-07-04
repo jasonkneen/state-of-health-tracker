@@ -62,9 +62,9 @@ const HomeTabs = () => {
       })}>
       <Tab.Screen name={'WorkoutsStack'} component={WorkoutsStack} options={{title: WORKOUTS_TITLE}} />
 
-      <Tab.Screen name={'MacrosStack'} component={MacrosStack} options={{title: MACROS_TITLE}} />
-
       <Tab.Screen name={'ProgressStack'} component={ProgressStack} options={{title: PROGRESS_TITLE}} />
+
+      <Tab.Screen name={'MacrosStack'} component={MacrosStack} options={{title: MACROS_TITLE}} />
 
       <Tab.Screen name={Screens.RUNS} component={RunsStack} />
 

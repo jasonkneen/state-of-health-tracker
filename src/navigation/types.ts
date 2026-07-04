@@ -6,6 +6,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack'
 export type AuthStackParamList = {
   'Log In': undefined
   Register: undefined
+  'Forgot Password': {email?: string} | undefined
 }
 
 export type RootStackParamList = {
@@ -37,3 +38,5 @@ export type CreateFoodRouteProp = RouteProp<RootStackParamList, 'Create Food'>
 export type FoodDetailRouteProp = RouteProp<RootStackParamList, 'Food Detail'>
 
 export type LogWithAIRouteProp = RouteProp<RootStackParamList, 'Log with AI'>
+
+export type ForgotPasswordRouteProp = RouteProp<AuthStackParamList, 'Forgot Password'>

@@ -25,6 +25,7 @@ import {
   AUTH_LOG_IN_BUTTON_TEXT,
   LOGIN_CREATE_ACCOUNT_LINK,
   LOGIN_EMAIL_PLACEHOLDER,
+  LOGIN_FORGOT_PASSWORD_LINK,
   LOGIN_NEW_HERE_TEXT,
   LOGIN_PASSWORD_PLACEHOLDER,
   LOGIN_TAGLINE,
@@ -78,6 +79,13 @@ const LogInScreen = () => {
     }, 300)
   }
 
+  const onForgotPasswordPressed = () => {
+    goBack()
+    setTimeout(() => {
+      push('Auth', {screen: Screens.FORGOT_PASSWORD, params: {email}})
+    }, 300)
+  }
+
   return (
     <LinearGradient colors={LOGIN_GRADIENT_COLORS} style={styles.gradient}>
       <SafeAreaView style={styles.keyboardAvoidingView}>
@@ -122,6 +130,10 @@ const LogInScreen = () => {
               />
 
               {showPasswordError && <Text style={styles.errorText}>{AUTH_FORM_PASSWORD_ERROR}</Text>}
+
+              <TouchableOpacity style={styles.forgotPasswordButton} onPress={onForgotPasswordPressed}>
+                <Text style={styles.forgotPasswordLink}>{LOGIN_FORGOT_PASSWORD_LINK}</Text>
+              </TouchableOpacity>
 
               <PrimaryButton isLoading={isAttemptingAuth} label={AUTH_LOG_IN_BUTTON_TEXT} onPress={handleLogIn} />
             </View>

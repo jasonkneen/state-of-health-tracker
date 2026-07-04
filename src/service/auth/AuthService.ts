@@ -66,6 +66,21 @@ class AuthService {
     }
   }
 
+  async sendPasswordResetEmail(email: string): Promise<void> {
+    try {
+      await auth().sendPasswordResetEmail(email)
+    } catch (e) {
+      const error = e as FirebaseAuthTypes.NativeFirebaseAuthError
+
+      throw {
+        errorPath: AuthErrorPathEnum.PASSWORD_RESET,
+        errorDate: Date.now(),
+        errorCode: error.code,
+        errorMessage: decodeAuthError(error.code)
+      }
+    }
+  }
+
   getCurrentUser() {
     return auth().currentUser
   }

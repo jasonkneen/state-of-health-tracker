@@ -367,6 +367,17 @@ export const LOGIN_NEW_HERE_TEXT = 'New here? '
 
 export const LOGIN_CREATE_ACCOUNT_LINK = 'Create an account'
 
+export const LOGIN_FORGOT_PASSWORD_LINK = 'Forgot password?'
+
+export const FORGOT_PASSWORD_DESCRIPTION =
+  "Enter the email for your account and we'll send you a link to reset your password."
+
+export const FORGOT_PASSWORD_BUTTON_TEXT = 'Send Reset Link'
+
+export const FORGOT_PASSWORD_SUCCESS_TITLE = 'Reset link sent'
+
+export const FORGOT_PASSWORD_SUCCESS_MESSAGE = 'Check your inbox for instructions to reset your password.'
+
 export const RUNS_TITLE = 'Runs'
 
 export const RUNS_THIS_MONTH_TEXT = '%0 mi this month'

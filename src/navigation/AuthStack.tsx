@@ -8,6 +8,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import {Theme} from '@styles/theme'
 
 import RootAuthScreen from '@screens/Auth'
+import ForgotPasswordScreen from '@screens/ForgotPassword'
 import LogInScreen from '@screens/Login'
 import RegisterScreen from '@screens/Register'
 
@@ -31,7 +32,7 @@ const AuthStack = () => {
     <Stack.Navigator
       screenOptions={({route}) => ({
         headerLeft: () =>
-          route.name === Screens.REGISTER && (
+          (route.name === Screens.REGISTER || route.name === Screens.FORGOT_PASSWORD) && (
             <TouchableOpacity onPress={onBackPressed}>
               <Ionicons name="chevron-back" size={24} color={Theme.colors.white} />
             </TouchableOpacity>
@@ -47,6 +48,8 @@ const AuthStack = () => {
       <Stack.Screen name={Screens.LOG_IN} component={LogInScreen} options={{headerShown: false}} />
 
       <Stack.Screen name={Screens.REGISTER} component={RegisterScreen} />
+
+      <Stack.Screen name={Screens.FORGOT_PASSWORD} component={ForgotPasswordScreen} />
     </Stack.Navigator>
   )
 }

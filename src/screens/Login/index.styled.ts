@@ -63,6 +63,14 @@ export default StyleSheet.create({
     marginTop: -Spacing.XX_SMALL,
     marginLeft: Spacing.XX_SMALL
   },
+  forgotPasswordButton: {
+    alignSelf: 'flex-end'
+  },
+  forgotPasswordLink: {
+    fontSize: FontSize.CAPTION,
+    fontWeight: '600',
+    color: Theme.colors.accentGreen
+  },
   footer: {
     marginTop: 'auto',
     flexDirection: 'row',

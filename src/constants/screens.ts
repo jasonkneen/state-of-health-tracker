@@ -20,6 +20,5 @@ export default {
   REGISTER: 'Register',
   LOG_IN: 'Log In',
   FORGOT_PASSWORD: 'Forgot Password',
-  DEBUG: 'Debug',
   CREATE_TEMPLATE: 'Create Template'
 } as const

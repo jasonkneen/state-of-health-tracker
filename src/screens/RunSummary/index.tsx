@@ -29,7 +29,8 @@ import {
   RUN_SAVE_ERROR_TOAST,
   RUN_SAVED_PR_TOAST,
   RUN_STAT_MI_UNIT,
-  SAVE_RUN_BUTTON_TEXT
+  SAVE_RUN_BUTTON_TEXT,
+  TOAST_GENERIC_ERROR
 } from '@constants/strings'
 
 import styles, {backButtonPosition, confirmButtonBackground} from './index.styled'
@@ -83,7 +84,13 @@ const RunSummaryScreen = () => {
     setIsDiscardModalVisible(false)
 
     if (record) {
-      await discardRunMutation.mutateAsync(record.localId)
+      try {
+        await discardRunMutation.mutateAsync(record.localId)
+      } catch {
+        showToast('error', TOAST_GENERIC_ERROR)
+
+        return
+      }
     }
 
     navigation.navigate(Screens.RUNS)

@@ -16,7 +16,6 @@ const Endpoints = {
   Runs: `${baseApiUrl}/runs`,
   WeighIn: `${baseApiUrl}/weigh-in/`,
   WeighIns: `${baseApiUrl}/weigh-ins`,
-  WeeklyRunSummary: (numOfWeeks: number = 7) => `${baseApiUrl}/runs/weekly-summary/${numOfWeeks}`,
   DailyMacros: (date: string) => `${baseApiUrl}/macros/${date}`,
   MacrosHistory: `${baseApiUrl}/macros/history`,
   MacroMealEntries: (mealId: string) => `${baseApiUrl}/macros/meal/${mealId}/entries`,
@@ -27,8 +26,7 @@ const Endpoints = {
   MacroTargets: `${baseApiUrl}/user/targets`,
   Foods: `${baseApiUrl}/foods`,
   Food: (foodId: string) => `${baseApiUrl}/foods/${foodId}`,
-  BrandedFoodSearch: (query: string) => `${baseApiUrl}/macros/search-branded-foods?q=${encodeURIComponent(query)}`,
-  BrandedFood: (foodId: string) => `${baseApiUrl}/macros/branded-food/${foodId}`
+  BrandedFoodSearch: (query: string) => `${baseApiUrl}/macros/search-branded-foods?q=${encodeURIComponent(query)}`
 }
 
 export default Endpoints

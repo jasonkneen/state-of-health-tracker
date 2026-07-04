@@ -50,5 +50,16 @@ export default StyleSheet.create({
   },
   footerSpinner: {
     marginVertical: Spacing.MEDIUM
+  },
+  retryContainer: {
+    alignItems: 'center',
+    marginTop: Spacing.X_LARGE,
+    padding: Spacing.MEDIUM
+  },
+  retryText: {
+    fontSize: FontSize.PARAGRAPH,
+    fontWeight: '600',
+    color: Theme.colors.textSecondary,
+    textAlign: 'center'
   }
 })

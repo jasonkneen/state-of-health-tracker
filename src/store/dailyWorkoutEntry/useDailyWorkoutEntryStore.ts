@@ -176,7 +176,8 @@ const useDailyWorkoutEntryStore = create<DailyWorkoutState>()(
           if (!workout) return
 
           const entry = workout.dailyExercises.find(e => e.exercise.name === exercise.name)
-          const setItem = entry?.sets.find(s => s.id === setId)
+          const setIndex = entry?.sets.findIndex(s => s.id === setId) ?? -1
+          const setItem = setIndex === -1 ? undefined : entry?.sets[setIndex]
 
           if (!setItem) return
 
@@ -186,7 +187,8 @@ const useDailyWorkoutEntryStore = create<DailyWorkoutState>()(
           if (fields.addedWeight !== undefined) setItem.addedWeight = fields.addedWeight
           if (fields.durationSeconds !== undefined) setItem.durationSeconds = fields.durationSeconds
           if (fields.distanceMeters !== undefined) setItem.distanceMeters = fields.distanceMeters
-          setItem.setNumber = isCompleted ? (entry?.sets.length || 0) + 1 : null
+          // The set's ordinal position within the exercise, 1-based
+          setItem.setNumber = isCompleted ? setIndex + 1 : null
 
           // Sets backfilled onto a past day are stamped with the end of that
           // day, not now — the timestamp must never attribute the set to the

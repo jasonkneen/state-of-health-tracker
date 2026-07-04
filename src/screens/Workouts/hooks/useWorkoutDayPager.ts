@@ -55,7 +55,6 @@ export const useWorkoutDayPager = () => {
     selectedDateIso,
     isLoadingDay,
     previewByDate,
-    isViewingToday: selectedDateIso === todayIso,
     selectDay
   }
 }

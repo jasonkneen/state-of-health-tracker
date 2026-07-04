@@ -30,8 +30,7 @@ import {
 } from '@constants/strings'
 
 import styles, {createExerciseMaxPickerWidth} from './index.styled'
-import {bodyPartValues, exerciseTypeValues} from './index.util'
-import {combineExerciseNameType} from './index.util'
+import {bodyPartValues, combineExerciseNameType, exerciseTypeValues} from './index.util'
 
 const CreateExerciseScreen = () => {
   const {goBack} = useNavigation<Navigation>()

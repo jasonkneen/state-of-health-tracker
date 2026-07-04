@@ -48,8 +48,6 @@ export const RunResponseWithRecords = io.intersection([
   io.partial({newRecords: io.array(RunPersonalRecordResponse)})
 ])
 
-export const NullableRunResponse = io.union([RunResponse, io.null])
-
 export const RunsListResponse = io.type({
   runs: io.array(RunResponse),
   pagination: io.type({
@@ -59,11 +57,3 @@ export const RunsListResponse = io.type({
     totalPages: io.number
   })
 })
-
-export const WeeklyRunSummaryResponse = io.type({
-  startOfWeek: io.string,
-  totalRuns: io.number,
-  totalDistanceMeters: io.number
-})
-
-export const WeeklyRunSummariesResponse = io.array(WeeklyRunSummaryResponse)

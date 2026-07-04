@@ -4,6 +4,7 @@ import {createRun} from '@queries/api/runs/createRun'
 import {updateRun} from '@queries/api/runs/updateRun'
 import offlineRunStorageService from '@service/runs/OfflineRunStorageService'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
+import axios from 'axios'
 
 import {mutationKeys, queryKeys} from '../keys'
 
@@ -16,8 +17,8 @@ export interface CompleteRunResult {
 
 // Orchestrates saving a reviewed run: clears the draft flag and persists
 // locally first (so the run survives even if the network push fails or the
-// app is offline), then pushes it to the server and refreshes the runs list +
-// weekly summary. Mirrors useCompleteWorkoutMutation's shape.
+// app is offline), then pushes it to the server and refreshes the runs list.
+// Mirrors useCompleteWorkoutMutation's shape.
 export const useCompleteRunMutation = () => {
   const queryClient = useQueryClient()
 
@@ -35,16 +36,22 @@ export const useCompleteRunMutation = () => {
 
         return {run: synced, newRecords}
       } catch (error) {
-        // Network push failed — the run is safely stored locally and will
-        // be picked up by syncOfflineRuns on a later app open/foreground.
-        return {run: confirmed, newRecords: []}
+        // Genuinely offline (no HTTP response) — the run is safely stored
+        // locally and will be picked up by syncOfflineRuns on a later app
+        // open/foreground, so report success as "queued offline".
+        if (axios.isAxiosError(error) && !error.response) {
+          return {run: confirmed, newRecords: []}
+        }
+
+        // The server responded with an error — rethrow so onError fires
+        // instead of silently reporting success.
+        throw error
       }
     },
     onSuccess: (_, run) => {
       queryClient.invalidateQueries({queryKey: queryKeys.run(run.localId)})
       queryClient.invalidateQueries({queryKey: queryKeys.runs})
       queryClient.invalidateQueries({queryKey: queryKeys.runsTotal})
-      queryClient.invalidateQueries({queryKey: queryKeys.weeklyRunSummary})
     }
   })
 }

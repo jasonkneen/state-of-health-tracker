@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {ActivityIndicator, FlatList, ListRenderItemInfo} from 'react-native'
+import {ActivityIndicator, FlatList, ListRenderItemInfo, TouchableOpacity} from 'react-native'
 
 import {mapLoggingType} from '@data/converters/ExerciseConverter'
 import {WorkoutSummary} from '@data/models/WorkoutSummary'
@@ -25,17 +25,31 @@ import {
   PREVIOUS_WORKOUTS_ENTRIES_EMPTY_BODY,
   PREVIOUS_WORKOUTS_ENTRIES_EMPTY_TITLE,
   REPS_LABEL,
-  SETS_LABEL
+  SETS_LABEL,
+  TOAST_GENERIC_ERROR
 } from '@constants/strings'
 
 import BestSetChip from './components/BestSetChip'
 import styles from './index.styled'
 
 const PreviousWorkoutEntries = () => {
-  const {data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage} = useWorkoutSummariesInfiniteQuery()
+  const {data, isLoading, isError, refetch, fetchNextPage, hasNextPage, isFetchingNextPage} =
+    useWorkoutSummariesInfiniteQuery()
   const weightUnitLabel = useWeightUnitLabel()
 
   const summaries = data?.pages.flatMap(page => page.summaries) ?? []
+
+  if (isError && summaries.length === 0) {
+    return (
+      <Screen edges={[]}>
+        <Text style={styles.title}>{HISTORY_TITLE}</Text>
+
+        <TouchableOpacity style={styles.retryContainer} activeOpacity={0.6} onPress={() => refetch()}>
+          <Text style={styles.retryText}>{TOAST_GENERIC_ERROR}</Text>
+        </TouchableOpacity>
+      </Screen>
+    )
+  }
 
   if (!isLoading && summaries.length === 0) {
     return (

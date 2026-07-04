@@ -9,10 +9,13 @@ export const useDeleteExerciseMutation = () => {
   return useMutation({
     mutationKey: mutationKeys.deleteExercise,
     mutationFn: deleteExercise,
-    onSuccess: () => {
+    onSuccess: (_, exerciseId) => {
       // Templates reference exercises by id, so both caches must refresh
       queryClient.invalidateQueries({queryKey: queryKeys.exercises})
       queryClient.invalidateQueries({queryKey: queryKeys.templates})
+      // Records and history may still reference the deleted exercise
+      queryClient.invalidateQueries({queryKey: queryKeys.records})
+      queryClient.invalidateQueries({queryKey: queryKeys.exerciseHistory(exerciseId)})
     }
   })
 }

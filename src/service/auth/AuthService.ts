@@ -1,9 +1,23 @@
-import {AuthErrorPathEnum} from '@data/models/AuthError'
+import {AuthError, AuthErrorPathEnum} from '@data/models/AuthError'
 import User, {CreateUserPayload} from '@data/models/User'
 import {createUser} from '@queries/api/auth/createUser'
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth'
+import CrashUtility from '@utility/CrashUtility'
 
 import {decodeAuthError} from './AuthErrorEnum'
+
+// A real Error (so instanceof / CrashUtility.recordError work) carrying the
+// AuthError fields the auth screens read via isAuthError()
+const createAuthError = (errorPath: AuthErrorPathEnum, errorCode: string): Error & AuthError => {
+  const errorMessage = decodeAuthError(errorCode)
+
+  return Object.assign(new Error(errorMessage), {
+    errorPath,
+    errorDate: Date.now(),
+    errorCode,
+    errorMessage
+  })
+}
 
 class AuthService {
   async registerUser(email: string, password: string): Promise<User> {
@@ -22,12 +36,7 @@ class AuthService {
     } catch (e) {
       const error = e as FirebaseAuthTypes.NativeFirebaseAuthError
 
-      throw {
-        errorPath: AuthErrorPathEnum.REGISTRATION,
-        errorDate: Date.now(),
-        errorCode: error.code,
-        errorMessage: decodeAuthError(error.code)
-      }
+      throw createAuthError(AuthErrorPathEnum.REGISTRATION, error.code)
     }
 
     try {
@@ -38,8 +47,9 @@ class AuthService {
         email: registeredUser.email
       }
     } catch (error) {
-      console.log(error)
-      await this.deleteCurrentUser()
+      // Roll back the Firebase account so the email isn't left claimed by a
+      // half-created account; the original backend error is what propagates
+      await this.deleteCurrentUser().catch(rollbackError => CrashUtility.recordError(rollbackError))
       throw error
     }
   }
@@ -57,12 +67,7 @@ class AuthService {
     } catch (e) {
       const error = e as FirebaseAuthTypes.NativeFirebaseAuthError
 
-      throw {
-        errorPath: AuthErrorPathEnum.LOGIN,
-        errorDate: Date.now(),
-        errorCode: error.code,
-        errorMessage: decodeAuthError(error.code)
-      }
+      throw createAuthError(AuthErrorPathEnum.LOGIN, error.code)
     }
   }
 
@@ -72,12 +77,7 @@ class AuthService {
     } catch (e) {
       const error = e as FirebaseAuthTypes.NativeFirebaseAuthError
 
-      throw {
-        errorPath: AuthErrorPathEnum.PASSWORD_RESET,
-        errorDate: Date.now(),
-        errorCode: error.code,
-        errorMessage: decodeAuthError(error.code)
-      }
+      throw createAuthError(AuthErrorPathEnum.PASSWORD_RESET, error.code)
     }
   }
 
@@ -85,12 +85,31 @@ class AuthService {
     return auth().currentUser
   }
 
+  /** Subscribes to Firebase auth state (cold-start restore, remote sign-out). Returns the unsubscribe function. */
+  subscribeToAuthChanges(listener: (user: FirebaseAuthTypes.User | null) => void): () => void {
+    return auth().onAuthStateChanged(listener)
+  }
+
   async logOutUser() {
     await auth().signOut()
   }
 
   async deleteCurrentUser() {
-    await auth().currentUser?.delete()
+    const currentUser = auth().currentUser
+
+    if (!currentUser) {
+      // A silent no-op here would let the caller believe the account was
+      // deleted when it wasn't
+      throw createAuthError(AuthErrorPathEnum.DELETE, 'auth/no-current-user')
+    }
+
+    try {
+      await currentUser.delete()
+    } catch (e) {
+      const error = e as FirebaseAuthTypes.NativeFirebaseAuthError
+
+      throw createAuthError(AuthErrorPathEnum.DELETE, error.code)
+    }
   }
 }
 

@@ -1,6 +1,13 @@
 import React from 'react'
 
-import {ActivityIndicator, Dimensions, FlatList, ListRenderItemInfo, View} from 'react-native'
+import {
+  ActivityIndicator,
+  FlatList,
+  ListRenderItemInfo,
+  TouchableOpacity,
+  useWindowDimensions,
+  View
+} from 'react-native'
 
 import {DailySummary} from '@data/models/DailyMacros'
 import {useDailyMacrosQuery} from '@queries/macros/useDailyMacrosQuery'
@@ -19,7 +26,8 @@ import {
   MACROS_EMPTY_HISTORY_SUBTITLE,
   MACROS_EMPTY_HISTORY_TITLE,
   HISTORY_TITLE,
-  PREVIOUS_ENTRIES_HEADER
+  PREVIOUS_ENTRIES_HEADER,
+  TOAST_GENERIC_ERROR
 } from '@constants/strings'
 
 import DaySummaryRow from './components/DaySummaryRow'
@@ -27,59 +35,74 @@ import WeeklyBarChart from './components/WeeklyBarChart'
 import styles from './index.styled'
 import {assembleLast7Days, buildLast7DayKeys} from './index.util'
 
-const SKELETON_WIDTH = Dimensions.get('window').width - Spacing.GUTTER * 2
 const SKELETON_CHART_HEIGHT = 216
 const SKELETON_ROW_HEIGHT = 76
 const SKELETON_ROW_COUNT = 4
 
-const MacrosHistorySkeleton = () => (
-  <View>
-    <Skeleton
-      style={styles.skeletonRow}
-      height={SKELETON_CHART_HEIGHT}
-      width={SKELETON_WIDTH}
-      borderRadius={BorderRadius.CARD_LG}
-    />
+const MacrosHistorySkeleton = () => {
+  const {width} = useWindowDimensions()
 
-    {Array.from({length: SKELETON_ROW_COUNT}, (_, index) => (
+  const skeletonWidth = width - Spacing.GUTTER * 2
+
+  return (
+    <View>
       <Skeleton
-        key={index}
         style={styles.skeletonRow}
-        height={SKELETON_ROW_HEIGHT}
-        width={SKELETON_WIDTH}
-        borderRadius={BorderRadius.CARD}
+        height={SKELETON_CHART_HEIGHT}
+        width={skeletonWidth}
+        borderRadius={BorderRadius.CARD_LG}
       />
-    ))}
-  </View>
-)
+
+      {Array.from({length: SKELETON_ROW_COUNT}, (_, index) => (
+        <Skeleton
+          key={index}
+          style={styles.skeletonRow}
+          height={SKELETON_ROW_HEIGHT}
+          width={skeletonWidth}
+          borderRadius={BorderRadius.CARD}
+        />
+      ))}
+    </View>
+  )
+}
 
 const MacrosHistory = () => {
   const sessionStartDateIso = useSessionStore(state => state.sessionStartDateIso)
   const targetCalories = useUserDataStore(state => state.targetCalories)
   const {data: todayMacros} = useDailyMacrosQuery(sessionStartDateIso)
-  const {data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage} = useMacrosHistoryInfiniteQuery()
+  const {data, isLoading, isError, refetch, fetchNextPage, hasNextPage, isFetchingNextPage} =
+    useMacrosHistoryInfiniteQuery()
 
   const goal = todayMacros?.targets.calories ?? targetCalories
   const historyDays = data?.pages.flatMap(page => page.days) ?? []
   const chartDays = assembleLast7Days(buildLast7DayKeys(sessionStartDateIso), historyDays)
   const todayKey = sessionStartDateIso.split('T')[0]
   const previousDays = historyDays.filter(day => day.date.split('T')[0] !== todayKey)
-  const isEmpty = !isLoading && historyDays.length === 0
+  const hasLoadError = isError && historyDays.length === 0
+  const isEmpty = !isLoading && !hasLoadError && historyDays.length === 0
 
   const renderItem = ({item}: ListRenderItemInfo<DailySummary>) => <DaySummaryRow day={item} goal={goal} />
 
-  if (isLoading || isEmpty) {
+  if (isLoading || hasLoadError || isEmpty) {
     return (
       <Screen edges={[]}>
         <View style={styles.listContent}>
           <Text style={styles.title}>{HISTORY_TITLE}</Text>
         </View>
 
-        {isLoading ? (
+        {isLoading && (
           <View style={styles.listContent}>
             <MacrosHistorySkeleton />
           </View>
-        ) : (
+        )}
+
+        {hasLoadError && (
+          <TouchableOpacity style={styles.retryContainer} activeOpacity={0.6} onPress={() => refetch()}>
+            <Text style={styles.retryText}>{TOAST_GENERIC_ERROR}</Text>
+          </TouchableOpacity>
+        )}
+
+        {isEmpty && (
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyTitle}>{MACROS_EMPTY_HISTORY_TITLE}</Text>
 

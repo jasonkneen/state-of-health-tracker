@@ -75,7 +75,7 @@ const listSwipeItemManager = new ListSwipeItemManager()
 
 const BodyTab = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ProgressStackParamList>>()
-  const {data: weighIns = []} = useWeighInsQuery()
+  const {data: weighIns = [], isLoading} = useWeighInsQuery()
   const goalWeight = useUserData(state => state.goalWeight)
   const weightUnitLabel = useWeightUnitLabel()
   const {mutateAsync: deleteWeighInAsync} = useDeleteWeighInMutation()
@@ -101,6 +101,11 @@ const BodyTab = () => {
     } catch {
       showToast('error', TOAST_WEIGH_IN_DELETE_FAILED)
     }
+  }
+
+  // Avoid flashing the empty state + Log Weight button while the query resolves
+  if (isLoading) {
+    return null
   }
 
   if (weighIns.length === 0) {

@@ -1,4 +1,5 @@
 import {queryClient} from '@queries/queryClient'
+import {FirebaseAuthTypes} from '@react-native-firebase/auth'
 import authService from '@service/auth/AuthService'
 import offlineWorkoutStorageService from '@service/workouts/OfflineWorkoutStorageService'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
@@ -11,6 +12,7 @@ export type AuthState = {
   isAuthed: boolean
   isAttemptingAuth: boolean
   initAuth: () => boolean
+  syncAuthState: (user: FirebaseAuthTypes.User | null) => void
   loginUser: (email: string, password: string) => Promise<void>
   registerUser: (email: string, password: string) => Promise<void>
   logoutUser: () => Promise<void>
@@ -26,7 +28,7 @@ const clearUserSession = async () => {
   useProgressStore.getState().reset()
 }
 
-const useAuthStore = create<AuthState>()(set => ({
+const useAuthStore = create<AuthState>()((set, get) => ({
   userId: null,
   userEmail: null,
   isAuthed: false,
@@ -42,6 +44,21 @@ const useAuthStore = create<AuthState>()(set => ({
     })
 
     return isAuthed
+  },
+  // Keeps the store in sync with Firebase's async auth state — cold-start
+  // session restore (which initAuth's synchronous read can miss) and remote
+  // sign-outs. Wired to authService.subscribeToAuthChanges in App.tsx.
+  syncAuthState: user => {
+    // Explicit login/registration flows own their state transitions —
+    // registration in particular must not flip isAuthed before the backend
+    // account is created (a failure there rolls the Firebase user back)
+    if (get().isAttemptingAuth) return
+
+    set({
+      userId: user?.uid ?? null,
+      userEmail: user?.email ?? null,
+      isAuthed: user !== null
+    })
   },
   loginUser: async (email, password) => {
     set({isAttemptingAuth: true})

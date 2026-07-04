@@ -57,5 +57,16 @@ export default StyleSheet.create({
     fontSize: FontSize.PARAGRAPH,
     color: Theme.colors.textSecondary,
     textAlign: 'center'
+  },
+  retryContainer: {
+    alignItems: 'center',
+    marginTop: Spacing.X_LARGE,
+    padding: Spacing.MEDIUM
+  },
+  retryText: {
+    fontSize: FontSize.PARAGRAPH,
+    fontWeight: '600',
+    color: Theme.colors.textSecondary,
+    textAlign: 'center'
   }
 })

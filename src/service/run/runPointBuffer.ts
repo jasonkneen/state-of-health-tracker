@@ -22,11 +22,10 @@ const tempFilePathForRun = (runId: string) => `${FileSystem.documentDirectory}ru
 let cachedActiveRunId: string | null | undefined
 
 // Per-run write queues. Appends are read-modify-write against the run's JSON
-// file, so concurrent appends for the same run must be serialized. Unlike
-// OfflineWorkoutStorageService's isLocked/withLock (which *skips* a write if
-// one is already in flight), writes here are queued rather than dropped —
-// losing a GPS point silently would defeat the durable-buffer's purpose, and
-// append payloads are small/cheap so queuing is safe.
+// file, so concurrent appends for the same run must be serialized. Like
+// OfflineWorkoutStorageService's withLock, writes are queued rather than
+// dropped — losing a GPS point silently would defeat the durable-buffer's
+// purpose, and append payloads are small/cheap so queuing is safe.
 const writeQueues = new Map<string, Promise<void>>()
 
 const runExclusive = (runId: string, task: () => Promise<void>): Promise<void> => {

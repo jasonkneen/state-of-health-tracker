@@ -85,7 +85,9 @@ const ExerciseListItem = ({exercise}: Props) => {
           )}
         </View>
 
-        {<View style={styles.chipContainer}>{<ExerciseTypeChip exerciseType={exercise.exerciseType} />}</View>}
+        <View style={styles.chipContainer}>
+          <ExerciseTypeChip exerciseType={exercise.exerciseType} />
+        </View>
       </View>
     </TouchableOpacity>
   )

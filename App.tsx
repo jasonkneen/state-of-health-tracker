@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 
-import {LogBox, StatusBar, TouchableOpacity} from 'react-native'
+import {AppState, LogBox, StatusBar, TouchableOpacity} from 'react-native'
 
 import {Ionicons} from '@expo/vector-icons'
 import {NavigationContainer} from '@react-navigation/native'
@@ -18,7 +18,9 @@ import ToastConfig from './src/components/toast/ToastConfig'
 import AuthStack from './src/navigation/AuthStack'
 import HomeTabs from './src/navigation/HomeTabs'
 import {asyncStoragePersister, PERSISTED_QUERY_KEYS, queryClient} from './src/queries/queryClient'
+import authService from './src/service/auth/AuthService'
 import useAuthStore from './src/store/auth/useAuthStore'
+import {useSessionStore} from './src/store/session/useSessionStore'
 
 const Stack = createNativeStackNavigator()
 
@@ -29,6 +31,28 @@ const App = () => {
 
   useEffect(() => {
     SplashScreen.hideAsync()
+  }, [])
+
+  // Keep the auth store in sync with Firebase's async auth state — cold-start
+  // session restore and remote sign-outs both land here
+  useEffect(() => {
+    const unsubscribe = authService.subscribeToAuthChanges(user => {
+      useAuthStore.getState().syncAuthState(user)
+    })
+
+    return unsubscribe
+  }, [])
+
+  // "Today" is captured when the JS bundle loads; an app resumed after
+  // midnight must re-evaluate it or meals/sets get attributed to the old day
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', state => {
+      if (state === 'active') {
+        useSessionStore.getState().refreshSessionDate()
+      }
+    })
+
+    return () => subscription.remove()
   }, [])
 
   const backButton = (onPress: () => void) => {

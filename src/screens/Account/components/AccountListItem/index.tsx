@@ -18,7 +18,7 @@ interface Props {
   readonly value?: string
   readonly icon: React.JSX.Element
   readonly tileVariant?: IconTileVariant
-  readonly type: 'target-calories' | 'target-workouts' | 'step-goal' | 'auth' | 'info' | 'display-name'
+  readonly type: 'target-calories' | 'target-workouts' | 'step-goal' | 'auth' | 'info'
   readonly clickable?: boolean
   readonly danger?: boolean
   readonly isLastInGroup?: boolean

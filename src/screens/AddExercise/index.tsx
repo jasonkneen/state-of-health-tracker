@@ -16,6 +16,7 @@ import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutE
 import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
 import {useIsMutating} from '@tanstack/react-query'
+import {filterExercises} from '@utility/filterExercises'
 import {formatExerciseSubtitle} from '@utility/formatExerciseSubtitle'
 
 import ExerciseTypeChip from '@components/ExerciseTypeChip'
@@ -60,8 +61,8 @@ const AddExerciseScreen = () => {
 
   const {searchTerm, isSearching, catalogResults, setSearchText, loadMoreCatalogResults} = useExerciseCatalogSearch()
 
-  const {data: templates = []} = useTemplatesQuery()
-  const {data: exercises = []} = useExercisesQuery()
+  const {data: templates = [], isLoading: isLoadingTemplates} = useTemplatesQuery()
+  const {data: exercises = [], isLoading: isLoadingExercises} = useExercisesQuery()
   const {mutateAsync: createExercise, isPending: isCreatingExercise} = useCreateExerciseMutation()
   const addDailyExercise = useDailyWorkoutEntryStore(state => state.addDailyExercise)
 
@@ -71,12 +72,7 @@ const AddExerciseScreen = () => {
   const isDeletingTemplate = useIsMutating({mutationKey: mutationKeys.deleteTemplate}) > 0
   const isUpdating = isDeletingExercise || isDeletingTemplate || isCreatingExercise
 
-  const normalizedTerm = searchTerm.toLowerCase()
-  const matchingExercises = exercises.filter(
-    exercise =>
-      exercise.name.toLowerCase().includes(normalizedTerm) ||
-      exercise.exerciseBodyPart?.toLowerCase().includes(normalizedTerm)
-  )
+  const matchingExercises = filterExercises(exercises, searchTerm)
 
   // Catalog entries the user already owns show up under "Your Exercises", so
   // drop them from the catalog section instead of listing them twice
@@ -136,7 +132,8 @@ const AddExerciseScreen = () => {
   }
 
   const renderBrowseHeader = (section: Section) => {
-    const isEmpty = section.data.length === 0
+    const isSectionLoading = section.title === YOUR_EXERCISES_HEADER ? isLoadingExercises : isLoadingTemplates
+    const isEmpty = !isSectionLoading && section.data.length === 0
 
     const button =
       section.title === YOUR_EXERCISES_HEADER ? (

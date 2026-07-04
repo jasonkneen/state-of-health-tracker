@@ -2,67 +2,19 @@ import {WeightUnit} from '@data/models/WeightUnit'
 
 export const CAL_LABEL = 'cal'
 
-export const CAL_LABEL_PLURAL = 'cals'
-
-export const EMPTY_MEAL_TITLE = 'This meal is empty!'
-
-export const EMPTY_MEAL_SUBTITLE = "Tap the '+' to add food"
-
-export const BREAKFAST_MEAL_NAME = 'Breakfast'
-
-export const LUNCH_MEAL_NAME = 'Lunch'
-
-export const DINNER_MEAL_NAME = 'Dinner'
-
-export const SERVINGS_TEXT = 'servings:'
-
-export const FOOD_ITEMS_HEADER = 'Food Items'
-
-export const NEW_FOOD_ITEM_TEXT = 'New Food Item'
-
-export const CREATE_FOOD_NAME_HEADER = 'Food Name'
-
 export const CREATE_FOOD_PROTEIN_HEADER = 'Protein (g)'
 
 export const CREATE_FOOD_CARBS_HEADER = 'Carbs (g)'
 
 export const CREATE_FOOD_FAT_HEADER = 'Fat (g)'
 
-export const CREATE_FOOD_CALORIES_HEADER = 'Total Calories'
-
-export const CREATE_FOOD_ITEM_BUTTON_TEXT = 'Create Food Item'
-
 export const CREATE_FOOD_NAME_ERROR_TEXT = 'Please enter a food name'
 
 export const CREATE_FOOD_PROTEIN_ERROR_TEXT = 'Please enter the total grams of protein per serving'
 
-export const CREATE_FOOD_CARBS_ERROR_TEXT = 'Please enter the total grams of carbs per serving'
-
-export const CREATE_FOOD_FAT_ERROR_TEXT = 'Please enter the total grams of fat per serving'
-
-export const CREATE_FOOD_CALORIES_ERROR_TEXT = 'Please enter the calories per serving'
-
-export const QUICK_ADD_FOOD_SCREEN_TITLE = 'Add Food'
-
-export const PREVIOUS_ENTRIES_TITLE = 'Previous Entries'
-
-export const PREVIOUS_MEAL_ENTRIES_EMPTY_TITLE = "You haven't logged any meals!"
-
-export const PREVIOUS_MEAL_ENTRIES_EMPTY_BODY = "Come back tomorrow when you've added some meals to your log"
-
-export const DAILY_CALORIE_INTAKE_TITLE = 'Daily Macros'
-
 export const REMAINING_TEXT = 'Remaining'
 
 export const OVER_TEXT = 'Over'
-
-export const G_PROTEIN_LABEL = '(g) protein'
-
-export const G_CARBS_LABEL = '(g) carbs'
-
-export const G_FAT_LABEL = '(g) fat'
-
-export const TARGET_CALS_LABEL = 'Target cals:'
 
 export const TARGET_CALORIE_MODAL_TITLE = 'Daily Target Calorie Intake'
 
@@ -72,33 +24,9 @@ export const TARGET_CALORIE_MODAL_ERROR = 'Please enter a value greater than 0'
 
 export const TARGET_CALORIE_MODAL_BUTTON = 'Set Target'
 
-export const DAILY_GOAL_TEXT = 'Daily Goal:'
-
-export const DAILY_CURRENT_TEXT = 'Daily Current:'
-
-export const CALORIES_LABEL = 'Calories'
-
-export const MEALS_LABEL = 'Meals'
-
-export const SEARCH_FOODS_PLACEHOLDER = 'Search food items'
-
 export const SEARCH_EXERCISES_PLACEHOLDER = 'Search exercises'
 
-export const VIEW_PREVIOUS_ENTRIES_BUTTON_TEXT = 'View Previous Entries'
-
-export const SERVINGS_LABEL = 'Servings'
-
-export const FRACTION_LABEL = 'Fraction'
-
-export const SERVING_TYPE_LABEL = 'Serving Type'
-
-export const SERVING_AMOUNT_LABEL = 'Serving Amount'
-
-export const SELECT_A_FRACTION_PLACEHOLDER_TEXT = 'Select a fraction'
-
 export const UPDATE_SERVINGS_BUTTON_TEXT = 'Update Servings'
-
-export const ADD_FOOD_BUTTON_TEXT = 'Add Food'
 
 export const PROTEIN_LABEL = 'protein'
 
@@ -131,13 +59,9 @@ export const WORKOUT_COMPLETED_LABEL = 'Completed'
 
 export const COMPLETE_WORKOUT_ERROR = 'Unable to complete your workout. Please check your connection and try again.'
 
-export const EXERCISES_HEADER = 'Exercises'
-
 export const TEMPLATES_HEADER = 'Templates'
 
 export const ADD_EXERCISE_BUTTON_TEXT = 'Add Exercise'
-
-export const DAILY_WORKOUT_TITLE = 'Daily Workout'
 
 export const DELETE_EXERCISE_BUTTON_TEXT = 'Delete Exercise'
 
@@ -167,8 +91,6 @@ export const CREATE_EXERCISE_BUTTON_TEXT = 'Create Exercise'
 
 export const CREATE_TEMPLATE_BUTTON_TEXT = 'Create Template'
 
-export const NEXT_BUTTON_TEXT = 'Next'
-
 export const CREATE_EXERCISE_NAME_HEADER = 'Exercise Name'
 
 export const CREATE_EXERCISE_NAME_PLACEHOLDER_TEXT = 'Ex: Bench Press'
@@ -189,8 +111,6 @@ export const DELETE_TEMPLATE_MODAL_BODY = 'This will remove %0 from your saved t
 
 export const ADD_SET_BUTTON_TEXT = 'Set'
 
-export const ADD_MEAL_PLACEHOLDER_TEXT = 'Ex: Lunch'
-
 export const EXERCISE_LABEL = 'Exercise'
 
 export const BEST_SET_LABEL = 'Best Set'
@@ -209,15 +129,9 @@ export const EMPTY_PAST_WORKOUT_TITLE = 'No workout logged this day'
 
 export const EMPTY_PAST_WORKOUT_BODY = "Tap '+ Add Exercise' to log it now"
 
-export const NO_EXERCISES_FOUND_EMPTY_TEXT = 'No Exercises Found'
-
 export const NO_FOOD_FOUND_EMPTY_TEXT = 'No Food Items Found'
 
 export const WEEKLY_WORKOUTS_GRAPH_TITLE = 'Weekly Workouts'
-
-export const WEEKLY_WORKOUTS_GRAPH_LABEL1 = 'Target per week: '
-
-export const WEEKLY_WORKOUTS_GRAPH_LABEL2 = 'Completed: '
 
 export const TARGET_WORKOUTS_MODAL_TITLE = 'Weekly Target Workouts'
 
@@ -227,27 +141,15 @@ export const TARGET_WORKOUTS_MODAL_ERROR = 'Please enter a value between 1 throu
 
 export const TARGET_WORKOUTS_MODAL_BUTTON = 'Set Target'
 
-export const NOT_SET_TEXT = 'Not set'
-
 export const ACCOUNT_WELCOME_TEXT = 'Hello!'
 
 export const ACCOUNT_LOGGED_IN_AS_GUEST = 'Logged in as Guest'
-
-export const ACCOUNT_LOGGED_IN_AS = 'Logged in as '
 
 export const ACCOUNT_TARGETS_SECTION_TITLE = 'Targets'
 
 export const ACCOUNT_STATS_SECTION_TITLE = 'Stats'
 
 export const ACCOUNT_AUTH_SECTION_TITLE = 'Account'
-
-export const ACCOUNT_TARGET_CALORIES_LIST_ITEM = 'Target Daily Calories: '
-
-export const ACCOUNT_TARGET_WORKOUTS_LIST_ITEM = 'Target Workouts Per Week: '
-
-export const ACCOUNT_TOTAL_DAYS_MACROS_LIST_ITEM = 'Total Days Logged - Macros: '
-
-export const ACCOUNT_TOTAL_DAYS_WORKOUTS_LIST_ITEM = 'Total Days Logged - Workouts: '
 
 export const AUTH_FORM_EMAIL_HEADER = 'Email'
 
@@ -269,8 +171,6 @@ export const AUTH_LOG_IN_BUTTON_TEXT = 'Log In'
 
 export const AUTH_NO_ACCOUNT_BUTTON_TEXT = "Don't have an account? Click here to register"
 
-export const AUTH_TO_CONTINUE_DESC = 'To continue, please log in or create an account.'
-
 export const AUTH_GENERIC_ERROR_TITLE = 'Authentication Failed'
 
 export const AUTH_GENERIC_ERROR_MESSAGE = 'Something went wrong. Please try again.'
@@ -283,10 +183,6 @@ export const LOG_OUT_CONFIRM_MODAL_HEADER = 'Log Out?'
 
 export const LOG_OUT_CONFIRM_MODAL_BODY =
   'Logging out will reset all your tracked progress. As a logged out user, your data will not be synced on the web and will only be stored locally on your device.'
-
-export const INGREDIENTS_LABEL = 'Ingredients:'
-
-export const PER_SERVINGS_LABEL = 'Per Serving'
 
 export const ACCOUNT_PRIVACY_POLICY = 'Privacy Policy'
 
@@ -310,8 +206,6 @@ export const NO_EXERCISES_ADDED_TEXT =
 export const NO_TEMPLATES_ADDED_TEXT = "No templates added. Tap '+ Create Template' to get started."
 
 export const SELECT_EXERCISES_FOR_TEMPLATE_TITLE = 'Select Exercises'
-
-export const TEMPLATE_YOUR_EXERCISES = 'Your Exercises'
 
 export const TEMPLATE_MODAL_PLACEHOLDER = 'Ex: Chest Day'
 
@@ -389,8 +283,6 @@ export const RUNS_LATEST_BADGE = 'LATEST'
 export const RUNS_MAP_PLACEHOLDER = 'route map'
 
 export const START_NEW_RUN_BUTTON_TEXT = 'Start New Run'
-
-export const RUN_TRACKING_COMING_SOON = 'Run tracking is coming soon!'
 
 export const RUN_STAT_MILES_LABEL = 'miles'
 
@@ -587,13 +479,7 @@ export const PROGRESS_TOP_SET_DELTA_TEXT = '%0% vs %1 wks ago'
 
 export const PROGRESS_NEW_PR_LABEL = 'NEW PR'
 
-export const PROGRESS_BEST_LABEL = 'BEST'
-
 export const PROGRESS_RECENT_SESSIONS_HEADER = 'Recent sessions'
-
-export const PROGRESS_SETS_SUFFIX = ' sets'
-
-export const PROGRESS_1RM_BADGE = '1RM %0'
 
 export const PROGRESS_EMPTY_HISTORY_TITLE = 'No sessions yet'
 
@@ -825,8 +711,6 @@ export const MACROS_EMPTY_HISTORY_TITLE = "You haven't logged any meals!"
 export const MACROS_EMPTY_HISTORY_SUBTITLE = 'Come back tomorrow to see your history.'
 
 export const TOAST_GENERIC_ERROR = 'Something went wrong. Try again.'
-
-export const OF_TARGET_CAL_LABEL = 'of'
 
 export const TOAST_SAVE_AI_FOODS_TITLE = 'Save to your foods?'
 

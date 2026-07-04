@@ -1,5 +1,5 @@
 import {RunRecord} from '@data/models/RunRecord'
-import {RunResponse, RunResponseWithRecords} from '@queries/api/runs/decoder/RunDecoder'
+import {RunResponse} from '@queries/api/runs/decoder/RunDecoder'
 import * as io from 'io-ts'
 
 /**
@@ -39,5 +39,3 @@ export function convertRun(data: io.TypeOf<typeof RunResponse>, localId: string 
     syncAttempts: 0
   }
 }
-
-export type RunResponseWithRecordsType = io.TypeOf<typeof RunResponseWithRecords>

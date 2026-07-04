@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-import {SectionList, TouchableOpacity, View} from 'react-native'
+import {ActivityIndicator, SectionList, TouchableOpacity, View} from 'react-native'
 
 import {Run} from '@data/models/Run'
 import {RunsStackParamList} from '@navigation/RunsStack'
@@ -8,6 +8,7 @@ import {useDiscardRunMutation} from '@queries/runs/useDiscardRunMutation'
 import {useRunsQuery} from '@queries/runs/useRunsQuery'
 import {useNavigation} from '@react-navigation/native'
 import {NativeStackNavigationProp} from '@react-navigation/native-stack'
+import {Theme} from '@styles/theme'
 import ListSwipeItemManager from '@utility/ListSwipeItemManager'
 import {getMilesThisMonth} from '@utility/RunUtility'
 import {SafeAreaView} from 'react-native-safe-area-context'
@@ -28,7 +29,8 @@ import {
   RUNS_THIS_MONTH_TEXT,
   RUNS_TITLE,
   START_NEW_RUN_BUTTON_TEXT,
-  stringWithParameters
+  stringWithParameters,
+  TOAST_GENERIC_ERROR
 } from '@constants/strings'
 
 import EmptyRunsState from './components/EmptyRunsState'
@@ -77,8 +79,12 @@ const RunsScreen = () => {
 
   const handleDeleteConfirmed = async () => {
     if (runToDelete) {
-      await discardRunMutation.mutateAsync(runToDelete.id)
-      await refreshLocalRuns()
+      try {
+        await discardRunMutation.mutateAsync(runToDelete.id)
+        await refreshLocalRuns()
+      } catch {
+        showToast('error', TOAST_GENERIC_ERROR)
+      }
     }
 
     setRunToDelete(null)
@@ -103,7 +109,19 @@ const RunsScreen = () => {
             <Text style={styles.title}>{RUNS_TITLE}</Text>
           </View>
 
-          <EmptyRunsState />
+          {runsQuery.isLoading && (
+            <View style={styles.emptyContainer}>
+              <ActivityIndicator color={Theme.colors.accentGreen} />
+            </View>
+          )}
+
+          {!runsQuery.isLoading && runsQuery.isError && (
+            <TouchableOpacity style={styles.retryContainer} activeOpacity={0.6} onPress={() => runsQuery.refetch()}>
+              <Text style={styles.retryText}>{TOAST_GENERIC_ERROR}</Text>
+            </TouchableOpacity>
+          )}
+
+          {!runsQuery.isLoading && !runsQuery.isError && <EmptyRunsState />}
 
           <PrimaryButton
             style={styles.startRunButton}

@@ -8,7 +8,6 @@ import {Theme} from '@styles/theme'
 import Constants from 'expo-constants'
 import {noop} from 'lodash'
 
-import {closeGlobalBottomSheet} from '@components/GlobalBottomSheet'
 import PrimaryButton from '@components/PrimaryButton'
 import Text from '@components/Text'
 
@@ -51,7 +50,7 @@ const MinimumVersionSheet = () => {
     <>
       {isOpen && (
         <View style={styles.backdrop}>
-          <TouchableWithoutFeedback onPress={closeGlobalBottomSheet}>
+          <TouchableWithoutFeedback onPress={noop}>
             <View style={styles.backdropTouchableArea} />
           </TouchableWithoutFeedback>
         </View>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {Dimensions, View} from 'react-native'
+import {useWindowDimensions, View} from 'react-native'
 
 import {useSessionStore} from '@store/session/useSessionStore'
 import BorderRadius from '@styles/borderRadius'
@@ -22,20 +22,22 @@ const CHECK_COLUMN_WIDTH = 42
 const CHECK_CIRCLE_SIZE = 30
 const SET_CELL_HEIGHT = 40
 
-const setCellWidth =
-  (Dimensions.get('window').width -
-    Spacing.GUTTER * 2 -
-    Spacing.MEDIUM * 2 -
-    SET_NUMBER_COLUMN_WIDTH -
-    CHECK_COLUMN_WIDTH -
-    Spacing.X_SMALL * 3) /
-  2
-
 interface Props {
   readonly dateLabel?: string
 }
 
 const WorkoutsSkeleton = ({dateLabel}: Props) => {
+  const {width: windowWidth} = useWindowDimensions()
+
+  const setCellWidth =
+    (windowWidth -
+      Spacing.GUTTER * 2 -
+      Spacing.MEDIUM * 2 -
+      SET_NUMBER_COLUMN_WIDTH -
+      CHECK_COLUMN_WIDTH -
+      Spacing.X_SMALL * 3) /
+    2
+
   const columnLabelRow = () => (
     <View style={styles.labelRow}>
       <View style={styles.setNumberColumn}>

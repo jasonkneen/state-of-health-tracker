@@ -38,6 +38,9 @@ export const useCompleteWorkoutMutation = () => {
 
       queryClient.invalidateQueries({queryKey: queryKeys.weeklyWorkoutSummaries})
       queryClient.invalidateQueries({queryKey: queryKeys.workoutSummaries})
+      queryClient.invalidateQueries({queryKey: queryKeys.records})
+      queryClient.invalidateQueries({queryKey: queryKeys.exerciseHistories})
+      queryClient.invalidateQueries({queryKey: queryKeys.exercises})
     }
   })
 }

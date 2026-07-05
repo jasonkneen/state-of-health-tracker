@@ -43,6 +43,7 @@ import {
   ACCOUNT_WELCOME_TEXT,
   ACCOUNT_WORKOUTS_PER_WEEK_LABEL
 } from '@constants/strings'
+import {urls} from '@constants/urls'
 
 import AccountListItem from './components/AccountListItem'
 import AuthListItem from './components/AuthListItem'
@@ -73,11 +74,10 @@ const AccountScreen = () => {
   const initials = userEmail?.slice(0, 2).toUpperCase() ?? GUEST_AVATAR_INITIAL
 
   const openPrivacyPolicy = async () => {
-    const privacyPolicy = 'https://www.thestateofhealth.com/privacy-policy'
-    const supported = await Linking.canOpenURL(privacyPolicy)
+    const supported = await Linking.canOpenURL(urls.privacyPolicy)
 
     if (supported) {
-      await Linking.openURL(privacyPolicy)
+      await Linking.openURL(urls.privacyPolicy)
     }
   }
 

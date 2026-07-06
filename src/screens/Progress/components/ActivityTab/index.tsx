@@ -2,11 +2,14 @@ import React, {useState} from 'react'
 
 import {Linking, TouchableOpacity, View} from 'react-native'
 
+import {Ionicons} from '@expo/vector-icons'
 import {useRequestHealthPermissionsMutation} from '@queries/activity/useRequestHealthPermissionsMutation'
 import useUserData from '@store/userData/useUserData'
+import {Theme} from '@styles/theme'
 
 import StepGoalModal from '@components/dialog/StepGoalModal'
 import TargetCaloriesModal from '@components/dialog/TargetCaloriesModal'
+import {openGlobalBottomSheet} from '@components/GlobalBottomSheet'
 import PrimaryButton from '@components/PrimaryButton'
 import Text from '@components/Text'
 import TickerText from '@components/TickerText'
@@ -36,6 +39,7 @@ import styles, {segmentFlex} from './index.styled'
 import {buildWeekRows, CalorieSegmentKey, computeCalorieSegments} from './index.util'
 import useActivitySummary from '../../hooks/useActivitySummary'
 import {formatCount} from '../../index.util'
+import BurnInfoBottomSheet from '../BurnInfoBottomSheet'
 import StepsCard from '../StepsCard'
 
 const SEGMENT_STYLES: Record<CalorieSegmentKey, object> = {
@@ -49,6 +53,8 @@ const SEGMENT_LABELS: Record<CalorieSegmentKey, string> = {
   steps: ACTIVITY_LEGEND_STEPS,
   runs: ACTIVITY_LEGEND_RUNS
 }
+
+const INFO_ICON_SIZE = 14
 
 const ActivityTab = () => {
   const stepGoal = useUserData(state => state.stepGoal)
@@ -77,6 +83,10 @@ const ActivityTab = () => {
 
   const onOpenSettingsPressed = () => {
     Linking.openSettings()
+  }
+
+  const onBurnInfoPressed = () => {
+    openGlobalBottomSheet(<BurnInfoBottomSheet />)
   }
 
   return (
@@ -115,7 +125,11 @@ const ActivityTab = () => {
       )}
 
       <View style={styles.card}>
-        <Text style={styles.label}>{ACTIVITY_CALORIE_BURN_LABEL}</Text>
+        <TouchableOpacity style={styles.labelRow} activeOpacity={0.6} onPress={onBurnInfoPressed}>
+          <Text style={styles.label}>{ACTIVITY_CALORIE_BURN_LABEL}</Text>
+
+          <Ionicons name="information-circle-outline" size={INFO_ICON_SIZE} color={Theme.colors.textMuted} />
+        </TouchableOpacity>
 
         <View style={styles.valueRow}>
           <TickerText text={formatCount(summary.today.totalKcal)} direction={1} style={styles.value} />
@@ -124,7 +138,7 @@ const ActivityTab = () => {
         </View>
 
         {segments.length > 0 && (
-          <>
+          <TouchableOpacity activeOpacity={0.6} onPress={onBurnInfoPressed}>
             <View style={styles.segmentBar}>
               {segments.map(segment => (
                 <View
@@ -147,7 +161,7 @@ const ActivityTab = () => {
                 </View>
               ))}
             </View>
-          </>
+          </TouchableOpacity>
         )}
       </View>
 

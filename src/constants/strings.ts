@@ -454,6 +454,28 @@ export const ACTIVITY_ROW_STEPS_ONLY = 'steps only'
 
 export const ACTIVITY_EMPTY_WEEK_TEXT = 'Complete a workout or take a walk and your activity will show up here.'
 
+export const BURN_INFO_SHEET_TITLE = 'Calorie burn'
+
+export const BURN_INFO_SHEET_SUBTITLE =
+  'The extra calories you burned by being active. What your body burns at rest is never counted.'
+
+export const BURN_INFO_LIFTS_TITLE = 'Lifts'
+
+export const BURN_INFO_LIFTS_BODY =
+  'Based on how long you lifted — or about 3.5 minutes per completed set when timing isn’t available — scaled to your body weight.'
+
+export const BURN_INFO_STEPS_TITLE = 'Steps'
+
+export const BURN_INFO_STEPS_BODY =
+  'A per-step walking estimate scaled to your body weight. Steps taken during a run aren’t counted twice.'
+
+export const BURN_INFO_RUNS_TITLE = 'Runs'
+
+export const BURN_INFO_RUNS_BODY = 'Estimated from each run’s distance — the same number you see on the Runs screen.'
+
+export const BURN_INFO_DISCLAIMER =
+  'Body weight comes from your most recent weigh-in. These are estimates — actual burn varies with intensity and physiology.'
+
 export const ACTIVITY_CONNECT_HEALTH_TITLE = 'Connect Apple Health'
 
 export const ACTIVITY_CONNECT_HEALTH_BODY = 'Allow step access so your daily movement counts toward your activity.'

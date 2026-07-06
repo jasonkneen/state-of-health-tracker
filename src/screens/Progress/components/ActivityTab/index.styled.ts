@@ -28,6 +28,12 @@ export default StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 0.5
   },
+  labelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    columnGap: Spacing.XX_SMALL
+  },
   valueRow: {
     flexDirection: 'row',
     alignItems: 'flex-end',

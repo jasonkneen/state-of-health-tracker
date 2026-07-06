@@ -16,8 +16,12 @@ const effectiveWeight = (entry: ExerciseHistoryEntry): number | null => entry.we
 // Groups flat set history into one row per workout day — newest first — each
 // with that session's strongest set and its estimated 1RM. Sets are ranked by
 // est 1RM rather than raw volume so 225 × 6 (~270) beats 135 × 20 (~225) even
-// though the latter moves more total weight.
-export function groupHistoryIntoSessions(history: ExerciseHistoryEntry[]): SessionSummary[] {
+// though the latter moves more total weight. For reps-only exercises
+// (bodyweight) sets are ranked by reps instead, with weight 0 and no 1RM.
+export function groupHistoryIntoSessions(
+  history: ExerciseHistoryEntry[],
+  isRepsOnly: boolean = false
+): SessionSummary[] {
   const byDate = new Map<string, ExerciseHistoryEntry[]>()
 
   history.forEach(entry => {
@@ -32,9 +36,19 @@ export function groupHistoryIntoSessions(history: ExerciseHistoryEntry[]): Sessi
       let bestOneRepMax: number | null = null
 
       sets.forEach(set => {
+        if (!set.reps) return
+
+        if (isRepsOnly) {
+          if (topSet === null || set.reps > topSet.reps) {
+            topSet = {weight: 0, reps: set.reps}
+          }
+
+          return
+        }
+
         const weight = effectiveWeight(set)
 
-        if (weight === null || !set.reps) return
+        if (weight === null) return
 
         const oneRepMax = epley1RM(weight, set.reps)
 
@@ -73,8 +87,9 @@ export interface TopSetTrendPoint {
   score: number
 }
 
-// Chronological (oldest first) strongest-set points for the trend line — only
-// sessions with a weighted set (skips pure-bodyweight/timed days for this exercise).
+// Chronological (oldest first) strongest-set points for the trend line —
+// skips sessions with no rankable set (e.g. timed days for this exercise).
+// Reps-only top sets carry weight 0 and are scored by their reps.
 export function buildTopSetTrend(sessions: SessionSummary[]): TopSetTrendPoint[] {
   return sessions
     .filter((session): session is SessionSummary & {topSet: {weight: number; reps: number}} => session.topSet !== null)
@@ -82,7 +97,7 @@ export function buildTopSetTrend(sessions: SessionSummary[]): TopSetTrendPoint[]
       date: session.date,
       weight: session.topSet.weight,
       reps: session.topSet.reps,
-      score: epley1RM(session.topSet.weight, session.topSet.reps)
+      score: session.topSet.weight > 0 ? epley1RM(session.topSet.weight, session.topSet.reps) : session.topSet.reps
     }))
     .sort((a, b) => (a.date < b.date ? -1 : 1))
 }

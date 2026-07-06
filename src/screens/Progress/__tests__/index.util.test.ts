@@ -117,6 +117,39 @@ describe('groupHistoryIntoSessions', () => {
     expect(session.estimatedOneRepMax).toBeNull()
     expect(session.setCount).toBe(1)
   })
+
+  describe('reps-only mode (bodyweight exercises)', () => {
+    it('ranks the top set by reps with weight 0 and no 1RM', () => {
+      const history = [
+        makeEntry({setId: 'a', weight: null, reps: 12}),
+        makeEntry({setId: 'b', weight: null, reps: 20}),
+        makeEntry({setId: 'c', weight: null, reps: 15})
+      ]
+
+      const [session] = groupHistoryIntoSessions(history, true)
+
+      expect(session.topSet).toEqual({weight: 0, reps: 20})
+      expect(session.estimatedOneRepMax).toBeNull()
+    })
+
+    it('ignores any logged weight when ranking', () => {
+      // 5 heavy reps must not outrank 20 bodyweight reps
+      const history = [makeEntry({setId: 'a', weight: 100, reps: 5}), makeEntry({setId: 'b', weight: null, reps: 20})]
+
+      const [session] = groupHistoryIntoSessions(history, true)
+
+      expect(session.topSet).toEqual({weight: 0, reps: 20})
+    })
+
+    it('skips sets without reps', () => {
+      const history = [makeEntry({weight: null, reps: null, durationSeconds: 60})]
+
+      const [session] = groupHistoryIntoSessions(history, true)
+
+      expect(session.topSet).toBeNull()
+      expect(session.setCount).toBe(1)
+    })
+  })
 })
 
 describe('buildTopSetTrend', () => {
@@ -154,6 +187,13 @@ describe('buildTopSetTrend', () => {
     expect(point.weight).toBe(225)
     expect(point.reps).toBe(6)
     expect(point.score).toBeCloseTo(270, 5)
+  })
+
+  it('scores reps-only top sets by their reps', () => {
+    const [point] = buildTopSetTrend([makeSession({topSet: {weight: 0, reps: 18}, estimatedOneRepMax: null})])
+
+    expect(point.weight).toBe(0)
+    expect(point.score).toBe(18)
   })
 })
 

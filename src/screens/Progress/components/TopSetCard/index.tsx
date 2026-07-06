@@ -11,7 +11,7 @@ import MiniLineChart from '@components/MiniLineChart'
 import Text from '@components/Text'
 import TickerText from '@components/TickerText'
 
-import {PROGRESS_TOP_SET_DELTA_TEXT, PROGRESS_TOP_SET_LABEL, stringWithParameters} from '@constants/strings'
+import {PROGRESS_TOP_SET_DELTA_TEXT, PROGRESS_TOP_SET_LABEL, REPS_LABEL, stringWithParameters} from '@constants/strings'
 
 import styles from './index.styled'
 import {TopSetTrendPoint, TrendDelta} from '../../index.util'
@@ -42,6 +42,10 @@ const TopSetCard = ({trend, delta}: Props) => {
   }
 
   const displayedPoint = scrubbedPoint ?? last
+
+  // Reps-only exercises (bodyweight) chart their top-set reps — no weight or
+  // est-1RM to show
+  const isRepsTrend = trend.every(point => point.weight === 0)
 
   return (
     <View style={styles.card}>
@@ -74,11 +78,21 @@ const TopSetCard = ({trend, delta}: Props) => {
       </View>
 
       <View style={styles.valueRow}>
-        <TickerText text={`${Math.round(displayedPoint.weight)}`} direction={tickDirection} style={styles.value} />
+        {isRepsTrend ? (
+          <>
+            <TickerText text={`${displayedPoint.reps}`} direction={tickDirection} style={styles.value} />
 
-        <Text style={styles.unit}>{weightUnitLabel}</Text>
+            <Text style={styles.unit}>{REPS_LABEL}</Text>
+          </>
+        ) : (
+          <>
+            <TickerText text={`${Math.round(displayedPoint.weight)}`} direction={tickDirection} style={styles.value} />
 
-        <TickerText text={`× ${displayedPoint.reps}`} direction={tickDirection} style={styles.reps} />
+            <Text style={styles.unit}>{weightUnitLabel}</Text>
+
+            <TickerText text={`× ${displayedPoint.reps}`} direction={tickDirection} style={styles.reps} />
+          </>
+        )}
       </View>
 
       <View style={styles.chartWrapper}>
@@ -86,7 +100,7 @@ const TopSetCard = ({trend, delta}: Props) => {
           points={trend.map(point => ({date: point.date, value: point.score}))}
           color={Theme.colors.accentGreen}
           onScrub={onScrub}
-          pointLabel={value => `1RM ${Math.round(value)}`}
+          pointLabel={value => (isRepsTrend ? `${Math.round(value)} ${REPS_LABEL}` : `1RM ${Math.round(value)}`)}
         />
       </View>
 

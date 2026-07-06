@@ -27,7 +27,11 @@ const RecentSessionsList = ({sessions}: Props) => (
           <Text style={styles.date}>{formatDateToMonthDayName(session.date)}</Text>
 
           <Text style={styles.caption}>
-            {session.topSet ? `Top set ${session.topSet.weight} × ${session.topSet.reps}` : `${session.setCount} sets`}
+            {session.topSet
+              ? session.topSet.weight > 0
+                ? `Top set ${session.topSet.weight} × ${session.topSet.reps}`
+                : `Top set ${session.topSet.reps} reps`
+              : `${session.setCount} sets`}
 
             {session.topSet ? ` · ${session.setCount} sets` : ''}
           </Text>

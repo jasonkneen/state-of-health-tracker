@@ -2,6 +2,7 @@ import React, {useEffect} from 'react'
 
 import {View} from 'react-native'
 
+import {LoggingTypeEnum} from '@data/models/Exercise'
 import {ProgressStackParamList} from '@navigation/ProgressStack'
 import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useExerciseHistoryQuery} from '@queries/records/useExerciseHistoryQuery'
@@ -60,12 +61,14 @@ const ExercisesTab = () => {
     )
   }
 
-  const sessions = groupHistoryIntoSessions(history)
+  const selectedExercise = exercises.find(exercise => exercise.id === selectedExerciseId)
+  const isRepsOnly = selectedExercise?.loggingType === LoggingTypeEnum.BODYWEIGHT_REPS
+
+  const sessions = groupHistoryIntoSessions(history, isRepsOnly)
   const trend = buildTopSetTrend(sessions)
   const delta = getTopSetDelta(trend)
 
   const prCard = buildPrCard(records, sessions, selectedExerciseId)
-  const selectedExercise = exercises.find(exercise => exercise.id === selectedExerciseId)
 
   const onChangeExercisePressed = () => {
     navigation.navigate(Screens.SELECT_EXERCISE)

@@ -70,9 +70,9 @@ describe('estimateLiftSessionMinutes', () => {
 })
 
 describe('estimateLiftCalories', () => {
-  it('matches the MET model for a typical session', () => {
-    // 180 lb (81.65 kg) at 3.5 MET → ~5.0 kcal/min; 47 min ≈ 235 kcal
-    expect(estimateLiftCalories(180, 15, 0, 47 * MS_PER_MINUTE)).toBe(235)
+  it('matches the net MET model for a typical session', () => {
+    // 180 lb (81.65 kg) at 3.5 MET net of resting → ~3.57 kcal/min; 47 min ≈ 168 kcal
+    expect(estimateLiftCalories(180, 15, 0, 47 * MS_PER_MINUTE)).toBe(168)
   })
 
   it('returns 0 when no sets were completed', () => {
@@ -87,15 +87,15 @@ describe('estimateLiftCalories', () => {
   })
 
   it('uses the per-set fallback without timestamps', () => {
-    // 12 sets → 42 min × 5.0 kcal/min ≈ 210 kcal
-    expect(estimateLiftCalories(180, 12)).toBe(210)
+    // 12 sets → 42 min × ~3.57 kcal/min ≈ 150 kcal
+    expect(estimateLiftCalories(180, 12)).toBe(150)
   })
 })
 
 describe('estimateStepCalories', () => {
   it('matches the per-step model', () => {
-    // 8,432 steps at 180 lb ≈ 344 kcal
-    expect(estimateStepCalories(8432, 180)).toBe(344)
+    // 8,432 steps at 180 lb ≈ 248 kcal (net of resting)
+    expect(estimateStepCalories(8432, 180)).toBe(248)
   })
 
   it('returns 0 for 0 steps', () => {

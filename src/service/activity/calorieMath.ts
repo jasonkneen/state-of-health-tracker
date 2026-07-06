@@ -10,13 +10,17 @@ export const DEFAULT_BODY_WEIGHT_LBS = 180
 
 // Compendium of Physical Activities reference value for "resistance
 // training, multiple exercises, 8–15 reps" — deliberately the conservative
-// choice so the app under- rather than over-promises burn. Standard MET
-// formula: kcal/min = MET × 3.5 × kg / 200.
+// choice so the app under- rather than over-promises burn. The resting MET is
+// subtracted so we report *active* calories (burn above just existing), which
+// is what wearables report and what RunRecord.calories already is. Net MET
+// formula: kcal/min = (MET − 1) × 3.5 × kg / 200.
 const LIFT_SESSION_MET = 3.5
-const LIFT_KCAL_PER_MINUTE_PER_KG = (LIFT_SESSION_MET * 3.5) / 200
+const RESTING_MET = 1
+const LIFT_KCAL_PER_MINUTE_PER_KG = ((LIFT_SESSION_MET - RESTING_MET) * 3.5) / 200
 
-// ~3.5 MET walking at ~100 steps/min ≈ 0.04 kcal per step at 180 lb.
-const STEP_KCAL_PER_STEP_PER_KG = 0.0005
+// ~3.5 MET walking at ~100 steps/min, net of resting like the lift model —
+// ≈ 0.03 kcal per step at 180 lb, so a 10k-step day credits ~290 kcal.
+const STEP_KCAL_PER_STEP_PER_KG = 0.00036
 
 const MIN_MINUTES_PER_SET = 2
 const MAX_MINUTES_PER_SET = 6

@@ -140,8 +140,8 @@ describe('buildActivityDays', () => {
       summaries: [makeSummary('2026-07-03', [30])]
     })
 
-    // 15 sets over 47 wall-clock minutes ≈ 235 kcal, vs 30 sets × 3.5 min fallback
-    expect(withLocal[2].liftKcal).toBe(235)
+    // 15 sets over 47 wall-clock minutes ≈ 168 kcal (net METs), vs 30 sets × 3.5 min fallback
+    expect(withLocal[2].liftKcal).toBe(168)
     expect(withSummaryOnly[2].liftKcal).toBeGreaterThan(withLocal[2].liftKcal)
   })
 

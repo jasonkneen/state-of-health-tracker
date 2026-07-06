@@ -6,8 +6,8 @@ import {
   formatDate,
   formatDateToMonthDay,
   formatDateToMonthDayName,
-  formatDateUTC,
   formatDayMonthDay,
+  formatDayTitle,
   formatIsoDayMonthDay,
   getCurrentDate,
   getCurrentDateISO,
@@ -60,19 +60,17 @@ describe('formatDate', () => {
   })
 })
 
-describe('formatDateUTC', () => {
-  it('formats the date portion of an ISO datetime string', () => {
-    expect(formatDateUTC('2026-07-03T23:59:59.000Z')).toBe('July 03, 2026')
+describe('formatDayTitle', () => {
+  it('omits the year for dates in the current year', () => {
+    expect(formatDayTitle('2026-07-02', 2026)).toBe('Thursday, July 2')
   })
 
-  it('formats a date-only ISO string', () => {
-    expect(formatDateUTC('2025-12-25')).toBe('December 25, 2025')
+  it('appends the year for dates outside the current year', () => {
+    expect(formatDayTitle('2025-07-05', 2026)).toBe('Saturday, July 5, 2025')
   })
 
-  it('shows the ISO calendar day regardless of the device timezone', () => {
-    // Regression: building the date at local midnight shifted the display to
-    // the previous day on UTC+ devices
-    expect(formatDateUTC('2026-01-01T00:00:00.000Z')).toBe('January 01, 2026')
+  it('ignores any time component', () => {
+    expect(formatDayTitle('2026-06-28T00:00:00.000Z', 2026)).toBe('Sunday, June 28')
   })
 })
 

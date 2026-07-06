@@ -9,7 +9,7 @@ import {useWeightUnitLabel} from '@hooks/userData/useWeightUnitLabel'
 import {useWorkoutSummariesInfiniteQuery} from '@queries/workouts/useWorkoutSummariesInfiniteQuery'
 import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
-import {formatDateUTC} from '@utility/DateUtility'
+import {formatDayTitle} from '@utility/DateUtility'
 import {formatSecondsAsDuration} from '@utility/formatSecondsAsDuration'
 
 import Chip from '@components/Chip'
@@ -77,7 +77,7 @@ const PreviousWorkoutEntries = () => {
       column1Label={EXERCISE_LABEL}
       column2Label={BEST_SET_LABEL}
       subItems={item.exercises}
-      day={formatDateUTC(item.day)}
+      day={formatDayTitle(item.day, new Date().getFullYear())}
       headerChip={
         <>
           {item.totalWeight > 0 && (
@@ -147,6 +147,7 @@ const PreviousWorkoutEntries = () => {
 
         <FlatList
           style={styles.list}
+          contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
           data={summaries}
           renderItem={renderItem}

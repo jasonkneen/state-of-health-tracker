@@ -15,6 +15,7 @@ export type AuthState = {
   syncAuthState: (user: FirebaseAuthTypes.User | null) => void
   loginUser: (email: string, password: string) => Promise<void>
   registerUser: (email: string, password: string) => Promise<void>
+  signInWithGoogle: () => Promise<void>
   logoutUser: () => Promise<void>
   deleteUser: () => Promise<void>
 }
@@ -85,6 +86,27 @@ const useAuthStore = create<AuthState>()((set, get) => ({
       set({
         userId: account.id,
         userEmail: account.email,
+        isAuthed: true
+      })
+    } catch (error) {
+      set({isAuthed: false})
+      throw error
+    } finally {
+      set({isAttemptingAuth: false})
+    }
+  },
+  signInWithGoogle: async () => {
+    set({isAttemptingAuth: true})
+    try {
+      const user = await authService.signInWithGoogle()
+
+      if (!user) {
+        return
+      }
+
+      set({
+        userId: user.id,
+        userEmail: user.email,
         isAuthed: true
       })
     } catch (error) {

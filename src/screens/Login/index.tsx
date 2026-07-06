@@ -11,6 +11,7 @@ import {isValidEmail, isValidPassword} from '@utility/AccountUtility'
 import LinearGradient from 'react-native-linear-gradient'
 import {SafeAreaView} from 'react-native-safe-area-context'
 
+import GoogleSignInButton from '@components/GoogleSignInButton'
 import PrimaryButton from '@components/PrimaryButton'
 import Text from '@components/Text'
 import TextInput from '@components/TextInput'
@@ -18,6 +19,7 @@ import TextInput from '@components/TextInput'
 import Screens from '@constants/screens'
 import {
   APP_NAME,
+  AUTH_DIVIDER_OR,
   AUTH_FORM_EMAIL_ERROR,
   AUTH_FORM_PASSWORD_ERROR,
   AUTH_GENERIC_ERROR_MESSAGE,
@@ -46,6 +48,7 @@ const LogInScreen = () => {
 
   const isAttemptingAuth = useAuthStore(state => state.isAttemptingAuth)
   const loginUser = useAuthStore(state => state.loginUser)
+  const signInWithGoogle = useAuthStore(state => state.signInWithGoogle)
 
   const validate = (): boolean => {
     const emailIsValid = isValidEmail(email)
@@ -64,6 +67,17 @@ const LogInScreen = () => {
 
     try {
       await loginUser(email, password)
+    } catch (error) {
+      const title = isAuthError(error) ? error.errorPath : AUTH_GENERIC_ERROR_TITLE
+      const message = isAuthError(error) ? error.errorMessage : AUTH_GENERIC_ERROR_MESSAGE
+
+      Alert.alert(title, message, [{text: OKAY_BUTTON_TEXT}])
+    }
+  }
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle()
     } catch (error) {
       const title = isAuthError(error) ? error.errorPath : AUTH_GENERIC_ERROR_TITLE
       const message = isAuthError(error) ? error.errorMessage : AUTH_GENERIC_ERROR_MESSAGE
@@ -136,6 +150,16 @@ const LogInScreen = () => {
               </TouchableOpacity>
 
               <PrimaryButton isLoading={isAttemptingAuth} label={AUTH_LOG_IN_BUTTON_TEXT} onPress={handleLogIn} />
+
+              <View style={styles.dividerRow}>
+                <View style={styles.dividerLine} />
+
+                <Text style={styles.dividerText}>{AUTH_DIVIDER_OR}</Text>
+
+                <View style={styles.dividerLine} />
+              </View>
+
+              <GoogleSignInButton isLoading={isAttemptingAuth} onPress={handleGoogleSignIn} />
             </View>
 
             <View style={styles.footer}>

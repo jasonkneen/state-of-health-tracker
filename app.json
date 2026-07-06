@@ -25,6 +25,10 @@
         ]
       }
     },
+    "android": {
+      "package": "com.stateofhealh.tracker",
+      "googleServicesFile": "./google-services.json"
+    },
     "plugins": [
       [
         "expo-image-picker",
@@ -36,6 +40,12 @@
       "@react-native-firebase/app",
       "@react-native-firebase/auth",
       "@react-native-firebase/crashlytics",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.65554130864-7ufv8ftr9q1vgikl77e4m5dsefb8it41"
+        }
+      ],
       [
         "expo-build-properties",
         {

@@ -175,6 +175,10 @@ export const AUTH_GENERIC_ERROR_TITLE = 'Authentication Failed'
 
 export const AUTH_GENERIC_ERROR_MESSAGE = 'Something went wrong. Please try again.'
 
+export const AUTH_CONTINUE_WITH_GOOGLE = 'Continue with Google'
+
+export const AUTH_DIVIDER_OR = 'or'
+
 export const ACCOUNT_LOG_IN_LIST_ITEM = 'Log In'
 
 export const ACCOUNT_LOG_OUT_LIST_ITEM = 'Log Out'

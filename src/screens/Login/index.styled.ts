@@ -66,6 +66,21 @@ export default StyleSheet.create({
   forgotPasswordButton: {
     alignSelf: 'flex-end'
   },
+  dividerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: Spacing.SMALL,
+    marginVertical: Spacing.XX_SMALL
+  },
+  dividerLine: {
+    flex: 1,
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: Theme.colors.inputBorder
+  },
+  dividerText: {
+    fontSize: FontSize.CAPTION,
+    color: Theme.colors.textSecondary
+  },
   forgotPasswordLink: {
     fontSize: FontSize.CAPTION,
     fontWeight: '600',

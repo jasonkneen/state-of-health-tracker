@@ -10,6 +10,7 @@ import Spacing from '@styles/spacing'
 import {isValidEmail, isValidPassword} from '@utility/AccountUtility'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 
+import GoogleSignInButton from '@components/GoogleSignInButton'
 import PasswordTextInput from '@components/PasswordTextInput'
 import PrimaryButton from '@components/PrimaryButton'
 import Text from '@components/Text'
@@ -17,6 +18,7 @@ import TextInputWithHeader from '@components/TextInputWithHeader'
 
 import Screens from '@constants/screens'
 import {
+  AUTH_DIVIDER_OR,
   AUTH_FORM_CONFIRM_PASSWORD_HEADER,
   AUTH_FORM_EMAIL_ERROR,
   AUTH_FORM_EMAIL_HEADER,
@@ -52,6 +54,7 @@ const AuthForm = (props: Props) => {
   const isAttemptingAuth = useAuthStore(state => state.isAttemptingAuth)
   const loginUser = useAuthStore(state => state.loginUser)
   const registerUser = useAuthStore(state => state.registerUser)
+  const signInWithGoogle = useAuthStore(state => state.signInWithGoogle)
 
   const validate = (): boolean => {
     let isValid = true
@@ -110,6 +113,17 @@ const AuthForm = (props: Props) => {
     }
   }
 
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle()
+    } catch (error) {
+      const title = isAuthError(error) ? error.errorPath : AUTH_GENERIC_ERROR_TITLE
+      const message = isAuthError(error) ? error.errorMessage : AUTH_GENERIC_ERROR_MESSAGE
+
+      Alert.alert(title, message, [{text: OKAY_BUTTON_TEXT}])
+    }
+  }
+
   return (
     <KeyboardAwareScrollView
       keyboardShouldPersistTaps="always"
@@ -151,6 +165,16 @@ const AuthForm = (props: Props) => {
           label={authType === 'register' ? AUTH_REGISTER_BUTTON_TEXT : AUTH_LOG_IN_BUTTON_TEXT}
           onPress={handleAuth}
         />
+
+        <View style={styles.dividerRow}>
+          <View style={styles.dividerLine} />
+
+          <Text style={styles.dividerText}>{AUTH_DIVIDER_OR}</Text>
+
+          <View style={styles.dividerLine} />
+        </View>
+
+        <GoogleSignInButton isLoading={isAttemptingAuth} onPress={handleGoogleSignIn} />
 
         {authType === 'log-in' && (
           <TouchableOpacity

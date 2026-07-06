@@ -24,6 +24,7 @@ import {useTemplatesQuery} from '@queries/templates/useTemplatesQuery'
 import {useCompleteWorkoutMutation} from '@queries/workouts/useCompleteWorkoutMutation'
 import {useWeeklyWorkoutSummariesQuery} from '@queries/workouts/useWeeklyWorkoutSummariesQuery'
 import {useNavigation} from '@react-navigation/native'
+import {registerReviewWorthyMoment} from '@service/review/ReviewPromptService'
 import useAuthStore from '@store/auth/useAuthStore'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
 import {Theme} from '@styles/theme'
@@ -111,6 +112,7 @@ const WorkoutsScreen = () => {
     try {
       await completeWorkout()
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+      registerReviewWorthyMoment()
     } catch {
       showToast('error', COMPLETE_WORKOUT_ERROR)
     }

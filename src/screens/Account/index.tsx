@@ -23,6 +23,7 @@ import DumbbellIcon from '@components/icons/DumbbellIcon'
 import FlameIcon from '@components/icons/FlameIcon'
 import RunIcon from '@components/icons/RunIcon'
 import ScaleIcon from '@components/icons/ScaleIcon'
+import StarIcon from '@components/icons/StarIcon'
 import StepsIcon from '@components/icons/StepsIcon'
 import Text from '@components/Text'
 
@@ -33,6 +34,7 @@ import {
   ACCOUNT_LOGGED_IN_AS_GUEST,
   GUEST_AVATAR_INITIAL,
   ACCOUNT_PRIVACY_POLICY,
+  ACCOUNT_RATE_APP_LABEL,
   ACCOUNT_SETTINGS_SECTION_TITLE,
   ACCOUNT_STATS_SECTION_TITLE,
   ACCOUNT_TARGETS_SECTION_TITLE,
@@ -72,6 +74,14 @@ const AccountScreen = () => {
   const totalSummaries = summariesData?.pages[0]?.pagination.total ?? 0
 
   const initials = userEmail?.slice(0, 2).toUpperCase() ?? GUEST_AVATAR_INITIAL
+
+  const openAppStoreReview = async () => {
+    const supported = await Linking.canOpenURL(urls.iosStoreReview)
+
+    if (supported) {
+      await Linking.openURL(urls.iosStoreReview)
+    }
+  }
 
   const openPrivacyPolicy = async () => {
     const supported = await Linking.canOpenURL(urls.privacyPolicy)
@@ -158,9 +168,16 @@ const AccountScreen = () => {
           type="info"
           label={ACCOUNT_WEIGHT_UNIT_LABEL}
           value={weightUnitLabel}
-          isLastInGroup={true}
           icon={<ScaleIcon color={Theme.colors.textSecondary} size={TILE_ICON_SIZE} />}
           onPressOverride={() => openGlobalBottomSheet(<WeightUnitBottomSheet />)}
+        />
+
+        <AccountListItem
+          type="info"
+          label={ACCOUNT_RATE_APP_LABEL}
+          isLastInGroup={true}
+          icon={<StarIcon color={Theme.colors.textSecondary} size={TILE_ICON_SIZE} />}
+          onPressOverride={openAppStoreReview}
         />
       </View>
     </>

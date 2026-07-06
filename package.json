@@ -44,6 +44,7 @@
     "expo-speech-recognition": "^56.0.1",
     "expo-splash-screen": "~57.0.1",
     "expo-status-bar": "~57.0.0",
+    "expo-store-review": "~57.0.0",
     "expo-task-manager": "~57.0.1",
     "fp-ts": "^2.16.1",
     "immer": "^10.1.1",

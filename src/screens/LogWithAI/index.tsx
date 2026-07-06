@@ -11,6 +11,7 @@ import {useEstimateMacrosMutation} from '@queries/macros/useEstimateMacrosMutati
 import {useLogMealEntryMutation} from '@queries/macros/useLogMealEntryMutation'
 import {useNavigation, useRoute} from '@react-navigation/native'
 import {isLogWithAiEnabled} from '@service/remoteConfig/initRemoteConfig'
+import {registerReviewWorthyMoment} from '@service/review/ReviewPromptService'
 import {useSessionStore} from '@store/session/useSessionStore'
 import {Theme} from '@styles/theme'
 import {API_ERROR_CODES, getApiErrorCode} from '@utility/ApiErrorUtility'
@@ -72,6 +73,7 @@ const PHOTO_ONLY_SUMMARY_TEXT = 'Photo'
 const TAP_TO_EDIT_HINT = 'Tap to edit and re-estimate'
 const CALORIE_INPUT_ERROR = 'Enter a valid calorie amount.'
 const MAX_INPUT_LENGTH = 500
+const AI_LOG_REVIEW_DELAY_MS = 8000
 
 type Stage = 'input' | 'review'
 
@@ -211,6 +213,9 @@ const LogWithAIScreen = () => {
         () => saveItemsToFoods(loggedItems)
       )
       navigation.popToTop()
+
+      // Delayed past the 7s action toast so a review sheet never covers it.
+      registerReviewWorthyMoment(AI_LOG_REVIEW_DELAY_MS)
     } catch (error) {
       showToast('error', TOAST_GENERIC_ERROR)
     } finally {

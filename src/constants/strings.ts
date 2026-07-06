@@ -587,6 +587,8 @@ export const ACCOUNT_SETTINGS_SECTION_TITLE = 'Settings'
 
 export const ACCOUNT_WEIGHT_UNIT_LABEL = 'Weight unit'
 
+export const ACCOUNT_RATE_APP_LABEL = 'Rate State of Health'
+
 export const WEIGHT_UNIT_SHEET_TITLE = 'Weight unit'
 
 export const WEIGHT_UNIT_SHEET_SUBTITLE = 'Your preferred unit for weights across the app'

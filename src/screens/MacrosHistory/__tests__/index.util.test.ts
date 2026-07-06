@@ -7,7 +7,6 @@ import {
   buildLast7DayKeys,
   chartMaxCalories,
   clampBarIndex,
-  formatDayTitle,
   formatMacroLine,
   formatScrubDayLabel,
   goalLinePct,
@@ -160,16 +159,6 @@ describe('isNearGoal', () => {
 
   it('is false when there is no goal', () => {
     expect(isNearGoal(500, 0)).toBe(false)
-  })
-})
-
-describe('formatDayTitle', () => {
-  it('formats a day key as weekday, month and day', () => {
-    expect(formatDayTitle('2026-07-02')).toBe('Thursday, July 2')
-  })
-
-  it('ignores any time component', () => {
-    expect(formatDayTitle('2026-06-28T00:00:00.000Z')).toBe('Sunday, June 28')
   })
 })
 

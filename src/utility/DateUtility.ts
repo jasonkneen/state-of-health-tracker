@@ -6,18 +6,16 @@ export const getCurrentDateISO = () => format(new Date(), 'yyyy-MM-dd')
 
 export const formatDate = (date: number) => format(date, 'MMMM dd, yyyy')
 
-export const formatDateUTC = (isoDate: string) => {
-  const [year, month, day] = isoDate.split('T')[0].split('-')
-  // Build the date in UTC so formatting with timeZone: 'UTC' shows the same
-  // calendar day regardless of the device's timezone offset
-  const date = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day)))
+/**
+ * Formats a 'yyyy-MM-dd' day key as e.g. 'Thursday, July 2', appending the
+ * year ('Saturday, July 5, 2025') when it differs from `currentYear`. Builds
+ * the Date from its parts so the string isn't parsed as UTC midnight, which
+ * would display the previous calendar day in UTC+ timezones.
+ */
+export const formatDayTitle = (isoDate: string, currentYear: number): string => {
+  const [year, month, day] = isoDate.split('T')[0].split('-').map(Number)
 
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: '2-digit',
-    timeZone: 'UTC'
-  })
+  return format(new Date(year, month - 1, day), year === currentYear ? 'EEEE, MMMM d' : 'EEEE, MMMM d, yyyy')
 }
 
 export const compareIsoDateStrings = (a: string, b: string): boolean => {

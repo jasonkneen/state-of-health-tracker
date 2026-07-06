@@ -97,17 +97,6 @@ export const goalLinePct = (goal: number, chartMax: number): number => {
 export const isNearGoal = (calories: number, goal: number): boolean =>
   goal > 0 && calories >= goal * NEAR_GOAL_THRESHOLD
 
-/**
- * Formats a 'yyyy-MM-dd' day key as e.g. 'Thursday, July 2'. Builds the Date
- * from its parts so the string isn't parsed as UTC midnight, which would
- * display the previous calendar day in UTC+ timezones.
- */
-export const formatDayTitle = (isoDate: string): string => {
-  const [year, month, day] = isoDate.split('T')[0].split('-').map(Number)
-
-  return format(new Date(year, month - 1, day), 'EEEE, MMMM d')
-}
-
 /** Formats macro grams as e.g. '92g P · 188g C · 61g F'. */
 export const formatMacroLine = (protein: number, carbs: number, fat: number): string =>
   `${protein}g P · ${carbs}g C · ${fat}g F`

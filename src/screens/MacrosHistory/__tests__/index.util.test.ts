@@ -1,16 +1,15 @@
 import {DailySummary} from '@data/models/DailyMacros'
 
-import {ON_GOAL_LABEL} from '@constants/strings'
-
 import {
   assembleLast7Days,
   averageCalories,
   barHeightPct,
   buildLast7DayKeys,
   chartMaxCalories,
-  formatDaySubtitle,
+  clampBarIndex,
   formatDayTitle,
-  goalDeltaLabel,
+  formatMacroLine,
+  formatScrubDayLabel,
   goalLinePct,
   isNearGoal,
   MIN_BAR_HEIGHT_PCT
@@ -164,21 +163,6 @@ describe('isNearGoal', () => {
   })
 })
 
-describe('goalDeltaLabel', () => {
-  it('labels days at or above the goal as on goal', () => {
-    expect(goalDeltaLabel(1833, 1800)).toEqual({label: ON_GOAL_LABEL, isOnGoal: true})
-    expect(goalDeltaLabel(1800, 1800)).toEqual({label: ON_GOAL_LABEL, isOnGoal: true})
-  })
-
-  it('labels days below the goal with a minus-prefixed delta', () => {
-    expect(goalDeltaLabel(1590, 1800)).toEqual({label: '−210', isOnGoal: false})
-  })
-
-  it('formats large deltas with thousands separators', () => {
-    expect(goalDeltaLabel(500, 1800)).toEqual({label: '−1,300', isOnGoal: false})
-  })
-})
-
 describe('formatDayTitle', () => {
   it('formats a day key as weekday, month and day', () => {
     expect(formatDayTitle('2026-07-02')).toBe('Thursday, July 2')
@@ -189,14 +173,36 @@ describe('formatDayTitle', () => {
   })
 })
 
-describe('formatDaySubtitle', () => {
-  it('formats meal count and macro grams', () => {
-    expect(formatDaySubtitle(summary('2026-07-02', 1833))).toBe('3 meals · 92g P · 188g C · 61g F')
+describe('formatMacroLine', () => {
+  it('formats macro grams', () => {
+    expect(formatMacroLine(92, 188, 61)).toBe('92g P · 188g C · 61g F')
+  })
+})
+
+describe('formatScrubDayLabel', () => {
+  it('formats a day key as short weekday, month and day', () => {
+    expect(formatScrubDayLabel('2026-07-02')).toBe('Thu, Jul 2')
   })
 
-  it('uses the singular label for a single meal', () => {
-    expect(formatDaySubtitle(summary('2026-07-02', 400, {mealCount: 1, protein: 20, carbs: 30, fat: 10}))).toBe(
-      '1 meal · 20g P · 30g C · 10g F'
-    )
+  it('ignores any time component', () => {
+    expect(formatScrubDayLabel('2026-06-28T00:00:00.000Z')).toBe('Sun, Jun 28')
+  })
+})
+
+describe('clampBarIndex', () => {
+  it('maps a touch position to its bar', () => {
+    expect(clampBarIndex(0, 700, 7)).toBe(0)
+    expect(clampBarIndex(150, 700, 7)).toBe(1)
+    expect(clampBarIndex(699, 700, 7)).toBe(6)
+  })
+
+  it('clamps positions outside the chart to the edge bars', () => {
+    expect(clampBarIndex(-20, 700, 7)).toBe(0)
+    expect(clampBarIndex(900, 700, 7)).toBe(6)
+  })
+
+  it('returns 0 when the chart has no measured width or no bars', () => {
+    expect(clampBarIndex(100, 0, 7)).toBe(0)
+    expect(clampBarIndex(100, 700, 0)).toBe(0)
   })
 })

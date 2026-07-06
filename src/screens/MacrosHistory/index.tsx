@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   FlatList,
   ListRenderItemInfo,
+  StyleSheet,
   TouchableOpacity,
   useWindowDimensions,
   View
@@ -17,6 +18,7 @@ import useUserDataStore from '@store/userData/useUserData'
 import BorderRadius from '@styles/borderRadius'
 import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
+import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
 
 import Screen from '@components/Screen'
 import Skeleton from '@components/Skeleton'
@@ -30,7 +32,7 @@ import {
   TOAST_GENERIC_ERROR
 } from '@constants/strings'
 
-import DaySummaryRow from './components/DaySummaryRow'
+import DayBreakdownCard from './components/DayBreakdownCard'
 import WeeklyBarChart from './components/WeeklyBarChart'
 import styles from './index.styled'
 import {assembleLast7Days, buildLast7DayKeys} from './index.util'
@@ -38,6 +40,7 @@ import {assembleLast7Days, buildLast7DayKeys} from './index.util'
 const SKELETON_CHART_HEIGHT = 216
 const SKELETON_ROW_HEIGHT = 76
 const SKELETON_ROW_COUNT = 4
+const CROSS_DISSOLVE_DURATION_MS = 250
 
 const MacrosHistorySkeleton = () => {
   const {width} = useWindowDimensions()
@@ -81,68 +84,75 @@ const MacrosHistory = () => {
   const hasLoadError = isError && historyDays.length === 0
   const isEmpty = !isLoading && !hasLoadError && historyDays.length === 0
 
-  const renderItem = ({item}: ListRenderItemInfo<DailySummary>) => <DaySummaryRow day={item} goal={goal} />
-
-  if (isLoading || hasLoadError || isEmpty) {
-    return (
-      <Screen edges={[]}>
-        <View style={styles.listContent}>
-          <Text style={styles.title}>{HISTORY_TITLE}</Text>
-        </View>
-
-        {isLoading && (
-          <View style={styles.listContent}>
-            <MacrosHistorySkeleton />
-          </View>
-        )}
-
-        {hasLoadError && (
-          <TouchableOpacity style={styles.retryContainer} activeOpacity={0.6} onPress={() => refetch()}>
-            <Text style={styles.retryText}>{TOAST_GENERIC_ERROR}</Text>
-          </TouchableOpacity>
-        )}
-
-        {isEmpty && (
-          <View style={styles.emptyContainer}>
-            <Text style={styles.emptyTitle}>{MACROS_EMPTY_HISTORY_TITLE}</Text>
-
-            <Text style={styles.emptySubtitle}>{MACROS_EMPTY_HISTORY_SUBTITLE}</Text>
-          </View>
-        )}
-      </Screen>
-    )
-  }
+  const renderItem = ({item}: ListRenderItemInfo<DailySummary>) => <DayBreakdownCard day={item} />
 
   return (
     <Screen edges={[]}>
-      <FlatList
-        style={styles.list}
-        contentContainerStyle={styles.listContent}
-        showsVerticalScrollIndicator={false}
-        data={previousDays}
-        keyExtractor={day => day.date}
-        renderItem={renderItem}
-        onEndReachedThreshold={0.75}
-        onEndReached={() => {
-          if (hasNextPage && !isFetchingNextPage) {
-            fetchNextPage()
-          }
-        }}
-        ListHeaderComponent={
-          <>
+      {!isLoading && (hasLoadError || isEmpty) && (
+        <Animated.View style={styles.root} entering={FadeIn.duration(CROSS_DISSOLVE_DURATION_MS)}>
+          <View style={styles.listContent}>
             <Text style={styles.title}>{HISTORY_TITLE}</Text>
+          </View>
 
-            <WeeklyBarChart days={chartDays} goal={goal} />
+          {hasLoadError && (
+            <TouchableOpacity style={styles.retryContainer} activeOpacity={0.6} onPress={() => refetch()}>
+              <Text style={styles.retryText}>{TOAST_GENERIC_ERROR}</Text>
+            </TouchableOpacity>
+          )}
 
-            {previousDays.length > 0 && <Text style={styles.sectionHeader}>{PREVIOUS_ENTRIES_HEADER}</Text>}
-          </>
-        }
-        ListFooterComponent={
-          isFetchingNextPage ? (
-            <ActivityIndicator style={styles.footerSpinner} size="small" color={Theme.colors.textSecondary} />
-          ) : null
-        }
-      />
+          {isEmpty && (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyTitle}>{MACROS_EMPTY_HISTORY_TITLE}</Text>
+
+              <Text style={styles.emptySubtitle}>{MACROS_EMPTY_HISTORY_SUBTITLE}</Text>
+            </View>
+          )}
+        </Animated.View>
+      )}
+
+      {!isLoading && !hasLoadError && !isEmpty && (
+        <Animated.View style={styles.root} entering={FadeIn.duration(CROSS_DISSOLVE_DURATION_MS)}>
+          <FlatList
+            style={styles.list}
+            contentContainerStyle={styles.listContent}
+            showsVerticalScrollIndicator={false}
+            data={previousDays}
+            keyExtractor={day => day.date}
+            renderItem={renderItem}
+            onEndReachedThreshold={0.75}
+            onEndReached={() => {
+              if (hasNextPage && !isFetchingNextPage) {
+                fetchNextPage()
+              }
+            }}
+            ListHeaderComponent={
+              <>
+                <Text style={styles.title}>{HISTORY_TITLE}</Text>
+
+                <WeeklyBarChart days={chartDays} goal={goal} />
+
+                {previousDays.length > 0 && <Text style={styles.sectionHeader}>{PREVIOUS_ENTRIES_HEADER}</Text>}
+              </>
+            }
+            ListFooterComponent={
+              isFetchingNextPage ? (
+                <ActivityIndicator style={styles.footerSpinner} size="small" color={Theme.colors.textSecondary} />
+              ) : null
+            }
+          />
+        </Animated.View>
+      )}
+
+      {isLoading && (
+        <Animated.View
+          style={[StyleSheet.absoluteFill, styles.skeletonOverlay]}
+          pointerEvents="none"
+          exiting={FadeOut.duration(CROSS_DISSOLVE_DURATION_MS)}>
+          <Text style={styles.title}>{HISTORY_TITLE}</Text>
+
+          <MacrosHistorySkeleton />
+        </Animated.View>
+      )}
     </Screen>
   )
 }

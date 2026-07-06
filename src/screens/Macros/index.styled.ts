@@ -13,6 +13,9 @@ export default StyleSheet.create({
     paddingHorizontal: Spacing.GUTTER,
     paddingBottom: Spacing.X_LARGE
   },
+  skeletonOverlay: {
+    paddingHorizontal: Spacing.GUTTER
+  },
   dateOverline: {
     fontSize: FontSize.OVERLINE,
     fontWeight: '600',

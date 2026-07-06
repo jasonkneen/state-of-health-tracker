@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {ScrollView, TouchableOpacity, View} from 'react-native'
+import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native'
 
 import {DailyMacros} from '@data/models/DailyMacros'
 import {Meal} from '@data/models/Meal'
@@ -15,6 +15,7 @@ import useUserDataStore from '@store/userData/useUserData'
 import {Theme} from '@styles/theme'
 import {formatIsoDayMonthDay} from '@utility/DateUtility'
 import ListSwipeItemManager from '@utility/ListSwipeItemManager'
+import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
 import {SafeAreaView} from 'react-native-safe-area-context'
 
 import HistoryIcon from '@components/icons/HistoryIcon'
@@ -35,6 +36,7 @@ const listSwipeItemManager = new ListSwipeItemManager()
 
 const HISTORY_ICON_SIZE = 22
 const HISTORY_ICON_STROKE_WIDTH = 2
+const CROSS_DISSOLVE_DURATION_MS = 250
 
 const MacrosScreen = () => {
   const navigation = useNavigation<Navigation>()
@@ -121,21 +123,32 @@ const MacrosScreen = () => {
 
   return (
     <SafeAreaView style={styles.root} edges={['top']}>
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        {isLoading && <MacrosSkeleton dateLabel={eyebrowDate} />}
+      {!isLoading && (
+        <Animated.View style={styles.root} entering={FadeIn.duration(CROSS_DISSOLVE_DURATION_MS)}>
+          <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+            {!dailyMacros && isError && (
+              <>
+                {renderHeader()}
 
-        {!isLoading && !dailyMacros && isError && (
-          <>
-            {renderHeader()}
+                <TouchableOpacity style={styles.retryContainer} activeOpacity={0.6} onPress={() => refetch()}>
+                  <Text style={styles.retryText}>{TOAST_GENERIC_ERROR}</Text>
+                </TouchableOpacity>
+              </>
+            )}
 
-            <TouchableOpacity style={styles.retryContainer} activeOpacity={0.6} onPress={() => refetch()}>
-              <Text style={styles.retryText}>{TOAST_GENERIC_ERROR}</Text>
-            </TouchableOpacity>
-          </>
-        )}
+            {dailyMacros && renderDay(dailyMacros)}
+          </ScrollView>
+        </Animated.View>
+      )}
 
-        {!isLoading && dailyMacros && renderDay(dailyMacros)}
-      </ScrollView>
+      {isLoading && (
+        <Animated.View
+          style={[StyleSheet.absoluteFill, styles.skeletonOverlay]}
+          pointerEvents="none"
+          exiting={FadeOut.duration(CROSS_DISSOLVE_DURATION_MS)}>
+          <MacrosSkeleton dateLabel={eyebrowDate} />
+        </Animated.View>
+      )}
     </SafeAreaView>
   )
 }

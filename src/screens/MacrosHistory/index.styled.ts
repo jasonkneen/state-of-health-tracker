@@ -5,8 +5,14 @@ import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
 
 export default StyleSheet.create({
+  root: {
+    flex: 1
+  },
   list: {
     flex: 1
+  },
+  skeletonOverlay: {
+    paddingHorizontal: Spacing.GUTTER
   },
   listContent: {
     paddingHorizontal: Spacing.GUTTER,

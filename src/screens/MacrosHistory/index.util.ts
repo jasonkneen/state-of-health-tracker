@@ -2,19 +2,12 @@ import {DailySummary} from '@data/models/DailyMacros'
 import {getPreviousDayISO} from '@utility/DateUtility'
 import {format} from 'date-fns'
 
-import {ON_GOAL_LABEL} from '@constants/strings'
-
 export interface ChartDay {
   dateIso: string
   dayOfMonth: number
   calories: number
   hasData: boolean
   isToday: boolean
-}
-
-export interface GoalDelta {
-  label: string
-  isOnGoal: boolean
 }
 
 // Headroom above the tallest bar so the goal line never sits flush with the top
@@ -25,8 +18,6 @@ export const MIN_BAR_HEIGHT_PCT = 6
 
 // Bars within 90% of the goal get the mid-emphasis color
 const NEAR_GOAL_THRESHOLD = 0.9
-
-const MINUS_SIGN = '−'
 
 /**
  * Returns the last 7 calendar day keys ('yyyy-MM-dd') ending on `todayIso`,
@@ -107,18 +98,6 @@ export const isNearGoal = (calories: number, goal: number): boolean =>
   goal > 0 && calories >= goal * NEAR_GOAL_THRESHOLD
 
 /**
- * Right-side label under a day's calories: 'on goal' when the day met the
- * goal, otherwise the remaining calories as a minus-prefixed delta.
- */
-export const goalDeltaLabel = (calories: number, goal: number): GoalDelta => {
-  if (calories >= goal) {
-    return {label: ON_GOAL_LABEL, isOnGoal: true}
-  }
-
-  return {label: `${MINUS_SIGN}${(goal - calories).toLocaleString()}`, isOnGoal: false}
-}
-
-/**
  * Formats a 'yyyy-MM-dd' day key as e.g. 'Thursday, July 2'. Builds the Date
  * from its parts so the string isn't parsed as UTC midnight, which would
  * display the previous calendar day in UTC+ timezones.
@@ -129,13 +108,27 @@ export const formatDayTitle = (isoDate: string): string => {
   return format(new Date(year, month - 1, day), 'EEEE, MMMM d')
 }
 
-/**
- * Formats a day's meal count and macro grams as e.g.
- * '3 meals · 92g P · 188g C · 61g F'.
- */
-// 'meal(s)' has no lowercase constant in strings.ts yet — composed here until one exists
-export const formatDaySubtitle = (day: DailySummary): string => {
-  const mealsLabel = day.mealCount === 1 ? 'meal' : 'meals'
+/** Formats macro grams as e.g. '92g P · 188g C · 61g F'. */
+export const formatMacroLine = (protein: number, carbs: number, fat: number): string =>
+  `${protein}g P · ${carbs}g C · ${fat}g F`
 
-  return `${day.mealCount} ${mealsLabel} · ${day.protein}g P · ${day.carbs}g C · ${day.fat}g F`
+/**
+ * Formats a 'yyyy-MM-dd' day key as e.g. 'Thu, Jul 2' for the scrub header.
+ * Builds the Date from its parts so the string isn't parsed as UTC midnight.
+ */
+export const formatScrubDayLabel = (isoDate: string): string => {
+  const [year, month, day] = isoDate.split('T')[0].split('-').map(Number)
+
+  return format(new Date(year, month - 1, day), 'EEE, MMM d')
+}
+
+/** Snaps a touch x-position to the nearest bar index, clamped to the row. */
+export const clampBarIndex = (x: number, width: number, barCount: number): number => {
+  'worklet'
+
+  if (width <= 0 || barCount === 0) {
+    return 0
+  }
+
+  return Math.min(barCount - 1, Math.max(0, Math.floor((x / width) * barCount)))
 }

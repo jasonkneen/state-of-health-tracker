@@ -708,9 +708,11 @@ export const AVG_CAL_LABEL = 'avg cal'
 
 export const PREVIOUS_ENTRIES_HEADER = 'Previous entries'
 
-export const ON_GOAL_LABEL = 'on goal'
-
 export const GOAL_LABEL_PREFIX = 'goal'
+
+export const MEAL_COLUMN_LABEL = 'Meal'
+
+export const CALORIES_COLUMN_LABEL = 'Calories'
 
 export const MACROS_EMPTY_HISTORY_TITLE = "You haven't logged any meals!"
 

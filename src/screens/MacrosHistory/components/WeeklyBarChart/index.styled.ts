@@ -41,7 +41,7 @@ export default StyleSheet.create({
   },
   averageRow: {
     flexDirection: 'row',
-    alignItems: 'baseline',
+    alignItems: 'flex-end',
     columnGap: Spacing.X_SMALL,
     marginTop: Spacing.XX_SMALL
   },
@@ -52,7 +52,9 @@ export default StyleSheet.create({
   },
   averageLabel: {
     fontSize: FontSize.PARAGRAPH,
-    color: Theme.colors.textMuted
+    color: Theme.colors.textMuted,
+    // Optically sits the label on the stat value's baseline under flex-end
+    paddingBottom: Spacing.XX_SMALL
   },
   chartArea: {
     height: CHART_AREA_HEIGHT,
@@ -83,6 +85,12 @@ export default StyleSheet.create({
   barToday: {
     backgroundColor: Theme.colors.barActive
   },
+  barScrubbed: {
+    backgroundColor: Theme.colors.barActive
+  },
+  barDimmed: {
+    opacity: 0.45
+  },
   labelsRow: {
     flexDirection: 'row',
     columnGap: Spacing.X_SMALL,
@@ -97,5 +105,9 @@ export default StyleSheet.create({
   dayLabelToday: {
     fontWeight: '700',
     color: Theme.colors.accentGreen
+  },
+  dayLabelScrubbed: {
+    fontWeight: '700',
+    color: Theme.colors.text
   }
 })

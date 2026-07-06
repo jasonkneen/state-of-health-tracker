@@ -6,14 +6,30 @@ import * as io from 'io-ts'
 
 import Endpoints from '@constants/endpoints'
 
-const DailySummaryResponse = io.type({
-  date: io.string,
-  mealCount: io.number,
+const DaySummaryMealResponse = io.type({
+  id: io.string,
+  name: io.string,
+  sortOrder: io.number,
   calories: io.number,
   protein: io.number,
   carbs: io.number,
   fat: io.number
 })
+
+const DailySummaryResponse = io.intersection([
+  io.type({
+    date: io.string,
+    mealCount: io.number,
+    calories: io.number,
+    protein: io.number,
+    carbs: io.number,
+    fat: io.number
+  }),
+  // meals is absent when the server predates the per-meal history breakdown
+  io.partial({
+    meals: io.array(DaySummaryMealResponse)
+  })
+])
 
 const MacrosHistoryResponse = io.type({
   days: io.array(DailySummaryResponse),

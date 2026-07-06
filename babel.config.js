@@ -14,14 +14,19 @@ module.exports = function (api) {
             '@constants': './src/constants',
             '@services': './src/services',
             '@types': './src/types',
-            '@theme': './src/styles',
+            '@styles': './src/styles',
             '@store': './src/store',
             '@data': './src/data',
-            '@service': './src/service'
+            '@service': './src/service',
+            '@queries': './src/queries',
+            '@hooks': './src/hooks',
+            '@utility': './src/utility',
+            '@navigation': './src/navigation',
+            '@assets': './src/assets'
           }
         }
       ],
-      'react-native-reanimated/plugin',
+      'react-native-worklets/plugin',
       [
         'module:react-native-dotenv',
         {

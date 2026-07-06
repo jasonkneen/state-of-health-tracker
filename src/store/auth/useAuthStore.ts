@@ -1,160 +1,141 @@
-import {authEventType} from '@data/types/authEvent'
-import {authStatus} from '@data/types/authStatus'
-import {decodeAuthError} from '@service/auth/AuthErrorEnum'
+import {queryClient} from '@queries/queryClient'
+import {FirebaseAuthTypes} from '@react-native-firebase/auth'
 import authService from '@service/auth/AuthService'
-import userService from '@service/user/UserService'
 import offlineWorkoutStorageService from '@service/workouts/OfflineWorkoutStorageService'
-import LocalStore from '@store/LocalStore'
-import {AuthError, AuthErrorPathEnum} from '@store/user/models/AuthError'
-import {LOG_IN_USER, LOG_OUT_USER} from '@store/user/UserActions'
+import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
+import useProgressStore from '@store/progress/useProgressStore'
 import {create} from 'zustand'
-import {immer} from 'zustand/middleware/immer'
-
-import {AuthSubject$} from '@screens/Auth'
 
 export type AuthState = {
   userId: string | null
   userEmail: string | null
   isAuthed: boolean
   isAttemptingAuth: boolean
-  initAuth: () => void
-  // passing in dispatch here is a temp workaround while I remove redux from the app
-  loginUser: (email: string, password: string, dispatch: Function) => void
-  registerUser: (email: string, password: string) => void
-
-  // passing in dispatch here is a temp workaround while I remove redux from the app
-  logoutUser: (dispatch: Function, state: LocalStore) => void
-  deleteUser: () => void
+  initAuth: () => boolean
+  syncAuthState: (user: FirebaseAuthTypes.User | null) => void
+  loginUser: (email: string, password: string) => Promise<void>
+  registerUser: (email: string, password: string) => Promise<void>
+  signInWithGoogle: () => Promise<void>
+  logoutUser: () => Promise<void>
+  deleteUser: () => Promise<void>
 }
 
-const useAuthStore = create<AuthState>()(
-  immer((set, get) => ({
-    userId: null,
-    userEmail: null,
-    isAuthed: false,
-    isAttemptingAuth: false,
-    initAuth: () => {
-      const user = authService.getCurrentUser()
-      const isAuthed = user !== null
-      const userId = user?.uid
+// Clears everything owned by the previous account so a different login never
+// sees stale data: server cache, unsynced workouts, and the in-progress workout.
+const clearUserSession = async () => {
+  await offlineWorkoutStorageService.clear()
+  queryClient.clear()
+  useDailyWorkoutEntryStore.getState().reset()
+  useProgressStore.getState().reset()
+}
+
+const useAuthStore = create<AuthState>()((set, get) => ({
+  userId: null,
+  userEmail: null,
+  isAuthed: false,
+  isAttemptingAuth: false,
+  initAuth: () => {
+    const user = authService.getCurrentUser()
+    const isAuthed = user !== null
+
+    set({
+      userId: user?.uid ?? null,
+      userEmail: user?.email ?? null,
+      isAuthed
+    })
+
+    return isAuthed
+  },
+  // Keeps the store in sync with Firebase's async auth state — cold-start
+  // session restore (which initAuth's synchronous read can miss) and remote
+  // sign-outs. Wired to authService.subscribeToAuthChanges in App.tsx.
+  syncAuthState: user => {
+    // Explicit login/registration flows own their state transitions —
+    // registration in particular must not flip isAuthed before the backend
+    // account is created (a failure there rolls the Firebase user back)
+    if (get().isAttemptingAuth) return
+
+    set({
+      userId: user?.uid ?? null,
+      userEmail: user?.email ?? null,
+      isAuthed: user !== null
+    })
+  },
+  loginUser: async (email, password) => {
+    set({isAttemptingAuth: true})
+    try {
+      const user = await authService.logInUser(email, password)
 
       set({
-        userId,
-        userEmail: user?.email || null,
-        isAuthed: isAuthed
+        userId: user.id,
+        userEmail: user.email,
+        isAuthed: true
       })
-
-      AuthSubject$.next({
-        type: authEventType.Status,
-        status: isAuthed ? authStatus.Authed : authStatus.Unauthed
-      })
-    },
-    loginUser: async (email, password, dispatch) => {
-      set({isAttemptingAuth: true})
-      try {
-        const user = await authService.logInUser(email, password)
-
-        // this god awful implementation will be removed once redux is gone
-        // and everything is fully migrated to postgres
-        const data = await userService.fetchUserData(user.id)
-
-        dispatch({
-          payload: data,
-          type: LOG_IN_USER
-        })
-
-        set({
-          userEmail: user.email,
-          isAuthed: true
-        })
-
-        AuthSubject$.next({
-          type: authEventType.Status,
-          status: authStatus.Authed
-        })
-      } catch (error: any) {
-        const code = error?.code || error?.errorCode || 'unknown'
-        const authError: AuthError = {
-          errorPath: AuthErrorPathEnum.LOGIN,
-          errorMessage: decodeAuthError(code),
-          errorDate: Date.now(),
-          errorCode: code
-        }
-
-        AuthSubject$.next({
-          type: authEventType.Error,
-          error: authError
-        })
-
-        set({isAuthed: false})
-      } finally {
-        set({isAttemptingAuth: false})
-      }
-    },
-    registerUser: async (email, password) => {
-      set({isAttemptingAuth: true})
-      try {
-        const account = await authService.registerUser(email, password)
-
-        set({
-          userEmail: account.email,
-          isAuthed: true
-        })
-
-        AuthSubject$.next({
-          type: authEventType.Status,
-          status: authStatus.Authed
-        })
-      } catch (error: any) {
-        const code = error?.code || error?.errorCode || 'unknown'
-        const authError: AuthError = {
-          errorPath: AuthErrorPathEnum.LOGIN,
-          errorMessage: decodeAuthError(code),
-          errorDate: Date.now(),
-          errorCode: code
-        }
-
-        AuthSubject$.next({
-          type: authEventType.Error,
-          error: authError
-        })
-
-        set({isAuthed: false})
-      } finally {
-        set({isAttemptingAuth: false})
-      }
-    },
-    logoutUser: async (dispatch: Function, state: LocalStore) => {
-      // this is a temp workaround while I remove redux from the app
-      const {userId} = get()
-
-      if (userId) await userService.saveUserData(userId, state)
-      dispatch({
-        type: LOG_OUT_USER
-      })
-
-      await authService.logOutUser()
-      await offlineWorkoutStorageService.clear()
-      //TODO: reset other zustand stores (exercises, workouts, etc.)
-
-      set({
-        userId: null,
-        userEmail: null,
-        isAuthed: false
-      })
-    },
-    deleteUser: async () => {
-      await authService.deleteCurrentUser()
-      await offlineWorkoutStorageService.clear()
-      //TODO: reset other zustand stores (exercises, workouts, etc.)
-
-      set({
-        userId: null,
-        userEmail: null,
-        isAuthed: false
-      })
+    } catch (error) {
+      set({isAuthed: false})
+      throw error
+    } finally {
+      set({isAttemptingAuth: false})
     }
-  }))
-)
+  },
+  registerUser: async (email, password) => {
+    set({isAttemptingAuth: true})
+    try {
+      const account = await authService.registerUser(email, password)
+
+      set({
+        userId: account.id,
+        userEmail: account.email,
+        isAuthed: true
+      })
+    } catch (error) {
+      set({isAuthed: false})
+      throw error
+    } finally {
+      set({isAttemptingAuth: false})
+    }
+  },
+  signInWithGoogle: async () => {
+    set({isAttemptingAuth: true})
+    try {
+      const user = await authService.signInWithGoogle()
+
+      if (!user) {
+        return
+      }
+
+      set({
+        userId: user.id,
+        userEmail: user.email,
+        isAuthed: true
+      })
+    } catch (error) {
+      set({isAuthed: false})
+      throw error
+    } finally {
+      set({isAttemptingAuth: false})
+    }
+  },
+  logoutUser: async () => {
+    await authService.logOutUser()
+    await clearUserSession()
+
+    set({
+      userId: null,
+      userEmail: null,
+      isAuthed: false
+    })
+  },
+  deleteUser: async () => {
+    await authService.deleteCurrentUser()
+    await clearUserSession()
+
+    set({
+      userId: null,
+      userEmail: null,
+      isAuthed: false
+    })
+  }
+}))
 
 export default useAuthStore

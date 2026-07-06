@@ -1,27 +1,21 @@
 import {WorkoutDay} from '@data/models/WorkoutDay'
-import * as FileSystem from 'expo-file-system'
-
-import {compareIsoDateStrings} from '../../utility/DateUtility'
+import {compareIsoDateStrings} from '@utility/DateUtility'
+import * as FileSystem from 'expo-file-system/legacy'
 
 const OFFLINE_FILE_PATH = `${FileSystem.documentDirectory}unsynced-workouts.json`
 const TEMP_FILE_PATH = `${FileSystem.documentDirectory}unsynced-workouts.tmp.json`
 
 class OfflineWorkoutStorageService {
-  private isLocked = false
+  // Serializes writes instead of dropping them — a skipped write here means a
+  // silently lost workout mutation when two callers race.
+  private writeQueue: Promise<unknown> = Promise.resolve()
 
-  private async withLock(task: () => Promise<void>) {
-    if (this.isLocked) {
-      console.log('[OfflineStorage] Write in progress, skipping.')
+  private withLock(task: () => Promise<void>): Promise<void> {
+    const result = this.writeQueue.then(task)
 
-      return
-    }
+    this.writeQueue = result.catch(() => undefined)
 
-    this.isLocked = true
-    try {
-      await task()
-    } finally {
-      this.isLocked = false
-    }
+    return result
   }
 
   async readAll(): Promise<WorkoutDay[]> {
@@ -68,12 +62,14 @@ class OfflineWorkoutStorageService {
     })
   }
 
-  async deleteAllSynced(): Promise<void> {
+  async deleteAllSynced(keepOnOrAfterDate?: string): Promise<void> {
     await this.withLock(async () => {
       const allWorkouts = await this.readAll()
-      const unsyncedOnly = allWorkouts.filter(w => !w.synced)
+      const remaining = allWorkouts.filter(
+        w => !w.synced || (!!keepOnOrAfterDate && w.date.split('T')[0] >= keepOnOrAfterDate)
+      )
 
-      const json = JSON.stringify(unsyncedOnly)
+      const json = JSON.stringify(remaining)
 
       await FileSystem.writeAsStringAsync(TEMP_FILE_PATH, json)
       await FileSystem.moveAsync({
@@ -81,7 +77,7 @@ class OfflineWorkoutStorageService {
         to: OFFLINE_FILE_PATH
       })
 
-      console.log(`Deleted ${allWorkouts.length - unsyncedOnly.length} synced workout(s).`)
+      console.log(`Deleted ${allWorkouts.length - remaining.length} synced workout(s).`)
     })
   }
 

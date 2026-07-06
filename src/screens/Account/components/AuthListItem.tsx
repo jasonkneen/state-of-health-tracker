@@ -1,29 +1,27 @@
 import React, {useState} from 'react'
 
-import {MaterialCommunityIcons} from '@expo/vector-icons'
 import useAuthStore from '@store/auth/useAuthStore'
-import LocalStore from '@store/LocalStore'
-import {useStyleTheme} from '@theme/Theme'
-import {useDispatch, useSelector} from 'react-redux'
+import {Theme} from '@styles/theme'
 
 import ConfirmModal from '@components/dialog/ConfirmModal'
+import LogOutIcon from '@components/icons/LogOutIcon'
+import {showToast} from '@components/toast/util/ShowToast'
 
 import {
   ACCOUNT_LOG_IN_LIST_ITEM,
   ACCOUNT_LOG_OUT_LIST_ITEM,
   LOG_OUT_CONFIRM_MODAL_BODY,
-  LOG_OUT_CONFIRM_MODAL_HEADER
-} from '@constants/Strings'
+  LOG_OUT_CONFIRM_MODAL_HEADER,
+  LOGOUT_ACCOUNT_ERROR
+} from '@constants/strings'
 
 import AccountListItem from './AccountListItem'
 
 const AuthListItem = () => {
-  const dispatch = useDispatch()
-  const currentState = useSelector<LocalStore, LocalStore>((state: LocalStore) => state)
-
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false)
 
-  const {isAuthed, logoutUser} = useAuthStore()
+  const isAuthed = useAuthStore(state => state.isAuthed)
+  const logoutUser = useAuthStore(state => state.logoutUser)
 
   return (
     <>
@@ -35,7 +33,7 @@ const AuthListItem = () => {
         onConfirmPressed={() => {
           setIsConfirmModalVisible(false)
           if (isAuthed) {
-            logoutUser(dispatch, currentState)
+            logoutUser().catch(() => showToast('error', LOGOUT_ACCOUNT_ERROR))
           }
         }}
         onCancel={() => {
@@ -45,8 +43,8 @@ const AuthListItem = () => {
 
       <AccountListItem
         type="auth"
-        text={isAuthed ? ACCOUNT_LOG_OUT_LIST_ITEM : ACCOUNT_LOG_IN_LIST_ITEM}
-        icon={<MaterialCommunityIcons name="account" size={24} color={useStyleTheme().colors.white} />}
+        label={isAuthed ? ACCOUNT_LOG_OUT_LIST_ITEM : ACCOUNT_LOG_IN_LIST_ITEM}
+        icon={<LogOutIcon color={Theme.colors.textSecondary} />}
         onPressOverride={() => {
           if (isAuthed) {
             setIsConfirmModalVisible(true)

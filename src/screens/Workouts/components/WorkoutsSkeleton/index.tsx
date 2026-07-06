@@ -1,122 +1,114 @@
 import React from 'react'
 
-import {Dimensions, SafeAreaView, View} from 'react-native'
+import {useWindowDimensions, View} from 'react-native'
 
 import {useSessionStore} from '@store/session/useSessionStore'
-import {Text, useStyleTheme} from '@theme/Theme'
+import BorderRadius from '@styles/borderRadius'
+import Spacing from '@styles/spacing'
+import {formatDayMonthDay} from '@utility/DateUtility'
+import {SafeAreaView} from 'react-native-safe-area-context'
 
 import Skeleton from '@components/Skeleton'
+import Text from '@components/Text'
 
-import BorderRadius from '@constants/BorderRadius'
-import Spacing from '@constants/Spacing'
-import {DAILY_WORKOUT_TITLE} from '@constants/Strings'
+import {WORKOUT_SCREEN_TITLE} from '@constants/strings'
 
 import styles from './index.styled'
-import {formatDayMonthDay} from '../../../../utility/DateUtility'
 
-const exerciseSetWidth = Dimensions.get('window').width - 50
+// Mirrors the real section layout: ExerciseSetListItem uses a 34pt set-number
+// column, flex-1 input cells, and a 42pt check column inside MEDIUM padding
+const SET_NUMBER_COLUMN_WIDTH = 34
+const CHECK_COLUMN_WIDTH = 42
+const CHECK_CIRCLE_SIZE = 30
+const SET_CELL_HEIGHT = 40
 
-const WorkoutsSkeleton = () => {
-  const theme = useStyleTheme()
+interface Props {
+  readonly dateLabel?: string
+}
 
-  const fakeXAxis = () => (
-    <View style={styles.xAxisContainer}>
-      {[2, 4, 2, 2, 1, 3, 2].map((barCount, i) => (
-        <View key={i} style={styles.barContainer}>
-          {Array.from({length: barCount}).map((_, j) => (
-            <Skeleton key={j} height={25} width={25} borderRadius={4} style={{marginTop: 8}} />
-          ))}
-        </View>
-      ))}
+const WorkoutsSkeleton = ({dateLabel}: Props) => {
+  const {width: windowWidth} = useWindowDimensions()
+
+  const setCellWidth =
+    (windowWidth -
+      Spacing.GUTTER * 2 -
+      Spacing.MEDIUM * 2 -
+      SET_NUMBER_COLUMN_WIDTH -
+      CHECK_COLUMN_WIDTH -
+      Spacing.X_SMALL * 3) /
+    2
+
+  const columnLabelRow = () => (
+    <View style={styles.labelRow}>
+      <View style={styles.setNumberColumn}>
+        <Skeleton height={10} width={24} borderRadius={BorderRadius.SECTION / 2} />
+      </View>
+
+      <View style={styles.cellColumn}>
+        <Skeleton height={10} width={32} borderRadius={BorderRadius.SECTION / 2} />
+      </View>
+
+      <View style={styles.cellColumn}>
+        <Skeleton height={10} width={32} borderRadius={BorderRadius.SECTION / 2} />
+      </View>
+
+      <View style={styles.checkColumn} />
     </View>
   )
 
-  const fakeYAxis = () => (
-    <View style={styles.yAxisContainer}>
-      {Array.from({length: 5}).map((_, i) => (
-        <Skeleton key={i} height={15} width={15} borderRadius={4} style={{marginTop: 12}} />
-      ))}
+  const setRow = (key: number) => (
+    <View key={key} style={styles.setRow}>
+      <View style={styles.setNumberColumn}>
+        <Skeleton height={14} width={16} borderRadius={BorderRadius.SECTION / 2} />
+      </View>
+
+      <Skeleton height={SET_CELL_HEIGHT} width={setCellWidth} borderRadius={BorderRadius.CELL} />
+
+      <Skeleton height={SET_CELL_HEIGHT} width={setCellWidth} borderRadius={BorderRadius.CELL} />
+
+      <View style={styles.checkColumn}>
+        <Skeleton height={CHECK_CIRCLE_SIZE} width={CHECK_CIRCLE_SIZE} borderRadius={BorderRadius.PILL} />
+      </View>
+    </View>
+  )
+
+  const exerciseCard = (setCount: number) => (
+    <View style={styles.exerciseCard}>
+      <View style={styles.exerciseCardHeader}>
+        <Skeleton height={18} width={170} borderRadius={BorderRadius.SECTION / 2} />
+
+        <Skeleton height={34} width={72} borderRadius={BorderRadius.PILL} />
+      </View>
+
+      {columnLabelRow()}
+
+      {Array.from({length: setCount}).map((_, i) => setRow(i))}
     </View>
   )
 
   return (
     <SafeAreaView>
-      <Text style={styles.dateText}>{formatDayMonthDay(useSessionStore.getState().sessionStartDate)}</Text>
+      <Text style={styles.dateOverline}>
+        {dateLabel ?? formatDayMonthDay(useSessionStore.getState().sessionStartDate)}
+      </Text>
 
-      <Text style={styles.workoutTitle}>{DAILY_WORKOUT_TITLE}</Text>
+      <Text style={styles.workoutTitle}>{WORKOUT_SCREEN_TITLE}</Text>
 
-      <View
-        style={[
-          styles.graphContainer,
-          {
-            backgroundColor: theme.colors.tertiary,
-            borderColor: theme.colors.secondary
-          }
-        ]}>
-        <Skeleton height={15} width={150} borderRadius={6} style={{marginBottom: 12}} />
+      <View style={styles.weekStripCard}>
+        <Skeleton height={14} width={110} borderRadius={BorderRadius.SECTION / 2} />
 
-        <View style={styles.graphArea}>
-          {fakeYAxis()}
+        <View style={styles.circlesRow}>
+          {Array.from({length: 5}).map((_, i) => (
+            <Skeleton key={i} height={22} width={22} borderRadius={BorderRadius.PILL} />
+          ))}
 
-          {fakeXAxis()}
+          <Skeleton height={12} width={12} borderRadius={BorderRadius.SECTION / 2} />
         </View>
       </View>
 
-      <View style={styles.contentContainer}>
-        <View style={[styles.horizontalRowContainer, styles.topButtonContainers]}>
-          <Skeleton height={30} width={150} />
+      {exerciseCard(4)}
 
-          <Skeleton height={30} width={100} style={{borderRadius: BorderRadius.BUTTON}} />
-        </View>
-      </View>
-
-      <View
-        style={[
-          styles.exerciseItemContainer,
-          {
-            borderColor: theme.colors.secondary
-          }
-        ]}>
-        <View style={styles.contentContainer}>
-          <View style={styles.horizontalRowContainer}>
-            <Skeleton height={20} width={150} />
-
-            <Skeleton height={30} width={75} style={{borderRadius: BorderRadius.BUTTON}} />
-          </View>
-        </View>
-
-        <Skeleton height={30} width={exerciseSetWidth} style={styles.exerciseSetContainer} />
-
-        <Skeleton height={30} width={exerciseSetWidth} style={styles.exerciseSetContainer} />
-
-        <Skeleton height={30} width={exerciseSetWidth} style={styles.exerciseSetContainer} />
-
-        <Skeleton height={30} width={exerciseSetWidth} style={styles.exerciseSetContainer} />
-
-        <View style={{marginBottom: Spacing.MEDIUM}} />
-      </View>
-
-      <View
-        style={[
-          styles.exerciseItemContainer,
-          {
-            borderColor: theme.colors.secondary
-          }
-        ]}>
-        <View style={styles.contentContainer}>
-          <View style={styles.horizontalRowContainer}>
-            <Skeleton height={20} width={150} />
-
-            <Skeleton height={30} width={75} style={{borderRadius: BorderRadius.BUTTON}} />
-          </View>
-        </View>
-
-        <Skeleton height={30} width={exerciseSetWidth} style={styles.exerciseSetContainer} />
-
-        <Skeleton height={30} width={exerciseSetWidth} style={styles.exerciseSetContainer} />
-
-        <View style={{marginBottom: Spacing.MEDIUM}} />
-      </View>
+      {exerciseCard(3)}
     </SafeAreaView>
   )
 }

@@ -2,15 +2,10 @@
   "expo": {
     "name": "State of Health",
     "slug": "fitness-tracking-app",
-    "version": "1.4.4",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#1B1D2C"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -19,32 +14,86 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.stateofhealh.tracker",
       "icon": "./assets/icon.png",
-      "buildNumber": "17",
+      "buildNumber": "23",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSLocationWhenInUseUsageDescription": "State of Health uses your location while you're running to track your route, distance, and pace.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "State of Health uses your location to track your run route, distance, and pace even when the app is in the background or your screen is locked, so tracking doesn't stop mid-run.",
+        "NSLocationAlwaysUsageDescription": "State of Health uses your location to track your run route, distance, and pace even when the app is in the background or your screen is locked, so tracking doesn't stop mid-run.",
+        "UIBackgroundModes": [
+          "location"
+        ]
       }
     },
+    "android": {
+      "package": "com.stateofhealh.tracker",
+      "googleServicesFile": "./google-services.json"
+    },
     "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "State of Health uses your camera to snap meals and nutrition labels so AI can estimate calories and macros.",
+          "photosPermission": "State of Health accesses your photo library so you can pick a meal or nutrition-label photo for AI estimation."
+        }
+      ],
       "@react-native-firebase/app",
       "@react-native-firebase/auth",
       "@react-native-firebase/crashlytics",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.65554130864-7ufv8ftr9q1vgikl77e4m5dsefb8it41"
+        }
+      ],
       [
         "expo-build-properties",
         {
           "ios": {
             "useFrameworks": "static",
-            "deploymentTarget": "14.0",
-            "swiftVersion": "5.9"
+            "deploymentTarget": "16.4"
           }
         }
       ],
       "expo-font",
-      "expo-file-system"
+      "expo-file-system",
+      [
+        "expo-speech-recognition",
+        {
+          "microphonePermission": "State of Health uses your microphone so you can speak what you ate and let AI estimate calories and macros.",
+          "speechRecognitionPermission": "State of Health uses speech recognition to turn what you say into text for AI meal estimation."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "isIosBackgroundLocationEnabled": true,
+          "isAndroidBackgroundLocationEnabled": true,
+          "isAndroidForegroundServiceEnabled": true
+        }
+      ],
+      [
+        "@kingstinct/react-native-healthkit",
+        {
+          "NSHealthShareUsageDescription": "State of Health reads your step count to show your daily activity and estimate calories burned.",
+          "NSHealthUpdateUsageDescription": "State of Health does not write data to Apple Health. This permission is only requested because the health integration framework requires it.",
+          "background": false
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#0C1310"
+        }
+      ]
     ],
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "jsEngine": "jsc",
+    "newArchEnabled": true,
     "extra": {
       "eas": {
         "projectId": "db392b26-869f-459f-a0b4-f99798cb345f"

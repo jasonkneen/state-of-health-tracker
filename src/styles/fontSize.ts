@@ -1,0 +1,18 @@
+export default {
+  H1: 24,
+  H2: 18,
+  H3: 16,
+  PARAGRAPH: 14,
+
+  SCREEN_TITLE: 30,
+  STAT_HERO: 44,
+  STAT_LG: 28,
+  GREETING: 22,
+  STAT: 20,
+  CARD_TITLE: 17,
+  BODY: 15,
+  LABEL: 13,
+  CAPTION: 12,
+  OVERLINE: 11,
+  TAB_LABEL: 10
+}

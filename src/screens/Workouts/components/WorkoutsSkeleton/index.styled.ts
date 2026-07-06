@@ -1,75 +1,86 @@
 import {StyleSheet} from 'react-native'
 
-import Shadow from '@theme/Shadow'
+import BorderRadius from '@styles/borderRadius'
+import FontSize from '@styles/fontSize'
+import Shadow from '@styles/shadow'
+import Spacing from '@styles/spacing'
+import {Theme} from '@styles/theme'
 
-import {BAR_GRAPH_MAX_HEIGHT} from '@components/BarGraph'
-
-import borderRadius from '@constants/BorderRadius'
-import FontSize from '@constants/FontSize'
-import Spacing from '@constants/Spacing'
+const SET_NUMBER_COLUMN_WIDTH = 34
+const CHECK_COLUMN_WIDTH = 42
 
 export default StyleSheet.create({
-  dateText: {
-    fontWeight: 'bold',
+  dateOverline: {
+    fontSize: FontSize.OVERLINE,
+    fontWeight: '600',
+    color: Theme.colors.accentGreen,
+    textTransform: 'uppercase',
+    letterSpacing: 0.6,
     marginTop: Spacing.MEDIUM,
-    marginLeft: Spacing.LARGE,
-    marginBottom: Spacing.SMALL
+    marginLeft: Spacing.GUTTER
   },
   workoutTitle: {
-    fontSize: FontSize.H1,
-    fontWeight: 'bold',
-    margin: Spacing.MEDIUM,
-    marginLeft: Spacing.LARGE
+    fontSize: FontSize.SCREEN_TITLE,
+    fontWeight: '700',
+    letterSpacing: -0.4,
+    marginTop: Spacing.XX_SMALL,
+    marginLeft: Spacing.GUTTER
   },
-  graphContainer: {
+  weekStripCard: {
     ...Shadow.CARD,
-    marginHorizontal: Spacing.MEDIUM,
-    borderWidth: 1,
-    borderRadius: borderRadius.SECTION,
-    padding: Spacing.MEDIUM,
-    marginBottom: Spacing.MEDIUM
-  },
-  graphArea: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    height: BAR_GRAPH_MAX_HEIGHT
-  },
-  yAxisContainer: {
-    justifyContent: 'space-between',
-    marginRight: 12
-  },
-  xAxisContainer: {
+    backgroundColor: Theme.colors.card,
+    borderRadius: BorderRadius.CARD,
+    paddingVertical: Spacing.SMALL,
+    paddingHorizontal: Spacing.MEDIUM,
+    marginHorizontal: Spacing.GUTTER,
+    marginTop: Spacing.SMALL,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginLeft: 12,
-    flex: 1
+    alignItems: 'center'
   },
-  barContainer: {
+  circlesRow: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    columnGap: Spacing.XX_SMALL + 2
   },
-  contentContainer: {
-    borderRadius: borderRadius.SECTION,
-    padding: Spacing.MEDIUM,
-    marginBottom: Spacing.SMALL
+  exerciseCard: {
+    ...Shadow.CARD,
+    backgroundColor: Theme.colors.card,
+    borderRadius: BorderRadius.CARD_LG,
+    marginHorizontal: Spacing.GUTTER,
+    marginTop: Spacing.SMALL,
+    paddingBottom: Spacing.MEDIUM
   },
-  exerciseItemContainer: {
-    marginHorizontal: Spacing.MEDIUM,
-    borderWidth: 1,
-    borderRadius: borderRadius.SECTION,
-
-    marginBottom: Spacing.MEDIUM
-  },
-  horizontalRowContainer: {
+  exerciseCardHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: Spacing.MEDIUM,
+    paddingBottom: Spacing.SMALL
   },
-  topButtonContainers: {
-    paddingHorizontal: Spacing.SMALL
+  labelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: Spacing.X_SMALL,
+    paddingHorizontal: Spacing.MEDIUM,
+    paddingBottom: Spacing.XX_SMALL
   },
-  exerciseSetContainer: {
-    alignSelf: 'center',
-    borderRadius: borderRadius.SECTION,
-    margin: Spacing.XX_SMALL
+  setRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: Spacing.X_SMALL,
+    paddingHorizontal: Spacing.MEDIUM,
+    paddingVertical: Spacing.XX_SMALL
+  },
+  setNumberColumn: {
+    width: SET_NUMBER_COLUMN_WIDTH
+  },
+  cellColumn: {
+    flex: 1,
+    alignItems: 'center'
+  },
+  checkColumn: {
+    width: CHECK_COLUMN_WIDTH,
+    alignItems: 'center'
   }
 })

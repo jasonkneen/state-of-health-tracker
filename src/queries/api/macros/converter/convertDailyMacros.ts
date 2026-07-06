@@ -1,0 +1,39 @@
+import {DailyMacros} from '@data/models/DailyMacros'
+import {InputMethodEnum, MealEntry} from '@data/models/MealEntry'
+import {DailyMacrosResponse, MealEntryResponse} from '@queries/api/macros/decoder/MacrosDecoder'
+import * as io from 'io-ts'
+
+const KNOWN_INPUT_METHODS = Object.values(InputMethodEnum) as string[]
+
+export function convertMealEntry(data: io.TypeOf<typeof MealEntryResponse>): MealEntry {
+  return {
+    id: data.id,
+    foodId: data.foodId ?? null,
+    name: data.name,
+    servingText: data.servingText ?? null,
+    servings: data.servings,
+    calories: data.calories,
+    protein: data.protein,
+    carbs: data.carbs,
+    fat: data.fat,
+    inputMethod: KNOWN_INPUT_METHODS.includes(data.inputMethod)
+      ? (data.inputMethod as InputMethodEnum)
+      : InputMethodEnum.LIBRARY,
+    loggedAt: data.loggedAt
+  }
+}
+
+export function convertDailyMacros(data: io.TypeOf<typeof DailyMacrosResponse>): DailyMacros {
+  return {
+    date: data.date,
+    meals: data.meals.map(meal => ({
+      id: meal.id,
+      name: meal.name,
+      sortOrder: meal.sortOrder,
+      entries: meal.entries.map(convertMealEntry),
+      totals: meal.totals
+    })),
+    totals: data.totals,
+    targets: data.targets
+  }
+}

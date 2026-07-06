@@ -5,20 +5,20 @@ import {TouchableOpacity} from 'react-native'
 import {Ionicons} from '@expo/vector-icons'
 import {useNavigation} from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
-import {useStyleTheme} from '@theme/Theme'
+import {Theme} from '@styles/theme'
 
 import RootAuthScreen from '@screens/Auth'
+import ForgotPasswordScreen from '@screens/ForgotPassword'
 import LogInScreen from '@screens/Login'
 import RegisterScreen from '@screens/Register'
 
-import Screens from '@constants/Screens'
+import Screens from '@constants/screens'
 
 import {Navigation} from './types'
 
 const Stack = createNativeStackNavigator()
 
 const AuthStack = () => {
-  const theme = useStyleTheme()
   const {goBack, push} = useNavigation<Navigation>()
 
   const onBackPressed = () => {
@@ -32,22 +32,24 @@ const AuthStack = () => {
     <Stack.Navigator
       screenOptions={({route}) => ({
         headerLeft: () =>
-          route.name === Screens.REGISTER && (
+          (route.name === Screens.REGISTER || route.name === Screens.FORGOT_PASSWORD) && (
             <TouchableOpacity onPress={onBackPressed}>
-              <Ionicons name="chevron-back" size={24} color={useStyleTheme().colors.white} />
+              <Ionicons name="chevron-back" size={24} color={Theme.colors.white} />
             </TouchableOpacity>
           ),
         headerStyle: {
-          backgroundColor: theme.colors.background
+          backgroundColor: Theme.colors.background
         },
-        headerTintColor: theme.colors.white,
+        headerTintColor: Theme.colors.white,
         headerShadowVisible: false
       })}>
       <Stack.Screen name={Screens.RootAuth} component={RootAuthScreen} options={{headerShown: false}} />
 
-      <Stack.Screen name={Screens.LOG_IN} component={LogInScreen} />
+      <Stack.Screen name={Screens.LOG_IN} component={LogInScreen} options={{headerShown: false}} />
 
       <Stack.Screen name={Screens.REGISTER} component={RegisterScreen} />
+
+      <Stack.Screen name={Screens.FORGOT_PASSWORD} component={ForgotPasswordScreen} />
     </Stack.Navigator>
   )
 }

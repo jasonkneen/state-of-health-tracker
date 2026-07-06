@@ -2,18 +2,22 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
-    "baseUrl": ".",
     "types": ["jest"],
     "paths": {
-      "@screens/*": ["src/screens/*"],
-      "@components/*": ["src/components/*"],
-      "@constants/*": ["src/constants/*"],
-      "@services/*": ["src/services/*"],
-      "@types/*": ["src/types/*"],
-      "@theme/*": ["src/styles/*"],
-      "@store/*": ["src/store/*"],
-      "@data/*": ["src/data/*"],
-      "@service/*": ["src/service/*"]
+      "@screens/*": ["./src/screens/*"],
+      "@components/*": ["./src/components/*"],
+      "@constants/*": ["./src/constants/*"],
+      "@services/*": ["./src/services/*"],
+      "@types/*": ["./src/types/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@store/*": ["./src/store/*"],
+      "@data/*": ["./src/data/*"],
+      "@service/*": ["./src/service/*"],
+      "@queries/*": ["./src/queries/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@utility/*": ["./src/utility/*"],
+      "@navigation/*": ["./src/navigation/*"],
+      "@assets/*": ["./src/assets/*"]
     }
   }
 }

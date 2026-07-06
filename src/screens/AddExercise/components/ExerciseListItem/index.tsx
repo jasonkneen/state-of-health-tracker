@@ -3,17 +3,22 @@ import React from 'react'
 import {TouchableOpacity, View} from 'react-native'
 
 import {Exercise} from '@data/models/Exercise'
-import {useNavigation} from '@react-navigation/native'
+import {HomeTabsParamList} from '@navigation/HomeTabs'
+import {NavigationProp, useNavigation} from '@react-navigation/native'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
-import {Text, useStyleTheme} from '@theme/Theme'
+import useProgressStore from '@store/progress/useProgressStore'
+import {Theme} from '@styles/theme'
+import {formatExerciseSubtitle} from '@utility/formatExerciseSubtitle'
 
-import DeleteExerciseBottomSheet from '@screens/AddExercise/components/DeleteExerciseBottomSheet'
+import ExerciseOptionsBottomSheet from '@screens/AddExercise/components/ExerciseOptionsBottomSheet'
 
 import ExerciseTypeChip from '@components/ExerciseTypeChip'
-import {openGlobalBottomSheet} from '@components/GlobalBottomSheet'
+import {closeGlobalBottomSheet, openGlobalBottomSheet} from '@components/GlobalBottomSheet'
+import Text from '@components/Text'
 import {showToast} from '@components/toast/util/ShowToast'
 
-import {TOAST_EXERCISE_ADDED, TOAST_EXERCISE_ALREADY_ADDED} from '@constants/Strings'
+import Screens from '@constants/screens'
+import {TOAST_EXERCISE_ALREADY_ADDED} from '@constants/strings'
 
 import styles from './index.styled'
 
@@ -22,33 +27,50 @@ interface Props {
 }
 
 const ExerciseListItem = ({exercise}: Props) => {
-  const theme = useStyleTheme()
+  const navigation = useNavigation<NavigationProp<HomeTabsParamList>>()
 
-  const {goBack} = useNavigation()
+  const subtitle = formatExerciseSubtitle(exercise.exerciseType, exercise.exerciseBodyPart)
 
-  const {addDailyExercise} = useDailyWorkoutEntryStore()
+  const addDailyExercise = useDailyWorkoutEntryStore(state => state.addDailyExercise)
+  const setSelectedExerciseId = useProgressStore(state => state.setSelectedExerciseId)
+  const setSelectedSubTab = useProgressStore(state => state.setSelectedSubTab)
 
-  const onPress = () => {
+  const onAddToWorkoutPressed = () => {
+    closeGlobalBottomSheet()
     if (addDailyExercise(exercise)) {
-      showToast('success', TOAST_EXERCISE_ADDED, exercise.name)
-      goBack()
+      navigation.goBack()
     } else {
       showToast('error', TOAST_EXERCISE_ALREADY_ADDED, exercise.name)
     }
   }
 
-  const onLongPress = () => {
-    openGlobalBottomSheet(<DeleteExerciseBottomSheet exercise={exercise} />)
+  const onViewProgressionPressed = () => {
+    closeGlobalBottomSheet()
+    setSelectedSubTab('exercises')
+    setSelectedExerciseId(exercise.id)
+    navigation.navigate('ProgressStack', {screen: Screens.PROGRESS})
+  }
+
+  const onPress = () => {
+    openGlobalBottomSheet(
+      <ExerciseOptionsBottomSheet
+        title={exercise.name}
+        subtitle={subtitle}
+        onAddPressed={onAddToWorkoutPressed}
+        onViewProgressionPressed={onViewProgressionPressed}
+        exerciseToDelete={exercise}
+      />
+    )
   }
 
   return (
-    <TouchableOpacity activeOpacity={0.5} delayPressIn={50} onPress={onPress} onLongPress={onLongPress}>
+    <TouchableOpacity activeOpacity={0.5} delayPressIn={50} onPress={onPress}>
       <View
         style={[
           styles.container,
           {
-            backgroundColor: theme.colors.background,
-            borderColor: theme.colors.border
+            backgroundColor: Theme.colors.background,
+            borderColor: Theme.colors.border
           }
         ]}>
         <View style={styles.textContainer}>
@@ -56,12 +78,16 @@ const ExerciseListItem = ({exercise}: Props) => {
             {exercise.name}
           </Text>
 
-          <Text style={styles.subtitle} numberOfLines={1}>
-            {exercise.exerciseBodyPart}
-          </Text>
+          {subtitle && (
+            <Text style={styles.subtitle} numberOfLines={1}>
+              {subtitle}
+            </Text>
+          )}
         </View>
 
-        {<View style={styles.chipContainer}>{<ExerciseTypeChip exerciseType={exercise.exerciseType} />}</View>}
+        <View style={styles.chipContainer}>
+          <ExerciseTypeChip exerciseType={exercise.exerciseType} />
+        </View>
       </View>
     </TouchableOpacity>
   )

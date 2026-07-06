@@ -1,6 +1,6 @@
 import {Dimensions, StyleSheet} from 'react-native'
 
-import Spacing from '@constants/Spacing'
+import Spacing from '@styles/spacing'
 
 export const createExerciseMaxPickerWidth = Dimensions.get('window').width - Spacing.MEDIUM * 2
 

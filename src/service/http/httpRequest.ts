@@ -1,10 +1,8 @@
-import * as io from 'io-ts'
+import {getBearerToken} from '@service/auth/getBearerToken'
+import CrashUtility from '@utility/CrashUtility'
 import axios, {AxiosRequestConfig, Method} from 'axios'
 import {isLeft} from 'fp-ts/lib/Either'
-
-import {getBearerToken} from '@service/auth/getBearerToken'
-
-import CrashUtility from '../../utility/CrashUtility'
+import * as io from 'io-ts'
 
 export interface HttpResponse<T> {
   data: T
@@ -28,6 +26,7 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true
 
       const token = await getBearerToken(true)
+
       if (token) {
         if (!originalRequest.headers) originalRequest.headers = {}
         originalRequest.headers = {

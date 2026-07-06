@@ -1,54 +1,115 @@
-import {StyleSheet} from 'react-native'
+import {StyleSheet, ViewStyle} from 'react-native'
 
-import FontSize from '@constants/FontSize'
-import Spacing from '@constants/Spacing'
+import BorderRadius from '@styles/borderRadius'
+import FontSize from '@styles/fontSize'
+import Spacing from '@styles/spacing'
+import {Theme} from '@styles/theme'
+
+export const pagerPage = (width: number): ViewStyle => ({
+  width,
+  flex: 1
+})
 
 export default StyleSheet.create({
-  dateText: {
-    fontWeight: 'bold',
-    marginTop: Spacing.MEDIUM,
-    marginLeft: Spacing.LARGE,
-    marginBottom: Spacing.SMALL
+  root: {
+    flex: 1
   },
-  workoutTitle: {
-    fontSize: FontSize.H1,
-    fontWeight: 'bold',
-    margin: Spacing.MEDIUM,
-    marginLeft: Spacing.LARGE
+  pagerPageContent: {
+    flex: 1
   },
-  exerciseHeaderContainer: {
+  // Matches the Macros screen title row so the shared history icon sits at the
+  // same y-position when swapping tabs
+  headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    alignContent: 'center',
-    margin: Spacing.MEDIUM
+    marginRight: Spacing.GUTTER
   },
-  exerciseHeaderText: {
-    marginLeft: Spacing.X_SMALL,
-    fontSize: FontSize.H1,
-    fontWeight: 'bold'
+  dateOverline: {
+    fontSize: FontSize.OVERLINE,
+    fontWeight: '600',
+    color: Theme.colors.accentGreen,
+    textTransform: 'uppercase',
+    letterSpacing: 0.6,
+    marginTop: Spacing.MEDIUM,
+    marginLeft: Spacing.GUTTER
   },
-  addButton: {
-    alignSelf: 'flex-end'
+  workoutTitle: {
+    fontSize: FontSize.SCREEN_TITLE,
+    fontWeight: '700',
+    letterSpacing: -0.4,
+    marginTop: Spacing.XX_SMALL,
+    marginLeft: Spacing.GUTTER
+  },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: Spacing.X_SMALL
+  },
+  completedChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: Spacing.XX_SMALL,
+    backgroundColor: Theme.colors.greenTint,
+    borderRadius: BorderRadius.PILL,
+    paddingVertical: Spacing.XX_SMALL,
+    paddingHorizontal: Spacing.X_SMALL,
+    marginTop: Spacing.XX_SMALL
+  },
+  completedChipText: {
+    fontSize: FontSize.LABEL,
+    fontWeight: '600',
+    color: Theme.colors.greenOnTint
   },
   emptyIcon: {
     alignSelf: 'center',
-    marginRight: -Spacing.MEDIUM,
     marginTop: Spacing.MEDIUM
   },
-  footerButton: {
-    marginTop: Spacing.SMALL,
-    marginBottom: Spacing.LARGE,
-    marginLeft: Spacing.MEDIUM,
-    marginRight: Spacing.MEDIUM
+  addExerciseRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    columnGap: Spacing.X_SMALL,
+    borderWidth: 1.5,
+    borderStyle: 'dashed',
+    borderColor: Theme.colors.dashedBorder,
+    borderRadius: BorderRadius.ITEM,
+    paddingVertical: Spacing.SMALL,
+    marginHorizontal: Spacing.GUTTER,
+    marginTop: Spacing.XX_SMALL,
+    marginBottom: Spacing.LARGE
+  },
+  addExerciseText: {
+    fontSize: FontSize.PARAGRAPH,
+    fontWeight: '600',
+    color: Theme.colors.textSecondary
+  },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: Spacing.X_SMALL
+  },
+  historyButton: {
+    padding: Spacing.X_SMALL
   },
   sectionList: {
     width: '100%',
     height: '100%'
   },
-  loadingIndicator: {
-    height: 250,
-    position: 'relative',
-    backgroundColor: 'transparent'
+  reorganizeHint: {
+    fontSize: FontSize.PARAGRAPH,
+    color: Theme.colors.textSecondary,
+    marginTop: Spacing.X_SMALL,
+    marginLeft: Spacing.GUTTER,
+    marginBottom: Spacing.SMALL
+  },
+  fabContainer: {
+    position: 'absolute',
+    right: Spacing.GUTTER,
+    bottom: Spacing.LARGE
+  },
+  backToTodayChevron: {
+    paddingVertical: Spacing.X_SMALL,
+    paddingLeft: Spacing.SMALL
   }
 })

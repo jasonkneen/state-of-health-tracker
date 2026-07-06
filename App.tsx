@@ -1,105 +1,126 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
 import {AppState, LogBox, StatusBar, TouchableOpacity} from 'react-native'
-import {GestureHandlerRootView} from 'react-native-gesture-handler'
 
 import {Ionicons} from '@expo/vector-icons'
 import {NavigationContainer} from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
+import {Theme} from '@styles/theme'
+import {PersistQueryClientProvider} from '@tanstack/react-query-persist-client'
+import * as SplashScreen from 'expo-splash-screen'
+import {GestureHandlerRootView} from 'react-native-gesture-handler'
+import {initialWindowMetrics, SafeAreaProvider} from 'react-native-safe-area-context'
 import Toast from 'react-native-toast-message'
-import {Provider} from 'react-redux'
 
-import MinimumVersionSheet from './src/components/MinimumVersionSheet'
 import GlobalBottomSheet from './src/components/GlobalBottomSheet'
+import MinimumVersionSheet from './src/components/MinimumVersionSheet'
 import ToastConfig from './src/components/toast/ToastConfig'
 import AuthStack from './src/navigation/AuthStack'
 import HomeTabs from './src/navigation/HomeTabs'
-import store, {useThunkDispatch} from './src/store'
+import {asyncStoragePersister, PERSISTED_QUERY_KEYS, queryClient} from './src/queries/queryClient'
+import authService from './src/service/auth/AuthService'
 import useAuthStore from './src/store/auth/useAuthStore'
-import {syncUserData} from '@store/user/UserActions'
-import {darkTheme, useStyleTheme} from '@theme/Theme'
+import {useSessionStore} from './src/store/session/useSessionStore'
 
 const Stack = createNativeStackNavigator()
 
 LogBox.ignoreAllLogs(true)
 
-const AppStateChanged = () => {
-  const dispatch = useThunkDispatch()
-  const {userId, isAuthed} = useAuthStore()
-
-  async function onApplicationStateChange(appState: string) {
-    if (appState === 'active') {
-      if (isAuthed && userId) {
-        dispatch(syncUserData(userId))
-      }
-    }
-  }
-
-  AppState.addEventListener('change', onApplicationStateChange)
-
-  return <></>
-}
-
 const App = () => {
   const {isAuthed} = useAuthStore()
+
+  useEffect(() => {
+    SplashScreen.hideAsync()
+  }, [])
+
+  // Keep the auth store in sync with Firebase's async auth state — cold-start
+  // session restore and remote sign-outs both land here
+  useEffect(() => {
+    const unsubscribe = authService.subscribeToAuthChanges(user => {
+      useAuthStore.getState().syncAuthState(user)
+    })
+
+    return unsubscribe
+  }, [])
+
+  // "Today" is captured when the JS bundle loads; an app resumed after
+  // midnight must re-evaluate it or meals/sets get attributed to the old day
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', state => {
+      if (state === 'active') {
+        useSessionStore.getState().refreshSessionDate()
+      }
+    })
+
+    return () => subscription.remove()
+  }, [])
 
   const backButton = (onPress: () => void) => {
     return (
       <TouchableOpacity onPress={onPress}>
-        <Ionicons name="chevron-back" size={24} color={useStyleTheme().colors.white} />
+        <Ionicons name="chevron-back" size={24} color={Theme.colors.white} />
       </TouchableOpacity>
     )
   }
 
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
-      <Provider store={store}>
-        <StatusBar barStyle="light-content" />
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{
+        persister: asyncStoragePersister,
+        dehydrateOptions: {
+          // Only whitelisted queries are written to the device — see queryClient.ts
+          shouldDehydrateQuery: query => PERSISTED_QUERY_KEYS.includes(String(query.queryKey[0]))
+        }
+      }}>
+      <GestureHandlerRootView style={{flex: 1}}>
+        <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+          <StatusBar barStyle="light-content" />
 
-        <AppStateChanged />
+          <NavigationContainer theme={Theme}>
+            {!isAuthed ? (
+              <Stack.Navigator
+                initialRouteName={'Auth'}
+                screenOptions={({navigation}) => ({
+                  headerLeft: () => backButton(() => navigation.goBack())
+                })}>
+                <Stack.Screen
+                  name="Auth"
+                  component={AuthStack}
+                  options={{
+                    title: '',
+                    gestureEnabled: false,
+                    headerShown: false,
+                    presentation: 'modal'
+                  }}
+                />
+              </Stack.Navigator>
+            ) : (
+              <Stack.Navigator
+                initialRouteName={'Home'}
+                screenOptions={({navigation}) => ({
+                  headerLeft: () => backButton(() => navigation.goBack())
+                })}>
+                <Stack.Screen
+                  name="Home"
+                  component={HomeTabs}
+                  options={{
+                    animation: 'fade',
+                    headerShown: false
+                  }}
+                />
+              </Stack.Navigator>
+            )}
 
-        <NavigationContainer theme={darkTheme}>
-          {!isAuthed ? (
-            <Stack.Navigator
-              initialRouteName={'Auth'}
-              screenOptions={({navigation}) => ({
-                headerLeft: () => backButton(() => navigation.goBack())
-              })}>
-              <Stack.Screen
-                name="Auth"
-                component={AuthStack}
-                options={{
-                  title: '',
-                  gestureEnabled: false,
-                  headerShown: false,
-                  presentation: 'modal'
-                }}
-              />
-            </Stack.Navigator>
-          ) : (
-            <Stack.Navigator
-              initialRouteName={'Home'}
-              screenOptions={({navigation}) => ({
-                headerLeft: () => backButton(() => navigation.goBack())
-              })}>
-              <Stack.Screen
-                name="Home"
-                component={HomeTabs}
-                options={{
-                  animation: 'fade',
-                  headerShown: false
-                }}
-              />
-            </Stack.Navigator>
-          )}
+            <GlobalBottomSheet />
 
-          <GlobalBottomSheet />
-          <MinimumVersionSheet />
+            <MinimumVersionSheet />
 
-          <Toast config={ToastConfig} position="top" topOffset={50} />
-        </NavigationContainer>
-      </Provider>
-    </GestureHandlerRootView>
+            <Toast config={ToastConfig} position="top" topOffset={50} />
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </GestureHandlerRootView>
+    </PersistQueryClientProvider>
   )
 }
 

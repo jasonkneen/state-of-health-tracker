@@ -1,13 +1,14 @@
 import React, {useEffect, useState, useRef} from 'react'
 import {ReactNode} from 'react'
 
-import {View, TouchableWithoutFeedback} from 'react-native'
+import {Keyboard, View, TouchableWithoutFeedback} from 'react-native'
 
-import BottomSheet from '@gorhom/bottom-sheet'
-import {useStyleTheme} from '@theme/Theme'
+import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet'
+import {Theme} from '@styles/theme'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import {Subject} from 'rxjs'
 
-import styles from './index.styled'
+import styles, {sheetContentPadding} from './index.styled'
 
 interface BottomSheetEvent {
   action: 'open' | 'close'
@@ -17,6 +18,8 @@ interface BottomSheetEvent {
 export const BottomSheetSubject$ = new Subject<BottomSheetEvent>()
 
 export const openGlobalBottomSheet = (content: ReactNode) => {
+  // An open keyboard (e.g. from a search bar) would overlap the sheet
+  Keyboard.dismiss()
   BottomSheetSubject$.next({
     action: 'open',
     content
@@ -28,8 +31,8 @@ export const closeGlobalBottomSheet = () => {
 }
 
 const GlobalBottomSheet = () => {
-  const theme = useStyleTheme()
   const sheetRef = useRef<BottomSheet>(null)
+  const insets = useSafeAreaInsets()
 
   const [content, setContent] = useState<ReactNode>(null)
   const [isOpen, setIsOpen] = useState(false)
@@ -63,13 +66,13 @@ const GlobalBottomSheet = () => {
       <BottomSheet
         ref={sheetRef}
         index={-1}
-        snapPoints={['25%']}
+        enableDynamicSizing
         enablePanDownToClose
-        handleIndicatorStyle={{backgroundColor: theme.colors.white}}
-        backgroundStyle={{backgroundColor: theme.colors.background}}
+        handleIndicatorStyle={{backgroundColor: Theme.colors.white}}
+        backgroundStyle={{backgroundColor: Theme.colors.background}}
         style={styles.sheetShadow}
         onClose={closeGlobalBottomSheet}>
-        <View style={styles.sheetContent}>{content}</View>
+        <BottomSheetView style={[styles.sheetContent, sheetContentPadding(insets.bottom)]}>{content}</BottomSheetView>
       </BottomSheet>
     </>
   )

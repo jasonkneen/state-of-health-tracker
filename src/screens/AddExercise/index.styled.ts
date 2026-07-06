@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native'
 
-import FontSize from '@constants/FontSize'
-import Spacing from '@constants/Spacing'
+import FontSize from '@styles/fontSize'
+import Spacing from '@styles/spacing'
 
 export default StyleSheet.create({
   listFooter: {
@@ -19,6 +19,10 @@ export default StyleSheet.create({
     fontSize: FontSize.H1,
     fontWeight: 'bold'
   },
+  catalogHeaderContainer: {
+    marginTop: Spacing.LARGE,
+    marginBottom: Spacing.SMALL
+  },
   emptyText: {
     fontWeight: '200',
     paddingHorizontal: Spacing.MEDIUM,
@@ -29,5 +33,17 @@ export default StyleSheet.create({
     alignSelf: 'flex-end',
     marginTop: Spacing.MEDIUM,
     marginBottom: Spacing.MEDIUM
+  },
+  searchSectionHeaderContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: Spacing.MEDIUM,
+    marginRight: Spacing.MEDIUM,
+    marginVertical: Spacing.MEDIUM
+  },
+  createFooterButton: {
+    alignSelf: 'center',
+    marginTop: Spacing.MEDIUM,
+    marginBottom: Spacing.LARGE
   }
 })

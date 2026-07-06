@@ -1,17 +1,20 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 
 import {View} from 'react-native'
 
-import {CreateExercisePayload, ExerciseBodyPartEnum, ExerciseTypeEnum} from '@data/models/Exercise'
-import {Ionicons} from '@expo/vector-icons'
+import {deriveLoggingTypeFromExerciseType} from '@data/converters/ExerciseConverter'
+import {ExerciseBodyPartEnum, ExerciseTypeEnum} from '@data/models/Exercise'
+import {Navigation} from '@navigation/types'
+import {useCreateExerciseMutation} from '@queries/exercises/useCreateExerciseMutation'
+import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {useNavigation} from '@react-navigation/native'
-import useExercisesStore from '@store/exercises/useExercisesStore'
-import {Text, useStyleTheme} from '@theme/Theme'
-import {Subject} from 'rxjs'
+import {Theme} from '@styles/theme'
 
+import BarbellIcon from '@components/icons/BarbellIcon'
 import LoadingOverlay from '@components/LoadingOverlay'
 import Picker from '@components/Picker'
 import PrimaryButton from '@components/PrimaryButton'
+import Text from '@components/Text'
 import TextInputWithHeader from '@components/TextInputWithHeader'
 import {showToast} from '@components/toast/util/ShowToast'
 
@@ -23,31 +26,17 @@ import {
   CREATE_EXERCISE_NAME_ERROR,
   CREATE_EXERCISE_NAME_HEADER,
   CREATE_EXERCISE_NAME_PLACEHOLDER_TEXT,
-  TOAST_ALREADY_EXISTS,
-  TOAST_EXERCISE_CREATED
-} from '@constants/Strings'
+  TOAST_ALREADY_EXISTS
+} from '@constants/strings'
 
 import styles, {createExerciseMaxPickerWidth} from './index.styled'
-import {Navigation} from '../../navigation/types'
-import {combineExerciseNameType} from '../../utility/combineExerciseNameType'
-import {exerciseTypeValues, bodyPartValues} from '../../utility/exercisePickerItems'
-
-export enum CreateExerciseEvent {
-  Created = 'created',
-  Exists = 'deleted',
-  Error = 'error'
-}
-
-export const CreateExerciseEventSubject$ = new Subject<{
-  event: CreateExerciseEvent
-  payload: CreateExercisePayload
-}>()
+import {bodyPartValues, combineExerciseNameType, exerciseTypeValues} from './index.util'
 
 const CreateExerciseScreen = () => {
-  const theme = useStyleTheme()
   const {goBack} = useNavigation<Navigation>()
 
-  const {createExercise} = useExercisesStore()
+  const {data: exercises = []} = useExercisesQuery()
+  const {mutateAsync: createExercise, isPending: isCreatingExercise} = useCreateExerciseMutation()
 
   const [exerciseNameText, setExerciseNameText] = useState('')
   const [showExerciseNameError, setShowExerciseNameError] = useState(false)
@@ -55,53 +44,47 @@ const CreateExerciseScreen = () => {
   const [exerciseType, setExerciseType] = useState<ExerciseTypeEnum>(ExerciseTypeEnum.BARBELL)
   const [bodyPart, setBodyPart] = useState<ExerciseBodyPartEnum>(ExerciseBodyPartEnum.CHEST)
 
-  const [isCreatingExercise, setIsCreatingExercise] = useState(false)
-
-  useEffect(() => {
-    const sub = CreateExerciseEventSubject$.subscribe({
-      next: ({event, payload}) => {
-        if (event === CreateExerciseEvent.Created) {
-          showToast('success', TOAST_EXERCISE_CREATED, payload.name)
-          goBack()
-        } else if (event === CreateExerciseEvent.Exists) {
-          showToast('error', `${combineExerciseNameType(payload.name, payload.exerciseType)} ${TOAST_ALREADY_EXISTS}`)
-        } else if (event === CreateExerciseEvent.Error) {
-          showToast('error', CREATE_EXERCISE_ERROR)
-        }
-        setIsCreatingExercise(false)
-      }
-    })
-
-    return () => {
-      sub.unsubscribe()
-    }
-  }, [])
-
   const onNameTextChanged = (text: string) => {
     setExerciseNameText(text)
     setShowExerciseNameError(false)
   }
 
-  const onCreateExercisePressed = () => {
+  const onCreateExercisePressed = async () => {
     if (exerciseNameText === '') {
       setShowExerciseNameError(true)
 
       return
     }
 
-    setIsCreatingExercise(true)
-    createExercise({
-      name: exerciseNameText,
-      exerciseType,
-      exerciseBodyPart: bodyPart
-    })
+    const alreadyExists = exercises.some(e => e.name === exerciseNameText && e.exerciseType === exerciseType)
+
+    if (alreadyExists) {
+      showToast('error', `${combineExerciseNameType(exerciseNameText, exerciseType)} ${TOAST_ALREADY_EXISTS}`)
+
+      return
+    }
+
+    try {
+      await createExercise({
+        name: exerciseNameText,
+        exerciseType,
+        exerciseBodyPart: bodyPart,
+        loggingType: deriveLoggingTypeFromExerciseType(exerciseType)
+      })
+
+      goBack()
+    } catch (error) {
+      showToast('error', CREATE_EXERCISE_ERROR)
+    }
   }
 
   return (
     <>
       {isCreatingExercise && <LoadingOverlay />}
 
-      <Ionicons style={styles.icon} name="barbell" size={128} color={theme.colors.secondary} />
+      <View style={styles.icon}>
+        <BarbellIcon size={128} color={Theme.colors.secondary} />
+      </View>
 
       <View style={styles.inputContainer}>
         <TextInputWithHeader

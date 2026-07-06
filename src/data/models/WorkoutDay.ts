@@ -1,5 +1,3 @@
-import {v4 as uuidv4} from 'uuid'
-
 import {DailyExercise} from './DailyExercise'
 
 export interface WorkoutDay {
@@ -8,8 +6,10 @@ export interface WorkoutDay {
   date: string
   dailyExercises: DailyExercise[]
   updatedAt: number
-  syncAttempts?: number // track how many times we've tried to sync this workout
-  synced?: boolean // track if local data is dirty and needs to be synced
+  syncAttempts?: number
+  synced?: boolean
+  startedAt?: number // local-only: when the first exercise was added today
+  completedAt?: number // local-only: when the user tapped Complete Daily Workout
 }
 
 export function createWorkoutDay(userId: string, date: string, dailyExercises: DailyExercise[] = []): WorkoutDay {

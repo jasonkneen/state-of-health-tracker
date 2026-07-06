@@ -2,26 +2,27 @@ import React, {useState} from 'react'
 
 import {DailyExercise} from '@data/models/DailyExercise'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
+import {formatExerciseSubtitle} from '@utility/formatExerciseSubtitle'
 
 import SectionListHeader from '@components/SectionListHeader'
 
-import {ADD_SET_BUTTON_TEXT} from '@constants/Strings'
+import {ADD_SET_BUTTON_TEXT} from '@constants/strings'
 
 import ExerciseListItemDropdown from './ExerciseListItemDropdown'
 
 interface Props {
   dailyExercise: DailyExercise
-  dailyExercisesToReorg: DailyExercise[]
+  onReorganizePressed: () => void
 }
 
 const ExerciseSectionListHeader = (props: Props) => {
-  const {dailyExercise, dailyExercisesToReorg} = props
+  const {dailyExercise, onReorganizePressed} = props
 
   const [isDropdownVisible, setIsDropdownVisible] = useState(false)
   const [dropdownTopMargin, setDropdownTopMargin] = useState(0)
   const [dropdownDailyExercise, setDropdownDailyExercise] = useState<DailyExercise>()
 
-  const {addSet} = useDailyWorkoutEntryStore()
+  const addSet = useDailyWorkoutEntryStore(state => state.addSet)
 
   const dropdown = () => (
     <ExerciseListItemDropdown
@@ -30,8 +31,8 @@ const ExerciseSectionListHeader = (props: Props) => {
       }}
       isVisible={isDropdownVisible}
       dropdownTopMargin={dropdownTopMargin}
-      dailyExercisesToReorg={dailyExercisesToReorg}
       dailyExerciseToDelete={dropdownDailyExercise}
+      onReorganize={onReorganizePressed}
     />
   )
 
@@ -42,6 +43,7 @@ const ExerciseSectionListHeader = (props: Props) => {
       <SectionListHeader
         key={dailyExercise.id}
         title={dailyExercise.exercise.name}
+        subtitle={formatExerciseSubtitle(dailyExercise.exercise.exerciseType, dailyExercise.exercise.exerciseBodyPart)}
         onTitlePressed={(topMargin?: number) => {
           if (topMargin) {
             setDropdownTopMargin(topMargin)

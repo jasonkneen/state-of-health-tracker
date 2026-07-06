@@ -1,7 +1,11 @@
 import {StyleSheet} from 'react-native'
 
-import FontSize from '@constants/FontSize'
-import Spacing from '@constants/Spacing'
+import BorderRadius from '@styles/borderRadius'
+import FontSize from '@styles/fontSize'
+import Spacing from '@styles/spacing'
+import {Theme} from '@styles/theme'
+
+const SELECT_CIRCLE_SIZE = 22
 
 export default StyleSheet.create({
   container: {
@@ -19,13 +23,88 @@ export default StyleSheet.create({
     alignSelf: 'center'
   },
   headerText: {
-    marginLeft: Spacing.LARGE,
-    fontSize: FontSize.H2,
+    fontSize: FontSize.OVERLINE,
+    fontWeight: '600',
+    color: Theme.colors.accentGreen,
+    textTransform: 'uppercase',
+    letterSpacing: 0.6,
     marginVertical: Spacing.MEDIUM,
+    marginLeft: Spacing.GUTTER
+  },
+  searchSectionHeaderContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: Spacing.MEDIUM,
+    marginRight: Spacing.MEDIUM,
+    marginVertical: Spacing.MEDIUM
+  },
+  sectionHeaderText: {
+    marginLeft: Spacing.X_SMALL,
+    fontSize: FontSize.H1,
     fontWeight: 'bold'
   },
-  footerButton: {
-    margin: Spacing.MEDIUM,
-    marginBottom: 48
+  noResultsText: {
+    fontWeight: '200',
+    paddingHorizontal: Spacing.MEDIUM,
+    textAlign: 'center',
+    alignSelf: 'center'
+  },
+  createFooterButton: {
+    alignSelf: 'center',
+    marginTop: Spacing.MEDIUM,
+    marginBottom: Spacing.LARGE
+  },
+  listContent: {
+    // Keep the last rows reachable above the floating check button
+    paddingBottom: 96
+  },
+  selectedTray: {
+    flexGrow: 0,
+    height: 48
+  },
+  selectedTrayContent: {
+    paddingHorizontal: Spacing.MEDIUM,
+    columnGap: Spacing.X_SMALL,
+    alignItems: 'center'
+  },
+  selectedChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: Spacing.XX_SMALL,
+    backgroundColor: Theme.colors.greenTint,
+    borderRadius: BorderRadius.PILL,
+    paddingVertical: Spacing.X_SMALL,
+    paddingLeft: Spacing.SMALL,
+    paddingRight: Spacing.X_SMALL,
+    maxWidth: 220
+  },
+  selectedChipText: {
+    fontSize: FontSize.LABEL,
+    fontWeight: '600',
+    color: Theme.colors.greenOnTint,
+    flexShrink: 1
+  },
+  selectCircle: {
+    width: SELECT_CIRCLE_SIZE,
+    height: SELECT_CIRCLE_SIZE,
+    borderRadius: SELECT_CIRCLE_SIZE / 2,
+    borderWidth: 1.5,
+    borderColor: Theme.colors.dashedBorder,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  selectCircleSelected: {
+    backgroundColor: Theme.colors.accentGreen,
+    borderColor: Theme.colors.accentGreen
+  },
+  selectCircleNumber: {
+    fontSize: FontSize.LABEL,
+    fontWeight: '700',
+    color: Theme.colors.onInverse
+  },
+  fabContainer: {
+    position: 'absolute',
+    right: Spacing.GUTTER,
+    bottom: Spacing.LARGE
   }
 })

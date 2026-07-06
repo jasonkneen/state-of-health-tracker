@@ -1,9 +1,17 @@
-import {StyleSheet} from 'react-native'
+import {StyleSheet, ViewStyle} from 'react-native'
+
+export const sheetContentPadding = (bottomInset: number): ViewStyle => ({
+  paddingBottom: 20 + bottomInset
+})
 
 export default StyleSheet.create({
   backdrop: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.1)'
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)'
   },
   backdropTouchableArea: {
     flex: 1

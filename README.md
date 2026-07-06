@@ -1,25 +1,80 @@
+<div align="center">
+
 ![State of Health_LOGO](https://github.com/Kennygunderman/state-of-health-tracker/assets/16354865/b6d58f3a-973d-44e0-8ccb-216e3d358eeb)
 
+# State of Health
 
-# State of Health Tracking App
+**Lift. Eat. Run. One app keeps score.**
 
-https://thestateofhealth.com/
+[**Download on the App Store**](https://apps.apple.com/us/app/state-of-health/id6470658244?platform=iphone) · [**thestateofhealth.com**](https://thestateofhealth.com/)
 
-Any fitness goal is closely tied to the food you consume, so why should you have separate apps for tracking your progress in the gym and in the kitchen? The State of Health Tracking app offers an all-encompassing solution for tracking your macros and workouts.
+![React Native](https://img.shields.io/badge/React%20Native-0.86-61DAFB?logo=react&logoColor=white&labelColor=20232a)
+![Expo](https://img.shields.io/badge/Expo-SDK%2057-000020?logo=expo&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?logo=typescript&logoColor=white)
+![TanStack Query](https://img.shields.io/badge/TanStack%20Query-v5-FF4154?logo=reactquery&logoColor=white)
+![Zustand](https://img.shields.io/badge/Zustand-v5-443E38)
 
-At State of Health, we strive to simplify fitness. Our app is devoid of unnecessary features and is exceptionally user-friendly. It includes progressive overload tracking to ensure you add more reps or weight with each workout. Moreover, our app is seamlessly integrated with the USDA food database, enabling you to easily search for nearly any food item containing a label within the United States.
+</div>
 
-Our tracking app is loaded with comprehensive graphs, and charts to make sure you are on track every day to hit your goals. Each day you log a workout or meal, a diary entry will automatically be created for you to keep track of your progress.
+---
 
-### Prod Build
-1. Make sure to increment `version` and `buildNumber` inside the app.json file.
-2. Build a native iOS build with `npx expo run:ios`
-3. Create an iOS Prod build via `eas build --platform ios`. Submit to appstore connect with: `eas submit -p ios`
+Your training and your diet are the same goal, so why are they in separate apps? State of Health puts your workouts, macros, and runs in one place, with none of the bloat that makes most fitness apps a chore to open.
 
-# Screenshots
-<img src="https://github.com/Kennygunderman/state-of-health-tracker/assets/16354865/f2161f8a-6dd3-4849-ae81-9ea96cc0d173" width="334" height="670" />
-<img src="https://github.com/Kennygunderman/state-of-health-tracker/assets/16354865/29f0bbcf-7a20-425e-974e-dd7aed3ca68e" width="334" height="670" />
-<img src="https://github.com/Kennygunderman/state-of-health-tracker/assets/16354865/332054b4-c71b-4e67-8ecc-f7720925154c" width="334" height="670" />
-<img src="https://github.com/Kennygunderman/state-of-health-tracker/assets/16354865/84ec42d5-172a-40c6-99d9-aeb206aaf52a" width="334" height="670" />
-<img src="https://github.com/Kennygunderman/state-of-health-tracker/assets/16354865/207fff9c-bb63-4b08-9a16-c6a1cdca1768" width="334" height="670" />
-<img src="https://github.com/Kennygunderman/state-of-health-tracker/assets/16354865/b2e8c3bb-cbf7-45f4-afee-e4bf407366ae" width="334" height="670" />
+<div align="center">
+<table>
+  <tr>
+    <td><img src="docs/screenshots/01-log-with-ai.png" width="270" alt="AI food logging" /></td>
+    <td><img src="docs/screenshots/03-workouts.png" width="270" alt="Workout templates" /></td>
+    <td><img src="docs/screenshots/04-runs.png" width="270" alt="GPS run tracking" /></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/02-macros.png" width="270" alt="Macro tracking" /></td>
+    <td><img src="docs/screenshots/05-progress.png" width="270" alt="Weight progress" /></td>
+    <td><img src="docs/screenshots/06-weekly-goal.png" width="270" alt="Weekly training goals" /></td>
+  </tr>
+</table>
+</div>
+
+## What it does
+
+**Workouts.** Build templates, start a session, and log sets as you lift. Progressive overload tracking watches every exercise and tells you when it's time to add weight or reps. Set a weekly target and watch the week fill up.
+
+**Macros.** Type "3 eggs, toast with jelly, hash browns" and the AI breaks it into foods with calories and macros you can tweak. Prefer doing it by hand? Search the USDA database, which covers nearly every labeled food in the US, or build your own custom foods.
+
+**Runs.** GPS tracking with your route on the map, pace, speed, and calorie burn. Runs feed into the same daily activity picture as your lifts and steps.
+
+**Progress.** Body weight trends against your goal, strength charts for every exercise, and a full history of everything you've logged. Every day you train or eat, the app keeps the diary for you.
+
+## Under the hood
+
+- React Native 0.86 on the New Architecture, Expo SDK 57
+- TypeScript end to end
+- TanStack Query for server state, Zustand for client state
+- Node + Postgres backend with Prisma
+- Firebase for auth (email, Google Sign-In) and Remote Config
+
+## Development
+
+```bash
+npm install
+npx expo run:ios
+```
+
+## Shipping a release
+
+1. Bump `version` and `buildNumber` in `app.json`
+2. Build and submit:
+
+```bash
+eas build --platform ios --profile production --auto-submit
+```
+
+Or build and submit separately with `eas build --platform ios --profile production` and `eas submit -p ios --latest`.
+
+---
+
+<div align="center">
+
+Built by <a href="https://github.com/Kennygunderman">Kenny Gunderman</a>
+
+</div>

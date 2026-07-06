@@ -1,8 +1,11 @@
 import remoteConfig from '@react-native-firebase/remote-config'
 
-// Set default values
 remoteConfig().setDefaults({
-  minimum_app_version: '1.4.3'
+  minimum_app_version: '1.4.3',
+  // Kill switch for all AI logging (estimate + label scan). Flip to false in
+  // the Firebase console to hide the feature; the backend AI_FEATURES_ENABLED
+  // env var is the authoritative server-side switch.
+  log_with_ai_enabled: true
 })
 
 remoteConfig().setConfigSettings({
@@ -15,4 +18,8 @@ export const initRemoteConfig = async () => {
 
 export const getMinimumAppVersion = () => {
   return remoteConfig().getValue('minimum_app_version').asString()
+}
+
+export const isLogWithAiEnabled = () => {
+  return remoteConfig().getValue('log_with_ai_enabled').asBoolean()
 }

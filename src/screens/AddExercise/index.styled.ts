@@ -19,6 +19,10 @@ export default StyleSheet.create({
     fontSize: FontSize.H1,
     fontWeight: 'bold'
   },
+  catalogHeaderContainer: {
+    marginTop: Spacing.LARGE,
+    marginBottom: Spacing.SMALL
+  },
   emptyText: {
     fontWeight: '200',
     paddingHorizontal: Spacing.MEDIUM,

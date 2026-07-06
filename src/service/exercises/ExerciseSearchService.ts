@@ -19,6 +19,10 @@ class ExerciseSearchService {
     }
   }
 
+  get catalogCount(): number {
+    return exercises.length
+  }
+
   searchExercises(term: string = '', limit: number = 50): CreateExercisePayload[] {
     const normalizedTerm = term.trim().toLowerCase()
 

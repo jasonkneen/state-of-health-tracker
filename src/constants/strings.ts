@@ -26,6 +26,8 @@ export const TARGET_CALORIE_MODAL_BUTTON = 'Set Target'
 
 export const SEARCH_EXERCISES_PLACEHOLDER = 'Search exercises'
 
+export const SEARCH_FROM_CATALOG_PLACEHOLDER = 'Search from catalog'
+
 export const UPDATE_SERVINGS_BUTTON_TEXT = 'Update Servings'
 
 export const PROTEIN_LABEL = 'protein'
@@ -206,6 +208,9 @@ export const TOAST_TEMPLATE_CREATION_ERROR = 'Error creating template. Please ch
 
 export const NO_EXERCISES_ADDED_TEXT =
   "No exercises added. Tap '+ Create Exercise' to get started, or search for exercises using the search bar."
+
+export const NO_EXERCISES_BROWSE_CATALOG_TEXT =
+  "You don't have any exercises yet. Create your own, or add one from our catalog of %0 exercises below."
 
 export const NO_TEMPLATES_ADDED_TEXT = "No templates added. Tap '+ Create Template' to get started."
 

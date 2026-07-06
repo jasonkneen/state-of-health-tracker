@@ -12,6 +12,7 @@ import {useExercisesQuery} from '@queries/exercises/useExercisesQuery'
 import {mutationKeys} from '@queries/keys'
 import {useTemplatesQuery} from '@queries/templates/useTemplatesQuery'
 import {useNavigation} from '@react-navigation/native'
+import exerciseSearchService from '@service/exercises/ExerciseSearchService'
 import useDailyWorkoutEntryStore from '@store/dailyWorkoutEntry/useDailyWorkoutEntryStore'
 import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
@@ -33,12 +34,13 @@ import {
   CREATE_EXERCISE_BUTTON_TEXT,
   CREATE_TEMPLATE_BUTTON_TEXT,
   FROM_CATALOG_HEADER,
-  NO_EXERCISES_ADDED_TEXT,
+  NO_EXERCISES_BROWSE_CATALOG_TEXT,
   NO_SEARCH_RESULTS_TEXT,
   NO_TEMPLATES_ADDED_TEXT,
   SAVE_EXERCISE_ERROR,
   SEARCH_ADD_EXERCISE_ERROR,
-  SEARCH_EXERCISES_PLACEHOLDER,
+  SEARCH_FROM_CATALOG_PLACEHOLDER,
+  stringWithParameters,
   TEMPLATES_HEADER,
   TOAST_EXERCISE_ALREADY_ADDED,
   YOUR_EXERCISES_HEADER
@@ -90,7 +92,12 @@ const AddExerciseScreen = () => {
       ]
     : [
         {title: TEMPLATES_HEADER, data: templates},
-        {title: YOUR_EXERCISES_HEADER, data: exercises}
+        {title: YOUR_EXERCISES_HEADER, data: exercises},
+        // New users with no exercises get the catalog to browse right away
+        // instead of an empty-state message
+        ...(!isLoadingExercises && exercises.length === 0
+          ? [{title: FROM_CATALOG_HEADER, data: catalogSuggestions as SectionItem[]}]
+          : [])
       ]
 
   const addToWorkout = (exercise: Exercise) => {
@@ -132,6 +139,14 @@ const AddExerciseScreen = () => {
   }
 
   const renderBrowseHeader = (section: Section) => {
+    if (section.title === FROM_CATALOG_HEADER) {
+      return (
+        <View style={[styles.sectionHeaderContainer, styles.catalogHeaderContainer]}>
+          <Text style={styles.sectionHeaderText}>{section.title}</Text>
+        </View>
+      )
+    }
+
     const isSectionLoading = section.title === YOUR_EXERCISES_HEADER ? isLoadingExercises : isLoadingTemplates
     const isEmpty = !isSectionLoading && section.data.length === 0
 
@@ -156,7 +171,7 @@ const AddExerciseScreen = () => {
 
     const emptyText = isEmpty
       ? section.title === YOUR_EXERCISES_HEADER
-        ? NO_EXERCISES_ADDED_TEXT
+        ? stringWithParameters(NO_EXERCISES_BROWSE_CATALOG_TEXT, exerciseSearchService.catalogCount.toLocaleString())
         : NO_TEMPLATES_ADDED_TEXT
       : undefined
 
@@ -247,7 +262,7 @@ const AddExerciseScreen = () => {
         sections={sections}
         stickySectionHeadersEnabled={false}
         ListHeaderComponent={
-          <SearchBar placeholder={SEARCH_EXERCISES_PLACEHOLDER} onSearchTextChanged={setSearchText} />
+          <SearchBar placeholder={SEARCH_FROM_CATALOG_PLACEHOLDER} onSearchTextChanged={setSearchText} />
         }
         ListFooterComponent={renderFooter()}
         renderSectionHeader={({section}) => (isSearching ? renderSearchHeader(section) : renderBrowseHeader(section))}

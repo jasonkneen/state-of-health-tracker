@@ -30,8 +30,6 @@ export const useExerciseCatalogSearch = () => {
   }, [searchTerm, debouncedCatalogSearch])
 
   const loadMoreCatalogResults = () => {
-    if (!isSearching) return
-
     const nextBatch = batchCount + 1
 
     setCatalogResults(exerciseSearchService.searchExercises(searchTerm, nextBatch * LoadBatchSize))

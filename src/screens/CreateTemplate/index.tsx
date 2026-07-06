@@ -33,7 +33,7 @@ import {
   CREATE_TEMPLATE_NO_EXERCISES,
   FROM_CATALOG_HEADER,
   NO_SEARCH_RESULTS_TEXT,
-  SEARCH_EXERCISES_PLACEHOLDER,
+  SEARCH_FROM_CATALOG_PLACEHOLDER,
   SELECT_EXERCISES_FOR_TEMPLATE_TITLE,
   TOAST_TEMPLATE_CREATION_ERROR,
   YOUR_EXERCISES_HEADER
@@ -215,7 +215,7 @@ const CreateTemplateScreen = () => {
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={
           <>
-            <SearchBar placeholder={SEARCH_EXERCISES_PLACEHOLDER} onSearchTextChanged={setSearchText} />
+            <SearchBar placeholder={SEARCH_FROM_CATALOG_PLACEHOLDER} onSearchTextChanged={setSearchText} />
 
             {selectedExercises.length > 0 && renderSelectedTray()}
 

@@ -753,6 +753,8 @@ export const TOAST_SAVE_AI_FOODS_ADD = 'Add'
 
 export const TOAST_SAVED_TO_FOODS = 'Saved to your foods!'
 
+export const TOAST_ADDED_TO_MEAL_PREFIX = 'Added to'
+
 export const AI_FREE_FOR_NOW_CAPTION = 'Free for a limited time'
 
 export const AI_DAILY_LIMIT_TOAST = "You've used today's free AI estimates. More tomorrow!"

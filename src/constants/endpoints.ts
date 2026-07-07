@@ -1,4 +1,9 @@
-const baseApiUrl = 'https://stateofhealthapi.com/api'
+import { SOH_API_BASE_URL } from '@env'
+
+// Host comes from the environment: local .env for `expo run`, EAS environment
+// variables for builds (development/preview → dev API, production → prod).
+// Fallback keeps release builds safe if the var is ever missing.
+const baseApiUrl = `${SOH_API_BASE_URL || 'https://stateofhealthapi.com'}/api`
 
 const Endpoints = {
   Exercises: `${baseApiUrl}/exercises`,

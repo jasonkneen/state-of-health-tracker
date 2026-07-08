@@ -7,8 +7,7 @@ import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
 
 export const buttonTouchable = (width: DimensionValue): ViewStyle => ({
-  width,
-  zIndex: -1
+  width
 })
 
 export default StyleSheet.create({

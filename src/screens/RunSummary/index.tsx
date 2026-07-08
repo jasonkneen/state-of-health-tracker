@@ -50,8 +50,10 @@ type RunSummaryRouteProp = RouteProp<RunsStackParamList, typeof Screens.RUN_SUMM
 // route.params.pending distinguishes the two ways this screen is reached:
 // - pending=true: a run RunFlow (or the Runs screen's crash-recovery flow)
 //   just finished and saved as a local draft — offer Save/Discard.
-// - pending=false/undefined: an already-saved history run being re-viewed —
-//   read-only, loaded local-first (see useRunRecordQuery).
+// - pending=false/undefined: a history run being re-viewed — read-only,
+//   loaded local-first (see useRunRecordQuery). Exception: if the loaded
+//   record is still a draft (the user previously left without deciding),
+//   Save/Discard is offered again — see `requiresDecision` below.
 const RunSummaryScreen = () => {
   const navigation = useNavigation<RunSummaryNavigationProp>()
   const route = useRoute<RunSummaryRouteProp>()
@@ -120,6 +122,13 @@ const RunSummaryScreen = () => {
 
   const tiles = buildRunSummaryTiles(record)
 
+  // A draft is a finished run still awaiting its Save/Discard decision. The
+  // route's `pending` flag covers the arrival from RunFlow/recovery, but a
+  // draft can also be reopened later from the Runs list (e.g. the user left
+  // this screen via the tab bar) — it must offer the decision either way, or
+  // the run can never be saved.
+  const requiresDecision = pending || record.draft === true
+
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
@@ -156,8 +165,8 @@ const RunSummaryScreen = () => {
         </View>
       </ScrollView>
 
-      {/* A pending run's only exits are the Save/Discard buttons below */}
-      {!pending && (
+      {/* An undecided run's only exits are the Save/Discard buttons below */}
+      {!requiresDecision && (
         <TouchableOpacity
           style={[styles.backButton, backButtonPosition(insets.top)]}
           onPress={() => navigation.goBack()}>
@@ -165,7 +174,7 @@ const RunSummaryScreen = () => {
         </TouchableOpacity>
       )}
 
-      {pending && (
+      {requiresDecision && (
         <View style={styles.actionRow}>
           <PrimaryButton
             width="48%"

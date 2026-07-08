@@ -23,6 +23,7 @@ import {
   CAL_PER_SERVING_SUFFIX,
   SERVINGS_HEADER,
   THIS_ADDS_LABEL,
+  TOAST_ADDED_TO_MEAL_PREFIX,
   TOAST_GENERIC_ERROR,
   UPDATE_SERVINGS_BUTTON_TEXT
 } from '@constants/strings'
@@ -125,7 +126,11 @@ const FoodDetailScreen = () => {
         }
       })
 
-      navigation.pop(2)
+      // Land back on Add Food (not Macros) so more items can be added to the
+      // same meal without re-entering the flow
+      navigation.goBack()
+
+      showToast('success', `${TOAST_ADDED_TO_MEAL_PREFIX} ${params.mealName}`, food.name)
     } catch {
       showToast('error', TOAST_GENERIC_ERROR)
     }

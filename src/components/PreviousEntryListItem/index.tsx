@@ -28,16 +28,18 @@ const PreviousEntryListItem = <T extends object>(props: Props<T>) => {
       <View style={styles.headerChipRow}>{headerChip}</View>
 
       <View style={styles.columnLabelRow}>
-        <Text style={styles.column1Label}>{column1Label}</Text>
+        <Text style={styles.columnLabel}>{column1Label}</Text>
 
-        <Text style={styles.column2Label}>{column2Label}</Text>
+        <Text style={styles.columnLabel}>{column2Label}</Text>
       </View>
 
       {subItems.map((item: T, i) => (
-        <View key={i} style={styles.subItem}>
-          <Text style={styles.subItemTitle}>{getTitleForItem(item)}</Text>
+        <View key={i} style={[styles.subItem, i === subItems.length - 1 && styles.subItemLast]}>
+          <View style={styles.subItemInfo}>
+            <Text style={styles.subItemTitle}>{getTitleForItem(item)}</Text>
 
-          <Text style={styles.subItemSubtitle}>{getSubtitleForItem(item)}</Text>
+            <Text style={styles.subItemSubtitle}>{getSubtitleForItem(item)}</Text>
+          </View>
 
           {getChipForItem(item)}
         </View>

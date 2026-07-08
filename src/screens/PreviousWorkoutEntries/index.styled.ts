@@ -8,6 +8,10 @@ export default StyleSheet.create({
   list: {
     flex: 1
   },
+  listContent: {
+    paddingHorizontal: Spacing.GUTTER,
+    paddingBottom: Spacing.LARGE
+  },
   // Mirrors the Macros history screen title
   title: {
     fontSize: FontSize.SCREEN_TITLE,

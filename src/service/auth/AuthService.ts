@@ -4,6 +4,8 @@ import {createUser} from '@queries/api/auth/createUser'
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth'
 import {GoogleSignin} from '@react-native-google-signin/google-signin'
 import CrashUtility from '@utility/CrashUtility'
+import * as AppleAuthentication from 'expo-apple-authentication'
+import * as Crypto from 'expo-crypto'
 
 import {GOOGLE_WEB_CLIENT_ID} from '@constants/auth'
 
@@ -117,6 +119,77 @@ class AuthService {
     const {user} = userCredential
 
     if (userCredential.additionalUserInfo?.isNewUser) {
+      try {
+        await createUser({
+          userId: user.uid,
+          email: user.email ?? ''
+        })
+      } catch (error) {
+        // Roll back the just-created Firebase account so a retry re-runs
+        // backend user creation; the original backend error is what propagates
+        await this.deleteCurrentUser().catch(rollbackError => CrashUtility.recordError(rollbackError))
+        throw error
+      }
+    }
+
+    return {
+      id: user.uid,
+      name: user.displayName,
+      email: user.email ?? ''
+    }
+  }
+
+  /** Resolves null when the user dismisses the Apple sign-in sheet. */
+  async signInWithApple(): Promise<User | null> {
+    let userCredential: FirebaseAuthTypes.UserCredential
+    let appleFullName: AppleAuthentication.AppleAuthenticationFullName | null = null
+
+    try {
+      // Firebase verifies the raw nonce against the SHA256 hash embedded in
+      // Apple's identity token, tying the token to this sign-in attempt
+      const rawNonce = Crypto.randomUUID()
+      const hashedNonce = await Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, rawNonce)
+
+      const appleCredential = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL
+        ],
+        nonce: hashedNonce
+      })
+
+      appleFullName = appleCredential.fullName
+
+      const {identityToken} = appleCredential
+
+      if (!identityToken) {
+        throw new Error('Apple sign-in returned no identity token')
+      }
+
+      const credential = auth.AppleAuthProvider.credential(identityToken, rawNonce)
+
+      userCredential = await auth().signInWithCredential(credential)
+    } catch (e) {
+      if ((e as {code?: string}).code === 'ERR_REQUEST_CANCELED') {
+        return null
+      }
+
+      const error = e as FirebaseAuthTypes.NativeFirebaseAuthError
+
+      throw createAuthError(AuthErrorPathEnum.LOGIN, error.code)
+    }
+
+    const {user} = userCredential
+
+    if (userCredential.additionalUserInfo?.isNewUser) {
+      // Apple only shares the name on the very first authorization, so this is
+      // the only chance to store it on the Firebase profile
+      const displayName = [appleFullName?.givenName, appleFullName?.familyName].filter(Boolean).join(' ')
+
+      if (displayName) {
+        await user.updateProfile({displayName}).catch(error => CrashUtility.recordError(error))
+      }
+
       try {
         await createUser({
           userId: user.uid,

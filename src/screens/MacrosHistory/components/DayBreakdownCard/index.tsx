@@ -3,13 +3,14 @@ import React from 'react'
 import {View} from 'react-native'
 
 import {DailySummary} from '@data/models/DailyMacros'
+import {formatDayTitle} from '@utility/DateUtility'
 
 import Text from '@components/Text'
 
 import {CALORIES_COLUMN_LABEL, MEAL_COLUMN_LABEL} from '@constants/strings'
 
 import styles from './index.styled'
-import {formatDayTitle, formatMacroLine} from '../../index.util'
+import {formatMacroLine} from '../../index.util'
 
 interface Props {
   day: DailySummary
@@ -22,7 +23,7 @@ const DayBreakdownCard = ({day}: Props) => {
     <View style={styles.card}>
       <View style={styles.headerRow}>
         <View style={styles.dayColumn}>
-          <Text style={styles.dayTitle}>{formatDayTitle(day.date)}</Text>
+          <Text style={styles.dayTitle}>{formatDayTitle(day.date, new Date().getFullYear())}</Text>
 
           <Text style={styles.daySubtitle}>{formatMacroLine(day.protein, day.carbs, day.fat)}</Text>
         </View>

@@ -14,7 +14,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.stateofhealh.tracker",
       "icon": "./assets/icon.png",
-      "buildNumber": "23",
+      "buildNumber": "24",
+      "usesAppleSignIn": true,
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "NSLocationWhenInUseUsageDescription": "State of Health uses your location while you're running to track your route, distance, and pace.",
@@ -30,6 +31,7 @@
       "googleServicesFile": "./google-services.json"
     },
     "plugins": [
+      "expo-apple-authentication",
       [
         "expo-image-picker",
         {
@@ -76,7 +78,7 @@
         "@kingstinct/react-native-healthkit",
         {
           "NSHealthShareUsageDescription": "State of Health reads your step count to show your daily activity and estimate calories burned.",
-          "NSHealthUpdateUsageDescription": "State of Health does not write data to Apple Health. This permission is only requested because the health integration framework requires it.",
+          "NSHealthUpdateUsageDescription": "State of Health does not currently write any data to Apple Health.",
           "background": false
         }
       ],
@@ -88,7 +90,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#0C1310"
         }
-      ]
+      ],
+      "./plugins/withNoBackgroundFetch.js"
     ],
     "web": {
       "favicon": "./assets/favicon.png"

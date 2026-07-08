@@ -35,5 +35,8 @@ export default StyleSheet.create({
   },
   badgeTeal: {
     color: Theme.colors.teal
+  },
+  badgeDanger: {
+    color: Theme.colors.error
   }
 })

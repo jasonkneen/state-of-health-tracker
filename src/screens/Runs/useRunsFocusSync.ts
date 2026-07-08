@@ -18,6 +18,11 @@ import {RUN_RECOVERED_TOAST} from '@constants/strings'
 
 type RunsNavigationProp = NativeStackNavigationProp<RunsStackParamList, typeof Screens.RUNS>
 
+// Parked runs (sync attempts exhausted) get one fresh set of attempts per app
+// launch — module-level so it survives screen remounts but resets with the JS
+// context.
+let hasRetriedParkedThisLaunch = false
+
 /**
  * Everything the Runs screen kicks off when it gains focus: the foreground
  * permission pre-request, the pending-local-runs read, crash recovery, and a
@@ -83,7 +88,10 @@ export const useRunsFocusSync = () => {
 
       // Best-effort background push so pending runs clear out of the local
       // bucket on their own; the mutation invalidates the runs query.
-      syncRuns(undefined, {onSuccess: () => refreshLocalRuns()})
+      const retryParked = !hasRetriedParkedThisLaunch
+
+      hasRetriedParkedThisLaunch = true
+      syncRuns({retryParked}, {onSuccess: () => refreshLocalRuns()})
     }, [refreshLocalRuns, handleRecovery, syncRuns])
   )
 

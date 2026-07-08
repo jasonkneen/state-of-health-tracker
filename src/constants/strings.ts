@@ -307,6 +307,8 @@ export const RUNS_BADGE_BEST_PACE = 'best pace'
 
 export const RUNS_BADGE_LONGEST = 'longest'
 
+export const RUNS_BADGE_NOT_BACKED_UP = 'not backed up'
+
 export const RUNS_PACE_CAPTION = '%0 pace'
 
 export const RUNS_EMPTY_TITLE = 'No runs yet'
@@ -489,8 +491,6 @@ export const ACTIVITY_CONNECT_HEALTH_BODY =
   'Allow access to your Apple Health step count so your daily movement counts toward your activity.'
 
 export const ACTIVITY_CONNECT_HEALTH_BUTTON = 'Connect'
-
-export const ACTIVITY_STEPS_SOURCE_TEXT = 'Steps from Apple Health'
 
 export const ACTIVITY_HEALTH_DENIED_TITLE = 'Step access is off'
 

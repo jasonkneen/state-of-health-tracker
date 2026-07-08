@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-import {Alert, TouchableOpacity, View} from 'react-native'
+import {Alert, Platform, TouchableOpacity, View} from 'react-native'
 
 import {isAuthError} from '@data/models/AuthError'
 import {Navigation} from '@navigation/types'
@@ -10,6 +10,7 @@ import Spacing from '@styles/spacing'
 import {isValidEmail, isValidPassword} from '@utility/AccountUtility'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 
+import AppleSignInButton from '@components/AppleSignInButton'
 import GoogleSignInButton from '@components/GoogleSignInButton'
 import PasswordTextInput from '@components/PasswordTextInput'
 import PrimaryButton from '@components/PrimaryButton'
@@ -55,6 +56,7 @@ const AuthForm = (props: Props) => {
   const loginUser = useAuthStore(state => state.loginUser)
   const registerUser = useAuthStore(state => state.registerUser)
   const signInWithGoogle = useAuthStore(state => state.signInWithGoogle)
+  const signInWithApple = useAuthStore(state => state.signInWithApple)
 
   const validate = (): boolean => {
     let isValid = true
@@ -124,6 +126,17 @@ const AuthForm = (props: Props) => {
     }
   }
 
+  const handleAppleSignIn = async () => {
+    try {
+      await signInWithApple()
+    } catch (error) {
+      const title = isAuthError(error) ? error.errorPath : AUTH_GENERIC_ERROR_TITLE
+      const message = isAuthError(error) ? error.errorMessage : AUTH_GENERIC_ERROR_MESSAGE
+
+      Alert.alert(title, message, [{text: OKAY_BUTTON_TEXT}])
+    }
+  }
+
   return (
     <KeyboardAwareScrollView
       keyboardShouldPersistTaps="always"
@@ -173,6 +186,10 @@ const AuthForm = (props: Props) => {
 
           <View style={styles.dividerLine} />
         </View>
+
+        {Platform.OS === 'ios' && (
+          <AppleSignInButton isLoading={isAttemptingAuth} onPress={handleAppleSignIn} style={styles.appleButton} />
+        )}
 
         <GoogleSignInButton isLoading={isAttemptingAuth} onPress={handleGoogleSignIn} />
 

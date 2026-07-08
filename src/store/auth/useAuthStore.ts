@@ -16,6 +16,7 @@ export type AuthState = {
   loginUser: (email: string, password: string) => Promise<void>
   registerUser: (email: string, password: string) => Promise<void>
   signInWithGoogle: () => Promise<void>
+  signInWithApple: () => Promise<void>
   logoutUser: () => Promise<void>
   deleteUser: () => Promise<void>
 }
@@ -99,6 +100,27 @@ const useAuthStore = create<AuthState>()((set, get) => ({
     set({isAttemptingAuth: true})
     try {
       const user = await authService.signInWithGoogle()
+
+      if (!user) {
+        return
+      }
+
+      set({
+        userId: user.id,
+        userEmail: user.email,
+        isAuthed: true
+      })
+    } catch (error) {
+      set({isAuthed: false})
+      throw error
+    } finally {
+      set({isAttemptingAuth: false})
+    }
+  },
+  signInWithApple: async () => {
+    set({isAttemptingAuth: true})
+    try {
+      const user = await authService.signInWithApple()
 
       if (!user) {
         return

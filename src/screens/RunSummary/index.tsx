@@ -76,7 +76,9 @@ const RunSummaryScreen = () => {
       if (result.newRecords.length > 0) {
         showToast('success', RUN_SAVED_PR_TOAST)
       }
-      navigation.navigate(Screens.RUNS)
+      // popTo, not navigate: v7 navigate() pushes a second Runs screen
+      // instead of returning to the existing one
+      navigation.popTo(Screens.RUNS)
     } catch {
       showToast('error', RUN_SAVE_ERROR_TOAST)
     }
@@ -95,7 +97,7 @@ const RunSummaryScreen = () => {
       }
     }
 
-    navigation.navigate(Screens.RUNS)
+    navigation.popTo(Screens.RUNS)
   }
 
   if (isLoading) {
@@ -114,7 +116,7 @@ const RunSummaryScreen = () => {
         <View style={styles.centered}>
           <Text style={styles.notFoundText}>{RUN_NOT_FOUND}</Text>
 
-          <PrimaryButton label={BACK_TO_RUNS_BUTTON_TEXT} onPress={() => navigation.navigate(Screens.RUNS)} />
+          <PrimaryButton label={BACK_TO_RUNS_BUTTON_TEXT} onPress={() => navigation.popTo(Screens.RUNS)} />
         </View>
       </SafeAreaView>
     )

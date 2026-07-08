@@ -12,6 +12,9 @@ export default StyleSheet.create({
   submitButton: {
     marginTop: Spacing.LARGE
   },
+  appleButton: {
+    marginBottom: Spacing.SMALL
+  },
   dividerRow: {
     flexDirection: 'row',
     alignItems: 'center',

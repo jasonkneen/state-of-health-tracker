@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-import {Alert, Image, KeyboardAvoidingView, TouchableOpacity, View} from 'react-native'
+import {Alert, Image, KeyboardAvoidingView, Platform, TouchableOpacity, View} from 'react-native'
 
 import {isAuthError} from '@data/models/AuthError'
 import {Navigation} from '@navigation/types'
@@ -11,6 +11,7 @@ import {isValidEmail, isValidPassword} from '@utility/AccountUtility'
 import LinearGradient from 'react-native-linear-gradient'
 import {SafeAreaView} from 'react-native-safe-area-context'
 
+import AppleSignInButton from '@components/AppleSignInButton'
 import GoogleSignInButton from '@components/GoogleSignInButton'
 import PrimaryButton from '@components/PrimaryButton'
 import Text from '@components/Text'
@@ -49,6 +50,7 @@ const LogInScreen = () => {
   const isAttemptingAuth = useAuthStore(state => state.isAttemptingAuth)
   const loginUser = useAuthStore(state => state.loginUser)
   const signInWithGoogle = useAuthStore(state => state.signInWithGoogle)
+  const signInWithApple = useAuthStore(state => state.signInWithApple)
 
   const validate = (): boolean => {
     const emailIsValid = isValidEmail(email)
@@ -78,6 +80,17 @@ const LogInScreen = () => {
   const handleGoogleSignIn = async () => {
     try {
       await signInWithGoogle()
+    } catch (error) {
+      const title = isAuthError(error) ? error.errorPath : AUTH_GENERIC_ERROR_TITLE
+      const message = isAuthError(error) ? error.errorMessage : AUTH_GENERIC_ERROR_MESSAGE
+
+      Alert.alert(title, message, [{text: OKAY_BUTTON_TEXT}])
+    }
+  }
+
+  const handleAppleSignIn = async () => {
+    try {
+      await signInWithApple()
     } catch (error) {
       const title = isAuthError(error) ? error.errorPath : AUTH_GENERIC_ERROR_TITLE
       const message = isAuthError(error) ? error.errorMessage : AUTH_GENERIC_ERROR_MESSAGE
@@ -158,6 +171,8 @@ const LogInScreen = () => {
 
                 <View style={styles.dividerLine} />
               </View>
+
+              {Platform.OS === 'ios' && <AppleSignInButton isLoading={isAttemptingAuth} onPress={handleAppleSignIn} />}
 
               <GoogleSignInButton isLoading={isAttemptingAuth} onPress={handleGoogleSignIn} />
             </View>

@@ -179,6 +179,8 @@ export const AUTH_GENERIC_ERROR_MESSAGE = 'Something went wrong. Please try agai
 
 export const AUTH_CONTINUE_WITH_GOOGLE = 'Continue with Google'
 
+export const AUTH_CONTINUE_WITH_APPLE = 'Continue with Apple'
+
 export const AUTH_DIVIDER_OR = 'or'
 
 export const ACCOUNT_LOG_IN_LIST_ITEM = 'Log In'
@@ -331,7 +333,7 @@ export const RUN_DEGRADED_BANNER =
 export const RUN_BG_PERMISSION_TITLE = 'Track in the background?'
 
 export const RUN_BG_PERMISSION_BODY =
-  'To keep tracking your run when your screen is off or the app is backgrounded, choose "Always Allow" on the next prompt.'
+  'To keep tracking your run when your screen is off or the app is backgrounded, choose "Always Allow" on the next prompt. Note: continued use of location in the background may dramatically decrease battery life.'
 
 export const RUN_BG_PERMISSION_CONTINUE = 'Continue'
 

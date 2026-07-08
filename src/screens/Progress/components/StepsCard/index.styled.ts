@@ -116,5 +116,11 @@ export default StyleSheet.create({
   barLabelActive: {
     color: Theme.colors.accentGreen,
     fontWeight: '600'
+  },
+  sourceText: {
+    fontSize: FontSize.CAPTION,
+    color: Theme.colors.textMuted,
+    textAlign: 'center',
+    marginTop: Spacing.SMALL
   }
 })

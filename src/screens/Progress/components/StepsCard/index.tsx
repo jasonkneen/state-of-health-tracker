@@ -10,7 +10,12 @@ import Animated, {FadeIn, FadeOut, runOnJS, useSharedValue} from 'react-native-r
 import Text from '@components/Text'
 import TickerText from '@components/TickerText'
 
-import {ACTIVITY_STEP_GOAL_TEXT, ACTIVITY_VS_AVG_TEXT, stringWithParameters} from '@constants/strings'
+import {
+  ACTIVITY_STEP_GOAL_TEXT,
+  ACTIVITY_STEPS_SOURCE_TEXT,
+  ACTIVITY_VS_AVG_TEXT,
+  stringWithParameters
+} from '@constants/strings'
 
 import styles, {barHeight, progressFillWidth} from './index.styled'
 import {clampBarIndex, computeGoalProgress, computeStepBars, formatDayDate, formatDayLabel} from './index.util'
@@ -134,6 +139,8 @@ const StepsCard = ({weekSteps, stepGoal, vsAveragePct}: Props) => {
           ))}
         </View>
       </GestureDetector>
+
+      <Text style={styles.sourceText}>{ACTIVITY_STEPS_SOURCE_TEXT}</Text>
     </View>
   )
 }

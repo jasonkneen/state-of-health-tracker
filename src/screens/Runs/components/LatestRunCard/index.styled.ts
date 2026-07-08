@@ -46,6 +46,11 @@ export default StyleSheet.create({
     paddingVertical: Spacing.XX_SMALL + 1,
     paddingHorizontal: Spacing.X_SMALL + 2
   },
+  pendingBadge: {
+    left: undefined,
+    right: Spacing.SMALL,
+    backgroundColor: Theme.colors.error
+  },
   latestBadgeText: {
     fontSize: FontSize.OVERLINE,
     fontWeight: '700',

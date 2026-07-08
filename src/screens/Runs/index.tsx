@@ -96,7 +96,7 @@ const RunsScreen = () => {
       onSwipeActivated={() => listSwipeItemManager.closeRow(run, index)}
       onDeletePressed={() => handleDeleteRequested(run)}>
       <TouchableOpacity activeOpacity={0.7} onPress={() => handleRunPress(run)}>
-        <RunHistoryListItem run={run} badge={badge} />
+        <RunHistoryListItem run={run} badge={badge} pending={pendingLocalIds.has(run.id)} />
       </TouchableOpacity>
     </SwipeDeleteListItem>
   )
@@ -153,7 +153,7 @@ const RunsScreen = () => {
 
             {latestRun && (
               <TouchableOpacity activeOpacity={0.8} onPress={() => handleRunPress(latestRun)}>
-                <LatestRunCard run={latestRun} />
+                <LatestRunCard run={latestRun} pending={pendingLocalIds.has(latestRun.id)} />
               </TouchableOpacity>
             )}
 

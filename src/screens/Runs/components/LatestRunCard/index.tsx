@@ -14,6 +14,7 @@ import {
   RUN_STAT_MILES_LABEL,
   RUN_STAT_PACE_LABEL,
   RUN_STAT_TIME_LABEL,
+  RUNS_BADGE_NOT_BACKED_UP,
   RUNS_LATEST_BADGE,
   RUNS_MAP_PLACEHOLDER
 } from '@constants/strings'
@@ -22,6 +23,7 @@ import styles from './index.styled'
 
 interface Props {
   run: Run
+  pending?: boolean
 }
 
 interface Stat {
@@ -31,7 +33,7 @@ interface Stat {
 
 const STRIPE_SIZE = 20
 
-const LatestRunCard = ({run}: Props) => {
+const LatestRunCard = ({run, pending = false}: Props) => {
   const stats: Stat[] = [
     {value: run.distanceMiles.toFixed(2), label: RUN_STAT_MILES_LABEL},
     {value: formatRunDuration(run.durationSeconds), label: RUN_STAT_TIME_LABEL},
@@ -64,6 +66,12 @@ const LatestRunCard = ({run}: Props) => {
         <View style={styles.latestBadge}>
           <Text style={styles.latestBadgeText}>{RUNS_LATEST_BADGE}</Text>
         </View>
+
+        {pending && (
+          <View style={[styles.latestBadge, styles.pendingBadge]}>
+            <Text style={styles.latestBadgeText}>{RUNS_BADGE_NOT_BACKED_UP}</Text>
+          </View>
+        )}
       </View>
 
       <View style={styles.statStrip}>

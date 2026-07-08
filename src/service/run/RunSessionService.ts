@@ -5,6 +5,7 @@ import CrashUtility from '@utility/CrashUtility'
 import * as Location from 'expo-location'
 import {v4 as uuidv4} from 'uuid'
 
+import {MOCK_RUN_LOCATIONS_ENABLED, mockRunLocationFeed} from './mockRunLocationFeed'
 import {processRunPoints, RunStats} from './runMath'
 import {runPointBuffer} from './runPointBuffer'
 
@@ -158,7 +159,11 @@ class RunSessionService {
     useRunSessionStore.getState().start(runId, startTime)
 
     try {
-      await Location.startLocationUpdatesAsync(RUN_LOCATION_TASK, START_LOCATION_OPTIONS)
+      if (MOCK_RUN_LOCATIONS_ENABLED) {
+        mockRunLocationFeed.start()
+      } else {
+        await Location.startLocationUpdatesAsync(RUN_LOCATION_TASK, START_LOCATION_OPTIONS)
+      }
     } catch (error) {
       // Roll back so the app isn't stuck thinking a run is active when the
       // OS never actually started delivering updates.
@@ -202,8 +207,12 @@ class RunSessionService {
 
     const runId = session.runId
 
+    mockRunLocationFeed.stop()
+
     try {
-      await Location.stopLocationUpdatesAsync(RUN_LOCATION_TASK)
+      if (!MOCK_RUN_LOCATIONS_ENABLED) {
+        await Location.stopLocationUpdatesAsync(RUN_LOCATION_TASK)
+      }
     } catch (error) {
       // Task may already be stopped (e.g. the OS killed it) — finalize from
       // whatever is in the buffer regardless rather than losing the run.

@@ -490,7 +490,7 @@ export const ACTIVITY_CONNECT_HEALTH_TITLE = 'Connect Apple Health'
 export const ACTIVITY_CONNECT_HEALTH_BODY =
   'Allow access to your Apple Health step count so your daily movement counts toward your activity.'
 
-export const ACTIVITY_CONNECT_HEALTH_BUTTON = 'Connect'
+export const ACTIVITY_CONNECT_HEALTH_BUTTON = 'Continue'
 
 export const ACTIVITY_HEALTH_DENIED_TITLE = 'Step access is off'
 

@@ -14,7 +14,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.stateofhealh.tracker",
       "icon": "./assets/icon.png",
-      "buildNumber": "27",
+      "buildNumber": "28",
       "usesAppleSignIn": true,
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,

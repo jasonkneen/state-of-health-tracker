@@ -39,15 +39,34 @@ describe('formatServingsDisplay', () => {
 })
 
 describe('stepServings', () => {
-  it('steps by 0.25 in both directions', () => {
+  it('walks up through the fraction chip stops', () => {
     expect(stepServings(1, 1)).toBe(1.25)
+    expect(stepServings(1.25, 1)).toBe(1.33)
+    expect(stepServings(1.33, 1)).toBe(1.5)
+    expect(stepServings(1.5, 1)).toBe(1.66)
+    expect(stepServings(1.66, 1)).toBe(1.75)
+    expect(stepServings(1.75, 1)).toBe(2)
+  })
+
+  it('walks down through the fraction chip stops', () => {
+    expect(stepServings(2, -1)).toBe(1.75)
+    expect(stepServings(1.75, -1)).toBe(1.66)
+    expect(stepServings(1.66, -1)).toBe(1.5)
+    expect(stepServings(1.5, -1)).toBe(1.33)
+    expect(stepServings(1.33, -1)).toBe(1.25)
     expect(stepServings(1.25, -1)).toBe(1)
-    expect(stepServings(1.5, 1)).toBe(1.75)
+    expect(stepServings(1, -1)).toBe(0.75)
+  })
+
+  it('snaps off-ladder values to the nearest stop in the pressed direction', () => {
+    expect(stepServings(1.2, 1)).toBe(1.25)
+    expect(stepServings(1.2, -1)).toBe(1)
   })
 
   it('clamps at the minimum servings', () => {
     expect(stepServings(0.25, -1)).toBe(MIN_SERVINGS)
     expect(stepServings(MIN_SERVINGS, -1)).toBe(MIN_SERVINGS)
+    expect(stepServings(0.33, -1)).toBe(0.25)
   })
 })
 

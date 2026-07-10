@@ -31,6 +31,7 @@ import {
   ACCOUNT_AUTH_SECTION_TITLE,
   ACCOUNT_DAILY_CALORIES_LABEL,
   ACCOUNT_DAILY_STEPS_LABEL,
+  ACCOUNT_GOAL_WEIGHT_LABEL,
   ACCOUNT_LOGGED_IN_AS_GUEST,
   GUEST_AVATAR_INITIAL,
   ACCOUNT_PRIVACY_POLICY,
@@ -43,7 +44,8 @@ import {
   ACCOUNT_TOTAL_WORKOUT_DAYS_LABEL,
   ACCOUNT_WEIGHT_UNIT_LABEL,
   ACCOUNT_WELCOME_TEXT,
-  ACCOUNT_WORKOUTS_PER_WEEK_LABEL
+  ACCOUNT_WORKOUTS_PER_WEEK_LABEL,
+  PROGRESS_BODY_SET_GOAL_LABEL
 } from '@constants/strings'
 import {urls} from '@constants/urls'
 
@@ -61,6 +63,7 @@ const AccountScreen = () => {
   const targetWorkouts = useUserData(state => state.targetWorkouts)
   const targetCalories = useUserData(state => state.targetCalories)
   const stepGoal = useUserData(state => state.stepGoal)
+  const goalWeight = useUserData(state => state.goalWeight)
   const weightUnitLabel = useWeightUnitLabel()
 
   const userEmail = useAuthStore(state => state.userEmail)
@@ -152,8 +155,16 @@ const AccountScreen = () => {
           label={ACCOUNT_DAILY_STEPS_LABEL}
           value={stepGoal.toLocaleString()}
           tileVariant="teal"
-          isLastInGroup={true}
           icon={<StepsIcon color={Theme.colors.teal} size={TILE_ICON_SIZE} />}
+        />
+
+        <AccountListItem
+          type="goal-weight"
+          label={ACCOUNT_GOAL_WEIGHT_LABEL}
+          value={goalWeight !== null ? `${goalWeight} ${weightUnitLabel}` : PROGRESS_BODY_SET_GOAL_LABEL}
+          tileVariant="teal"
+          isLastInGroup={true}
+          icon={<ScaleIcon color={Theme.colors.teal} size={TILE_ICON_SIZE} />}
         />
       </View>
     </>

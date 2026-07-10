@@ -1,11 +1,12 @@
-import React from 'react'
+import React, {useState} from 'react'
 
-import {View} from 'react-native'
+import {TouchableOpacity, View} from 'react-native'
 
 import {MacroTotals} from '@data/models/Macros'
 import {Theme} from '@styles/theme'
 import Svg, {Circle} from 'react-native-svg'
 
+import TargetCaloriesModal from '@components/dialog/TargetCaloriesModal'
 import MacroGramRow from '@components/MacroGramRow'
 import Text from '@components/Text'
 
@@ -23,6 +24,8 @@ interface Props {
 }
 
 const DailySummaryCard = ({totals, targets}: Props) => {
+  const [isTargetModalVisible, setIsTargetModalVisible] = useState(false)
+
   const radius = (RING_SIZE - RING_STROKE_WIDTH) / 2
   const circumference = 2 * Math.PI * radius
   const fraction = progressFraction(totals.calories, targets.calories)
@@ -57,13 +60,16 @@ const DailySummaryCard = ({totals, targets}: Props) => {
           )}
         </Svg>
 
-        <View style={styles.ringCenter}>
+        <TouchableOpacity
+          style={styles.ringCenter}
+          activeOpacity={0.6}
+          onPress={() => setIsTargetModalVisible(true)}>
           <Text style={styles.balanceValue}>{formatCalories(balance.amount)}</Text>
 
           <Text style={[styles.balanceLabel, balance.isOver && styles.balanceLabelOver]}>
             {balance.isOver ? OVER_TEXT : REMAINING_TEXT}
           </Text>
-        </View>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.macroRows}>
@@ -73,6 +79,8 @@ const DailySummaryCard = ({totals, targets}: Props) => {
 
         <MacroGramRow label={FAT_LABEL} grams={totals.fat} dotColor={Theme.colors.lime} isLast />
       </View>
+
+      <TargetCaloriesModal isVisible={isTargetModalVisible} onDismissed={() => setIsTargetModalVisible(false)} />
     </View>
   )
 }

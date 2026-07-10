@@ -471,7 +471,7 @@ export const BURN_INFO_SHEET_SUBTITLE =
 export const BURN_INFO_LIFTS_TITLE = 'Lifts'
 
 export const BURN_INFO_LIFTS_BODY =
-  'Based on how long you lifted — or about 3.5 minutes per completed set when timing isn’t available — scaled to your body weight.'
+  'Today’s workout is based on your workout timer. Past workouts assume about 3.5 minutes per completed set. Both are scaled to your body weight.'
 
 export const BURN_INFO_STEPS_TITLE = 'Steps'
 
@@ -480,10 +480,10 @@ export const BURN_INFO_STEPS_BODY =
 
 export const BURN_INFO_RUNS_TITLE = 'Runs'
 
-export const BURN_INFO_RUNS_BODY = 'Estimated from each run’s distance — the same number you see on the Runs screen.'
+export const BURN_INFO_RUNS_BODY = 'Estimated from each run’s distance. This is the same number you see on the Runs screen.'
 
 export const BURN_INFO_DISCLAIMER =
-  'Body weight comes from your most recent weigh-in. These are estimates — actual burn varies with intensity and physiology.'
+  'Body weight comes from your most recent weigh-in. These are estimates, and actual burn varies with intensity and physiology.'
 
 export const ACTIVITY_CONNECT_HEALTH_TITLE = 'Connect Apple Health'
 
@@ -614,6 +614,8 @@ export const ACCOUNT_TOTAL_RUNS_LABEL = 'Total runs'
 export const ACCOUNT_TOTAL_WORKOUT_DAYS_LABEL = 'Total workout days'
 
 export const ACCOUNT_DAILY_STEPS_LABEL = 'Daily steps'
+
+export const ACCOUNT_GOAL_WEIGHT_LABEL = 'Goal weight'
 
 export const ACCOUNT_SETTINGS_SECTION_TITLE = 'Settings'
 

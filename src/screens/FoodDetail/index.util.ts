@@ -27,8 +27,6 @@ export interface ServingFraction {
   value: number
 }
 
-export const SERVING_STEP = 0.25
-
 export const MIN_SERVINGS = 0.25
 
 export const SERVING_FRACTIONS: ServingFraction[] = [
@@ -72,8 +70,24 @@ export const formatServingsDisplay = (servings: number): string => {
   return whole === 0 ? glyph : `${whole}${glyph}`
 }
 
-export const stepServings = (servings: number, direction: 1 | -1): number =>
-  Math.max(MIN_SERVINGS, roundServings(servings + direction * SERVING_STEP))
+// Each whole number splits into the same stops as the fraction chips:
+// 1 -> 1¼ -> 1⅓ -> 1½ -> 1⅔ -> 1¾ -> 2
+const STEP_FRACTIONS = [0, ...SERVING_FRACTIONS.map(f => f.value)]
+
+export const stepServings = (servings: number, direction: 1 | -1): number => {
+  const whole = Math.floor(servings)
+  const fraction = getFractionalPart(servings)
+
+  if (direction === 1) {
+    const next = STEP_FRACTIONS.find(f => f > fraction + FRACTION_EPSILON)
+    return roundServings(next === undefined ? whole + 1 : whole + next)
+  }
+
+  const prev = [...STEP_FRACTIONS].reverse().find(f => f < fraction - FRACTION_EPSILON)
+  const stepped = prev === undefined ? whole - 1 + 0.75 : whole + prev
+
+  return Math.max(MIN_SERVINGS, roundServings(stepped))
+}
 
 // Replaces only the fractional part, keeping the whole part: 1.5 + ¼ -> 1.25
 export const applyFractionPart = (servings: number, fraction: number): number =>

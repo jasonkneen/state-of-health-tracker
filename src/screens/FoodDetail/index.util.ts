@@ -27,7 +27,7 @@ export interface ServingFraction {
   value: number
 }
 
-export const SERVING_STEP = 0.5
+export const SERVING_STEP = 0.25
 
 export const MIN_SERVINGS = 0.25
 

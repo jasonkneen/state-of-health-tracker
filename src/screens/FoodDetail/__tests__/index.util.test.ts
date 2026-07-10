@@ -39,14 +39,14 @@ describe('formatServingsDisplay', () => {
 })
 
 describe('stepServings', () => {
-  it('steps by 0.5 in both directions', () => {
-    expect(stepServings(1, 1)).toBe(1.5)
-    expect(stepServings(1.5, -1)).toBe(1)
-    expect(stepServings(1.25, 1)).toBe(1.75)
+  it('steps by 0.25 in both directions', () => {
+    expect(stepServings(1, 1)).toBe(1.25)
+    expect(stepServings(1.25, -1)).toBe(1)
+    expect(stepServings(1.5, 1)).toBe(1.75)
   })
 
   it('clamps at the minimum servings', () => {
-    expect(stepServings(0.5, -1)).toBe(MIN_SERVINGS)
+    expect(stepServings(0.25, -1)).toBe(MIN_SERVINGS)
     expect(stepServings(MIN_SERVINGS, -1)).toBe(MIN_SERVINGS)
   })
 })

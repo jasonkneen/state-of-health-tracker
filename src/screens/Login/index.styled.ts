@@ -17,8 +17,13 @@ export default StyleSheet.create({
     paddingHorizontal: Spacing.LARGE + Spacing.XX_SMALL,
     paddingBottom: Spacing.X_LARGE
   },
-  keyboardAvoidingView: {
+  safeArea: {
     flex: 1
+  },
+  // flexGrow (not flex) so short screens can scroll past the viewport while
+  // tall screens still pin the footer to the bottom via its marginTop: 'auto'
+  scrollContent: {
+    flexGrow: 1
   },
   brandContainer: {
     alignItems: 'center',

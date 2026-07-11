@@ -1,13 +1,15 @@
 import React, {useState} from 'react'
 
-import {Alert, Image, KeyboardAvoidingView, Platform, TouchableOpacity, View} from 'react-native'
+import {Alert, Image, Platform, TouchableOpacity, View} from 'react-native'
 
 import {isAuthError} from '@data/models/AuthError'
 import {Navigation} from '@navigation/types'
 import {useNavigation} from '@react-navigation/native'
 import useAuthStore from '@store/auth/useAuthStore'
+import Spacing from '@styles/spacing'
 import {Theme} from '@styles/theme'
 import {isValidEmail, isValidPassword} from '@utility/AccountUtility'
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import LinearGradient from 'react-native-linear-gradient'
 import {SafeAreaView} from 'react-native-safe-area-context'
 
@@ -115,8 +117,13 @@ const LogInScreen = () => {
 
   return (
     <LinearGradient colors={LOGIN_GRADIENT_COLORS} style={styles.gradient}>
-      <SafeAreaView style={styles.keyboardAvoidingView}>
-        <KeyboardAvoidingView behavior="padding" style={styles.keyboardAvoidingView}>
+      <SafeAreaView style={styles.safeArea}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="always"
+          extraHeight={Spacing.X_LARGE}
+          keyboardDismissMode="interactive"
+          showsVerticalScrollIndicator={false}>
           <View style={styles.container}>
             <View style={styles.brandContainer}>
               <Image source={require('@assets/icon.png')} style={styles.appIcon} />
@@ -185,7 +192,7 @@ const LogInScreen = () => {
               </TouchableOpacity>
             </View>
           </View>
-        </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     </LinearGradient>
   )

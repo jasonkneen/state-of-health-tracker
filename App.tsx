@@ -9,6 +9,7 @@ import {Theme} from '@styles/theme'
 import {PersistQueryClientProvider} from '@tanstack/react-query-persist-client'
 import * as SplashScreen from 'expo-splash-screen'
 import {GestureHandlerRootView} from 'react-native-gesture-handler'
+import {ReducedMotionConfig, ReduceMotion} from 'react-native-reanimated'
 import {initialWindowMetrics, SafeAreaProvider} from 'react-native-safe-area-context'
 import Toast from 'react-native-toast-message'
 
@@ -74,6 +75,11 @@ const App = () => {
         }
       }}>
       <GestureHandlerRootView style={{flex: 1}}>
+        {/* System Reduce Motion leaves entering-animated views stuck invisible
+            on Reanimated 4 (blank Macros/Workouts screens); our animations are
+            short fades, so run them regardless of the OS setting */}
+        <ReducedMotionConfig mode={ReduceMotion.Never} />
+
         <SafeAreaProvider initialMetrics={initialWindowMetrics}>
           <StatusBar barStyle="light-content" />
 
